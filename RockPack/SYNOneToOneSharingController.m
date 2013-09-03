@@ -327,7 +327,10 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
             
             // parse date for recent
             
-            // [rFriendsMutableArray addObject:friend];
+            if(friend.lastShareDate)
+            {
+                [rFriendsMutableArray addObject:friend];
+            }
             
         }
         
@@ -341,7 +344,6 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
         
         
     } errorHandler:^(id dictionary) {
-        
         
         [self.loader stopAnimating];
         

@@ -26,6 +26,7 @@
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
 #import "Video.h"
+#import "AMBlurView.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define kInterRowMargin 8.0f
@@ -93,6 +94,7 @@
     if (!self.hideUserProfile)
     {
         self.userProfileController = [[SYNUserProfileViewController alloc] init];
+        
     }
     
     // Main Collection View
@@ -254,6 +256,17 @@
         userProfileFrame.origin.y = 80.0;
         self.userProfileController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
         self.userProfileController.view.frame = userProfileFrame;
+        
+        if (IS_IOS_7_OR_GREATER)
+        {
+            
+            // Do iOS7 Tingz
+            AMBlurView *blurView = [AMBlurView new];
+            
+            [blurView setFrame:self.userProfileController.view.frame];
+            
+            [self.view insertSubview:blurView belowSubview:self.userProfileController.view];
+        }
     }
     
     [self.view addSubview: self.deletionCancelView];
