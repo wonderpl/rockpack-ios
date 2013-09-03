@@ -905,6 +905,7 @@
 		BE03A6CD16F7697900245314 /* ButtonSettingsHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE03A6BF16F7697900245314 /* ButtonSettingsHighlighted@2x.png */; };
 		BE03A6D616F784B000245314 /* SYNAccountSettingsGender.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A6D516F784B000245314 /* SYNAccountSettingsGender.m */; };
 		BE03A6D916F787CB00245314 /* SYNAccountSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE03A6D816F787CA00245314 /* SYNAccountSettingTableViewCell.m */; };
+		BE06EEE417D6344E0028F2E3 /* SYNStrictInteractionView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE06EEE317D6344D0028F2E3 /* SYNStrictInteractionView.m */; };
 		BE08159F16D3EF7F00ADB1DC /* SYNGenreTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE08159E16D3EF7F00ADB1DC /* SYNGenreTabViewController.m */; };
 		BE0815A216D4DADB00ADB1DC /* SYNTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815A116D4DADA00ADB1DC /* SYNTabView.m */; };
 		BE0815A516D4E53600ADB1DC /* SYNTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815A416D4E53500ADB1DC /* SYNTabViewController.m */; };
@@ -2350,6 +2351,8 @@
 		BE03A6D416F784B000245314 /* SYNAccountSettingsGender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAccountSettingsGender.h; sourceTree = "<group>"; };
 		BE03A6D516F784B000245314 /* SYNAccountSettingsGender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingsGender.m; sourceTree = "<group>"; };
 		BE03A6D816F787CA00245314 /* SYNAccountSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAccountSettingTableViewCell.m; sourceTree = "<group>"; };
+		BE06EEE217D6344D0028F2E3 /* SYNStrictInteractionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNStrictInteractionView.h; sourceTree = "<group>"; };
+		BE06EEE317D6344D0028F2E3 /* SYNStrictInteractionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNStrictInteractionView.m; sourceTree = "<group>"; };
 		BE08159D16D3EF7F00ADB1DC /* SYNGenreTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNGenreTabViewController.h; sourceTree = "<group>"; };
 		BE08159E16D3EF7F00ADB1DC /* SYNGenreTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNGenreTabViewController.m; sourceTree = "<group>"; };
 		BE0815A016D4DADA00ADB1DC /* SYNTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNTabView.h; sourceTree = "<group>"; };
@@ -3621,6 +3624,7 @@
 		019824E41629CAF500216900 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				BE06EEE517D635090028F2E3 /* Strict Interactive View */,
 				BE9071A717CCD62F00FCB320 /* Blur View iOS7 */,
 				01AEFBCA1701AC270060467A /* Activity Manager */,
 				012BD2C7173BE84C00BE28B6 /* Async Image load and cache */,
@@ -4959,6 +4963,15 @@
 				BE21EE7B16F9FF520067223B /* SYNAccountSettingsTextInputController.m */,
 			);
 			name = "Secondary Tables";
+			sourceTree = "<group>";
+		};
+		BE06EEE517D635090028F2E3 /* Strict Interactive View */ = {
+			isa = PBXGroup;
+			children = (
+				BE06EEE217D6344D0028F2E3 /* SYNStrictInteractionView.h */,
+				BE06EEE317D6344D0028F2E3 /* SYNStrictInteractionView.m */,
+			);
+			name = "Strict Interactive View";
 			sourceTree = "<group>";
 		};
 		BE08158F16D3C46800ADB1DC /* Search */ = {
@@ -7089,6 +7102,7 @@
 				0177002717C37AF6006DE415 /* SYNTouchGestureRecognizer.m in Sources */,
 				0177002A17C382C3006DE415 /* UIImage+Tint.m in Sources */,
 				BE3574E917CE07B00083CBB1 /* SYNOneToOneSharingController.m in Sources */,
+				BE06EEE417D6344E0028F2E3 /* SYNStrictInteractionView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
