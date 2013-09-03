@@ -836,22 +836,14 @@ typedef void(^FeedDataErrorBlock)(void);
     {
         AssertOrLog(@"Invalid Arc Menu index selected");
     }
-    
-    // FIXME: Add support for other sharing items
 }
-
-
-//- (UIView *) arcMenuViewToShade
-//{
-//    return self.feedCollectionView;
-//}
 
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     SYNAggregateCell *cell = nil;
-    FeedItem* feedItem = [self feedItemAtIndexPath:indexPath];
+    FeedItem* feedItem = [self feedItemAtIndexPath: indexPath];
     ChannelOwner* channelOwner;
     
     NSInteger feedItemsAggregated = feedItem.itemTypeValue == FeedItemTypeAggregate ? feedItem.feedItems.count : 1;
@@ -863,33 +855,30 @@ typedef void(^FeedDataErrorBlock)(void);
         
         VideoInstance* videoInstance;
         
-        videoInstance = (VideoInstance*)[self.feedVideosById objectForKey:feedItem.coverIndexArray[0]]; // there should be only one
-        
-        
+        videoInstance = (VideoInstance*)[self.feedVideosById objectForKey: feedItem.coverIndexArray[0]]; // there should be only one
+
         cell.mainTitleLabel.text = videoInstance.title;
-        
-        
-        if(!feedItem.title) // it should usually be nil
+
+        if (!feedItem.title) // it should usually be nil
         {
-         
-            [cell setTitleMessageWithDictionary:@{  @"display_name" : videoInstance.channel.channelOwner ? videoInstance.channel.channelOwner.displayName : @"",
-                                                    @"item_count" : @(feedItemsAggregated),
-             @"channel_name" : videoInstance.channel ? videoInstance.channel.title : @"" }];
+            [cell setTitleMessageWithDictionary: @{@"display_name" : videoInstance.channel.channelOwner ? videoInstance.channel.channelOwner.displayName : @"",
+                                                   @"item_count" : @(feedItemsAggregated),
+             @"channel_name" : videoInstance.channel ? videoInstance.channel.title : @""}];
             
         }
         else
             cell.messageLabel.text = feedItem.title;
 
-        [cell setSupplementaryMessageWithDictionary:@{  @"star_count": videoInstance.video ? videoInstance.video.starCount : @0,
-         @"starrers": videoInstance ? [videoInstance.starrers array] : [NSArray array] }];
+        [cell setSupplementaryMessageWithDictionary: @{@"star_count": videoInstance.video ? videoInstance.video.starCount : @0,
+         @"starrers": videoInstance ? [videoInstance.starrers array] : [NSArray array]}];
         
-        [cell setCoverImagesAndTitlesWithArray:@[@{     @"image": videoInstance.video ? videoInstance.video.thumbnailURL : @"",
-         @"title" : videoInstance ? videoInstance.title : @"" }]];
+        [cell setCoverImagesAndTitlesWithArray: @[@{@"image": videoInstance.video ? videoInstance.video.thumbnailURL : @"",
+         @"title" : videoInstance ? videoInstance.title : @""}]];
         
         channelOwner = videoInstance.channel.channelOwner; // heuristic, get the last video instance, all should have the same channelOwner however
         
     }
-    else if(feedItem.resourceTypeValue == FeedItemResourceTypeChannel)
+    else if (feedItem.resourceTypeValue == FeedItemResourceTypeChannel)
     {
         cell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNAggregateChannelCell"
                                              forIndexPath: indexPath];
@@ -910,22 +899,22 @@ typedef void(^FeedDataErrorBlock)(void);
                                                     @"title" : channel.title    }];
             }
             
-            [cell setCoverImagesAndTitlesWithArray:coverImagesAndTitles];
+            [cell setCoverImagesAndTitlesWithArray: coverImagesAndTitles];
         }
         else
         {
-            channel = (Channel*)[self.feedChannelsById objectForKey:feedItem.resourceId];
+            channel = (Channel*)[self.feedChannelsById objectForKey: feedItem.resourceId];
             
-            [cell setCoverImagesAndTitlesWithArray:@[@{ @"image": channel.channelCover ? channel.channelCover.imageLargeUrl : @"",
-                                                        @"title" : channel.title    }]]; 
+            [cell setCoverImagesAndTitlesWithArray:@[@{@"image": channel.channelCover ? channel.channelCover.imageLargeUrl : @"",
+                                                       @"title" : channel.title    }]]; 
         }
         
         channelOwner = channel.channelOwner;
         
-        if(!feedItem.title)
+        if (!feedItem.title)
         {
-            [cell setTitleMessageWithDictionary:@{  @"display_name" : channel.channelOwner ? channel.channelOwner.displayName : @"",
-                                                    @"item_count" : @(feedItemsAggregated)}];
+            [cell setTitleMessageWithDictionary:@{@"display_name" : channel.channelOwner ? channel.channelOwner.displayName : @"",
+                                                  @"item_count" : @(feedItemsAggregated)}];
         }
         else
             cell.messageLabel.text = feedItem.title; 
@@ -966,13 +955,10 @@ typedef void(^FeedDataErrorBlock)(void);
         (self.dataRequestRange.location + self.dataRequestRange.length < self.dataItemsAvailable)) 
     {
         
-        footerSize = [self footerSize];
-        
-       
+        footerSize = [self footerSize];   
     }
     
     return footerSize;
-    
 }
 
 

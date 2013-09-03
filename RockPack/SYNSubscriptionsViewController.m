@@ -235,9 +235,4 @@
     }
 }
 
-//- (UIView *) arcMenuViewToShade
-//{
-//    return self.channelThumbnailCollectionView;
-//}
-
 @end
