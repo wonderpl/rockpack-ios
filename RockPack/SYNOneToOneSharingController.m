@@ -17,6 +17,8 @@
 #import "SYNFacebookManager.h"
 #import "OWActivities.h"
 #import "OWActivityViewController.h"
+#import "VideoInstance.h"
+#import "Channel.h"
 
 #import "OWActivityView.h"
 #import <objc/runtime.h>
@@ -56,7 +58,7 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 @property (nonatomic, strong) NSMutableString* currentSearchTerm;
 
 @property (nonatomic, readonly) BOOL isInAuthorizationScreen;
-@property (nonatomic, strong) NSString* resourceTypeToShare;
+@property (nonatomic, strong) AbstractCommon* resourceToShare;
 
 @end
 
@@ -68,18 +70,18 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 @synthesize currentSearchTerm;
 
 
--(id)initWithResourceType:(NSString*)rtype
+-(id)initWithResource:(AbstractCommon*)objectToShare
 {
     if (self = [super initWithNibName:@"SYNOneToOneSharingController" bundle:nil])
     {
-        self.resourceTypeToShare = rtype;
+        self.resourceToShare = objectToShare;
     }
     return self;
 }
 
-+(id)withResourceType:(NSString*)rtype
++(id)withResourceType:(AbstractCommon*)objectToShare
 {
-    return [[self alloc] initWithResourceType:rtype];
+    return [[self alloc] initWithResource:objectToShare];
 }
 
 - (void)viewDidLoad
@@ -196,7 +198,7 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     {
         NSString *what = @"pack";
         
-        if ([self.resourceTypeToShare isEqualToString:kVideo])
+        if ([self.resourceToShare isKindOfClass:[VideoInstance class]])
         {
             what = @"video";
         }
@@ -238,7 +240,10 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     self.activityViewController.userInfo = self.mutableShareDictionary;
     
     [self.activitiesContainerView addSubview:self.activityViewController.view];
+    
 }
+
+
 -(void)requestAddressBookAuthorization
 {
     CFErrorRef error = NULL;

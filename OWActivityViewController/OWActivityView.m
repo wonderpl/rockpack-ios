@@ -181,6 +181,7 @@
     
     // Bit of a hack, but basically ignore all button presses until we have a valid userInfo (which will happen on return from the simultaneous network call)
     NSLog(@"%@ %@", self.activityViewController.userInfo, activity.actionBlock );
+    
     if (activity.actionBlock && self.activityViewController.userInfo) {
         activity.actionBlock(activity, _activityViewController);
     }

@@ -714,7 +714,7 @@
         if (obj == self.channel)
         {
             self.dataItemsAvailable = self.channel.totalVideosValue;
-            DebugLog(@"%d : %@", idx, obj);
+            
             
             self.subscribeButton.selected = self.channel.subscribedByUserValue;
             self.subscribeButton.enabled = YES;

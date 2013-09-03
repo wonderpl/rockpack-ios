@@ -142,7 +142,6 @@
                                                 [wAppDelegate saveContext:YES];
                                                   
                                                   
-                                                  ExternalAccount* facebookAccount = wAppDelegate.currentUser.facebookAccount;
                                                   
                                                 if(self.completionBlock)
                                                     self.completionBlock(YES);
