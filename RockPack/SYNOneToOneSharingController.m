@@ -164,17 +164,15 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
         
         [self presentActivities];
         
-    }
-   
-    
+    }  
 }
--(void)presentActivities
+
+
+- (void) presentActivities
 {
-    
     [self fetchFriends];
    
     // load activities
-    
     NSString *userName = nil;
     NSString *subject = @"";
     
@@ -206,9 +204,9 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     
 
     
-    self.mutableShareDictionary = @{   @"owner": @NO,
-                                       @"video": @YES,
-                                       @"subject": subject }.mutableCopy;
+    self.mutableShareDictionary = @{@"owner" : @NO,
+                                    @"video" : @YES,
+                                    @"subject" : subject}.mutableCopy;
     // Only add image if we have one
     //    if (usingImage)
     //    {
@@ -218,7 +216,6 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     OWFacebookActivity *facebookActivity = [[OWFacebookActivity alloc] init];
     OWTwitterActivity *twitterActivity = [[OWTwitterActivity alloc] init];
     
-    
     NSMutableArray *activities = @[facebookActivity, twitterActivity].mutableCopy;
     
     if ([MFMailComposeViewController canSendMail])
@@ -227,19 +224,19 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
         [activities addObject: mailActivity];
     }
     
-    
-    
     CGRect aViewFrame = CGRectZero;
     aViewFrame.size = self.activitiesContainerView.frame.size;
     
-    self.activityViewController = [[OWActivityViewController alloc]	 initWithViewController: self
-                                                                                 activities: activities];
+    self.activityViewController = [[OWActivityViewController alloc] initWithViewController: self
+                                                                                activities: activities];
     
     self.activityViewController.userInfo = self.mutableShareDictionary;
     
     [self.activitiesContainerView addSubview:self.activityViewController.view];
 }
--(void)requestAddressBookAuthorization
+
+
+- (void) requestAddressBookAuthorization
 {
     CFErrorRef error = NULL;
     ABAddressBookRef addressBookRef = ABAddressBookCreateWithOptions(NULL, &error);
