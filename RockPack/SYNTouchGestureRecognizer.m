@@ -10,8 +10,6 @@
 
 @implementation SYNTouchGestureRecognizer
 
-#pragma mark - Initialization
-
 #pragma mark - Co-operation
 
 // Required so that the other gesture recognizers act in parallel

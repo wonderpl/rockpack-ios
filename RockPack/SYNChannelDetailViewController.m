@@ -1020,16 +1020,6 @@
     return cell;
 }
 
-- (IBAction) toggleStarAtIndexPath: (NSIndexPath *) indexPath
-{
-    [super toggleStarAtIndexPath:indexPath];
-    
-    VideoInstance *videoInstance = [self videoInstanceForIndexPath: indexPath];
-    
-    [self.channel.videoInstancesSet removeObject:videoInstance];
-    
-    [self.videoThumbnailCollectionView reloadData];
-}
 
 - (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
             viewForSupplementaryElementOfKind: (NSString *) kind
