@@ -32,6 +32,7 @@
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
+#import "SYNOneToOneSharingController.h"
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -51,6 +52,7 @@
 @property (strong, readonly, nonatomic) NSArray *activities;
 @property (weak, nonatomic) UIPopoverController *presentingPopoverController;
 @property (weak, nonatomic) UIViewController *presentingController;
+@property (nonatomic, strong) SYNOneToOneSharingController* oneToOneViewController;
 
 @end
 
@@ -323,8 +325,8 @@
 
     [self shareObjectType: @"video_instance"
                  objectId: videoInstance.uniqueId
-                  isOwner: @FALSE
-                  isVideo: @TRUE
+                  isOwner: @NO
+                  isVideo: @YES
                usingImage: thumbnailImage
                    inView: inView
                  fromRect: rect
@@ -353,7 +355,7 @@
     [self shareObjectType: @"channel"
                  objectId: channel.uniqueId
                   isOwner: isOwner
-                  isVideo: @FALSE
+                  isVideo: @NO
                usingImage: image
                    inView: inView
                  fromRect: rect
@@ -374,6 +376,18 @@
        activityIndicator: (UIActivityIndicatorView *) activityIndicatorView
               onComplete: (SYNShareCompletionBlock) completionBlock
 {
+    
+    
+    self.oneToOneViewController = [[SYNOneToOneSharingController alloc] init];
+    
+    
+    
+    [appDelegate.viewStackManager presentPopoverView:self.oneToOneViewController.view];
+    
+    
+    
+    return;
+    
     if ([objectType isEqualToString: @"channel"])
     {
         if (!usingImage)
@@ -469,8 +483,7 @@
     if ([MFMailComposeViewController canSendMail])
     {
         OWMailActivity *mailActivity = [[OWMailActivity alloc] init];
-        [activities addObject: mailActivity
-         ];
+        [activities addObject: mailActivity];
     }
     
     if ([MFMessageComposeViewController canSendText])
@@ -617,7 +630,7 @@
     return NavigationButtonsAppearanceBlack;
 }
 
--(BOOL)alwaysDisplaysSearchBox
+- (BOOL) alwaysDisplaysSearchBox
 {
     return NO;
 }
@@ -761,6 +774,13 @@
     return  nil;
 }
 
+- (VideoInstance *) videoInstanceForIndexPath: (NSIndexPath *) indexPath
+                            andComponentIndex: (NSInteger) componentIndex
+{
+    AssertOrLog(@"Shouldn't be calling abstract function");
+    return  nil;
+}
+
 
 - (NSIndexPath *) indexPathForVideoCell: (UICollectionViewCell *) cell
 {
@@ -785,7 +805,6 @@
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
                     forCell: (UICollectionViewCell *) cell
 {
-
     NSArray *menuItems;
     float menuArc, menuStartAngle;
     NSString *analyticsLabel;
@@ -862,7 +881,9 @@
                     menuArc: (float) menuArc
              menuStartAngle: (float) menuStartAngle
 {
-    CGPoint tapPoint = [recognizer locationInView: self.view];
+    UIView *referenceView = appDelegate.masterViewController.view;
+    
+    CGPoint tapPoint = [recognizer locationInView: referenceView];
     
     if (recognizer.state == UIGestureRecognizerStateBegan)
     {
@@ -870,7 +891,7 @@
                                                             highlightedImage: [UIImage imageNamed: @"ActionRingTouch"]
                                                                         name: kActionNone];
         
-        self.arcMenu = [[SYNArcMenuView alloc] initWithFrame: self.view.bounds
+        self.arcMenu = [[SYNArcMenuView alloc] initWithFrame: referenceView.bounds
                                                    startItem: mainMenuItem
                                                  optionMenus: menuItems
                                                cellIndexPath: cellIndexPath];
@@ -879,7 +900,7 @@
         self.arcMenu.menuWholeAngle = menuArc;
         self.arcMenu.rotateAngle = menuStartAngle;
         
-        CGFloat screenWidth = self.view.frame.size.width;
+        CGFloat screenWidth = referenceView.bounds.size.width;
         
         if (tapPoint.x < kRotateThresholdX)
         {
@@ -914,8 +935,7 @@
             self.arcMenu.rotateAngle += M_PI;
         }
         
-        
-        [appDelegate.viewStackManager addSubvievOnTopOfEverything:self.arcMenu];
+        [appDelegate.masterViewController.view addSubview: self.arcMenu];
         
         [self.arcMenu show: YES];
     }
@@ -966,9 +986,10 @@
     }
 }
 
+
 - (UIView *) arcMenuViewToShade
 {
-    return self.videoThumbnailCollectionView;
+    return appDelegate.masterViewController.view;
 }
 
 -(UICollectionView *)mainCollectionView

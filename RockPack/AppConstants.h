@@ -151,6 +151,7 @@ typedef enum _FeedItemResourceType {
 
 // Share link
 #define kAPIShareLink               @"/ws/share/link/"                          /* POST */
+#define kAPIShareEmail              @"/ws/share/email/"                          /* POST */
 
 // Report concerns
 
@@ -274,6 +275,8 @@ typedef enum _NavigationButtonsAppearance {
 //
 // Animations
 //
+
+#define kArcMenuStartButtonTag 456
 
 // Text cross-fade
 #define kTextCrossfadeDuration 0.3f

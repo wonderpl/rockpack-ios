@@ -741,18 +741,18 @@ typedef void(^FeedDataErrorBlock)(void);
     
     if (componentIndex == kArcMenuInvalidComponentIndex)
     {
+        DebugLog(@"*** channelAtCoverOfFeedItem");
         channel = [self channelAtCoverOfFeedItem: feedItem];
     }
     else
     {
+        DebugLog(@"*** feedChannelsById");
         // Aggregate cell with multiple indices
         channel = [self.feedChannelsById objectForKey: feedItem.coverIndexArray[componentIndex]];
     }
 
     return channel;
 }
-
-
 
 
 - (NSIndexPath *) indexPathForChannelCell: (UICollectionViewCell *) cell
@@ -782,7 +782,7 @@ typedef void(^FeedDataErrorBlock)(void);
         FeedItem *feedItem = [self feedItemAtIndexPath: indexPath];
         NSInteger indexOfButton;
         
-        if (feedItem.resourceTypeValue == FeedItemResourceTypeChannel && feedItem.itemTypeValue == FeedItemTypeAggregate)
+        if (feedItem.itemTypeValue == FeedItemTypeAggregate)
         {
             UIImageView *simulatedButton = (UIImageView *) recognizer.view;
             indexOfButton = [(SYNAggregateChannelCell *) cell indexForSimulatedButtonPressed: simulatedButton];
@@ -792,11 +792,24 @@ typedef void(^FeedDataErrorBlock)(void);
             indexOfButton = kArcMenuInvalidComponentIndex;
         }
         
-        Channel *channel = [self channelInstanceForIndexPath: indexPath
-                                           andComponentIndex: indexOfButton];
-        
-        [self requestShareLinkWithObjectType: @"channel"
-                                    objectId: channel.uniqueId];
+        if (feedItem.resourceTypeValue == FeedItemResourceTypeChannel)
+        {
+            // Channel
+            Channel *channel = [self channelInstanceForIndexPath: indexPath
+                                               andComponentIndex: indexOfButton];
+            
+            [self requestShareLinkWithObjectType: @"channel"
+                                        objectId: channel.uniqueId];
+        }
+        else
+        {
+            // Video
+            VideoInstance *videoInstance = [self videoInstanceForIndexPath: indexPath
+                                                         andComponentIndex: indexOfButton];
+            
+            [self requestShareLinkWithObjectType: @"video_instance"
+                                        objectId: videoInstance.uniqueId];
+        }
         
         self.arcMenu.componentIndex = indexOfButton;
         DebugLog(@"Set componentIndex to %d", indexOfButton);
@@ -809,7 +822,16 @@ typedef void(^FeedDataErrorBlock)(void);
          forCellAtIndex: (NSIndexPath *) cellIndexPath
          andComponentIndex: (NSInteger) componentIndex
 {
-    if ([menuName isEqualToString: kActionShareVideo])
+    if ([menuName isEqualToString: kActionLike])
+    {
+        [self toggleStarAtIndexPath: cellIndexPath];
+    }
+    else if ([menuName isEqualToString: kActionAdd])
+    {
+        [self addVideoAtIndexPath: cellIndexPath
+                    withOperation: kVideoQueueAdd];
+    }
+    else if ([menuName isEqualToString: kActionShareVideo])
     {
         [self shareVideoAtIndexPath: cellIndexPath];
     }
@@ -822,13 +844,15 @@ typedef void(^FeedDataErrorBlock)(void);
     {
         AssertOrLog(@"Invalid Arc Menu index selected");
     }
+    
+    // FIXME: Add support for other sharing items
 }
 
 
-- (UIView *) arcMenuViewToShade
-{
-    return self.feedCollectionView;
-}
+//- (UIView *) arcMenuViewToShade
+//{
+//    return self.feedCollectionView;
+//}
 
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
@@ -1043,80 +1067,118 @@ typedef void(^FeedDataErrorBlock)(void);
 
 - (VideoInstance *) videoInstanceForIndexPath: (NSIndexPath *) indexPath
 {
-    FeedItem* feedItem = [self feedItemAtIndexPath:indexPath];
-    
-    VideoInstance* videoInstance = [self videoInstanceAtCoverOfFeedItem: feedItem];
-    
-    return videoInstance;
+    return [self videoInstanceForIndexPath: indexPath
+                         andComponentIndex: kArcMenuInvalidComponentIndex];
 }
 
 
--(VideoInstance*)videoInstanceAtCoverOfFeedItem:(FeedItem*)feedItem
+- (VideoInstance *) videoInstanceForIndexPath: (NSIndexPath *) indexPath
+                            andComponentIndex: (NSInteger) componentIndex
 {
-    if(!feedItem || (feedItem.resourceTypeValue != FeedItemResourceTypeVideo))
-        return nil;
+    if (!indexPath)
+        DebugLog(@"Nil index path");
     
-    VideoInstance* videoInstance;
+    DebugLog (@"indexPath %@", indexPath);
     
-    if(feedItem.itemTypeValue == FeedItemTypeLeaf)
-        videoInstance = [self.feedVideosById objectForKey:feedItem.resourceId];
+    VideoInstance *videoInstance;
+    
+    FeedItem *feedItem = [self feedItemAtIndexPath: indexPath];
+    
+    if (componentIndex == kArcMenuInvalidComponentIndex)
+    {
+        videoInstance = [self videoInstanceAtCoverOfFeedItem: feedItem];
+    }
     else
-        videoInstance = [self.feedVideosById objectForKey:feedItem.coverIndexArray[0]];
+    {
+        // Aggregate cell with multiple indices
+        videoInstance = [self.feedVideosById objectForKey: feedItem.coverIndexArray[componentIndex]];
+    }
     
     return videoInstance;
 }
 
 
--(Channel*)channelAtCoverOfFeedItem:(FeedItem*)feedItem
+
+- (VideoInstance *) videoInstanceAtCoverOfFeedItem: (FeedItem *) feedItem
+{
+    if (!feedItem || (feedItem.resourceTypeValue != FeedItemResourceTypeVideo))
+    {
+        return nil;
+    }
+    
+    VideoInstance *videoInstance;
+    
+    if (feedItem.itemTypeValue == FeedItemTypeLeaf)
+    {
+        videoInstance = [self.feedVideosById objectForKey: feedItem.resourceId];
+    }
+    else
+    {
+        videoInstance = [self.feedVideosById objectForKey: feedItem.coverIndexArray[0]];
+    }
+    
+    return videoInstance;
+}
+
+
+- (Channel *) channelAtCoverOfFeedItem: (FeedItem *) feedItem
 {
     DebugLog(@"Feed Item: %@", feedItem);
-    if(!feedItem || (feedItem.resourceTypeValue != FeedItemResourceTypeChannel))
+    
+    if (!feedItem || (feedItem.resourceTypeValue != FeedItemResourceTypeChannel))
+    {
         return nil;
+    }
     
-    Channel* channel;
+    Channel *channel;
     
-    if(feedItem.itemTypeValue == FeedItemTypeLeaf)
-        channel = [self.feedChannelsById objectForKey:feedItem.resourceId];
+    if (feedItem.itemTypeValue == FeedItemTypeLeaf)
+    {
+        channel = [self.feedChannelsById objectForKey: feedItem.resourceId];
+    }
     else
-        channel = [self.feedChannelsById objectForKey:feedItem.coverIndexArray[0]];
+    {
+        channel = [self.feedChannelsById objectForKey: feedItem.coverIndexArray[0]];
+    }
     
     return channel;
 }
 
--(void)sortVideosForPlaylist
+
+- (void) sortVideosForPlaylist
 {
-    NSMutableArray* ma = [NSMutableArray array]; // max should be the existing videos
+    NSMutableArray *ma = [NSMutableArray array]; // max should be the existing videos
     
-    for (NSArray* section in self.feedItemsData)
+    for (NSArray *section in self.feedItemsData)
     {
-        for (FeedItem* fi in section)
+        for (FeedItem *fi in section)
         {
-            
-            if(fi.resourceTypeValue != FeedItemResourceTypeVideo)
-                continue;
-                
-            
-            if(fi.itemTypeValue == FeedItemTypeLeaf)
+            if (fi.resourceTypeValue != FeedItemResourceTypeVideo)
             {
-                [ma addObject:[self.feedVideosById objectForKey:fi.resourceId]];
+                continue;
+            }
+            
+            if (fi.itemTypeValue == FeedItemTypeLeaf)
+            {
+                [ma addObject: [self.feedVideosById objectForKey: fi.resourceId]];
             }
             else
             {
-                for (FeedItem* cfi in fi.feedItems)
+                for (FeedItem *cfi in fi.feedItems)
                 {
                     // assumes that FeedItems are one level deep at the present moment (probably will not change for a while)
-                    if(cfi.resourceTypeValue != FeedItemResourceTypeVideo || cfi.itemTypeValue != FeedItemTypeLeaf)
+                    if (cfi.resourceTypeValue != FeedItemResourceTypeVideo || cfi.itemTypeValue != FeedItemTypeLeaf)
+                    {
                         continue;
+                    }
                     
-                    [ma addObject:[self.feedVideosById objectForKey:cfi.resourceId]];
-                    
+                    [ma addObject: [self.feedVideosById objectForKey: cfi.resourceId]];
                 }
             }
-            
         }
     }
     
-    self.videosInOrderArray = [NSArray arrayWithArray:ma];
+    self.videosInOrderArray = [NSArray arrayWithArray: ma];
 }
 
 

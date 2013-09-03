@@ -18,6 +18,7 @@
 @property (nonatomic, strong) UICollectionView *channelThumbnailCollectionView;
 @property (nonatomic, assign) BOOL enableCategoryTable;
 
-
+- (void) superArcMenuUpdateState: (UIGestureRecognizer *) recognizer
+                         forCell: (UICollectionViewCell *) cell;
 
 @end

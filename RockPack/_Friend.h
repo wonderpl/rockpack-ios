@@ -5,9 +5,11 @@
 #import "ChannelOwner.h"
 
 extern const struct FriendAttributes {
+	__unsafe_unretained NSString *email;
 	__unsafe_unretained NSString *externalSystem;
 	__unsafe_unretained NSString *externalUID;
 	__unsafe_unretained NSString *hasIOSDevice;
+	__unsafe_unretained NSString *lastShareDate;
 	__unsafe_unretained NSString *resourceURL;
 } FriendAttributes;
 
@@ -23,6 +25,8 @@ extern const struct FriendFetchedProperties {
 
 
 
+
+
 @interface FriendID : NSManagedObjectID {}
 @end
 
@@ -31,6 +35,16 @@ extern const struct FriendFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (FriendID*)objectID;
+
+
+
+
+
+@property (nonatomic, strong) NSString* email;
+
+
+
+//- (BOOL)validateEmail:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -70,6 +84,16 @@ extern const struct FriendFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSDate* lastShareDate;
+
+
+
+//- (BOOL)validateLastShareDate:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
 @property (nonatomic, strong) NSString* resourceURL;
 
 
@@ -90,6 +114,12 @@ extern const struct FriendFetchedProperties {
 @interface _Friend (CoreDataGeneratedPrimitiveAccessors)
 
 
+- (NSString*)primitiveEmail;
+- (void)setPrimitiveEmail:(NSString*)value;
+
+
+
+
 - (NSString*)primitiveExternalSystem;
 - (void)setPrimitiveExternalSystem:(NSString*)value;
 
@@ -107,6 +137,12 @@ extern const struct FriendFetchedProperties {
 
 - (BOOL)primitiveHasIOSDeviceValue;
 - (void)setPrimitiveHasIOSDeviceValue:(BOOL)value_;
+
+
+
+
+- (NSDate*)primitiveLastShareDate;
+- (void)setPrimitiveLastShareDate:(NSDate*)value;
 
 
 

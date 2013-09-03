@@ -10,4 +10,9 @@
 
 @interface SYNOneToOneSharingController : UIViewController
 
+
+
+-(IBAction)authorizeFacebookButtonPressed:(id)sender;
+-(IBAction)authorizeAddressBookButtonPressed:(id)sender;
+
 @end

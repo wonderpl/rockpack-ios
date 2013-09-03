@@ -1426,6 +1426,17 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">SYNAbstractViewController</string>
 					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">toggleStarAtIndexPath:</string>
+						<string key="NS.object.0">NSIndexPath</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">toggleStarAtIndexPath:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">toggleStarAtIndexPath:</string>
+							<string key="candidateClassName">NSIndexPath</string>
+						</object>
+					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="channelNameTextField">UITextField</string>
 						<string key="channelOverlayView">UIImageView</string>

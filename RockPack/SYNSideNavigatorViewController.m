@@ -179,7 +179,6 @@ typedef enum {
             self.backgroundImageView.hidden = YES;
             [self.view insertSubview:blurView atIndex:0];
         }
-        
         else
         {
             // Do iOS6 Tingz

@@ -11,5 +11,12 @@
 
 @implementation SYNChannelCreateNewCell
 
+- (void) awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
+}
+
 
 @end

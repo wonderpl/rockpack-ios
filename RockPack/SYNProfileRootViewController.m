@@ -26,6 +26,7 @@
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
 #import "Video.h"
+#import "AMBlurView.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define kInterRowMargin 8.0f
@@ -93,6 +94,7 @@
     if (!self.hideUserProfile)
     {
         self.userProfileController = [[SYNUserProfileViewController alloc] init];
+        
     }
     
     // Main Collection View
@@ -264,6 +266,17 @@
         userProfileFrame.origin.y = 80.0;
         self.userProfileController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
         self.userProfileController.view.frame = userProfileFrame;
+        
+        if (IS_IOS_7_OR_GREATER)
+        {
+            
+            // Do iOS7 Tingz
+            AMBlurView *blurView = [AMBlurView new];
+            
+            [blurView setFrame:self.userProfileController.view.frame];
+            
+            [self.view insertSubview:blurView belowSubview:self.userProfileController.view];
+        }
     }
     
     [self.view addSubview: self.deletionCancelView];
@@ -818,7 +831,7 @@
         }
         
         [channelThumbnailCell setChannelTitle: channel.title];
-        [channelThumbnailCell setViewControllerDelegate: self];
+        [channelThumbnailCell setViewControllerDelegate: (id<SYNChannelMidCellDelegate>) self];
         
         cell = channelThumbnailCell;
     }
@@ -866,7 +879,7 @@
                 [animation setDuration: 0.30];
                 
                 [animation setTimingFunction: [CAMediaTimingFunction functionWithName:
-                                              kCAMediaTimingFunctionEaseInEaseOut]];
+                                               kCAMediaTimingFunctionEaseInEaseOut]];
                 
                 [self.view.window.layer addAnimation: animation
                                               forKey: nil];
@@ -891,11 +904,11 @@
         channel = self.user.subscriptions[indexPath.row];
     }
     
-    [appDelegate.viewStackManager
-     viewChannelDetails: channel];
+    [appDelegate.viewStackManager viewChannelDetails: channel];
 }
 
 #pragma mark - ScrollView Delegate
+
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
@@ -1354,5 +1367,151 @@
 {
     return YES;
 }
+
+#pragma mark - Arc menu support
+
+- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
+                    forCell: (UICollectionViewCell *) cell
+{
+    [super arcMenuUpdateState: recognizer
+                      forCell: cell];
+    
+    if (recognizer.state == UIGestureRecognizerStateBegan)
+    {
+        // Need to set the component index if aggregate celll
+        NSIndexPath *indexPath = [self indexPathForChannelCell: cell];
+        
+        Channel *channel = [self channelInstanceForIndexPath: indexPath
+                                           andComponentIndex: kArcMenuInvalidComponentIndex];
+        
+        [self requestShareLinkWithObjectType: @"channel"
+                                    objectId: channel.uniqueId];
+    }
+}
+
+
+- (void) arcMenu: (SYNArcMenuView *) menu
+         didSelectMenuName: (NSString *) menuName
+         forCellAtIndex: (NSIndexPath *) cellIndexPath
+         andComponentIndex: (NSInteger) componentIndex
+{
+    if ([menuName isEqualToString: kActionShareVideo])
+    {
+        [self shareVideoAtIndexPath: cellIndexPath];
+    }
+    else if ([menuName isEqualToString: kActionShareChannel])
+    {
+        [self shareChannelAtIndexPath: cellIndexPath
+                    andComponentIndex: componentIndex];
+    }
+    else
+    {
+        AssertOrLog(@"Invalid Arc Menu index selected");
+    }
+}
+
+
+//- (UIView *) arcMenuViewToShade
+//{
+//    return self.channelThumbnailCollectionView;
+//}
+
+
+- (Channel *) channelInstanceForIndexPath: (NSIndexPath *) indexPath
+                        andComponentIndex: (NSInteger) componentIndex
+{
+    if (componentIndex != kArcMenuInvalidComponentIndex)
+    {
+        AssertOrLog(@"Unexpectedly valid componentIndex");
+    }
+    
+    Channel *channel = (Channel *) self.user.channels[indexPath.row - (self.isUserProfile ? 1 : 0)];
+    
+    return channel;
+}
+
+
+- (NSIndexPath *) indexPathForChannelCell: (UICollectionViewCell *) cell
+{
+    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForCell: cell];
+    return  indexPath;
+}
+
+
+- (void) displayNameButtonPressed: (UIButton *) button
+{
+    SYNChannelThumbnailCell *parent = (SYNChannelThumbnailCell *) [[button superview] superview];
+    
+    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForCell: parent];
+    
+    Channel *channel = (Channel *) self.user.channels[indexPath.row - (self.isUserProfile ? 1 : 0)];
+    
+    [appDelegate.viewStackManager viewProfileDetails: channel.channelOwner];
+}
+
+
+- (void) channelTapped: (UICollectionViewCell *) cell
+{
+    SYNChannelThumbnailCell *selectedCell = (SYNChannelThumbnailCell *) cell;
+    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: selectedCell.center];
+    
+    if (self.isDeletionModeActive)
+    {
+        self.deletionModeActive = NO;
+        return;
+    }
+    
+    Channel *channel;
+    
+    if (self.isUserProfile && indexPath.row == 0)
+    {
+        if (IS_IPAD)
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName: kNoteCreateNewChannel
+                                                                object: self];
+        }
+        else
+        {
+            //On iPhone we want a different navigation structure. Slide the view in.
+            
+            SYNChannelDetailViewController *channelCreationVC =
+            [[SYNChannelDetailViewController alloc] initWithChannel: appDelegate.videoQueue.currentlyCreatingChannel
+                                                          usingMode: kChannelDetailsModeCreate];
+            
+            CGRect newFrame = channelCreationVC.view.frame;
+            newFrame.size.height = self.view.frame.size.height;
+            channelCreationVC.view.frame = newFrame;
+            CATransition *animation = [CATransition animation];
+            
+            [animation setType: kCATransitionMoveIn];
+            [animation setSubtype: kCATransitionFromRight];
+            
+            [animation setDuration: 0.30];
+            
+            [animation setTimingFunction: [CAMediaTimingFunction functionWithName:
+                                           kCAMediaTimingFunctionEaseInEaseOut]];
+            
+            [self.view.window.layer addAnimation: animation
+                                          forKey: nil];
+            
+            [self presentViewController: channelCreationVC
+                               animated: NO
+                             completion: ^{
+                                 [[NSNotificationCenter defaultCenter]	postNotificationName: kNoteCreateNewChannel
+                                                                                     object: self];
+                             }];
+        }
+        
+        return;
+    }
+    else
+    {
+        channel = self.user.channels[indexPath.row - (self.isUserProfile ? 1 : 0)];
+    }
+
+    
+    [appDelegate.viewStackManager viewChannelDetails: channel];
+}
+
 
 @end
