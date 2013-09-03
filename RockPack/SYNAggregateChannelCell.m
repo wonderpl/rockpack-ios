@@ -57,6 +57,8 @@
 
 - (void) prepareForReuse
 {
+    [super prepareForReuse];
+    
     if (self.buttonContainerView)
     {
         [self.buttonContainerView removeFromSuperview];
@@ -77,6 +79,10 @@
 
 - (void) setCoverImagesAndTitlesWithArray: (NSArray *) array
 {
+    // Disable any existing longpress gestures
+    self.longPress.enabled = NO;
+    self.longPress.enabled = YES;
+    
     if (!array)
     {
         return;
@@ -84,7 +90,14 @@
     
     self.originalImageContainerRect = self.imageContainer.frame;
     
+    // Remove all out images
     for (UIImageView *imageView in self.imageContainer.subviews) // there should only be UIImageView instances
+    {
+        [imageView removeFromSuperview];
+    }
+    
+    // Remove all our image buttons      
+    for (UIImageView *imageView in self.buttonContainerView.subviews) // there should only be UIImageView instances
     {
         [imageView removeFromSuperview];
     }
@@ -129,9 +142,11 @@
         CGRect smallerCellFrame = self.imageContainer.frame; // the 2 - 3 options have a smaller total frame
         smallerCellFrame.size.height = IS_IPAD ? shrinkingSelfFrame.size.height : 155.0f;
         
-        if(IS_IPHONE) {
+        if (IS_IPHONE)
+        {
             smallerCellFrame.origin.y = 54.0f;
         }
+        
         self.imageContainer.frame = smallerCellFrame;
         
         containerRect.size = self.imageContainer.frame.size;
@@ -210,9 +225,6 @@
         self.mainTitleLabel.hidden = YES;
 
         containerRect.size = self.imageContainer.frame.size; // {{0, 0}, {298, 298}} (IPAD),
-        
-        
-        
         // container.origin = CGPointZero from above -> {{0, 0}, {310, 310}}
         
         self.buttonContainerView = [[UIView alloc] initWithFrame: self.imageContainer.frame];
@@ -328,7 +340,15 @@
         return kArcMenuInvalidComponentIndex;
     }
     
-    return [self.buttonContainerView.subviews indexOfObject: view];
+    NSInteger index =  [self.buttonContainerView.subviews indexOfObject: view];
+    
+    // TODO: For debugging only, please remove
+    if (index == NSNotFound)
+    {
+        return kArcMenuInvalidComponentIndex;
+    }
+    
+    return index;
 }
 
 

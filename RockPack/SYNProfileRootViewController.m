@@ -1304,12 +1304,6 @@
 }
 
 
-//- (UIView *) arcMenuViewToShade
-//{
-//    return self.channelThumbnailCollectionView;
-//}
-
-
 - (Channel *) channelInstanceForIndexPath: (NSIndexPath *) indexPath
                         andComponentIndex: (NSInteger) componentIndex
 {
