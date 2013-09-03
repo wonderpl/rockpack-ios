@@ -13,7 +13,6 @@
 #import "SYNAppDelegate.h"
 #import "SYNFriendThumbnailCell.h"
 #import "UIImageView+WebCache.h"
-#import "SYNOAuthNetworkEngine.h"
 #import "SYNFacebookManager.h"
 #import "OWActivities.h"
 #import "OWActivityViewController.h"
@@ -21,7 +20,9 @@
 #import "Channel.h"
 
 #import "OWActivityView.h"
+#import "SYNDeviceManager.h"
 #import <objc/runtime.h>
+#import <QuartzCore/QuartzCore.h>
 
 #define kOneToOneSharingViewId @"kOneToOneSharingViewId"
 
@@ -59,6 +60,10 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 @property (nonatomic, readonly) BOOL isInAuthorizationScreen;
 @property (nonatomic, strong) AbstractCommon* resourceToShare;
 
+@property (nonatomic, strong) UIImage* imageToShare;
+
+@property (nonatomic, readonly) BOOL isVideo;
+
 @end
 
 @implementation SYNOneToOneSharingController
@@ -69,21 +74,22 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 @synthesize currentSearchTerm;
 
 
-- (id) initWithResource: (AbstractCommon *) objectToShare
+- (id) initWithResource: (AbstractCommon *) objectToShare andImage:(UIImage*)imageToShare
 {
     if (self = [super initWithNibName: @"SYNOneToOneSharingController"
                                bundle: nil])
     {
         self.resourceToShare = objectToShare;
+        self.imageToShare = imageToShare;
     }
     
     return self;
 }
 
 
-+ (id) withResourceType: (AbstractCommon *) objectToShare
++ (id) withResourceType: (AbstractCommon *) objectToShare andImage:(UIImage*)imageToShare
 {
-    return [[self alloc] initWithResource: objectToShare];
+    return [[self alloc] initWithResource: objectToShare andImage:(UIImage*)imageToShare];
 }
 
 
@@ -187,11 +193,57 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
         userName = user.username;
     }
     
+    if ([self.resourceToShare isKindOfClass:[Channel class]])
+    {
+        if (!self.imageToShare)
+        {
+            // Capture screen image if we weren't passed an image in
+            UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
+            CGRect keyWindowRect = [keyWindow bounds];
+            UIGraphicsBeginImageContextWithOptions(keyWindowRect.size, YES, 0.0f);
+            CGContextRef context = UIGraphicsGetCurrentContext();
+            [keyWindow.layer renderInContext: context];
+            UIImage *capturedScreenImage = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            
+            UIInterfaceOrientation orientation = [SYNDeviceManager.sharedInstance orientation];
+            
+            switch (orientation)
+            {
+                case UIDeviceOrientationPortrait:
+                    orientation = UIImageOrientationUp;
+                    break;
+                    
+                case UIDeviceOrientationPortraitUpsideDown:
+                    orientation = UIImageOrientationDown;
+                    break;
+                    
+                case UIDeviceOrientationLandscapeLeft:
+                    orientation = UIImageOrientationLeft;
+                    break;
+                    
+                case UIDeviceOrientationLandscapeRight:
+                    orientation = UIImageOrientationRight;
+                    break;
+                    
+                default:
+                    orientation = UIImageOrientationRight;
+                    DebugLog(@"Unknown orientation");
+                    break;
+            }
+            
+            UIImage *fixedOrientationImage = [UIImage  imageWithCGImage: capturedScreenImage.CGImage
+                                                                  scale: capturedScreenImage.scale
+                                                            orientation: orientation];
+            self.imageToShare = fixedOrientationImage;
+        }
+    }
+    
     if (userName != nil)
     {
         NSString *what = @"pack";
         
-        if ([self.resourceToShare isKindOfClass: [VideoInstance class]])
+        if (self.isVideo)
         {
             what = @"video";
         }
@@ -199,16 +251,13 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
         subject = [NSString stringWithFormat: @"%@ has shared a %@ with you", userName, what];
     }
     
-
-    
-    self.mutableShareDictionary = @{@"owner" : @NO,
-                                    @"video" : @YES,
+    self.mutableShareDictionary = @{@"owner" : @(self.isOwner),
+                                    @"video" : @(self.isVideo),
                                     @"subject" : subject}.mutableCopy;
-    // Only add image if we have one
-    //    if (usingImage)
-    //    {
-    //        [self.mutableShareDictionary addEntriesFromDictionary: @{@"image": usingImage}];
-    //    }
+    if (self.imageToShare)
+    {
+        [self.mutableShareDictionary addEntriesFromDictionary: @{@"image": self.imageToShare}];
+    }
     
     OWFacebookActivity *facebookActivity = [[OWFacebookActivity alloc] init];
     OWTwitterActivity *twitterActivity = [[OWTwitterActivity alloc] init];
@@ -233,6 +282,20 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     
 }
 
+-(BOOL)isOwner
+{
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    if([self.resourceToShare isKindOfClass:[Channel class]])
+        return [((Channel*)self.resourceToShare).channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId];
+    else
+        return NO;
+    
+}
+
+-(BOOL)isVideo
+{
+    return [self.resourceToShare isKindOfClass:[VideoInstance class]];
+}
 
 - (void) requestAddressBookAuthorization
 {

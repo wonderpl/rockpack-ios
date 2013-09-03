@@ -7,10 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SYNOAuthNetworkEngine.h"
 
 @interface SYNOneToOneSharingController : UIViewController
 
 
++ (id) withResourceType: (AbstractCommon *) objectToShare andImage:(UIImage*)imageToShare;
+- (id) initWithResource: (AbstractCommon *) objectToShare andImage:(UIImage*)imageToShare;
 
 -(IBAction)authorizeFacebookButtonPressed:(id)sender;
 -(IBAction)authorizeAddressBookButtonPressed:(id)sender;
