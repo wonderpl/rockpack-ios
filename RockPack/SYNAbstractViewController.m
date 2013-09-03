@@ -32,6 +32,7 @@
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
+#import "SYNOneToOneSharingController.h"
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -52,6 +53,7 @@
 @property (strong, readonly, nonatomic) NSArray *activities;
 @property (weak, nonatomic) UIPopoverController *presentingPopoverController;
 @property (weak, nonatomic) UIViewController *presentingController;
+@property (nonatomic, strong) SYNOneToOneSharingController* oneToOneViewController;
 
 @end
 
@@ -414,8 +416,8 @@
 
     [self shareObjectType: @"video_instance"
                  objectId: videoInstance.uniqueId
-                  isOwner: @FALSE
-                  isVideo: @TRUE
+                  isOwner: @NO
+                  isVideo: @YES
                usingImage: thumbnailImage
                    inView: inView
                  fromRect: rect
@@ -444,7 +446,7 @@
     [self shareObjectType: @"channel"
                  objectId: channel.uniqueId
                   isOwner: isOwner
-                  isVideo: @FALSE
+                  isVideo: @NO
                usingImage: image
                    inView: inView
                  fromRect: rect
@@ -465,6 +467,18 @@
        activityIndicator: (UIActivityIndicatorView *) activityIndicatorView
               onComplete: (SYNShareCompletionBlock) completionBlock
 {
+    
+    
+    self.oneToOneViewController = [[SYNOneToOneSharingController alloc] init];
+    
+    
+    
+    [appDelegate.viewStackManager presentPopoverView:self.oneToOneViewController.view];
+    
+    
+    
+    return;
+    
     if ([objectType isEqualToString: @"channel"])
     {
         if (!usingImage)
@@ -560,8 +574,7 @@
     if ([MFMailComposeViewController canSendMail])
     {
         OWMailActivity *mailActivity = [[OWMailActivity alloc] init];
-        [activities addObject: mailActivity
-         ];
+        [activities addObject: mailActivity];
     }
     
     if ([MFMessageComposeViewController canSendText])

@@ -1778,7 +1778,7 @@
     
     NSMutableDictionary *params = @{@"device_filter": @"ios"}.mutableCopy;
     if(recent)
-        [params setObject:@"share_filter" forKey:@"true"];
+        [params setObject:@"share_filter" forKey:@YES];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: params

@@ -52,6 +52,9 @@
     self.hasIOSDevice = [dictionary objectForKey: @"has_ios_device"
                                      withDefault: @(NO)];
     
+    self.lastShareDate = [dictionary dateFromISO6801StringForKey:@"last_shared_date"
+                                                     withDefault:[NSDate distantPast]];
+    
 }
 
 -(NSString*)firstName
