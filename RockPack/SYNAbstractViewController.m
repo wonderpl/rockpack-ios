@@ -416,8 +416,8 @@
 
     [self shareObjectType: @"video_instance"
                  objectId: videoInstance.uniqueId
-                  isOwner: @FALSE
-                  isVideo: @TRUE
+                  isOwner: @NO
+                  isVideo: @YES
                usingImage: thumbnailImage
                    inView: inView
                  fromRect: rect
@@ -446,7 +446,7 @@
     [self shareObjectType: @"channel"
                  objectId: channel.uniqueId
                   isOwner: isOwner
-                  isVideo: @FALSE
+                  isVideo: @NO
                usingImage: image
                    inView: inView
                  fromRect: rect

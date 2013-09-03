@@ -8,6 +8,7 @@ const struct FriendAttributes FriendAttributes = {
 	.externalSystem = @"externalSystem",
 	.externalUID = @"externalUID",
 	.hasIOSDevice = @"hasIOSDevice",
+	.lastShareDate = @"lastShareDate",
 	.resourceURL = @"resourceURL",
 };
 
@@ -97,6 +98,13 @@ const struct FriendFetchedProperties FriendFetchedProperties = {
 - (void)setPrimitiveHasIOSDeviceValue:(BOOL)value_ {
 	[self setPrimitiveHasIOSDevice:[NSNumber numberWithBool:value_]];
 }
+
+
+
+
+
+@dynamic lastShareDate;
+
 
 
 
