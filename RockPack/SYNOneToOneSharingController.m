@@ -26,7 +26,7 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 
 @property (nonatomic, strong) IBOutlet UITextView* messageTextView;
 @property (nonatomic, strong) IBOutlet UITextField* searchTextField;
-@property (nonatomic, strong) IBOutlet UICollectionView* friendsCollectionView;
+@property (nonatomic, strong) IBOutlet UICollectionView* recentFriendsCollectionView;
 
 @property (nonatomic, strong) IBOutlet UIButton* facebookButton;
 @property (nonatomic, strong) IBOutlet UIButton* twitterButton;
@@ -108,6 +108,8 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 {
     return (BOOL)(self.authorizationView.superview != nil);
 }
+
+
 -(void)viewWillAppear:(BOOL)animated
 {
     // Basic recognition
@@ -119,6 +121,8 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     
     if(aBookAuthStatus != kABAuthorizationStatusAuthorized)
     {
+        // if it is the first time we are requesting authorization
+        
         if(aBookAuthStatus == kABAuthorizationStatusNotDetermined)
         {
             
@@ -131,20 +135,23 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
         
         if(!hasFacebookSession)
         {
+            // with the two buttons
+            
             [self presentAuthorizationScreen];
         }
         else
         {
+            // load friends asynchronously and add them to the friends list when done
+            
             [self fetchFriends];
         }
         
     }
-    else
+    else // (status == kABAuthorizationStatusAuthorized)
     {
         // present main view
         
         [self fetchAddressBookFriends];
-        
         
         if(hasFacebookSession)
         {
@@ -219,6 +226,9 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     __weak SYNOneToOneSharingController* weakSelf = self;
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
+    self.loader.hidden = NO;
+    [self.loader startAnimating];
+    
     [appDelegate.oAuthNetworkEngine friendsForUser:appDelegate.currentUser recent:NO completionHandler:^(id dictionary) {
         
         NSDictionary* usersDictionary = dictionary[@"users"];
@@ -232,7 +242,7 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
         NSInteger friendsCount = itemsDictionary.count;
         
         NSMutableArray* fbFriendsMutableArray = [NSMutableArray arrayWithArray:self.friends];
-        NSMutableArray* recentFriendsMutableArray = [NSMutableArray arrayWithCapacity:friendsCount]; // max
+        NSMutableArray* rFriendsMutableArray = [NSMutableArray arrayWithCapacity:friendsCount]; // max
         
         for (NSDictionary* itemDictionary in itemsDictionary)
         {
@@ -246,20 +256,23 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
             
             // parse date for recent
             
-            // [recentFriendsMutableArray addObject:friend];
+            // [rFriendsMutableArray addObject:friend];
             
         }
         
         weakSelf.friends = [NSArray arrayWithArray:fbFriendsMutableArray]; // already contains the original friends
         
-        weakSelf.recentFriends = [NSArray arrayWithArray:recentFriendsMutableArray];
+        weakSelf.recentFriends = [NSArray arrayWithArray:rFriendsMutableArray];
         
+        [self.loader stopAnimating];
+        
+        [self.recentFriendsCollectionView reloadData];
         
         
     } errorHandler:^(id dictionary) {
         
         
-        
+        [self.loader stopAnimating];
         
     }];
 }
@@ -276,7 +289,8 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     NSInteger total = [arrayOfAllPeople count];
-    NSString *firstName, *lastName, *emailAddress;
+    NSString *firstName, *lastName;
+    
     Friend* contactFriend;
     NSMutableArray* friendsArrayMut = [NSMutableArray arrayWithArray:self.friends];
     for (NSUInteger peopleCounter = 0; peopleCounter < total; peopleCounter++)
@@ -290,16 +304,17 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
         
         firstName = (__bridge_transfer NSString *)ABRecordCopyValue(currentPerson, kABPersonFirstNameProperty);
         lastName = (__bridge_transfer NSString *)ABRecordCopyValue(currentPerson, kABPersonLastNameProperty);
-        emailAddress = (__bridge_transfer NSString *)ABRecordCopyValue(currentPerson, kABPersonEmailProperty);
         
+        ABMultiValueRef emailAddressMultValue = ABRecordCopyValue(currentPerson, kABPersonEmailProperty);
+        NSArray* emailAddresses = (__bridge NSArray *)ABMultiValueCopyArrayOfAllValues(emailAddressMultValue);
+        CFRelease(emailAddressMultValue);
         
-        NSLog(@"Contact <%i> found: %@, %@, %@", cid, firstName, lastName, emailAddress);
         
         contactFriend = [Friend insertInManagedObjectContext: appDelegate.searchManagedObjectContext];
         contactFriend.viewId = kOneToOneSharingViewId;
         
         contactFriend.displayName = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
-        contactFriend.email = emailAddress;
+        contactFriend.email = emailAddresses.count > 0 ? emailAddresses[0] : nil;
         contactFriend.externalSystem = @"email";
         contactFriend.externalUID = [NSString stringWithFormat:@"%i", cid];
         

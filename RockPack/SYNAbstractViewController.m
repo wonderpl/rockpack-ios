@@ -32,6 +32,7 @@
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
+#import "SYNOneToOneSharingController.h"
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -52,6 +53,7 @@
 @property (strong, readonly, nonatomic) NSArray *activities;
 @property (weak, nonatomic) UIPopoverController *presentingPopoverController;
 @property (weak, nonatomic) UIViewController *presentingController;
+@property (nonatomic, strong) SYNOneToOneSharingController* oneToOneViewController;
 
 @end
 
@@ -465,6 +467,16 @@
        activityIndicator: (UIActivityIndicatorView *) activityIndicatorView
               onComplete: (SYNShareCompletionBlock) completionBlock
 {
+    
+    
+    self.oneToOneViewController = [[SYNOneToOneSharingController alloc] init];
+    
+    [self.view addSubview:self.oneToOneViewController.view];
+    
+    
+    
+    return;
+    
     if ([objectType isEqualToString: @"channel"])
     {
         if (!usingImage)
