@@ -1208,6 +1208,8 @@ typedef void(^FeedDataErrorBlock)(void);
             SYNAggregateChannelCell *channelCellSelected = (SYNAggregateChannelCell *) aggregateCellSelected;
             
             NSInteger indexOfButton = [channelCellSelected indexForSimulatedButtonPressed: view];
+            
+            // TODO: Need to fix it when the index is invalid
             channel = [self.feedChannelsById objectForKey: selectedFeedItem.coverIndexArray[indexOfButton]];
         }
         
