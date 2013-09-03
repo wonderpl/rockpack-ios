@@ -6,4 +6,7 @@
 
 @property (nonatomic, readonly) BOOL isOnRockpack;
 
+@property (nonatomic, readonly) NSString* firstName;
+@property (nonatomic, readonly) NSString* lastName;
+
 @end

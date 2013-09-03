@@ -1764,6 +1764,7 @@
 }
 
 - (void) friendsForUser: (User*)user
+                 recent: (BOOL)recent
       completionHandler: (MKNKUserSuccessBlock) completionBlock
            errorHandler: (MKNKUserErrorBlock) errorBlock
 {
@@ -1775,13 +1776,14 @@
     
     NSString *apiString = [kAPIFriends stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
-    NSDictionary *params = @{@"device_filter": @"ios"};
+    NSMutableDictionary *params = @{@"device_filter": @"ios"}.mutableCopy;
+    if(recent)
+        [params setObject:@"share_filter" forKey:@"true"];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: params
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: YES];
-    
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
                                 errorHandler: errorBlock];
