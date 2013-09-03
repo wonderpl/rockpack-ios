@@ -169,7 +169,7 @@
         self.likesNumberLabel.text = [NSString stringWithFormat: @"%i", likesNumber.integerValue];
     }
     
-    if (users.count > 1 && users.count < 4)
+    if (users.count > 1 && users.count < 4 && IS_IPAD)
     {
         [attributedCompleteString appendAttributedString: [[NSAttributedString alloc] initWithString: @"including "
                                                                                           attributes: self.lightTextAttributes]];
@@ -217,7 +217,6 @@
             }
         }
         
-        NSLog(@"============");
     }
     
     self.likeLabel.attributedText = attributedCompleteString;

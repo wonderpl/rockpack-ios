@@ -638,18 +638,23 @@
          NSString *messageTwitter = [responseDictionary objectForKey: @"message_twitter"
                                                          withDefault: @""];
          
+         NSString *messageFacebook = [responseDictionary objectForKey: @"message_facebook"
+                                                         withDefault: @""];
+         
          NSURL *resourceURL = [NSURL URLWithString: resourceURLString];
          
-         self.mutableShareDictionary = @{@"text": message,
-                                         @"text_email": messageEmail,
-                                         @"text_twitter": messageTwitter,
-                                         @"url": resourceURL}.mutableCopy;
+         self.mutableShareDictionary = @{@"text" : message,
+                                         @"text_email" : messageEmail,
+                                         @"text_twitter" : messageTwitter,
+                                         @"text_facebook" : messageFacebook,
+                                         @"url" : resourceURL}.mutableCopy;
          
      } errorHandler: ^(NSDictionary *errorDictionary) {
-         self.mutableShareDictionary = @{@"text": @"",
-                                         @"text_email": @"",
-                                         @"text_twitter": @"",
-                                         @"url": [NSURL URLWithString: @"http://rockpack.com"]}.mutableCopy;
+         self.mutableShareDictionary = @{@"text" : @"",
+                                         @"text_email" : @"",
+                                         @"text_twitter" : @"",
+                                         @"text_facebook" : @"",
+                                         @"url" : [NSURL URLWithString: @"http://rockpack.com"]}.mutableCopy;
      }];
 }
 

@@ -178,7 +178,6 @@
     
     [fetchRequest setPredicate: [NSPredicate predicateWithFormat: @"viewId == %@", viewId]];
     
-    NSLog(@"%@", fetchRequest.predicate);
     
     itemsToDelete = [appDelegate.searchManagedObjectContext
                      executeFetchRequest: fetchRequest

@@ -382,7 +382,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         return;
     }
   
-    NSLog(@"Q Channel: %@", appDelegate.videoQueue.currentlyCreatingChannel);
     // this channel's managedObjectContext is the appDelegate.channelManagedObjectContext
     SYNChannelDetailViewController *channelCreationVC =
     [[SYNChannelDetailViewController alloc] initWithChannel: appDelegate.videoQueue.currentlyCreatingChannel
