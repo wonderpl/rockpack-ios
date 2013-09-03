@@ -406,11 +406,13 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
          weakSelf.recentFriends = [NSArray arrayWithArray: rFriendsMutableArray];
          
          [self.loader stopAnimating];
+         self.loader.hidden = YES;
          
          [self.recentFriendsCollectionView reloadData];
      }
      errorHandler: ^(id dictionary) {
          [self.loader stopAnimating];
+         self.loader.hidden = YES;
      }];
 }
 
@@ -524,12 +526,12 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 
 - (NSInteger) tableView: (UITableView *) tableView numberOfRowsInSection: (NSInteger) section
 {
-    return searchedFriends.count;
+    return searchedFriends.count + 1; // for add new email
 }
 
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath
 {
-    Friend* friend = searchedFriends[indexPath.row];
+    
      
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"OneToOneSearchFriendCell"];
@@ -539,7 +541,19 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault  reuseIdentifier:@"OneToOneSearchFriendCell"];
     }
     
-    cell.textLabel.text = friend.displayName;
+    cell.textLabel.font = [UIFont boldRockpackFontOfSize:12.0f];
+    
+    if(indexPath.row < searchedFriends.count)
+    {
+        Friend* friend = searchedFriends[indexPath.row];
+        cell.textLabel.text = friend.displayName;
+    }
+    else // special add new email cell
+    {
+        cell.textLabel.text = @"Add a new email address";
+    }
+    
+    
     
     return cell;
     
@@ -556,7 +570,7 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     
 }
 
-#pragma mark - UITextViewDelegate
+#pragma mark - UITextFieldDelegate
 
 - (BOOL) textField: (UITextField *) textField shouldChangeCharactersInRange: (NSRange) range replacementString: (NSString *) newCharacter
 {
@@ -595,21 +609,36 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     
     return YES;
 }
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    
+    
+    self.searchedFriends = self.friends;
+    
+    CGRect sResTblFrame = self.searchResultsTableView.frame;
+    
+    sResTblFrame.origin.y = 117.0f;
+    sResTblFrame.origin.x = 20.0f;
+    sResTblFrame.size.height = self.view.frame.size.height - sResTblFrame.origin.y;
+    self.searchResultsTableView.frame = sResTblFrame;
+    
+    
+    
+    [self.view addSubview:self.searchResultsTableView];
+    
+    [self.searchResultsTableView reloadData];
+    
+    return NO;
+}
+
+#pragma mark - UITextViewDelegate
+
+// to be implemented
+
 
 #pragma mark - Button Delegates
 
--(IBAction)facebookButtonPressed:(id)sender
-{
-    
-}
--(IBAction)twitterButtonPressed:(id)sender
-{
-    
-}
--(IBAction)emailButtonPressed:(id)sender
-{
-    
-}
+
 
 -(IBAction)authorizeFacebookButtonPressed:(id)sender
 {
