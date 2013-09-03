@@ -250,10 +250,10 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                            completionHandler: (MKNKUserSuccessBlock) completionBlock
                                 errorHandler: (MKNKUserErrorBlock) errorBlock;
 
-- (void) friendsForUser:(User*)user
+- (void) friendsForUser: (User*) user
+                 recent: (BOOL) recent
       completionHandler: (MKNKUserSuccessBlock) completionBlock
            errorHandler: (MKNKUserErrorBlock) errorBlock;
-
 
 
 

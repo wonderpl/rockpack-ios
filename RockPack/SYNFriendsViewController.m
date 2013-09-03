@@ -25,7 +25,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
 
 @interface SYNFriendsViewController () <UIScrollViewDelegate>
 
-@property (nonatomic, strong) NSArray* iOSFriends;
+@property (nonatomic, strong) NSArray* facebookFriends;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 @property (nonatomic) BOOL onRockpackFilterOn;
 @property (nonatomic, strong) NSArray* displayFriends;
@@ -59,7 +59,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     
     [self.searchField setAutocorrectionType:UITextAutocorrectionTypeNo];
     
-    self.iOSFriends = [NSArray array];
+    self.facebookFriends = [NSArray array];
     
     // Register Cells
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNFriendThumbnailCell"
@@ -141,7 +141,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
         return friend.isOnRockpack; // resourceURL != nil; (derived property)
     }];
     
-    return [self.iOSFriends filteredArrayUsingPredicate:searchPredicate];
+    return [self.facebookFriends filteredArrayUsingPredicate:searchPredicate];
 }
 
 -(IBAction)switchClicked:(UIButton*)tab
@@ -177,7 +177,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     
     __weak SYNFriendsViewController* weakSelf = self;
     
-    [appDelegate.oAuthNetworkEngine friendsForUser:appDelegate.currentUser completionHandler:^(id dictionary) {
+    [appDelegate.oAuthNetworkEngine friendsForUser:appDelegate.currentUser recent:NO completionHandler:^(id dictionary) {
         
         self.onRockpackButton.hidden = NO;
         self.allFriendsButton.hidden = NO;
@@ -196,7 +196,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
         [weakSelf.allFriendsButton setTitle:[NSString stringWithFormat:@"ALL FRIENDS (%i)", friendsCount] forState:UIControlStateHighlighted];
         [weakSelf.allFriendsButton setTitle:[NSString stringWithFormat:@"ALL FRIENDS (%i)", friendsCount] forState:UIControlStateSelected];
         
-        NSMutableArray* iOSFriendsMutableArray = [NSMutableArray arrayWithCapacity:friendsCount];
+        NSMutableArray* fbFriendsMutableArray = [NSMutableArray arrayWithCapacity:friendsCount];
         
         for (NSDictionary* itemDictionary in itemsDictionary)
         {
@@ -204,9 +204,14 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
                                   usingManagedObjectContext:appDelegate.searchManagedObjectContext];
             
             if(!friend || !friend.hasIOSDevice) // filter for users with iOS devices only
-                return;
+                continue;
             
-            [iOSFriendsMutableArray addObject:friend];
+            // for the moment only accept facebook friends
+            
+            if(![friend.externalSystem isEqualToString:@"facebook"])
+                continue;
+            
+            [fbFriendsMutableArray addObject:friend];
             
             if(!friend.isOnRockpack)
                 friendsCount--;
@@ -218,7 +223,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
         [weakSelf.onRockpackButton setTitle:[NSString stringWithFormat:@"ON ROCKPACK (%i)", friendsCount] forState:UIControlStateHighlighted];
         [weakSelf.onRockpackButton setTitle:[NSString stringWithFormat:@"ON ROCKPACK (%i)", friendsCount] forState:UIControlStateSelected];
         
-        weakSelf.iOSFriends = [NSArray arrayWithArray:iOSFriendsMutableArray];
+        weakSelf.facebookFriends = [NSArray arrayWithArray:fbFriendsMutableArray];
      
         
         [weakSelf.activityIndicator stopAnimating];
@@ -378,7 +383,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     }
     else
     {
-        _displayFriends = self.iOSFriends;
+        _displayFriends = self.facebookFriends;
         
     }
     
@@ -475,6 +480,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
 
 -(IBAction)inviteButtonPressed:(id)sender
 {
+    
 //    [[SYNFacebookManager sharedFBManager] sendAppRequestToFriend:self.currentlySelectedFriend
 //                                                       onSuccess:^{
 //                                                           

@@ -38,6 +38,7 @@
     [super setAttributesFromDictionary:dictionary
                    ignoringObjectTypes:kIgnoreChannelObjects];
     
+    
     self.externalSystem = [dictionary objectForKey: @"external_system"];
     
     
@@ -51,6 +52,18 @@
     self.hasIOSDevice = [dictionary objectForKey: @"has_ios_device"
                                      withDefault: @(NO)];
     
+}
+
+-(NSString*)firstName
+{
+    NSArray* dNameArray = [self.displayName componentsSeparatedByString:@" "];
+    return (dNameArray.count > 0 ? dNameArray[0] : @"");
+}
+
+-(NSString*)lastName
+{
+    NSArray* dNameArray = [self.displayName componentsSeparatedByString:@" "];
+    return (dNameArray.count > 1 ? dNameArray[dNameArray.count - 1] : @"");
 }
 
 -(BOOL)isOnRockpack
