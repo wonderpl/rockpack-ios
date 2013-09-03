@@ -15,6 +15,8 @@
 #import "UIImageView+WebCache.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNFacebookManager.h"
+#import "OWActivities.h"
+#import "OWActivityView.h"
 #import <objc/runtime.h>
 
 #define kOneToOneSharingViewId @"kOneToOneSharingViewId"
@@ -28,9 +30,6 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 @property (nonatomic, strong) IBOutlet UITextField* searchTextField;
 @property (nonatomic, strong) IBOutlet UICollectionView* recentFriendsCollectionView;
 
-@property (nonatomic, strong) IBOutlet UIButton* facebookButton;
-@property (nonatomic, strong) IBOutlet UIButton* twitterButton;
-@property (nonatomic, strong) IBOutlet UIButton* emailButton;
 
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* loader;
 
@@ -42,6 +41,8 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 @property (nonatomic, strong) IBOutlet UIButton* authorizeAddressBookButton;
 
 @property (nonatomic, strong) IBOutlet UITableView* searchResultsTableView;
+
+@property (nonatomic, strong) IBOutlet UIView* activitiesContainerView;
 
 
 @property (nonatomic, strong) NSArray* friends;
@@ -83,26 +84,32 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     
     
     
-//    switch (aBookAuthStatus)
-//    {
-//        case kABAuthorizationStatusAuthorized:
-//            NSLog(@"Address Book Authorized");
-//            [self getDataFromAddressBook];
-//            break;
-//            
-//        case kABAuthorizationStatusDenied:
-//            NSLog(@"Address Book Denied");
-//            break;
-//            
-//        case kABAuthorizationStatusNotDetermined:
-//            NSLog(@"Address Book Not Determined");
-//            break;
-//            
-//        case kABAuthorizationStatusRestricted:
-//            NSLog(@"Address Book Restricted");
-//            break;
-//    }
+    // Prepare activities
+    OWFacebookActivity *facebookActivity = [[OWFacebookActivity alloc] init];
+    OWTwitterActivity *twitterActivity = [[OWTwitterActivity alloc] init];
     
+    
+    NSMutableArray *activities = @[facebookActivity, twitterActivity].mutableCopy;
+    
+    if ([MFMailComposeViewController canSendMail])
+    {
+        OWMailActivity *mailActivity = [[OWMailActivity alloc] init];
+        [activities addObject: mailActivity];
+    }
+    
+    if ([MFMessageComposeViewController canSendText])
+    {
+        OWMessageActivity *messageActivity = [[OWMessageActivity alloc] init];
+        [activities addObject: messageActivity];
+    }
+
+    CGRect aViewFrame = CGRectZero;
+    aViewFrame.size = self.activitiesContainerView.frame.size;
+
+    OWActivityView* _activityView = [[OWActivityView alloc] initWithFrame:aViewFrame activities:activities];
+
+    [self.activitiesContainerView addSubview:_activityView];
+
 }
 -(BOOL)isInAuthorizationScreen
 {

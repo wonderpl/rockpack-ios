@@ -471,7 +471,9 @@
     
     self.oneToOneViewController = [[SYNOneToOneSharingController alloc] init];
     
-    [self.view addSubview:self.oneToOneViewController.view];
+    
+    
+    [appDelegate.viewStackManager presentPopoverView:self.oneToOneViewController.view];
     
     
     
@@ -572,8 +574,7 @@
     if ([MFMailComposeViewController canSendMail])
     {
         OWMailActivity *mailActivity = [[OWMailActivity alloc] init];
-        [activities addObject: mailActivity
-         ];
+        [activities addObject: mailActivity];
     }
     
     if ([MFMessageComposeViewController canSendText])

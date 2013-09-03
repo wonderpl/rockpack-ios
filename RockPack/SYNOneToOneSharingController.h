@@ -11,9 +11,7 @@
 @interface SYNOneToOneSharingController : UIViewController
 
 
--(IBAction)facebookButtonPressed:(id)sender;
--(IBAction)twitterButtonPressed:(id)sender;
--(IBAction)emailButtonPressed:(id)sender;
+
 -(IBAction)authorizeFacebookButtonPressed:(id)sender;
 -(IBAction)authorizeAddressBookButtonPressed:(id)sender;
 
