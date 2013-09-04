@@ -952,10 +952,29 @@
                                         objectId: videoInstance.uniqueId];
         }
         
-        SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: (videoInstance.video.starredByUserValue == FALSE) ? @"ActionLike" : @"ActionUnlike"]
-                                                            highlightedImage: [UIImage imageNamed: (videoInstance.video.starredByUserValue == FALSE) ? @"ActionLikeHighlighted" : @"ActionUnlikeHighlighted"]
+        // A bit of a hack, but we need to work out whether the user has starred this videoInstance (we can't completely trust starredByUserValue)
+        BOOL starredByUser = videoInstance.video.starredByUserValue;
+        
+        if (!starredByUser)
+        {
+            // Double check, by iterating through the list of starrers to see if we are there
+            NSArray *starrers = [videoInstance.starrers array];
+            
+            for (ChannelOwner *channelOwner in starrers)
+            {
+                if ([channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId])
+                {
+                    starredByUser = TRUE;
+                    videoInstance.video.starredByUserValue = starredByUser;
+                    break;
+                }
+            }
+        }
+        
+        SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: (starredByUser == FALSE) ? @"ActionLike" : @"ActionUnlike"]
+                                                            highlightedImage: [UIImage imageNamed: (starredByUser == FALSE) ? @"ActionLikeHighlighted" : @"ActionUnlikeHighlighted"]
                                                                         name: kActionLike
-                                                                   labelText: (videoInstance.video.starredByUserValue == FALSE) ? @"Like" : @"Unlike"];
+                                                                   labelText: (starredByUser == FALSE) ? @"Like" : @"Unlike"];
         
         SYNArcMenuItem *arcMenuItem2 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionAdd"]
                                                             highlightedImage: [UIImage imageNamed: @"ActionAddHighlighted"]
