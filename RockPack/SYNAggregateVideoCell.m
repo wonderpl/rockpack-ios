@@ -270,14 +270,16 @@
 
 - (void) showVideo: (UITapGestureRecognizer *) recognizer
 {
-    [self.viewControllerDelegate pressedAggregateCellCoverView: self.userThumbnailButton];
+    [self.viewControllerDelegate pressedAggregateCell: self
+                                   withComponentIndex: kArcMenuInvalidComponentIndex];
 }
 
 
 - (void) showMenu: (UILongPressGestureRecognizer *) recognizer
 {
     [self.viewControllerDelegate arcMenuUpdateState: recognizer
-                                            forCell: self];
+                                            forCell: self
+                                 withComponentIndex: kArcMenuInvalidComponentIndex];
 }
 
 

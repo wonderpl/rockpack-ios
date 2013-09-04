@@ -14,7 +14,8 @@
 - (void) channelTapped: (UICollectionViewCell *) cell;
 
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
-                    forCell: (UICollectionViewCell *) cell;
+                    forCell: (UICollectionViewCell *) cell
+         withComponentIndex: (NSInteger) componentIndex;
 
 @end
 

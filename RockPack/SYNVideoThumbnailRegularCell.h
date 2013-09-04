@@ -20,8 +20,10 @@ typedef enum : NSInteger
 @protocol SYNVideoThumbnailRegularCellDelegate <NSObject>
 
 - (void) videoButtonPressed: (UIButton *) videoButton;
+
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
-                    forCell: (UICollectionViewCell *) cell;
+                    forCell: (UICollectionViewCell *) cell
+         withComponentIndex: (NSInteger) componentIndex;
 
 @end
 

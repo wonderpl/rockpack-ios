@@ -246,16 +246,18 @@
     }
 }
 
+
 - (void) showVideo: (UILongPressGestureRecognizer *) recognizer
 {
-    [self.viewControllerDelegate performSelector:@selector(videoButtonPressed:) withObject:self.videoPlaceholder];
+    [self.viewControllerDelegate performSelector:@selector(videoButtonPressed:) withObject: self.videoPlaceholder];
 }
 
 
 - (void) showMenu: (UILongPressGestureRecognizer *) recognizer
 {
     [self.viewControllerDelegate arcMenuUpdateState: recognizer
-                                            forCell: self];
+                                            forCell: self
+                                 withComponentIndex: kArcMenuInvalidComponentIndex];
 }
 
 @end

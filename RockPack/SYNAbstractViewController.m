@@ -902,6 +902,7 @@
 
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
                     forCell: (UICollectionViewCell *) cell
+         withComponentIndex: (NSInteger) componentIndex
 {
     NSArray *menuItems;
     float menuArc, menuStartAngle;
@@ -959,6 +960,7 @@
     
     [self arcMenuUpdateState: recognizer
           forCellAtIndexPath: cellIndexPath
+          withComponentIndex: componentIndex
                    menuItems: menuItems
                      menuArc: menuArc
               menuStartAngle: menuStartAngle];
@@ -975,6 +977,7 @@
 
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
          forCellAtIndexPath: (NSIndexPath *) cellIndexPath
+         withComponentIndex: (NSInteger) componentIndex
                   menuItems: (NSArray *) menuItems
                     menuArc: (float) menuArc
              menuStartAngle: (float) menuStartAngle
@@ -992,7 +995,8 @@
         self.arcMenu = [[SYNArcMenuView alloc] initWithFrame: referenceView.bounds
                                                    startItem: mainMenuItem
                                                  optionMenus: menuItems
-                                               cellIndexPath: cellIndexPath];
+                                               cellIndexPath: cellIndexPath
+                                              componentIndex: componentIndex];
         self.arcMenu.delegate = self;
         self.arcMenu.startPoint = tapPoint;
         self.arcMenu.menuWholeAngle = menuArc;

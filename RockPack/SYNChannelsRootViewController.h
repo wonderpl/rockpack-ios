@@ -19,6 +19,7 @@
 @property (nonatomic, assign) BOOL enableCategoryTable;
 
 - (void) superArcMenuUpdateState: (UIGestureRecognizer *) recognizer
-                         forCell: (UICollectionViewCell *) cell;
+                         forCell: (UICollectionViewCell *) cell
+              withComponentIndex: (NSInteger) componentIndex;
 
 @end

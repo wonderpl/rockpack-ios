@@ -51,7 +51,7 @@
                                                             action: @selector(showGlossLowlight:)];
     
     self.touch.delegate = self;
-    [self.lowlightImageView addGestureRecognizer: self.touch];
+//    [self.lowlightImageView addGestureRecognizer: self.touch];
 }
 
 
@@ -80,8 +80,11 @@
 - (void) setCoverImagesAndTitlesWithArray: (NSArray *) array
 {
     // Disable any existing longpress gestures
-    self.longPress.enabled = NO;
-    self.longPress.enabled = YES;
+//    self.longPress.enabled = NO;
+//    self.longPress.enabled = YES;
+    
+//    self.touch.enabled = NO;
+//    self.touch.enabled = YES;
     
     if (!array)
     {
@@ -323,7 +326,7 @@
                                                                                                 action: @selector(showGlossLowlight:)];
             
             buttonTouch.delegate = self;
-            [simulatedButtonView addGestureRecognizer: buttonTouch];
+//            [simulatedButtonView addGestureRecognizer: buttonTouch];
         }
     }
     
@@ -333,23 +336,23 @@
 }
 
 
-- (NSInteger) indexForSimulatedButtonPressed: (UIView *) view
-{
-    if (!self.buttonContainerView)
-    {
-        return kArcMenuInvalidComponentIndex;
-    }
-    
-    NSInteger index =  [self.buttonContainerView.subviews indexOfObject: view];
-    
-    // TODO: For debugging only, please remove
-    if (index == NSNotFound)
-    {
-        return kArcMenuInvalidComponentIndex;
-    }
-    
-    return index;
-}
+//- (NSInteger) indexForSimulatedButtonPressed: (UIView *) view
+//{
+//    if (!self.buttonContainerView)
+//    {
+//        return kArcMenuInvalidComponentIndex;
+//    }
+//    
+//    NSInteger index =  [self.buttonContainerView.subviews indexOfObject: view];
+//    
+//    // TODO: For debugging only, please remove
+//    if (index == NSNotFound)
+//    {
+//        return kArcMenuInvalidComponentIndex;
+//    }
+//    
+//    return index;
+//}
 
 
 - (void) setTitleMessageWithDictionary: (NSDictionary *) messageDictionary
@@ -386,7 +389,6 @@
     // Special-case container views
     if (self.buttonContainerView)
     {
-        DebugLog (@"Multiple channels");
         simulatedButton = (UIImageView *) recognizer.view;
         glossImage = [UIImage imageNamed: @"channelFeedCoverFourth"];
     }
@@ -416,22 +418,30 @@
 
 - (void) showChannel: (UITapGestureRecognizer *) recognizer
 {
-    UIImageView *simulatedButton = self.lowlightImageView;
+    NSInteger componentIndex = kArcMenuInvalidComponentIndex;
     
     if (self.buttonContainerView)
     {
-        DebugLog (@"Multiple channels");
-        simulatedButton = (UIImageView *) recognizer.view;
+        componentIndex =  [self.buttonContainerView.subviews indexOfObject: recognizer.view];
     }
     
-    [self.viewControllerDelegate pressedAggregateCellCoverView: simulatedButton];
+    [self.viewControllerDelegate pressedAggregateCell: self
+                                   withComponentIndex: componentIndex];
 }
 
 
 - (void) showMenu: (UILongPressGestureRecognizer *) recognizer
 {
+    NSInteger componentIndex = kArcMenuInvalidComponentIndex;
+    
+    if (self.buttonContainerView)
+    {
+        componentIndex =  [self.buttonContainerView.subviews indexOfObject: recognizer.view];
+    }
+    
     [self.viewControllerDelegate arcMenuUpdateState: recognizer
-                                            forCell: self];
+                                            forCell: self
+                                 withComponentIndex: componentIndex];
 }
 
 
