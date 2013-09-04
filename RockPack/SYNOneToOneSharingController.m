@@ -750,6 +750,7 @@
 - (BOOL) textField: (UITextField *) textField shouldChangeCharactersInRange: (NSRange) range replacementString: (NSString *) newCharacter
 {
     
+    
     NSUInteger oldLength = textField.text.length;
     NSUInteger newCharacterLength = newCharacter.length;
     NSUInteger rangeLength = range.length;
@@ -767,9 +768,11 @@
     
     if(self.currentSearchTerm.length > 0)
     {
+        
         NSPredicate* searchPredicate = [NSPredicate predicateWithBlock:^BOOL(Friend* friend, NSDictionary *bindings) {
             
-            return [friend.firstName hasPrefix:self.currentSearchTerm];
+            return ([[friend.firstName uppercaseString] hasPrefix:self.currentSearchTerm] ||
+                    [[friend.lastName uppercaseString] hasPrefix:self.currentSearchTerm]);
         }];
         
         self.searchedFriends = [self.friends filteredArrayUsingPredicate:searchPredicate];
@@ -806,8 +809,36 @@
     
     self.closeButton.hidden = NO;
     
-    return NO;
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         
+                         CGRect vFrame = self.view.frame;
+                         vFrame.origin.y -= 160.0f;
+                         self.view.frame = vFrame;
+                         
+                     } completion:nil];
+    
+    
+    return YES;
 }
+
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         
+                         CGRect vFrame = self.view.frame;
+                         vFrame.origin.y += 160.0f;
+                         self.view.frame = vFrame;
+                         
+                     } completion:nil];
+}
+
 
 #pragma mark - UITextViewDelegate
 
