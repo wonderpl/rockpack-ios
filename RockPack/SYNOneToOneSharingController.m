@@ -59,6 +59,8 @@
 
 @property (nonatomic, strong) IBOutlet UIView* authorizationView;
 
+@property (nonatomic, strong) IBOutlet UIButton* closeButton;
+
 @property (nonatomic, strong) NSMutableString* currentSearchTerm;
 
 @property (nonatomic, readonly) BOOL isInAuthorizationScreen;
@@ -561,27 +563,29 @@
     
 }
 
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    // "Recent" stub cells are not clickable...
+    
+    return (indexPath.item < self.recentFriends.count);
+}
+
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if(indexPath.item < self.recentFriends.count)
+    // it will (should) only be called for indexPath.item < self.recentFriends.count
+    
+    Friend *friend = self.recentFriends[indexPath.row];
+    if([friend.externalSystem isEqualToString:kEmail])
     {
-        Friend *friend = self.recentFriends[indexPath.row];
-        if([friend.externalSystem isEqualToString:kEmail])
-        {
-            [self sendEmailToFriend:friend];
-        }
-        else if([friend.externalSystem isEqualToString:kFacebook])
-        {
-            // do facebook stuff
-            
-        }
-     
+        [self sendEmailToFriend:friend];
     }
-    else // on the fake slots
+    else if([friend.externalSystem isEqualToString:kFacebook])
     {
-        // do nothing for the moment
+        // do facebook stuff
+        
     }
+    
 }
 
 
@@ -606,15 +610,21 @@
     
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault  reuseIdentifier:@"OneToOneSearchFriendCell"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                      reuseIdentifier:@"OneToOneSearchFriendCell"];
     }
     
-    cell.textLabel.font = [UIFont boldRockpackFontOfSize:12.0f];
+    // set the labels on the cell
+    cell.textLabel.font = [UIFont boldRockpackFontOfSize:14.0f];
+    cell.textLabel.textColor = [UIColor blackColor];
+    cell.detailTextLabel.font = [UIFont rockpackFontOfSize:11.0f];
+    cell.detailTextLabel.textColor = [UIColor grayColor];
     
     if(indexPath.row < searchedFriends.count)
     {
         Friend* friend = searchedFriends[indexPath.row];
         cell.textLabel.text = friend.displayName;
+        
         if([self isValidEmail:friend.email])
         {
             cell.detailTextLabel.text = friend.email;
@@ -623,8 +633,33 @@
         {
             cell.detailTextLabel.text = @"Pick and email address";
         }
+        
+        // image
+        
+        if([friend.thumbnailURL hasPrefix:@"http"]) // good for http and https
+        {
+            [cell.imageView setImageWithURL: [NSURL URLWithString: friend.thumbnailLargeUrl]
+                           placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarChannel"]
+                                    options: SDWebImageRetryFailed];
+        }
+        else if([friend.thumbnailURL hasPrefix:@"cached://"]) // has been cached from the address book access
+        {
+            
+            NSPurgeableData* pdata = [self.addressBookImageCache objectForKey:friend.thumbnailURL];
+            
+            UIImage* img;
+            if(!pdata || !(img = [UIImage imageWithData:pdata]))
+                img = [UIImage imageNamed: @"ABContactPlaceholder"];
+            
+            
+            cell.imageView.image = img;
+        }
+        else
+        {
+            cell.imageView.image = [UIImage imageNamed: @"PlaceholderAvatarChannel"];
+        }
     }
-    else // special add new email cell
+    else // special last "add new email cell"  
     {
         cell.textLabel.text = @"Add a new email address";
     }
@@ -777,6 +812,10 @@
 
 #pragma mark - Button Delegates
 
+-(IBAction)closeButtonPressed:(id)sender
+{
+    
+}
 -(IBAction)authorizeFacebookButtonPressed:(id)sender
 {
     
@@ -811,6 +850,16 @@
                                                                               otherButtonTitles:nil];
                                        [prompt show];
                                        
+                                       if(![self isValidEmail:wself.friendToAddEmail.email]) // if an email has been passed succesfully, register it (temporarily)
+                                       {
+                                           NSError* error;
+                                           [friend.managedObjectContext save:&error];
+                                       }
+                                       else // clean it for the next appearence of the table view
+                                       {
+                                           wself.friendToAddEmail.email = nil;
+                                       }
+                                       
                                        wself.friendToAddEmail = nil;
                                        
                                    } errorHandler:^(NSDictionary* error) {
@@ -840,6 +889,7 @@
                                        
                                        [prompt show];
                                        
+                                       wself.friendToAddEmail.email = nil;
                                        wself.friendToAddEmail = nil;
                                    }];
 }
