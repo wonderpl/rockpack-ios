@@ -123,6 +123,16 @@
     [self.recentFriendsCollectionView registerNib:[UINib nibWithNibName:@"SYNFriendThumbnailCell" bundle:nil]
                        forCellWithReuseIdentifier:@"SYNFriendThumbnailCell"];
     
+    if(IS_IPHONE)
+    {
+        // resize for iPhone
+        CGRect vFrame = self.view.frame;
+        vFrame.size.width = 320.0f;
+        
+        self.view.frame = vFrame;
+    }
+    
+    
 }
 
 
@@ -799,8 +809,7 @@
     
     CGRect sResTblFrame = self.searchResultsTableView.frame;
     
-    sResTblFrame.origin.y = 117.0f;
-    sResTblFrame.origin.x = 20.0f;
+    sResTblFrame.origin.y = 110.0f;
     sResTblFrame.size.height = self.view.frame.size.height - sResTblFrame.origin.y;
     
     self.searchResultsTableView.frame = sResTblFrame;
