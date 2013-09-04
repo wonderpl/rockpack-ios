@@ -52,6 +52,7 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 @property (nonatomic, strong) NSArray* friends;
 @property (nonatomic, strong) NSArray* recentFriends;
 @property (nonatomic, strong) NSArray* searchedFriends;
+@property (nonatomic, weak) Friend* friendToAddEmail;
 
 @property (nonatomic, strong) IBOutlet UIView* authorizationView;
 
@@ -547,6 +548,14 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     {
         Friend* friend = searchedFriends[indexPath.row];
         cell.textLabel.text = friend.displayName;
+        if([self isValidEmail:friend.email])
+        {
+            cell.detailTextLabel.text = friend.email;
+        }
+        else
+        {
+            cell.detailTextLabel.text = @"Pick and email address";
+        }
     }
     else // special add new email cell
     {
@@ -574,12 +583,27 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
         titleText = [NSString stringWithFormat:@"Enter an Email for %@", friend.firstName];
         
     }
-    if(friend && friend.email != nil && ![friend.email isEqualToString:@""]) // has a valid email
+    
+    self.friendToAddEmail = friend;
+    
+    if([self isValidEmail:friend.email]) // has a valid email
     {
         // send email
+        
+        [self sendEmailToFriend:friend];
     }
     else // either no email or clicked on the last cell
     {
+        if(!self.friendToAddEmail)
+        {
+            // create friend on the fly
+            SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+            
+            self.friendToAddEmail = [Friend insertInManagedObjectContext:appDelegate.searchManagedObjectContext];
+            self.friendToAddEmail.externalSystem = @"email";
+            
+        }
+        
         UIAlertView *prompt = [[UIAlertView alloc] initWithTitle:titleText
                                                          message:@"We'll send this channel to their email."
                                                         delegate:self
@@ -600,32 +624,42 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 {
     UITextField *textfield =  [alertView textFieldAtIndex: 0];
     // if email is matched then return YES
-    return [textfield.text isMatchedByRegex: @"^([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})$"];;
+    return [self isValidEmail:textfield.text];
+}
+
+-(BOOL)isValidEmail:(NSString*)emailCandidate
+{
+    if(!emailCandidate || ![emailCandidate isKindOfClass:[NSString class]])
+        return NO;
+    
+    return [emailCandidate isMatchedByRegex: @"^([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})$"];
 }
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     UITextField *textfield =  [alertView textFieldAtIndex: 0];
     
+    self.friendToAddEmail.email = textfield.text;
+    self.friendToAddEmail.externalUID = self.friendToAddEmail.email; // workaround the fact that we do not have a UID for this new user
     
+    [self sendEmailToFriend:self.friendToAddEmail];
+}
+-(void)sendEmailToFriend:(Friend*)friend
+{
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-    
-    // create a friend on the fly
-    Friend* friendToShare = [Friend insertInManagedObjectContext:appDelegate.searchManagedObjectContext];
-    friendToShare.email = textfield.text;
-    friendToShare.externalSystem = @"email";
-    friendToShare.externalUID = friendToShare.email; // workaround the fact that we do not have a UID for this new user
-    
+    __weak SYNOneToOneSharingController* wself = self;
     [appDelegate.oAuthNetworkEngine emailShareObject:self.resourceToShare
-                                          withFriend:friendToShare
+                                          withFriend:friend
                                    completionHandler:^(id no_content) {
-        
+                                       
                                        UIAlertView *prompt = [[UIAlertView alloc] initWithTitle:@"Email Sent!"
                                                                                         message:nil
                                                                                        delegate:self
                                                                               cancelButtonTitle:@"OK"
                                                                               otherButtonTitles:nil];
                                        [prompt show];
-    
+                                       
+                                       wself.friendToAddEmail = nil;
+                                       
                                    } errorHandler:^(NSDictionary* error) {
                                        
                                        NSString* title = @"Email Couldn't be Sent";
@@ -643,7 +677,7 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
                                        {
                                            reason = @"The email could be wrong or the service down.";
                                        }
-        
+                                       
                                        UIAlertView *prompt = [[UIAlertView alloc] initWithTitle:title
                                                                                         message:reason
                                                                                        delegate:self
@@ -652,6 +686,8 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
                                        
                                        
                                        [prompt show];
+                                       
+                                       wself.friendToAddEmail = nil;
                                    }];
 }
 #pragma mark - UITextFieldDelegate
