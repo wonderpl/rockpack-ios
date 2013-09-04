@@ -18,15 +18,17 @@
 #import "OWActivityViewController.h"
 #import "VideoInstance.h"
 #import "Channel.h" 
+#import "AppConstants.h"
 #import "OWActivityView.h"
 #import "SYNDeviceManager.h"
 #import "RegexKitLite.h"
+#import "SYNOneToOneFriendCell.h"
 #import <objc/runtime.h>
 #import <QuartzCore/QuartzCore.h>
 
 #define kOneToOneSharingViewId @"kOneToOneSharingViewId"
+#define kNumberOfEmptyRecentSlots 5
 
-static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 
 @interface SYNOneToOneSharingController () <UICollectionViewDataSource, UICollectionViewDelegate,
                                             UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
@@ -49,11 +51,16 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 
 @property (nonatomic, strong) IBOutlet UIView* activitiesContainerView;
 
+@property (nonatomic, strong) NSCache* addressBookImageCache;
+
 @property (nonatomic, strong) NSArray* friends;
 @property (nonatomic, strong) NSArray* recentFriends;
 @property (nonatomic, strong) NSArray* searchedFriends;
+@property (nonatomic, weak) Friend* friendToAddEmail;
 
 @property (nonatomic, strong) IBOutlet UIView* authorizationView;
+
+@property (nonatomic, strong) IBOutlet UIButton* closeButton;
 
 @property (nonatomic, strong) NSMutableString* currentSearchTerm;
 
@@ -103,11 +110,19 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     recentFriends = [NSArray array];
     searchedFriends = [NSArray array];
     
+    self.addressBookImageCache = [[NSCache alloc] init];
+    
     currentSearchTerm = [[NSMutableString alloc] init];
+    
+    self.closeButton.hidden = YES;
     
     self.messageTextView.font = [UIFont rockpackFontOfSize: self.messageTextView.font.pointSize];
     self.searchTextField.font = [UIFont rockpackFontOfSize: self.searchTextField.font.pointSize];
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
+    
+    [self.recentFriendsCollectionView registerNib:[UINib nibWithNibName:@"SYNFriendThumbnailCell" bundle:nil]
+                       forCellWithReuseIdentifier:@"SYNFriendThumbnailCell"];
+    
 }
 
 
@@ -432,7 +447,7 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     SYNAppDelegate *appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
     NSInteger total = [arrayOfAllPeople count];
     NSString *firstName, *lastName;
-    
+    NSData *imageData;
     Friend *contactFriend;
     NSMutableArray *friendsArrayMut = [NSMutableArray arrayWithArray: self.friends];
     
@@ -453,14 +468,22 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
         NSArray *emailAddresses = (__bridge NSArray *) ABMultiValueCopyArrayOfAllValues(emailAddressMultValue);
         CFRelease(emailAddressMultValue);
         
+        imageData = (__bridge_transfer NSData *)ABPersonCopyImageData(currentPerson);
         
         contactFriend = [Friend insertInManagedObjectContext: appDelegate.searchManagedObjectContext];
         contactFriend.viewId = kOneToOneSharingViewId;
-        
+        contactFriend.uniqueId = [NSString stringWithFormat: @"%i", cid];
         contactFriend.displayName = [NSString stringWithFormat: @"%@ %@", firstName, lastName];
         contactFriend.email = emailAddresses.count > 0 ? emailAddresses[0] : nil;
         contactFriend.externalSystem = @"email";
         contactFriend.externalUID = [NSString stringWithFormat: @"%i", cid];
+        
+        if (imageData) {
+         
+            NSString* key = [NSString stringWithFormat:@"cached://%@", contactFriend.uniqueId];
+            contactFriend.thumbnailURL = key;
+            [self.addressBookImageCache setObject:imageData forKey:key];
+        }
         
         [friendsArrayMut addObject: contactFriend];
     }
@@ -468,6 +491,8 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     self.friends = [NSArray arrayWithArray: friendsArrayMut]; // already contains the original friends
     
     CFRelease(addressBookRef);
+    
+    [self.recentFriendsCollectionView reloadData]; // in case we have found new images
 }
 
 
@@ -481,39 +506,90 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
-    return recentFriends.count;
+    return recentFriends.count + kNumberOfEmptyRecentSlots; // slots for the recent fake items
 }
 
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    Friend *friend = self.recentFriends[indexPath.row];
+    
     
     SYNFriendThumbnailCell *userThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNFriendThumbnailCell"
                                                                                           forIndexPath: indexPath];
     
-    userThumbnailCell.nameLabel.text = friend.displayName;
+    if(indexPath.item < self.recentFriends.count)
+    {
+        Friend *friend = self.recentFriends[indexPath.row];
+        userThumbnailCell.nameLabel.text = friend.displayName;
+        
+        if([friend.thumbnailURL hasPrefix:@"cached://"])
+        {
+            
+            NSPurgeableData* pdata = [self.addressBookImageCache objectForKey:friend.thumbnailURL];
+            
+            UIImage* img;
+            if(!pdata || !(img = [UIImage imageWithData:pdata]))
+                img = [UIImage imageNamed: @"ABContactPlaceholder"];
+            
+            
+            userThumbnailCell.imageView.image = img;
+        }
+        else
+        {
+            [userThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: friend.thumbnailLargeUrl]
+                                        placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarChannel"]
+                                                 options: SDWebImageRetryFailed];
+        }
+        
+        
+        [userThumbnailCell setDisplayName: friend.displayName];
+        
+        userThumbnailCell.imageView.alpha = 1.0f;
+        userThumbnailCell.shadowImageView.alpha = 1.0f;
+    }
+    else // on the fake slots
+    {
+        userThumbnailCell.imageView.image = [UIImage imageNamed:@"RecentContactPlaceholder"];
+        userThumbnailCell.nameLabel.text = @"Recent";
+        // userThumbnailCell.backgroundColor = [UIColor redColor];
+        
+        CGFloat factor = 1.0f - ((float)(indexPath.row - self.recentFriends.count) / (float)kNumberOfEmptyRecentSlots);
+        // fade slots
+        userThumbnailCell.imageView.alpha =  factor;
+        userThumbnailCell.shadowImageView.alpha = factor;
+
+    }
     
     
-    [userThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: friend.thumbnailLargeUrl]
-                                placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarChannel"]
-                                         options: SDWebImageRetryFailed];
-    
-    [userThumbnailCell setDisplayName: friend.displayName];
-    
-    
-    
-    objc_setAssociatedObject(userThumbnailCell, friend_share_key, friend, OBJC_ASSOCIATION_ASSIGN);
     
     return userThumbnailCell;
     
 }
 
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    // "Recent" stub cells are not clickable...
+    
+    return (indexPath.item < self.recentFriends.count);
+}
+
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-   
+    // it will (should) only be called for indexPath.item < self.recentFriends.count
+    
+    Friend *friend = self.recentFriends[indexPath.row];
+    if([friend.externalSystem isEqualToString:kEmail])
+    {
+        [self sendEmailToFriend:friend];
+    }
+    else if([friend.externalSystem isEqualToString:kFacebook])
+    {
+        // do facebook stuff
+        
+    }
+    
 }
 
 
@@ -534,21 +610,57 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     
      
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"OneToOneSearchFriendCell"];
+    SYNOneToOneFriendCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SYNOneToOneFriendCell"];
     
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault  reuseIdentifier:@"OneToOneSearchFriendCell"];
+        cell = [[SYNOneToOneFriendCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                            reuseIdentifier:@"SYNOneToOneFriendCell"];
     }
     
-    cell.textLabel.font = [UIFont boldRockpackFontOfSize:12.0f];
+    // set the labels on the cell
+    
     
     if(indexPath.row < searchedFriends.count)
     {
         Friend* friend = searchedFriends[indexPath.row];
         cell.textLabel.text = friend.displayName;
+        
+        if([self isValidEmail:friend.email])
+        {
+            cell.detailTextLabel.text = friend.email;
+        }
+        else
+        {
+            cell.detailTextLabel.text = @"Pick and email address";
+        }
+        
+        // image
+        
+        if([friend.thumbnailURL hasPrefix:@"http"]) // good for http and https
+        {
+            [cell.imageView setImageWithURL: [NSURL URLWithString: friend.thumbnailLargeUrl]
+                           placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarChannel"]
+                                    options: SDWebImageRetryFailed];
+        }
+        else if([friend.thumbnailURL hasPrefix:@"cached://"]) // has been cached from the address book access
+        {
+            
+            NSPurgeableData* pdata = [self.addressBookImageCache objectForKey:friend.thumbnailURL];
+            
+            UIImage* img;
+            if(!pdata || !(img = [UIImage imageWithData:pdata]))
+                img = [UIImage imageNamed: @"ABContactPlaceholder"];
+            
+            
+            cell.imageView.image = img;
+        }
+        else
+        {
+            cell.imageView.image = [UIImage imageNamed: @"PlaceholderAvatarChannel"];
+        }
     }
-    else // special add new email cell
+    else // special last "add new email cell"  
     {
         cell.textLabel.text = @"Add a new email address";
     }
@@ -561,7 +673,7 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 
 - (CGFloat) tableView: (UITableView *) tableView heightForRowAtIndexPath: (NSIndexPath *) indexPath;
 {
-    return 77.0;
+    return 50.0f;
 }
 
 - (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath
@@ -574,12 +686,30 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
         titleText = [NSString stringWithFormat:@"Enter an Email for %@", friend.firstName];
         
     }
-    if(friend && friend.email != nil && ![friend.email isEqualToString:@""]) // has a valid email
+    
+    self.friendToAddEmail = friend;
+    
+    if([self isValidEmail:friend.email]) // has a valid email
     {
         // send email
+        
+        [self sendEmailToFriend:friend];
     }
     else // either no email or clicked on the last cell
     {
+        if(!self.friendToAddEmail)
+        {
+            // create friend on the fly
+            SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+            
+            self.friendToAddEmail = [Friend insertInManagedObjectContext:appDelegate.searchManagedObjectContext];
+            self.friendToAddEmail.externalSystem = @"email";
+            
+        }
+        
+        
+        
+        
         UIAlertView *prompt = [[UIAlertView alloc] initWithTitle:titleText
                                                          message:@"We'll send this channel to their email."
                                                         delegate:self
@@ -592,6 +722,8 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
         
     }
     
+    [tableView removeFromSuperview];
+    
 }
 
 #pragma mark - UIAlertViewDelegate
@@ -599,65 +731,29 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 - (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView
 {
     UITextField *textfield =  [alertView textFieldAtIndex: 0];
-    // if email is matched then return YES
-    return [textfield.text isMatchedByRegex: @"^([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})$"];;
+    
+    return [self isValidEmail:textfield.text];
 }
+
+
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
+    if(buttonIndex == 0)
+        return;
+    
     UITextField *textfield =  [alertView textFieldAtIndex: 0];
     
+    self.friendToAddEmail.email = textfield.text;
+    self.friendToAddEmail.externalUID = self.friendToAddEmail.email; // workaround the fact that we do not have a UID for this new user
     
-    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-    
-    // create a friend on the fly
-    Friend* friendToShare = [Friend insertInManagedObjectContext:appDelegate.searchManagedObjectContext];
-    friendToShare.email = textfield.text;
-    friendToShare.externalSystem = @"email";
-    friendToShare.externalUID = friendToShare.email; // workaround the fact that we do not have a UID for this new user
-    
-    [appDelegate.oAuthNetworkEngine emailShareObject:self.resourceToShare
-                                          withFriend:friendToShare
-                                   completionHandler:^(id no_content) {
-        
-                                       UIAlertView *prompt = [[UIAlertView alloc] initWithTitle:@"Email Sent!"
-                                                                                        message:nil
-                                                                                       delegate:self
-                                                                              cancelButtonTitle:@"OK"
-                                                                              otherButtonTitles:nil];
-                                       [prompt show];
-    
-                                   } errorHandler:^(NSDictionary* error) {
-                                       
-                                       NSString* title = @"Email Couldn't be Sent";
-                                       NSString* reason = @"Unkown reson";
-                                       NSDictionary* formErrors = error[@"form_errors"];
-                                       if(formErrors[@"email"])
-                                       {
-                                           reason = @"The email could be wrong or the service down.";
-                                       }
-                                       if(formErrors[@"external_system"])
-                                       {
-                                           reason = @"The email could be wrong or the service down.";
-                                       }
-                                       if(formErrors[@"object_id"])
-                                       {
-                                           reason = @"The email could be wrong or the service down.";
-                                       }
-        
-                                       UIAlertView *prompt = [[UIAlertView alloc] initWithTitle:title
-                                                                                        message:reason
-                                                                                       delegate:self
-                                                                              cancelButtonTitle:@"OK"
-                                                                              otherButtonTitles:nil];
-                                       
-                                       
-                                       [prompt show];
-                                   }];
+    [self sendEmailToFriend:self.friendToAddEmail];
 }
+
 #pragma mark - UITextFieldDelegate
 
 - (BOOL) textField: (UITextField *) textField shouldChangeCharactersInRange: (NSRange) range replacementString: (NSString *) newCharacter
 {
+    
     
     NSUInteger oldLength = textField.text.length;
     NSUInteger newCharacterLength = newCharacter.length;
@@ -676,9 +772,11 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     
     if(self.currentSearchTerm.length > 0)
     {
+        
         NSPredicate* searchPredicate = [NSPredicate predicateWithBlock:^BOOL(Friend* friend, NSDictionary *bindings) {
             
-            return [friend.firstName hasPrefix:self.currentSearchTerm];
+            return ([[friend.firstName uppercaseString] hasPrefix:self.currentSearchTerm] ||
+                    [[friend.lastName uppercaseString] hasPrefix:self.currentSearchTerm]);
         }];
         
         self.searchedFriends = [self.friends filteredArrayUsingPredicate:searchPredicate];
@@ -713,8 +811,38 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     
     [self.searchResultsTableView reloadData];
     
-    return NO;
+    self.closeButton.hidden = NO;
+    
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         
+                         CGRect vFrame = self.view.frame;
+                         vFrame.origin.y -= 160.0f;
+                         self.view.frame = vFrame;
+                         
+                     } completion:nil];
+    
+    
+    return YES;
 }
+
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    
+    [UIView animateWithDuration:0.5
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         
+                         CGRect vFrame = self.view.frame;
+                         vFrame.origin.y += 160.0f;
+                         self.view.frame = vFrame;
+                         
+                     } completion:nil];
+}
+
 
 #pragma mark - UITextViewDelegate
 
@@ -723,8 +851,12 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 
 #pragma mark - Button Delegates
 
-
-
+-(IBAction)closeButtonPressed:(id)sender
+{
+    [self.searchResultsTableView removeFromSuperview];
+    [self.searchTextField resignFirstResponder];
+    self.closeButton.hidden = YES;
+}
 -(IBAction)authorizeFacebookButtonPressed:(id)sender
 {
     
@@ -732,6 +864,98 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 -(IBAction)authorizeAddressBookButtonPressed:(id)sender
 {
     [self requestAddressBookAuthorization];
+}
+
+#pragma mark - Helper Methods
+
+-(BOOL)isValidEmail:(NSString*)emailCandidate
+{
+    if(!emailCandidate || ![emailCandidate isKindOfClass:[NSString class]])
+        return NO;
+    
+    return [emailCandidate isMatchedByRegex: @"^([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})$"];
+}
+
+-(void)sendEmailToFriend:(Friend*)friend
+{
+    self.view.userInteractionEnabled = NO;
+    self.loader.hidden = NO;
+    [self.loader startAnimating];
+    self.recentFriendsCollectionView.hidden = YES;
+    
+    [self.searchTextField resignFirstResponder];
+    
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    __weak SYNOneToOneSharingController* wself = self;
+    [appDelegate.oAuthNetworkEngine emailShareObject:self.resourceToShare
+                                          withFriend:friend
+                                   completionHandler:^(id no_content) {
+                                       
+                                       UIAlertView *prompt = [[UIAlertView alloc] initWithTitle:@"Email Sent!"
+                                                                                        message:nil
+                                                                                       delegate:self
+                                                                              cancelButtonTitle:@"OK"
+                                                                              otherButtonTitles:nil];
+                                       [prompt show];
+                                       
+                                       if(![self isValidEmail:wself.friendToAddEmail.email]) // if an email has been passed succesfully, register it (temporarily)
+                                       {
+                                           NSError* error;
+                                           [friend.managedObjectContext save:&error];
+                                       }
+                                       else // clean it for the next appearence of the table view
+                                       {
+                                           wself.friendToAddEmail.email = nil;
+                                       }
+                                       
+                                       NSMutableArray* updatedRecentFriends = wself.recentFriends.mutableCopy;
+                                       [updatedRecentFriends addObject:wself.friendToAddEmail];
+                                       
+                                       wself.recentFriends = [NSArray arrayWithArray:updatedRecentFriends];
+                                       
+                                       [wself.recentFriendsCollectionView reloadData];
+                                       
+                                       
+                                       wself.friendToAddEmail = nil;
+                                       
+                                       wself.view.userInteractionEnabled = YES;
+                                       
+                                       wself.loader.hidden = YES;
+                                       [wself.loader stopAnimating];
+                                       wself.recentFriendsCollectionView.hidden = NO;
+                                       
+                                   } errorHandler:^(NSDictionary* error) {
+                                       
+                                       NSString* title = @"Email Couldn't be Sent";
+                                       NSString* reason = @"Unkown reson";
+                                       NSDictionary* formErrors = error[@"form_errors"];
+                                       if(formErrors[@"email"])
+                                       {
+                                           reason = @"The email could be wrong or the service down.";
+                                       }
+                                       if(formErrors[@"external_system"])
+                                       {
+                                           reason = @"The email could be wrong or the service down.";
+                                       }
+                                       if(formErrors[@"object_id"])
+                                       {
+                                           reason = @"The email could be wrong or the service down.";
+                                       }
+                                       
+                                       UIAlertView *prompt = [[UIAlertView alloc] initWithTitle:title
+                                                                                        message:reason
+                                                                                       delegate:self
+                                                                              cancelButtonTitle:@"OK"
+                                                                              otherButtonTitles:nil];
+                                       
+                                       
+                                       [prompt show];
+                                       
+                                       wself.friendToAddEmail.email = nil;
+                                       wself.friendToAddEmail = nil;
+                                       
+                                       self.view.userInteractionEnabled = YES;
+                                   }];
 }
 
 @end

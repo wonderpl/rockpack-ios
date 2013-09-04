@@ -388,6 +388,7 @@ typedef enum : NSInteger {
 // Accounts
 
 #define kFacebook @"facebook"
+#define kEmail @"email"
 #define kRockpack @"rockpack"
 #define kTwitter @"twitter"
 #define kGooglePlus @"google"
