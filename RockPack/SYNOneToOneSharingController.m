@@ -71,6 +71,8 @@
 
 @property (nonatomic, readonly) BOOL isVideo;
 
+@property (nonatomic, strong) IBOutlet UIImageView* searchFieldFrameImageView;
+
 @end
 
 @implementation SYNOneToOneSharingController
@@ -122,6 +124,9 @@
     
     [self.recentFriendsCollectionView registerNib:[UINib nibWithNibName:@"SYNFriendThumbnailCell" bundle:nil]
                        forCellWithReuseIdentifier:@"SYNFriendThumbnailCell"];
+    
+    self.searchFieldFrameImageView.image = [[UIImage imageNamed: @"FieldSearch"]
+                                            resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f,20.0f, 0.0f, 20.0f)];
     
     if(IS_IPHONE)
     {
@@ -862,6 +867,7 @@
 
 -(IBAction)closeButtonPressed:(id)sender
 {
+    self.searchTextField.text = @"";
     [self.searchResultsTableView removeFromSuperview];
     [self.searchTextField resignFirstResponder];
     self.closeButton.hidden = YES;

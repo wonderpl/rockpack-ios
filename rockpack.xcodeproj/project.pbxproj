@@ -772,8 +772,8 @@
 		38A200BF1731607F00FB9F57 /* FallbackNotificationsChannel~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FFCD1731607F00FB9F57 /* FallbackNotificationsChannel~iphone.png */; };
 		38A200C01731607F00FB9F57 /* FallbackNotificationsUser@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FFCE1731607F00FB9F57 /* FallbackNotificationsUser@2x~iphone.png */; };
 		38A200C11731607F00FB9F57 /* FallbackNotificationsUser~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FFCF1731607F00FB9F57 /* FallbackNotificationsUser~iphone.png */; };
-		38A200C21731607F00FB9F57 /* FieldSearch@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FFD01731607F00FB9F57 /* FieldSearch@2x~iphone.png */; };
-		38A200C31731607F00FB9F57 /* FieldSearch~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FFD11731607F00FB9F57 /* FieldSearch~iphone.png */; };
+		38A200C21731607F00FB9F57 /* FieldSearch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FFD01731607F00FB9F57 /* FieldSearch@2x.png */; };
+		38A200C31731607F00FB9F57 /* FieldSearch.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FFD11731607F00FB9F57 /* FieldSearch.png */; };
 		38A200C41731607F00FB9F57 /* IconSearch@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FFD21731607F00FB9F57 /* IconSearch@2x~iphone.png */; };
 		38A200C51731607F00FB9F57 /* IconSearch~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FFD31731607F00FB9F57 /* IconSearch~iphone.png */; };
 		38A200C61731607F00FB9F57 /* NavArrow@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A2FFD41731607F00FB9F57 /* NavArrow@2x~iphone.png */; };
@@ -2242,8 +2242,8 @@
 		38A2FFCD1731607F00FB9F57 /* FallbackNotificationsChannel~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FallbackNotificationsChannel~iphone.png"; sourceTree = "<group>"; };
 		38A2FFCE1731607F00FB9F57 /* FallbackNotificationsUser@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FallbackNotificationsUser@2x~iphone.png"; sourceTree = "<group>"; };
 		38A2FFCF1731607F00FB9F57 /* FallbackNotificationsUser~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FallbackNotificationsUser~iphone.png"; sourceTree = "<group>"; };
-		38A2FFD01731607F00FB9F57 /* FieldSearch@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FieldSearch@2x~iphone.png"; sourceTree = "<group>"; };
-		38A2FFD11731607F00FB9F57 /* FieldSearch~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FieldSearch~iphone.png"; sourceTree = "<group>"; };
+		38A2FFD01731607F00FB9F57 /* FieldSearch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "FieldSearch@2x.png"; sourceTree = "<group>"; };
+		38A2FFD11731607F00FB9F57 /* FieldSearch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FieldSearch.png; sourceTree = "<group>"; };
 		38A2FFD21731607F00FB9F57 /* IconSearch@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IconSearch@2x~iphone.png"; sourceTree = "<group>"; };
 		38A2FFD31731607F00FB9F57 /* IconSearch~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IconSearch~iphone.png"; sourceTree = "<group>"; };
 		38A2FFD41731607F00FB9F57 /* NavArrow@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NavArrow@2x~iphone.png"; sourceTree = "<group>"; };
@@ -4786,8 +4786,8 @@
 				38A2FFCD1731607F00FB9F57 /* FallbackNotificationsChannel~iphone.png */,
 				38A2FFCE1731607F00FB9F57 /* FallbackNotificationsUser@2x~iphone.png */,
 				38A2FFCF1731607F00FB9F57 /* FallbackNotificationsUser~iphone.png */,
-				38A2FFD01731607F00FB9F57 /* FieldSearch@2x~iphone.png */,
-				38A2FFD11731607F00FB9F57 /* FieldSearch~iphone.png */,
+				38A2FFD01731607F00FB9F57 /* FieldSearch@2x.png */,
+				38A2FFD11731607F00FB9F57 /* FieldSearch.png */,
 				38A2FFD21731607F00FB9F57 /* IconSearch@2x~iphone.png */,
 				38A2FFD31731607F00FB9F57 /* IconSearch~iphone.png */,
 				38A2FFD41731607F00FB9F57 /* NavArrow@2x~iphone.png */,
@@ -6288,8 +6288,8 @@
 				38A200BF1731607F00FB9F57 /* FallbackNotificationsChannel~iphone.png in Resources */,
 				38A200C01731607F00FB9F57 /* FallbackNotificationsUser@2x~iphone.png in Resources */,
 				38A200C11731607F00FB9F57 /* FallbackNotificationsUser~iphone.png in Resources */,
-				38A200C21731607F00FB9F57 /* FieldSearch@2x~iphone.png in Resources */,
-				38A200C31731607F00FB9F57 /* FieldSearch~iphone.png in Resources */,
+				38A200C21731607F00FB9F57 /* FieldSearch@2x.png in Resources */,
+				38A200C31731607F00FB9F57 /* FieldSearch.png in Resources */,
 				38A200C41731607F00FB9F57 /* IconSearch@2x~iphone.png in Resources */,
 				38A200C51731607F00FB9F57 /* IconSearch~iphone.png in Resources */,
 				38A200C61731607F00FB9F57 /* NavArrow@2x~iphone.png in Resources */,
