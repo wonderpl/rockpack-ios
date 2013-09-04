@@ -545,7 +545,7 @@
         
         [userThumbnailCell setDisplayName: friend.displayName];
         
-        
+        userThumbnailCell.imageView.alpha = 1.0f;
     }
     else // on the fake slots
     {
@@ -894,6 +894,12 @@
                                        {
                                            wself.friendToAddEmail.email = nil;
                                        }
+                                       
+                                       NSMutableArray* updatedRecentFriends = wself.recentFriends.mutableCopy;
+                                       [updatedRecentFriends addObject:wself.friendToAddEmail];
+                                       wself.recentFriends = [NSArray arrayWithArray:updatedRecentFriends];
+                                       
+                                       [self.recentFriendsCollectionView reloadData];
                                        
                                        wself.friendToAddEmail = nil;
                                        
