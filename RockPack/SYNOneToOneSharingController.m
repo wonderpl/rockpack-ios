@@ -525,7 +525,7 @@
             
             UIImage* img;
             if(!pdata || !(img = [UIImage imageWithData:pdata]))
-                img = [UIImage imageNamed: @"PlaceholderAvatarChannel"];
+                img = [UIImage imageNamed: @"ABContactPlaceholder"];
             
             
             userThumbnailCell.imageView.image = img;
@@ -544,11 +544,18 @@
     }
     else // on the fake slots
     {
-        userThumbnailCell.imageView.image = [UIImage imageNamed:@""];
+        userThumbnailCell.imageView.image = [UIImage imageNamed:@"RecentContactPlaceholder"];
         userThumbnailCell.nameLabel.text = @"Recent";
-        NSInteger index = indexPath.row - self.recentFriends.count;
-        userThumbnailCell.alpha = 1.0f - (index / kNumberOfEmptyRecentSlots); // fade slots
+        // userThumbnailCell.backgroundColor = [UIColor redColor];
+        
+        CGFloat factor = 1.0f - ((float)(indexPath.row - self.recentFriends.count) / (float)kNumberOfEmptyRecentSlots);
+        // fade slots
+        userThumbnailCell.imageView.alpha =  factor;
+        userThumbnailCell.shadowImageView.alpha = factor;
+
     }
+    
+    
     
     return userThumbnailCell;
     
@@ -683,19 +690,16 @@
 - (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView
 {
     UITextField *textfield =  [alertView textFieldAtIndex: 0];
-    // if email is matched then return YES
+    
     return [self isValidEmail:textfield.text];
 }
 
--(BOOL)isValidEmail:(NSString*)emailCandidate
-{
-    if(!emailCandidate || ![emailCandidate isKindOfClass:[NSString class]])
-        return NO;
-    
-    return [emailCandidate isMatchedByRegex: @"^([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})$"];
-}
+
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
+    if(buttonIndex == 0)
+        return;
+    
     UITextField *textfield =  [alertView textFieldAtIndex: 0];
     
     self.friendToAddEmail.email = textfield.text;
@@ -703,53 +707,7 @@
     
     [self sendEmailToFriend:self.friendToAddEmail];
 }
--(void)sendEmailToFriend:(Friend*)friend
-{
-    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-    __weak SYNOneToOneSharingController* wself = self;
-    [appDelegate.oAuthNetworkEngine emailShareObject:self.resourceToShare
-                                          withFriend:friend
-                                   completionHandler:^(id no_content) {
-                                       
-                                       UIAlertView *prompt = [[UIAlertView alloc] initWithTitle:@"Email Sent!"
-                                                                                        message:nil
-                                                                                       delegate:self
-                                                                              cancelButtonTitle:@"OK"
-                                                                              otherButtonTitles:nil];
-                                       [prompt show];
-                                       
-                                       wself.friendToAddEmail = nil;
-                                       
-                                   } errorHandler:^(NSDictionary* error) {
-                                       
-                                       NSString* title = @"Email Couldn't be Sent";
-                                       NSString* reason = @"Unkown reson";
-                                       NSDictionary* formErrors = error[@"form_errors"];
-                                       if(formErrors[@"email"])
-                                       {
-                                           reason = @"The email could be wrong or the service down.";
-                                       }
-                                       if(formErrors[@"external_system"])
-                                       {
-                                           reason = @"The email could be wrong or the service down.";
-                                       }
-                                       if(formErrors[@"object_id"])
-                                       {
-                                           reason = @"The email could be wrong or the service down.";
-                                       }
-                                       
-                                       UIAlertView *prompt = [[UIAlertView alloc] initWithTitle:title
-                                                                                        message:reason
-                                                                                       delegate:self
-                                                                              cancelButtonTitle:@"OK"
-                                                                              otherButtonTitles:nil];
-                                       
-                                       
-                                       [prompt show];
-                                       
-                                       wself.friendToAddEmail = nil;
-                                   }];
-}
+
 #pragma mark - UITextFieldDelegate
 
 - (BOOL) textField: (UITextField *) textField shouldChangeCharactersInRange: (NSRange) range replacementString: (NSString *) newCharacter
@@ -819,8 +777,6 @@
 
 #pragma mark - Button Delegates
 
-
-
 -(IBAction)authorizeFacebookButtonPressed:(id)sender
 {
     
@@ -828,6 +784,64 @@
 -(IBAction)authorizeAddressBookButtonPressed:(id)sender
 {
     [self requestAddressBookAuthorization];
+}
+
+#pragma mark - Helper Methods
+
+-(BOOL)isValidEmail:(NSString*)emailCandidate
+{
+    if(!emailCandidate || ![emailCandidate isKindOfClass:[NSString class]])
+        return NO;
+    
+    return [emailCandidate isMatchedByRegex: @"^([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})$"];
+}
+
+-(void)sendEmailToFriend:(Friend*)friend
+{
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    __weak SYNOneToOneSharingController* wself = self;
+    [appDelegate.oAuthNetworkEngine emailShareObject:self.resourceToShare
+                                          withFriend:friend
+                                   completionHandler:^(id no_content) {
+                                       
+                                       UIAlertView *prompt = [[UIAlertView alloc] initWithTitle:@"Email Sent!"
+                                                                                        message:nil
+                                                                                       delegate:self
+                                                                              cancelButtonTitle:@"OK"
+                                                                              otherButtonTitles:nil];
+                                       [prompt show];
+                                       
+                                       wself.friendToAddEmail = nil;
+                                       
+                                   } errorHandler:^(NSDictionary* error) {
+                                       
+                                       NSString* title = @"Email Couldn't be Sent";
+                                       NSString* reason = @"Unkown reson";
+                                       NSDictionary* formErrors = error[@"form_errors"];
+                                       if(formErrors[@"email"])
+                                       {
+                                           reason = @"The email could be wrong or the service down.";
+                                       }
+                                       if(formErrors[@"external_system"])
+                                       {
+                                           reason = @"The email could be wrong or the service down.";
+                                       }
+                                       if(formErrors[@"object_id"])
+                                       {
+                                           reason = @"The email could be wrong or the service down.";
+                                       }
+                                       
+                                       UIAlertView *prompt = [[UIAlertView alloc] initWithTitle:title
+                                                                                        message:reason
+                                                                                       delegate:self
+                                                                              cancelButtonTitle:@"OK"
+                                                                              otherButtonTitles:nil];
+                                       
+                                       
+                                       [prompt show];
+                                       
+                                       wself.friendToAddEmail = nil;
+                                   }];
 }
 
 @end

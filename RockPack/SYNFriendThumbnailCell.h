@@ -11,6 +11,7 @@
 @interface SYNFriendThumbnailCell : UICollectionViewCell
 
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
+@property (nonatomic, strong) IBOutlet UIImageView *shadowImageView;
 @property (nonatomic, strong) IBOutlet UILabel* nameLabel;
 
 
