@@ -546,6 +546,7 @@
         [userThumbnailCell setDisplayName: friend.displayName];
         
         userThumbnailCell.imageView.alpha = 1.0f;
+        userThumbnailCell.shadowImageView.alpha = 1.0f;
     }
     else // on the fake slots
     {
@@ -706,6 +707,9 @@
             
         }
         
+        
+        
+        
         UIAlertView *prompt = [[UIAlertView alloc] initWithTitle:titleText
                                                          message:@"We'll send this channel to their email."
                                                         delegate:self
@@ -717,6 +721,8 @@
         [prompt show];
         
     }
+    
+    [tableView removeFromSuperview];
     
 }
 
@@ -872,6 +878,13 @@
 
 -(void)sendEmailToFriend:(Friend*)friend
 {
+    self.view.userInteractionEnabled = NO;
+    self.loader.hidden = NO;
+    [self.loader startAnimating];
+    self.recentFriendsCollectionView.hidden = YES;
+    
+    [self.searchTextField resignFirstResponder];
+    
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     __weak SYNOneToOneSharingController* wself = self;
     [appDelegate.oAuthNetworkEngine emailShareObject:self.resourceToShare
@@ -897,11 +910,19 @@
                                        
                                        NSMutableArray* updatedRecentFriends = wself.recentFriends.mutableCopy;
                                        [updatedRecentFriends addObject:wself.friendToAddEmail];
+                                       
                                        wself.recentFriends = [NSArray arrayWithArray:updatedRecentFriends];
                                        
-                                       [self.recentFriendsCollectionView reloadData];
+                                       [wself.recentFriendsCollectionView reloadData];
+                                       
                                        
                                        wself.friendToAddEmail = nil;
+                                       
+                                       wself.view.userInteractionEnabled = YES;
+                                       
+                                       wself.loader.hidden = YES;
+                                       [wself.loader stopAnimating];
+                                       wself.recentFriendsCollectionView.hidden = NO;
                                        
                                    } errorHandler:^(NSDictionary* error) {
                                        
@@ -932,6 +953,8 @@
                                        
                                        wself.friendToAddEmail.email = nil;
                                        wself.friendToAddEmail = nil;
+                                       
+                                       self.view.userInteractionEnabled = YES;
                                    }];
 }
 
