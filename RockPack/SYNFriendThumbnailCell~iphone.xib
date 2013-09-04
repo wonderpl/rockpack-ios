@@ -77,7 +77,6 @@
 								<int key="NSvFlags">266</int>
 								<string key="NSFrame">{{5, 86}, {102, 21}}</string>
 								<reference key="NSSuperview" ref="324856766"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="707867857"/>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>

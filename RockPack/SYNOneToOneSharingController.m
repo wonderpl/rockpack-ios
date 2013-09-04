@@ -18,6 +18,7 @@
 #import "OWActivityViewController.h"
 #import "VideoInstance.h"
 #import "Channel.h" 
+#import "AppConstants.h"
 #import "OWActivityView.h"
 #import "SYNDeviceManager.h"
 #import "RegexKitLite.h"
@@ -25,8 +26,8 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define kOneToOneSharingViewId @"kOneToOneSharingViewId"
+#define kNumberOfEmptyRecentSlots 5
 
-static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 
 @interface SYNOneToOneSharingController () <UICollectionViewDataSource, UICollectionViewDelegate,
                                             UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
@@ -48,6 +49,8 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 @property (nonatomic, strong) IBOutlet UITableView* searchResultsTableView;
 
 @property (nonatomic, strong) IBOutlet UIView* activitiesContainerView;
+
+@property (nonatomic, strong) NSCache* addressBookImageCache;
 
 @property (nonatomic, strong) NSArray* friends;
 @property (nonatomic, strong) NSArray* recentFriends;
@@ -104,11 +107,17 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     recentFriends = [NSArray array];
     searchedFriends = [NSArray array];
     
+    self.addressBookImageCache = [[NSCache alloc] init];
+    
     currentSearchTerm = [[NSMutableString alloc] init];
     
     self.messageTextView.font = [UIFont rockpackFontOfSize: self.messageTextView.font.pointSize];
     self.searchTextField.font = [UIFont rockpackFontOfSize: self.searchTextField.font.pointSize];
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
+    
+    [self.recentFriendsCollectionView registerNib:[UINib nibWithNibName:@"SYNFriendThumbnailCell" bundle:nil]
+                       forCellWithReuseIdentifier:@"SYNFriendThumbnailCell"];
+    
 }
 
 
@@ -433,7 +442,7 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     SYNAppDelegate *appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
     NSInteger total = [arrayOfAllPeople count];
     NSString *firstName, *lastName;
-    
+    NSData *imageData;
     Friend *contactFriend;
     NSMutableArray *friendsArrayMut = [NSMutableArray arrayWithArray: self.friends];
     
@@ -454,14 +463,22 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
         NSArray *emailAddresses = (__bridge NSArray *) ABMultiValueCopyArrayOfAllValues(emailAddressMultValue);
         CFRelease(emailAddressMultValue);
         
+        imageData = (__bridge_transfer NSData *)ABPersonCopyImageData(currentPerson);
         
         contactFriend = [Friend insertInManagedObjectContext: appDelegate.searchManagedObjectContext];
         contactFriend.viewId = kOneToOneSharingViewId;
-        
+        contactFriend.uniqueId = [NSString stringWithFormat: @"%i", cid];
         contactFriend.displayName = [NSString stringWithFormat: @"%@ %@", firstName, lastName];
         contactFriend.email = emailAddresses.count > 0 ? emailAddresses[0] : nil;
         contactFriend.externalSystem = @"email";
         contactFriend.externalUID = [NSString stringWithFormat: @"%i", cid];
+        
+        if (imageData) {
+         
+            NSString* key = [NSString stringWithFormat:@"cached://%@", contactFriend.uniqueId];
+            contactFriend.thumbnailURL = key;
+            [self.addressBookImageCache setObject:imageData forKey:key];
+        }
         
         [friendsArrayMut addObject: contactFriend];
     }
@@ -469,6 +486,8 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
     self.friends = [NSArray arrayWithArray: friendsArrayMut]; // already contains the original friends
     
     CFRelease(addressBookRef);
+    
+    [self.recentFriendsCollectionView reloadData]; // in case we have found new images
 }
 
 
@@ -482,30 +501,54 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
-    return recentFriends.count;
+    return recentFriends.count + kNumberOfEmptyRecentSlots; // slots for the recent fake items
 }
 
 
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    Friend *friend = self.recentFriends[indexPath.row];
+    
     
     SYNFriendThumbnailCell *userThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNFriendThumbnailCell"
                                                                                           forIndexPath: indexPath];
     
-    userThumbnailCell.nameLabel.text = friend.displayName;
-    
-    
-    [userThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: friend.thumbnailLargeUrl]
-                                placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarChannel"]
-                                         options: SDWebImageRetryFailed];
-    
-    [userThumbnailCell setDisplayName: friend.displayName];
-    
-    
-    
-    objc_setAssociatedObject(userThumbnailCell, friend_share_key, friend, OBJC_ASSOCIATION_ASSIGN);
+    if(indexPath.item < self.recentFriends.count)
+    {
+        Friend *friend = self.recentFriends[indexPath.row];
+        userThumbnailCell.nameLabel.text = friend.displayName;
+        
+        if([friend.thumbnailURL hasPrefix:@"cached://"])
+        {
+            
+            NSPurgeableData* pdata = [self.addressBookImageCache objectForKey:friend.thumbnailURL];
+            
+            UIImage* img;
+            if(!pdata || !(img = [UIImage imageWithData:pdata]))
+                img = [UIImage imageNamed: @"PlaceholderAvatarChannel"];
+            
+            
+            userThumbnailCell.imageView.image = img;
+        }
+        else
+        {
+            [userThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: friend.thumbnailLargeUrl]
+                                        placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarChannel"]
+                                                 options: SDWebImageRetryFailed];
+        }
+        
+        
+        [userThumbnailCell setDisplayName: friend.displayName];
+        
+        
+    }
+    else // on the fake slots
+    {
+        userThumbnailCell.imageView.image = [UIImage imageNamed:@""];
+        userThumbnailCell.nameLabel.text = @"Recent";
+        NSInteger index = indexPath.row - self.recentFriends.count;
+        userThumbnailCell.alpha = 1.0f - (index / kNumberOfEmptyRecentSlots); // fade slots
+    }
     
     return userThumbnailCell;
     
@@ -514,7 +557,24 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
 - (void) collectionView: (UICollectionView *) collectionView
          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-   
+    if(indexPath.item < self.recentFriends.count)
+    {
+        Friend *friend = self.recentFriends[indexPath.row];
+        if([friend.externalSystem isEqualToString:kEmail])
+        {
+            [self sendEmailToFriend:friend];
+        }
+        else if([friend.externalSystem isEqualToString:kFacebook])
+        {
+            // do facebook stuff
+            
+        }
+     
+    }
+    else // on the fake slots
+    {
+        // do nothing for the moment
+    }
 }
 
 
