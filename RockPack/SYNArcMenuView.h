@@ -31,9 +31,7 @@ typedef enum : NSInteger {
          forCellAtIndex: (NSIndexPath *) cellIndexPath
          andComponentIndex: (NSInteger) componentIndex;
 
-- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
-                    forCell: (UICollectionViewCell *) cell
-         withComponentIndex: (NSInteger) componentIndex;
+- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer;
 
 @optional
 

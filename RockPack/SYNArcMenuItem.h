@@ -21,9 +21,10 @@
 @property (nonatomic) CGPoint farPoint;
 @property (nonatomic) CGPoint nearPoint;
 @property (nonatomic) CGPoint startPoint;
+@property (nonatomic, strong) NSString *labelText;
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) UIImageView *imageView;
-@property (nonatomic, strong) NSString *labelText;
+@property (nonatomic, strong) UILabel *label;
 
 - (id) initWithImage: (UIImage *) image
     highlightedImage: (UIImage *) highlightedImage

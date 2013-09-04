@@ -22,12 +22,6 @@ static inline CGRect ScaleRect(CGRect rect, float n)
                       rect.size.height * n);
 }
 
-@interface SYNArcMenuItem ()
-
-@property (nonatomic, strong) UILabel *label;
-
-@end
-
 
 @implementation SYNArcMenuItem
 
@@ -65,17 +59,17 @@ static inline CGRect ScaleRect(CGRect rect, float n)
             self.label.text = labelText;
             self.label.textAlignment = NSTextAlignmentCenter;
             self.label.numberOfLines = 0;
-            self.label.layer.cornerRadius = 18;
+            self.label.layer.cornerRadius = 22;
             [self.label sizeToFit];
             
-            self.label.frame = CGRectInset(self.label.frame, -10, -5);
+            self.label.frame = CGRectInset(self.label.frame, -10, -8);
             
             CGPoint c = self.label.center;
             c.x = self.imageView.center.x;
-            c.y = -35;
+            c.y = -40;
 
             self.label.center = c;
-            
+            self.label.alpha = 0.0; ;
             [self addSubview: self.label];
         }
     }

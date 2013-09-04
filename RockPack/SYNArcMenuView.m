@@ -130,8 +130,30 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
         SYNArcMenuItem *item = self.menusArray[index];
         
         if (index == currentIndex)
-        {
-            item.imageView.highlighted = TRUE;
+        {            
+            if (item.imageView.highlighted == FALSE)
+            {
+                item.imageView.highlighted = TRUE;
+                
+                // Bounce-o-tron
+                item.label.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.001, 0.001);
+                
+                [UIView animateWithDuration: 0.1f
+                                 animations: ^{
+                                     item.label.alpha = 1.0f;
+                                     item.label.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.1, 1.1);
+                                 } completion: ^(BOOL finished) {
+                                     [UIView animateWithDuration: 0.1f
+                                                      animations: ^{
+                                                          item.label.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.9, 0.9);
+                                                      } completion: ^(BOOL finished) {
+                                                          [UIView animateWithDuration: 0.1f
+                                                                           animations:^{
+                                                                               item.label.transform = CGAffineTransformIdentity;
+                                                                           }];
+                                                      }];
+                                 }];
+            }
             
             CGFloat distance = [self distanceBetweenPoint: tapPoint
                                                  andPoint: item.endPoint];
@@ -150,6 +172,12 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
         {
             item.imageView.highlighted = FALSE;
             
+            [UIView animateWithDuration: 0.1
+                             animations: ^{
+                                 item.label.alpha = 0.0;
+                             } completion: ^(BOOL finished) {
+                             }];
+            
             [UIView animateWithDuration: kSYNArcMenuDefaultAnimationDuration
                                   delay: 0.0f
                                 options: 0
@@ -158,8 +186,7 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
                                  item.transform = CGAffineTransformMakeScale(0.5, 0.5);
                              }
                              completion: ^(BOOL finished){
-                             }
-             ];
+                             }];
         }
     }
 }

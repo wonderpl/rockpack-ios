@@ -910,8 +910,8 @@
     else
     {
         // Video
-        self.arcMenuIsChannelCell = TRUE;
-        self.arcMenuIndexPat = [self indexPathForVideoCell: selectedCell];
+        self.arcMenuIsChannelCell = FALSE;
+        self.arcMenuIndexPath = [self indexPathForVideoCell: selectedCell];
     }
 
     self.arcMenuComponentIndex = componentIndex;
@@ -920,26 +920,14 @@
 
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
 {
-    [self arcMenuUpdateState:  recognizer
-                     forCell: self.arcMenuSelectedCell
-          withComponentIndex: self.arcMenuComponentIndex];
-}
-
-- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
-                    forCell: (UICollectionViewCell *) cell
-         withComponentIndex: (NSInteger) componentIndex
-{
     NSArray *menuItems;
     float menuArc, menuStartAngle;
     NSString *analyticsLabel;
-    NSIndexPath *cellIndexPath;
     
-    if ([self isChannelCell: cell])
+    if (self.arcMenuIsChannelCell)
     {
         // Channel cell
         analyticsLabel = @"channel";
-        
-        cellIndexPath = [self indexPathForChannelCell: cell];
         
         SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
                                                             highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]
@@ -954,10 +942,8 @@
     {
         // Video cell
         analyticsLabel = @"video";
-        
-        cellIndexPath = [self indexPathForVideoCell: cell];
-        
-        VideoInstance *videoInstance = [self videoInstanceForIndexPath: cellIndexPath];
+
+        VideoInstance *videoInstance = [self videoInstanceForIndexPath: self.arcMenuIndexPath];
         
         // Get resource URL in parallel
         if (recognizer.state == UIGestureRecognizerStateBegan)
@@ -988,8 +974,8 @@
     }
     
     [self arcMenuUpdateState: recognizer
-          forCellAtIndexPath: cellIndexPath
-          withComponentIndex: componentIndex
+          forCellAtIndexPath: self.arcMenuIndexPath
+          withComponentIndex: self.arcMenuComponentIndex
                    menuItems: menuItems
                      menuArc: menuArc
               menuStartAngle: menuStartAngle];

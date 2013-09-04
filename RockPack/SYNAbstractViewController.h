@@ -134,5 +134,8 @@ typedef void (^SYNShareCompletionBlock)(void);
 
 - (NavigationButtonsAppearance) navigationAppearance;
 
+- (void) arcMenuSelectedCell: (UICollectionViewCell *) selectedCell
+           andComponentIndex: (NSInteger) componentIndex;
+
 
 @end
