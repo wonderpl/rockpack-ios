@@ -2634,9 +2634,7 @@ shouldChangeTextInRange: (NSRange) range
         addToChannelPopover.action = ^(id obj){
             if ([obj isKindOfClass:[UILongPressGestureRecognizer class]])
             {
-                [self arcMenuUpdateState: obj
-                                 forCell: randomCell
-                      withComponentIndex: kArcMenuInvalidComponentIndex];
+                [self arcMenuUpdateState: obj];
             }
         };
         

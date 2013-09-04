@@ -1264,19 +1264,12 @@
 #pragma mark - Arc menu support
 
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
-                    forCell: (UICollectionViewCell *) cell
-         withComponentIndex: (NSInteger) componentIndex
 {
-    [super arcMenuUpdateState: recognizer
-                      forCell: cell
-           withComponentIndex: componentIndex];
+    [super arcMenuUpdateState: recognizer];
     
     if (recognizer.state == UIGestureRecognizerStateBegan)
-    {
-        // Need to set the component index if aggregate celll
-        NSIndexPath *indexPath = [self indexPathForChannelCell: cell];
-        
-        Channel *channel = [self channelInstanceForIndexPath: indexPath
+    {        
+        Channel *channel = [self channelInstanceForIndexPath: self.arcMenuIndexPath
                                            andComponentIndex: kArcMenuInvalidComponentIndex];
         
         [self requestShareLinkWithObjectType: @"channel"

@@ -200,20 +200,12 @@
 
 
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
-                    forCell: (UICollectionViewCell *) cell
-         withComponentIndex: (NSInteger) componentIndex
 {
-    [self superArcMenuUpdateState: recognizer
-                          forCell: cell
-               withComponentIndex: componentIndex];
-    
-    
+    [self superArcMenuUpdateState: recognizer];
+
     if (recognizer.state == UIGestureRecognizerStateBegan)
     {
-        // Need to set the component index if aggregate celll
-        NSIndexPath *indexPath = [self indexPathForChannelCell: cell];
-        
-        Channel *channel = self.user.subscriptions[indexPath.item];
+        Channel *channel = self.user.subscriptions[self.arcMenuIndexPath.item];
         
         [self requestShareLinkWithObjectType: @"channel"
                                     objectId: channel.uniqueId];

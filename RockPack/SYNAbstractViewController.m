@@ -39,12 +39,12 @@
 @interface SYNAbstractViewController ()  <UITextFieldDelegate,
                                           UIPopoverControllerDelegate>
 
-
 @property (getter = isVideoQueueVisible) BOOL videoQueueVisible;
 @property (nonatomic, assign) BOOL shouldPlaySound;
 @property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, strong) IBOutlet UIImageView *channelOverlayView;
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
+@property (nonatomic, strong) SYNOneToOneSharingController* oneToOneViewController;
 @property (nonatomic, strong) UIPopoverController *activityPopoverController;
 @property (nonatomic, strong) UIView *dropZoneView;
 @property (strong, nonatomic) NSMutableDictionary *mutableShareDictionary;
@@ -53,13 +53,11 @@
 @property (strong, readonly, nonatomic) NSArray *activities;
 @property (weak, nonatomic) UIPopoverController *presentingPopoverController;
 @property (weak, nonatomic) UIViewController *presentingController;
-@property (nonatomic, strong) SYNOneToOneSharingController* oneToOneViewController;
 
 @end
 
 
 @implementation SYNAbstractViewController
-
 
 @synthesize fetchedResultsController = fetchedResultsController;
 @synthesize selectedIndex = _selectedIndex;
@@ -900,25 +898,41 @@
     return  nil;
 }
 
+- (void) arcMenuSelectedCell: (UICollectionViewCell *) selectedCell
+           andComponentIndex: (NSInteger) componentIndex
+{
+    if ([self isChannelCell: selectedCell])
+    {
+        // Channel
+        self.arcMenuIsChannelCell = TRUE;
+        self.arcMenuIndexPath = [self indexPathForChannelCell: selectedCell];
+    }
+    else
+    {
+        // Video
+        self.arcMenuIsChannelCell = FALSE;
+        self.arcMenuIndexPath = [self indexPathForVideoCell: selectedCell];
+    }
+
+    self.arcMenuComponentIndex = componentIndex;
+}
+
+
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
-                    forCell: (UICollectionViewCell *) cell
-         withComponentIndex: (NSInteger) componentIndex
 {
     NSArray *menuItems;
     float menuArc, menuStartAngle;
     NSString *analyticsLabel;
-    NSIndexPath *cellIndexPath;
     
-    if ([self isChannelCell: cell])
+    if (self.arcMenuIsChannelCell)
     {
         // Channel cell
         analyticsLabel = @"channel";
         
-        cellIndexPath = [self indexPathForChannelCell: cell];
-        
         SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
                                                             highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]
-                                                                        name: kActionShareChannel];
+                                                                        name: kActionShareChannel
+                                                                   labelText: @"Share"];
         menuItems = @[arcMenuItem1];
 
         menuArc = M_PI / 4;
@@ -928,10 +942,8 @@
     {
         // Video cell
         analyticsLabel = @"video";
-        
-        cellIndexPath = [self indexPathForVideoCell: cell];
-        
-        VideoInstance *videoInstance = [self videoInstanceForIndexPath: cellIndexPath];
+
+        VideoInstance *videoInstance = [self videoInstanceForIndexPath: self.arcMenuIndexPath];
         
         // Get resource URL in parallel
         if (recognizer.state == UIGestureRecognizerStateBegan)
@@ -940,17 +952,39 @@
                                         objectId: videoInstance.uniqueId];
         }
         
-        SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: (videoInstance.video.starredByUserValue == FALSE) ? @"ActionLike" : @"ActionUnlike"]
-                                                            highlightedImage: [UIImage imageNamed: (videoInstance.video.starredByUserValue == FALSE) ? @"ActionLikeHighlighted" : @"ActionUnlikeHighlighted"]
-                                                                        name: kActionLike];
+        // A bit of a hack, but we need to work out whether the user has starred this videoInstance (we can't completely trust starredByUserValue)
+        BOOL starredByUser = videoInstance.video.starredByUserValue;
+        
+        if (!starredByUser)
+        {
+            // Double check, by iterating through the list of starrers to see if we are there
+            NSArray *starrers = [videoInstance.starrers array];
+            
+            for (ChannelOwner *channelOwner in starrers)
+            {
+                if ([channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId])
+                {
+                    starredByUser = TRUE;
+                    videoInstance.video.starredByUserValue = starredByUser;
+                    break;
+                }
+            }
+        }
+        
+        SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: (starredByUser == FALSE) ? @"ActionLike" : @"ActionUnlike"]
+                                                            highlightedImage: [UIImage imageNamed: (starredByUser == FALSE) ? @"ActionLikeHighlighted" : @"ActionUnlikeHighlighted"]
+                                                                        name: kActionLike
+                                                                   labelText: (starredByUser == FALSE) ? @"Like" : @"Unlike"];
         
         SYNArcMenuItem *arcMenuItem2 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionAdd"]
                                                             highlightedImage: [UIImage imageNamed: @"ActionAddHighlighted"]
-                                                                        name: kActionAdd];
+                                                                        name: kActionAdd
+                                                                   labelText: @"Add"];
         
         SYNArcMenuItem *arcMenuItem3 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
                                                             highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]
-                                                                        name: kActionShareVideo];
+                                                                        name: kActionShareVideo
+                                                                   labelText: @"Share"];
         
         menuItems = @[arcMenuItem1, arcMenuItem2, arcMenuItem3];
         
@@ -959,8 +993,8 @@
     }
     
     [self arcMenuUpdateState: recognizer
-          forCellAtIndexPath: cellIndexPath
-          withComponentIndex: componentIndex
+          forCellAtIndexPath: self.arcMenuIndexPath
+          withComponentIndex: self.arcMenuComponentIndex
                    menuItems: menuItems
                      menuArc: menuArc
               menuStartAngle: menuStartAngle];
@@ -990,7 +1024,8 @@
     {
         SYNArcMenuItem *mainMenuItem = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionRingNoTouch"]
                                                             highlightedImage: [UIImage imageNamed: @"ActionRingTouch"]
-                                                                        name: kActionNone];
+                                                                        name: kActionNone
+                                                                   labelText: nil];
         
         self.arcMenu = [[SYNArcMenuView alloc] initWithFrame: referenceView.bounds
                                                    startItem: mainMenuItem

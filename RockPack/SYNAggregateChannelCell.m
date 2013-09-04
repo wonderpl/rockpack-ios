@@ -51,7 +51,7 @@
                                                             action: @selector(showGlossLowlight:)];
     
     self.touch.delegate = self;
-//    [self.lowlightImageView addGestureRecognizer: self.touch];
+    [self.lowlightImageView addGestureRecognizer: self.touch];
 }
 
 
@@ -79,13 +79,6 @@
 
 - (void) setCoverImagesAndTitlesWithArray: (NSArray *) array
 {
-    // Disable any existing longpress gestures
-//    self.longPress.enabled = NO;
-//    self.longPress.enabled = YES;
-    
-//    self.touch.enabled = NO;
-//    self.touch.enabled = YES;
-    
     if (!array)
     {
         return;
@@ -326,7 +319,7 @@
                                                                                                 action: @selector(showGlossLowlight:)];
             
             buttonTouch.delegate = self;
-//            [simulatedButtonView addGestureRecognizer: buttonTouch];
+            [simulatedButtonView addGestureRecognizer: buttonTouch];
         }
     }
     
@@ -334,25 +327,6 @@
                                  action: @selector(profileButtonTapped:)
                        forControlEvents: UIControlEventTouchUpInside];
 }
-
-
-//- (NSInteger) indexForSimulatedButtonPressed: (UIView *) view
-//{
-//    if (!self.buttonContainerView)
-//    {
-//        return kArcMenuInvalidComponentIndex;
-//    }
-//    
-//    NSInteger index =  [self.buttonContainerView.subviews indexOfObject: view];
-//    
-//    // TODO: For debugging only, please remove
-//    if (index == NSNotFound)
-//    {
-//        return kArcMenuInvalidComponentIndex;
-//    }
-//    
-//    return index;
-//}
 
 
 - (void) setTitleMessageWithDictionary: (NSDictionary *) messageDictionary
@@ -397,6 +371,16 @@
     {
         case UIGestureRecognizerStateBegan:
         {
+            NSInteger componentIndex = kArcMenuInvalidComponentIndex;
+            
+            if (self.buttonContainerView)
+            {
+                componentIndex =  [self.buttonContainerView.subviews indexOfObject: simulatedButton];
+            }
+            
+            [self.viewControllerDelegate arcMenuSelectedCell: self
+                                           andComponentIndex: componentIndex];
+            
             // Set lowlight tint
             UIImage *lowlightImage = [glossImage tintedImageUsingColor: [UIColor colorWithWhite: 0.0
                                                                                           alpha: 0.3]];
@@ -418,30 +402,13 @@
 
 - (void) showChannel: (UITapGestureRecognizer *) recognizer
 {
-    NSInteger componentIndex = kArcMenuInvalidComponentIndex;
-    
-    if (self.buttonContainerView)
-    {
-        componentIndex =  [self.buttonContainerView.subviews indexOfObject: recognizer.view];
-    }
-    
-    [self.viewControllerDelegate pressedAggregateCell: self
-                                   withComponentIndex: componentIndex];
+    [self.viewControllerDelegate touchedAggregateCell];
 }
 
 
 - (void) showMenu: (UILongPressGestureRecognizer *) recognizer
 {
-    NSInteger componentIndex = kArcMenuInvalidComponentIndex;
-    
-    if (self.buttonContainerView)
-    {
-        componentIndex =  [self.buttonContainerView.subviews indexOfObject: recognizer.view];
-    }
-    
-    [self.viewControllerDelegate arcMenuUpdateState: recognizer
-                                            forCell: self
-                                 withComponentIndex: componentIndex];
+    [self.viewControllerDelegate arcMenuUpdateState: recognizer];
 }
 
 
