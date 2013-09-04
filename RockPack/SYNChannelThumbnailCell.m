@@ -138,9 +138,7 @@
 
 - (void) showMenu: (UILongPressGestureRecognizer *) recognizer
 {
-    [self.viewControllerDelegate arcMenuUpdateState: recognizer
-                                            forCell: self
-                                 withComponentIndex: kArcMenuInvalidComponentIndex];
+    [self.viewControllerDelegate arcMenuUpdateState: recognizer];
 }
 
 
@@ -160,6 +158,9 @@
     {
         case UIGestureRecognizerStateBegan:
         {
+            [self.viewControllerDelegate arcMenuSelectedCell: self
+                                           andComponentIndex: kArcMenuInvalidComponentIndex];
+            
             // Set lowlight tint
             UIImage *glossImage = [UIImage imageNamed: imageName];
             UIImage *lowlightImage = [glossImage tintedImageUsingColor: [UIColor colorWithWhite: 0.0

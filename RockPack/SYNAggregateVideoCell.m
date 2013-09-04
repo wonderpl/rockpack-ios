@@ -250,6 +250,9 @@
     {
         case UIGestureRecognizerStateBegan:
         {
+            [self.viewControllerDelegate arcMenuSelectedCell: self
+                                           andComponentIndex: kArcMenuInvalidComponentIndex];
+            
             // Set lowlight tint
             UIImage *lowlightImage = [glossImage tintedImageUsingColor: [UIColor colorWithWhite: 0.0
                                                                                           alpha: 0.3]];
@@ -270,16 +273,13 @@
 
 - (void) showVideo: (UITapGestureRecognizer *) recognizer
 {
-    [self.viewControllerDelegate pressedAggregateCell: self
-                                   withComponentIndex: kArcMenuInvalidComponentIndex];
+    [self.viewControllerDelegate touchedAggregateCell];
 }
 
 
 - (void) showMenu: (UILongPressGestureRecognizer *) recognizer
 {
-    [self.viewControllerDelegate arcMenuUpdateState: recognizer
-                                            forCell: self
-                                 withComponentIndex: kArcMenuInvalidComponentIndex];
+    [self.viewControllerDelegate arcMenuUpdateState: recognizer];
 }
 
 

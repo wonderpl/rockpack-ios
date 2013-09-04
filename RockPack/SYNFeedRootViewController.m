@@ -714,12 +714,14 @@ typedef void(^FeedDataErrorBlock)(void);
     }
 }
 
--(FeedItem*)feedItemAtIndexPath:(NSIndexPath*)indexPath
+
+- (FeedItem*) feedItemAtIndexPath: (NSIndexPath*) indexPath
 {
     NSArray* sectionArray = self.feedItemsData[indexPath.section];
     FeedItem* feedItem = sectionArray[indexPath.row];
     return feedItem;
 }
+
 
 - (Channel *) channelInstanceForIndexPath: (NSIndexPath *) indexPath
                         andComponentIndex: (NSInteger) componentIndex
@@ -762,24 +764,19 @@ typedef void(^FeedDataErrorBlock)(void);
 
 
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
-                    forCell: (UICollectionViewCell *) cell
-         withComponentIndex: (NSInteger) componentIndex
 {
-    [super arcMenuUpdateState: recognizer
-                      forCell: cell
-           withComponentIndex: componentIndex];
+    [super arcMenuUpdateState: recognizer];
     
     if (recognizer.state == UIGestureRecognizerStateBegan)
     {
         // Need to set the component index if aggregate celll
-        NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: cell.center];
-        FeedItem *feedItem = [self feedItemAtIndexPath: indexPath];
+        FeedItem *feedItem = [self feedItemAtIndexPath: self.arcMenuIndexPath];
         
         if (feedItem.resourceTypeValue == FeedItemResourceTypeChannel)
         {
             // Channel
-            Channel *channel = [self channelInstanceForIndexPath: indexPath
-                                               andComponentIndex: componentIndex];
+            Channel *channel = [self channelInstanceForIndexPath: self.arcMenuIndexPath
+                                               andComponentIndex: self.arcMenuComponentIndex];
             
             [self requestShareLinkWithObjectType: @"channel"
                                         objectId: channel.uniqueId];
@@ -787,8 +784,8 @@ typedef void(^FeedDataErrorBlock)(void);
         else
         {
             // Video
-            VideoInstance *videoInstance = [self videoInstanceForIndexPath: indexPath
-                                                         andComponentIndex: componentIndex];
+            VideoInstance *videoInstance = [self videoInstanceForIndexPath: self.arcMenuIndexPath
+                                                         andComponentIndex: self.arcMenuComponentIndex];
             
             [self requestShareLinkWithObjectType: @"video_instance"
                                         objectId: videoInstance.uniqueId];
@@ -1148,13 +1145,9 @@ typedef void(^FeedDataErrorBlock)(void);
 }
 
 
-- (void) pressedAggregateCell: (UICollectionViewCell *) cell
-           withComponentIndex: (NSInteger) componentIndex;
+- (void) touchedAggregateCell
 {
-    SYNAggregateCell *aggregateCellSelected = (SYNAggregateCell *) cell;
-    
-    NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: aggregateCellSelected.center];
-    FeedItem *selectedFeedItem = [self feedItemAtIndexPath: indexPath];
+    FeedItem *selectedFeedItem = [self feedItemAtIndexPath: self.arcMenuIndexPath];
     
     if (selectedFeedItem.resourceTypeValue == FeedItemResourceTypeVideo)
     {
@@ -1194,7 +1187,7 @@ typedef void(^FeedDataErrorBlock)(void);
         }
         else
         {
-            channel = [self.feedChannelsById objectForKey: selectedFeedItem.coverIndexArray[componentIndex]];
+            channel = [self.feedChannelsById objectForKey: selectedFeedItem.coverIndexArray[self.arcMenuComponentIndex]];
         }
         
         if (channel)
