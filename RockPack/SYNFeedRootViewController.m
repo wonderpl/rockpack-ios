@@ -763,32 +763,23 @@ typedef void(^FeedDataErrorBlock)(void);
 
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
                     forCell: (UICollectionViewCell *) cell
+         withComponentIndex: (NSInteger) componentIndex
 {
     [super arcMenuUpdateState: recognizer
-                      forCell: cell];
+                      forCell: cell
+           withComponentIndex: componentIndex];
     
     if (recognizer.state == UIGestureRecognizerStateBegan)
     {
         // Need to set the component index if aggregate celll
         NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: cell.center];
         FeedItem *feedItem = [self feedItemAtIndexPath: indexPath];
-        NSInteger indexOfButton;
-        
-        if (feedItem.itemTypeValue == FeedItemTypeAggregate)
-        {
-            UIImageView *simulatedButton = (UIImageView *) recognizer.view;
-            indexOfButton = [(SYNAggregateChannelCell *) cell indexForSimulatedButtonPressed: simulatedButton];
-        }
-        else
-        {
-            indexOfButton = kArcMenuInvalidComponentIndex;
-        }
         
         if (feedItem.resourceTypeValue == FeedItemResourceTypeChannel)
         {
             // Channel
             Channel *channel = [self channelInstanceForIndexPath: indexPath
-                                               andComponentIndex: indexOfButton];
+                                               andComponentIndex: componentIndex];
             
             [self requestShareLinkWithObjectType: @"channel"
                                         objectId: channel.uniqueId];
@@ -797,14 +788,11 @@ typedef void(^FeedDataErrorBlock)(void);
         {
             // Video
             VideoInstance *videoInstance = [self videoInstanceForIndexPath: indexPath
-                                                         andComponentIndex: indexOfButton];
+                                                         andComponentIndex: componentIndex];
             
             [self requestShareLinkWithObjectType: @"video_instance"
                                         objectId: videoInstance.uniqueId];
         }
-        
-        self.arcMenu.componentIndex = indexOfButton;
-        DebugLog(@"Set componentIndex to %d", indexOfButton);
     }
 }
 
@@ -1160,9 +1148,11 @@ typedef void(^FeedDataErrorBlock)(void);
 }
 
 
-- (void) pressedAggregateCellCoverView: (UIView *) view
+- (void) pressedAggregateCell: (UICollectionViewCell *) cell
+           withComponentIndex: (NSInteger) componentIndex;
 {
-    SYNAggregateCell *aggregateCellSelected = [self aggregateCellFromView: view];
+    SYNAggregateCell *aggregateCellSelected = (SYNAggregateCell *) cell;
+    
     NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: aggregateCellSelected.center];
     FeedItem *selectedFeedItem = [self feedItemAtIndexPath: indexPath];
     
@@ -1172,7 +1162,6 @@ typedef void(^FeedDataErrorBlock)(void);
         {
             return;
         }
-        
         
         VideoInstance *videoInstance = [self videoInstanceAtCoverOfFeedItem: selectedFeedItem];
         
@@ -1205,12 +1194,7 @@ typedef void(^FeedDataErrorBlock)(void);
         }
         else
         {
-            SYNAggregateChannelCell *channelCellSelected = (SYNAggregateChannelCell *) aggregateCellSelected;
-            
-            NSInteger indexOfButton = [channelCellSelected indexForSimulatedButtonPressed: view];
-            
-            // TODO: Need to fix it when the index is invalid
-            channel = [self.feedChannelsById objectForKey: selectedFeedItem.coverIndexArray[indexOfButton]];
+            channel = [self.feedChannelsById objectForKey: selectedFeedItem.coverIndexArray[componentIndex]];
         }
         
         if (channel)

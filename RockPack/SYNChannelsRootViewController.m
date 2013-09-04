@@ -997,9 +997,11 @@ referenceSizeForFooterInSection: (NSInteger) section
 
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
                     forCell: (UICollectionViewCell *) cell
+         withComponentIndex: (NSInteger) componentIndex
 {
     [super arcMenuUpdateState: recognizer
-                      forCell: cell];
+                      forCell: cell
+           withComponentIndex: componentIndex];
     
     if (recognizer.state == UIGestureRecognizerStateBegan)
     {
@@ -1018,9 +1020,11 @@ referenceSizeForFooterInSection: (NSInteger) section
 // Bypass implementation for derived classes
 - (void) superArcMenuUpdateState: (UIGestureRecognizer *) recognizer
                          forCell: (UICollectionViewCell *) cell
+              withComponentIndex: (NSInteger) componentIndex
 {
     [super arcMenuUpdateState: recognizer
-                      forCell: cell];
+                      forCell: cell
+           withComponentIndex: componentIndex];
 }
 
 

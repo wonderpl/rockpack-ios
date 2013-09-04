@@ -67,11 +67,12 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
            startItem: (SYNArcMenuItem *) startItem
          optionMenus: (NSArray *) menuItemArray
        cellIndexPath: (NSIndexPath *) cellIndexPath
+      componentIndex: (NSInteger) componentIndex
 {
     if ((self = [super initWithFrame: frame]))
     {
         // Assume no component index for now
-        self.componentIndex = kArcMenuInvalidComponentIndex;
+        self.componentIndex = componentIndex;
         
         self.backgroundColor = [UIColor clearColor];
         

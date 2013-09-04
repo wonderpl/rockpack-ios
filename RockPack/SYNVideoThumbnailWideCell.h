@@ -17,8 +17,10 @@ typedef enum {
 @protocol SYNVideoThumbnailWideCellDelegate <NSObject>
 
 - (void) videoAddButtonTapped: (UIButton *) videoButton;
+
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
-                    forCell: (UICollectionViewCell *) cell;
+                    forCell: (UICollectionViewCell *) cell
+         withComponentIndex: (NSInteger) componentIndex;
 
 @end
 
