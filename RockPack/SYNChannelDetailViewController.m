@@ -2632,13 +2632,12 @@ shouldChangeTextInRange: (NSRange) range
       
         //__weak SYNChannelDetailViewController *wself = self;
         addToChannelPopover.action = ^(id obj){
-            
-            if([obj isKindOfClass:[UILongPressGestureRecognizer class]])
+            if ([obj isKindOfClass:[UILongPressGestureRecognizer class]])
             {
-                [self arcMenuUpdateState:obj forCell:randomCell];
+                [self arcMenuUpdateState: obj
+                                 forCell: randomCell
+                      withComponentIndex: kArcMenuInvalidComponentIndex];
             }
-            
-            
         };
         
         [appDelegate.onBoardingQueue addPopover: addToChannelPopover];

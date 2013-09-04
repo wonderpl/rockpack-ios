@@ -22,10 +22,6 @@ typedef enum : NSInteger {
     kArcMenuButtonShare = 2
 } kArcMenuButtonType;
 
-typedef enum : NSInteger {
-    kArcMenuInvalidComponentIndex = 999999
-} kArcMenuComponentIndex;
-
 @class SYNArcMenuView;
 
 @protocol SYNArcMenuViewDelegate <NSObject>
@@ -36,7 +32,8 @@ typedef enum : NSInteger {
          andComponentIndex: (NSInteger) componentIndex;
 
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
-                    forCell: (UICollectionViewCell *) cell;
+                    forCell: (UICollectionViewCell *) cell
+         withComponentIndex: (NSInteger) componentIndex;
 
 @optional
 
@@ -66,7 +63,8 @@ typedef enum : NSInteger {
 - (id) initWithFrame: (CGRect) frame
            startItem: (SYNArcMenuItem *) startItem
          optionMenus: (NSArray *) menuItemArray
-       cellIndexPath: (NSIndexPath *) cellIndexPath;
+       cellIndexPath: (NSIndexPath *) cellIndexPath
+      componentIndex: (NSInteger) componentIndex;
 
 - (void) show: (BOOL) show;
 

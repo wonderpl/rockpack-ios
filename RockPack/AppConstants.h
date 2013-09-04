@@ -259,6 +259,11 @@ typedef enum _NavigationButtonsAppearance {
     
 } NavigationButtonsAppearance;
 
+
+typedef enum : NSInteger {
+    kArcMenuInvalidComponentIndex = 999999
+} kArcMenuComponentIndex;
+
 //
 // Colours
 //

@@ -12,10 +12,12 @@
 
 @protocol SYNAggregateCellDelegate <NSObject>
 
-- (void) pressedAggregateCellCoverView: (UIView *) view;
+- (void) pressedAggregateCell: (UICollectionViewCell *) cell
+           withComponentIndex: (NSInteger) componentIndex;
 
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
-                    forCell: (UICollectionViewCell *) cell;
+                    forCell: (UICollectionViewCell *) cell
+         withComponentIndex: (NSInteger) componentIndex;
 
 @end
 

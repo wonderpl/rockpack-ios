@@ -139,7 +139,8 @@
 - (void) showMenu: (UILongPressGestureRecognizer *) recognizer
 {
     [self.viewControllerDelegate arcMenuUpdateState: recognizer
-                                            forCell: self];
+                                            forCell: self
+                                 withComponentIndex: kArcMenuInvalidComponentIndex];
 }
 
 
