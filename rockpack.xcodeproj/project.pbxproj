@@ -910,6 +910,7 @@
 		BE06EEED17D759290028F2E3 /* RecentContactPlaceholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE06EEEB17D759290028F2E3 /* RecentContactPlaceholder@2x.png */; };
 		BE06EEF017D759390028F2E3 /* ABContactPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = BE06EEEE17D759390028F2E3 /* ABContactPlaceholder.png */; };
 		BE06EEF117D759390028F2E3 /* ABContactPlaceholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE06EEEF17D759390028F2E3 /* ABContactPlaceholder@2x.png */; };
+		BE06EEF417D78DCA0028F2E3 /* SYNOneToOneFriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE06EEF317D78DCA0028F2E3 /* SYNOneToOneFriendCell.m */; };
 		BE08159F16D3EF7F00ADB1DC /* SYNGenreTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE08159E16D3EF7F00ADB1DC /* SYNGenreTabViewController.m */; };
 		BE0815A216D4DADB00ADB1DC /* SYNTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815A116D4DADA00ADB1DC /* SYNTabView.m */; };
 		BE0815A516D4E53600ADB1DC /* SYNTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815A416D4E53500ADB1DC /* SYNTabViewController.m */; };
@@ -2361,6 +2362,8 @@
 		BE06EEEB17D759290028F2E3 /* RecentContactPlaceholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "RecentContactPlaceholder@2x.png"; path = "Assets/Images/RecentContactPlaceholder@2x.png"; sourceTree = "<group>"; };
 		BE06EEEE17D759390028F2E3 /* ABContactPlaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ABContactPlaceholder.png; path = Assets/Images/ABContactPlaceholder.png; sourceTree = "<group>"; };
 		BE06EEEF17D759390028F2E3 /* ABContactPlaceholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ABContactPlaceholder@2x.png"; path = "Assets/Images/ABContactPlaceholder@2x.png"; sourceTree = "<group>"; };
+		BE06EEF217D78DCA0028F2E3 /* SYNOneToOneFriendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOneToOneFriendCell.h; sourceTree = "<group>"; };
+		BE06EEF317D78DCA0028F2E3 /* SYNOneToOneFriendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOneToOneFriendCell.m; sourceTree = "<group>"; };
 		BE08159D16D3EF7F00ADB1DC /* SYNGenreTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNGenreTabViewController.h; sourceTree = "<group>"; };
 		BE08159E16D3EF7F00ADB1DC /* SYNGenreTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNGenreTabViewController.m; sourceTree = "<group>"; };
 		BE0815A016D4DADA00ADB1DC /* SYNTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNTabView.h; sourceTree = "<group>"; };
@@ -5266,6 +5269,8 @@
 				BE3574E617CE07B00083CBB1 /* SYNOneToOneSharingController.h */,
 				BE3574E717CE07B00083CBB1 /* SYNOneToOneSharingController.m */,
 				BE3574E817CE07B00083CBB1 /* SYNOneToOneSharingController.xib */,
+				BE06EEF217D78DCA0028F2E3 /* SYNOneToOneFriendCell.h */,
+				BE06EEF317D78DCA0028F2E3 /* SYNOneToOneFriendCell.m */,
 			);
 			name = "One to One Sharing";
 			sourceTree = "<group>";
@@ -7119,6 +7124,7 @@
 				0177002A17C382C3006DE415 /* UIImage+Tint.m in Sources */,
 				BE3574E917CE07B00083CBB1 /* SYNOneToOneSharingController.m in Sources */,
 				BE06EEE417D6344E0028F2E3 /* SYNStrictInteractionView.m in Sources */,
+				BE06EEF417D78DCA0028F2E3 /* SYNOneToOneFriendCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

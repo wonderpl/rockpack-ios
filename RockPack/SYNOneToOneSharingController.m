@@ -22,6 +22,7 @@
 #import "OWActivityView.h"
 #import "SYNDeviceManager.h"
 #import "RegexKitLite.h"
+#import "SYNOneToOneFriendCell.h"
 #import <objc/runtime.h>
 #import <QuartzCore/QuartzCore.h>
 
@@ -608,19 +609,16 @@
     
      
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"OneToOneSearchFriendCell"];
+    SYNOneToOneFriendCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SYNOneToOneFriendCell"];
     
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
-                                      reuseIdentifier:@"OneToOneSearchFriendCell"];
+        cell = [[SYNOneToOneFriendCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                            reuseIdentifier:@"SYNOneToOneFriendCell"];
     }
     
     // set the labels on the cell
-    cell.textLabel.font = [UIFont boldRockpackFontOfSize:14.0f];
-    cell.textLabel.textColor = [UIColor blackColor];
-    cell.detailTextLabel.font = [UIFont rockpackFontOfSize:11.0f];
-    cell.detailTextLabel.textColor = [UIColor grayColor];
+    
     
     if(indexPath.row < searchedFriends.count)
     {
@@ -674,7 +672,7 @@
 
 - (CGFloat) tableView: (UITableView *) tableView heightForRowAtIndexPath: (NSIndexPath *) indexPath;
 {
-    return 77.0;
+    return 50.0f;
 }
 
 - (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath
@@ -850,6 +848,7 @@
 -(IBAction)closeButtonPressed:(id)sender
 {
     [self.searchResultsTableView removeFromSuperview];
+    [self.searchTextField resignFirstResponder];
     self.closeButton.hidden = YES;
 }
 -(IBAction)authorizeFacebookButtonPressed:(id)sender
