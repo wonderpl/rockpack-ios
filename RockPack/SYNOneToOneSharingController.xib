@@ -155,7 +155,7 @@
 						<string key="NSFrame">{{66, 64}, {296, 36}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="158357040"/>
+						<reference key="NSNextKeyView" ref="636834575"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="503855490"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -184,7 +184,7 @@
 							<int key="NSfFlags">16</int>
 						</object>
 					</object>
-					<object class="IBUIButton" id="158357040">
+					<object class="IBUIButton" id="636834575">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{370, 56}, {41, 44}}</string>
@@ -214,7 +214,7 @@
 							<int key="type">2</int>
 							<double key="pointSize">15</double>
 						</object>
-						<object class="NSFont" key="IBUIFont" id="24896384">
+						<object class="NSFont" key="IBUIFont" id="906274270">
 							<string key="NSName">Helvetica-Bold</string>
 							<double key="NSSize">15</double>
 							<int key="NSfFlags">16</int>
@@ -301,7 +301,7 @@
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="125351538"/>
 						<reference key="IBUIFontDescription" ref="882146308"/>
-						<reference key="IBUIFont" ref="24896384"/>
+						<reference key="IBUIFont" ref="906274270"/>
 					</object>
 					<object class="IBUIButton" id="709240964">
 						<reference key="NSNextResponder" ref="195490796"/>
@@ -322,7 +322,7 @@
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="125351538"/>
 						<reference key="IBUIFontDescription" ref="882146308"/>
-						<reference key="IBUIFont" ref="24896384"/>
+						<reference key="IBUIFont" ref="906274270"/>
 					</object>
 				</array>
 				<string key="NSFrameSize">{419, 256}</string>
@@ -475,7 +475,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">closeButton</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="158357040"/>
+						<reference key="destination" ref="636834575"/>
 					</object>
 					<int key="connectionID">50</int>
 				</object>
@@ -540,7 +540,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">closeButtonPressed:</string>
-						<reference key="source" ref="158357040"/>
+						<reference key="source" ref="636834575"/>
 						<reference key="destination" ref="841351856"/>
 						<int key="IBEventType">7</int>
 					</object>
@@ -576,7 +576,7 @@
 							<reference ref="204221981"/>
 							<reference ref="995286249"/>
 							<reference ref="855295366"/>
-							<reference ref="158357040"/>
+							<reference ref="636834575"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -666,7 +666,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">49</int>
-						<reference key="object" ref="158357040"/>
+						<reference key="object" ref="636834575"/>
 						<reference key="parent" ref="766721923"/>
 					</object>
 				</array>
@@ -707,7 +707,6 @@
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="authorizeAddressBookButtonPressed:">id</string>
 						<string key="authorizeFacebookButtonPressed:">id</string>
-						<string key="closeButtonPressed:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="authorizeAddressBookButtonPressed:">
@@ -716,10 +715,6 @@
 						</object>
 						<object class="IBActionInfo" key="authorizeFacebookButtonPressed:">
 							<string key="name">authorizeFacebookButtonPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="closeButtonPressed:">
-							<string key="name">closeButtonPressed:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>
@@ -793,14 +788,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/UICollectionViewFlowLayout.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">UICollectionViewLayout</string>
-					<string key="superclassName">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/UICollectionViewLayout.h</string>
 					</object>
 				</object>
 			</array>

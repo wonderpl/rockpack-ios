@@ -113,6 +113,8 @@
     
     currentSearchTerm = [[NSMutableString alloc] init];
     
+    self.closeButton.hidden = YES;
+    
     self.messageTextView.font = [UIFont rockpackFontOfSize: self.messageTextView.font.pointSize];
     self.searchTextField.font = [UIFont rockpackFontOfSize: self.searchTextField.font.pointSize];
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
@@ -802,6 +804,8 @@
     
     [self.searchResultsTableView reloadData];
     
+    self.closeButton.hidden = NO;
+    
     return NO;
 }
 
@@ -814,7 +818,8 @@
 
 -(IBAction)closeButtonPressed:(id)sender
 {
-    
+    [self.searchResultsTableView removeFromSuperview];
+    self.closeButton.hidden = YES;
 }
 -(IBAction)authorizeFacebookButtonPressed:(id)sender
 {
