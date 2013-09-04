@@ -413,17 +413,23 @@
     
     // At this point it is safe to assume that the video thumbnail image is in the cache
     UIImage *thumbnailImage = [SDWebImageManager.sharedManager.imageCache imageFromMemoryCacheForKey: videoInstance.video.thumbnailURL];
+    
+    
+    self.oneToOneViewController = [[SYNOneToOneSharingController alloc] initWithResource:videoInstance andImage:thumbnailImage];
+    
+    [appDelegate.viewStackManager presentPopoverView:self.oneToOneViewController.view];
+    
 
-    [self shareObjectType: @"video_instance"
-                 objectId: videoInstance.uniqueId
-                  isOwner: @NO
-                  isVideo: @YES
-               usingImage: thumbnailImage
-                   inView: inView
-                 fromRect: rect
-          arrowDirections: arrowDirections
-        activityIndicator: activityIndicatorView
-               onComplete: completionBlock];
+//    [self shareObjectType: @"video_instance"
+//                 objectId: videoInstance.uniqueId
+//                  isOwner: @NO
+//                  isVideo: @YES
+//               usingImage: thumbnailImage
+//                   inView: inView
+//                 fromRect: rect
+//          arrowDirections: arrowDirections
+//        activityIndicator: activityIndicatorView
+//               onComplete: completionBlock];
 }
 
 
@@ -443,16 +449,20 @@
                          withLabel: nil
                          withValue: nil];
     
-    [self shareObjectType: @"channel"
-                 objectId: channel.uniqueId
-                  isOwner: isOwner
-                  isVideo: @NO
-               usingImage: image
-                   inView: inView
-                 fromRect: rect
-          arrowDirections: arrowDirections
-        activityIndicator: activityIndicatorView
-               onComplete: completionBlock];
+    self.oneToOneViewController = [[SYNOneToOneSharingController alloc] initWithResource:channel andImage:image];
+    
+    [appDelegate.viewStackManager presentPopoverView:self.oneToOneViewController.view];
+    
+//    [self shareObjectType: @"channel"
+//                 objectId: channel.uniqueId
+//                  isOwner: isOwner
+//                  isVideo: @NO
+//               usingImage: image
+//                   inView: inView
+//                 fromRect: rect
+//          arrowDirections: arrowDirections
+//        activityIndicator: activityIndicatorView
+//               onComplete: completionBlock];
 }
 
 
@@ -469,15 +479,7 @@
 {
     
     
-    self.oneToOneViewController = [[SYNOneToOneSharingController alloc] init];
-    
-    
-    
-    [appDelegate.viewStackManager presentPopoverView:self.oneToOneViewController.view];
-    
-    
-    
-    return;
+
     
     if ([objectType isEqualToString: @"channel"])
     {
