@@ -15,19 +15,20 @@
 @class SYNArcMenuItem;
 
 
-@interface SYNArcMenuItem : UIImageView
+@interface SYNArcMenuItem : UIView
 
 @property (nonatomic) CGPoint endPoint;
 @property (nonatomic) CGPoint farPoint;
 @property (nonatomic) CGPoint nearPoint;
 @property (nonatomic) CGPoint startPoint;
 @property (nonatomic, strong) NSString *name;
-
+@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) NSString *labelText;
 
 - (id) initWithImage: (UIImage *) image
-       highlightedImage: (UIImage *) highlightedImage
-       name: (NSString *) name;
-
+    highlightedImage: (UIImage *) highlightedImage
+                name: (NSString *) name
+           labelText: (NSString *) labelText;
 
 @end
 

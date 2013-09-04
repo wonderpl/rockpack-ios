@@ -39,12 +39,12 @@
 @interface SYNAbstractViewController ()  <UITextFieldDelegate,
                                           UIPopoverControllerDelegate>
 
-
 @property (getter = isVideoQueueVisible) BOOL videoQueueVisible;
 @property (nonatomic, assign) BOOL shouldPlaySound;
 @property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, strong) IBOutlet UIImageView *channelOverlayView;
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
+@property (nonatomic, strong) SYNOneToOneSharingController* oneToOneViewController;
 @property (nonatomic, strong) UIPopoverController *activityPopoverController;
 @property (nonatomic, strong) UIView *dropZoneView;
 @property (strong, nonatomic) NSMutableDictionary *mutableShareDictionary;
@@ -53,13 +53,11 @@
 @property (strong, readonly, nonatomic) NSArray *activities;
 @property (weak, nonatomic) UIPopoverController *presentingPopoverController;
 @property (weak, nonatomic) UIViewController *presentingController;
-@property (nonatomic, strong) SYNOneToOneSharingController* oneToOneViewController;
 
 @end
 
 
 @implementation SYNAbstractViewController
-
 
 @synthesize fetchedResultsController = fetchedResultsController;
 @synthesize selectedIndex = _selectedIndex;
@@ -900,6 +898,33 @@
     return  nil;
 }
 
+- (void) arcMenuSelectedCell: (UICollectionViewCell *) selectedCell
+           andComponentIndex: (NSInteger) componentIndex
+{
+    if ([self isChannelCell: selectedCell])
+    {
+        // Channel
+        self.arcMenuIsChannelCell = TRUE;
+        self.arcMenuIndexPath = [self indexPathForChannelCell: selectedCell];
+    }
+    else
+    {
+        // Video
+        self.arcMenuIsChannelCell = TRUE;
+        self.arcMenuIndexPat = [self indexPathForVideoCell: selectedCell];
+    }
+
+    self.arcMenuComponentIndex = componentIndex;
+}
+
+
+- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
+{
+    [self arcMenuUpdateState:  recognizer
+                     forCell: self.arcMenuSelectedCell
+          withComponentIndex: self.arcMenuComponentIndex];
+}
+
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
                     forCell: (UICollectionViewCell *) cell
          withComponentIndex: (NSInteger) componentIndex
@@ -918,7 +943,8 @@
         
         SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
                                                             highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]
-                                                                        name: kActionShareChannel];
+                                                                        name: kActionShareChannel
+                                                                   labelText: @"Share"];
         menuItems = @[arcMenuItem1];
 
         menuArc = M_PI / 4;
@@ -942,15 +968,18 @@
         
         SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: (videoInstance.video.starredByUserValue == FALSE) ? @"ActionLike" : @"ActionUnlike"]
                                                             highlightedImage: [UIImage imageNamed: (videoInstance.video.starredByUserValue == FALSE) ? @"ActionLikeHighlighted" : @"ActionUnlikeHighlighted"]
-                                                                        name: kActionLike];
+                                                                        name: kActionLike
+                                                                   labelText: (videoInstance.video.starredByUserValue == FALSE) ? @"Like" : @"Unlike"];
         
         SYNArcMenuItem *arcMenuItem2 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionAdd"]
                                                             highlightedImage: [UIImage imageNamed: @"ActionAddHighlighted"]
-                                                                        name: kActionAdd];
+                                                                        name: kActionAdd
+                                                                   labelText: @"Add"];
         
         SYNArcMenuItem *arcMenuItem3 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
                                                             highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]
-                                                                        name: kActionShareVideo];
+                                                                        name: kActionShareVideo
+                                                                   labelText: @"Share"];
         
         menuItems = @[arcMenuItem1, arcMenuItem2, arcMenuItem3];
         
@@ -990,7 +1019,8 @@
     {
         SYNArcMenuItem *mainMenuItem = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionRingNoTouch"]
                                                             highlightedImage: [UIImage imageNamed: @"ActionRingTouch"]
-                                                                        name: kActionNone];
+                                                                        name: kActionNone
+                                                                   labelText: nil];
         
         self.arcMenu = [[SYNArcMenuView alloc] initWithFrame: referenceView.bounds
                                                    startItem: mainMenuItem

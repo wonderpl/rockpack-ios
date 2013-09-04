@@ -1148,10 +1148,9 @@ typedef void(^FeedDataErrorBlock)(void);
 }
 
 
-- (void) pressedAggregateCell: (UICollectionViewCell *) cell
-           withComponentIndex: (NSInteger) componentIndex;
+- (void) touchedAggregateCell
 {
-    SYNAggregateCell *aggregateCellSelected = (SYNAggregateCell *) cell;
+    SYNAggregateCell *aggregateCellSelected = (SYNAggregateCell *) self.arcMenuSelectedCell;
     
     NSIndexPath *indexPath = [self.feedCollectionView indexPathForItemAtPoint: aggregateCellSelected.center];
     FeedItem *selectedFeedItem = [self feedItemAtIndexPath: indexPath];
@@ -1194,7 +1193,7 @@ typedef void(^FeedDataErrorBlock)(void);
         }
         else
         {
-            channel = [self.feedChannelsById objectForKey: selectedFeedItem.coverIndexArray[componentIndex]];
+            channel = [self.feedChannelsById objectForKey: selectedFeedItem.coverIndexArray[self.arcMenuComponentIndex]];
         }
         
         if (channel)

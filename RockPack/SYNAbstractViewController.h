@@ -42,12 +42,15 @@ typedef void (^SYNShareCompletionBlock)(void);
 
 @property (nonatomic) BOOL isAnimating;
 @property (nonatomic) BOOL isLocked;
+@property (nonatomic) BOOL arcMenuIsChannelCell;
 @property (nonatomic) NSInteger dataItemsAvailable;
 @property (nonatomic) NSRange dataRequestRange;
 @property (nonatomic, assign) BOOL inDrag;
 @property (nonatomic, assign) CGPoint initialDragCenter;
+@property (nonatomic, assign) NSInteger arcMenuComponentIndex;
 @property (nonatomic, assign, getter = isLoadingMoreContent) BOOL loadingMoreContent;
 @property (nonatomic, readonly) NSString *viewId;
+@property (nonatomic, strong)  NSIndexPath *arcMenuIndexPath;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
