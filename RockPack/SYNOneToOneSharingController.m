@@ -20,6 +20,7 @@
 #import "Channel.h" 
 #import "OWActivityView.h"
 #import "SYNDeviceManager.h"
+#import "RegexKitLite.h"
 #import <objc/runtime.h>
 #import <QuartzCore/QuartzCore.h>
 
@@ -586,13 +587,73 @@ static char* friend_share_key = "SYNFriendThumbnailCell to Friend Share";
                                                otherButtonTitles:@"Send", nil];
         
         prompt.alertViewStyle = UIAlertViewStylePlainTextInput;
-        
+        prompt.delegate = self;
         [prompt show];
         
     }
     
 }
 
+#pragma mark - UIAlertViewDelegate
+
+- (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView
+{
+    UITextField *textfield =  [alertView textFieldAtIndex: 0];
+    // if email is matched then return YES
+    return [textfield.text isMatchedByRegex: @"^([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})$"];;
+}
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    UITextField *textfield =  [alertView textFieldAtIndex: 0];
+    
+    
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    // create a friend on the fly
+    Friend* friendToShare = [Friend insertInManagedObjectContext:appDelegate.searchManagedObjectContext];
+    friendToShare.email = textfield.text;
+    friendToShare.externalSystem = @"email";
+    friendToShare.externalUID = friendToShare.email; // workaround the fact that we do not have a UID for this new user
+    
+    [appDelegate.oAuthNetworkEngine emailShareObject:self.resourceToShare
+                                          withFriend:friendToShare
+                                   completionHandler:^(id no_content) {
+        
+                                       UIAlertView *prompt = [[UIAlertView alloc] initWithTitle:@"Email Sent!"
+                                                                                        message:nil
+                                                                                       delegate:self
+                                                                              cancelButtonTitle:@"OK"
+                                                                              otherButtonTitles:nil];
+                                       [prompt show];
+    
+                                   } errorHandler:^(NSDictionary* error) {
+                                       
+                                       NSString* title = @"Email Couldn't be Sent";
+                                       NSString* reason = @"Unkown reson";
+                                       NSDictionary* formErrors = error[@"form_errors"];
+                                       if(formErrors[@"email"])
+                                       {
+                                           reason = @"The email could be wrong or the service down.";
+                                       }
+                                       if(formErrors[@"external_system"])
+                                       {
+                                           reason = @"The email could be wrong or the service down.";
+                                       }
+                                       if(formErrors[@"object_id"])
+                                       {
+                                           reason = @"The email could be wrong or the service down.";
+                                       }
+        
+                                       UIAlertView *prompt = [[UIAlertView alloc] initWithTitle:title
+                                                                                        message:reason
+                                                                                       delegate:self
+                                                                              cancelButtonTitle:@"OK"
+                                                                              otherButtonTitles:nil];
+                                       
+                                       
+                                       [prompt show];
+                                   }];
+}
 #pragma mark - UITextFieldDelegate
 
 - (BOOL) textField: (UITextField *) textField shouldChangeCharactersInRange: (NSRange) range replacementString: (NSString *) newCharacter
