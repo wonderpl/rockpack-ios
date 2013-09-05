@@ -3334,46 +3334,7 @@ shouldChangeTextInRange: (NSRange) range
 
 - (void) videoOverlayDidDissapear
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL hasShownAddVideoOnBoarding = [defaults boolForKey: kUserDefaultsAddVideo];
     
-    if (!hasShownAddVideoOnBoarding && IS_IPHONE)
-    {
-        NSString *message = NSLocalizedString(@"onboarding_video", nil);
-        
-        // FIXME: Surely these iPad checks are not required (see above)
-        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0;
-        CGSize size = IS_IPAD ? CGSizeMake(240.0, 86.0) : CGSizeMake(200.0, 82.0);
-        
-        SYNVideoThumbnailRegularCell *randomCell =
-        (SYNVideoThumbnailRegularCell *) [self.videoThumbnailCollectionView cellForItemAtIndexPath: [NSIndexPath indexPathForItem: 0
-                                                                                                                        inSection: 0]];
-        
-        
-        CGRect rectToPointTo = [self.view  convertRect: randomCell.frame
-                                              fromView: randomCell];
-        
-        rectToPointTo = CGRectOffset(rectToPointTo, -5, 0);
-        //randomCell.addItButton.hidden = YES;
-        
-        SYNOnBoardingPopoverView *addToChannelPopover = [SYNOnBoardingPopoverView withMessage: message
-                                                                                     withSize: size
-                                                                                  andFontSize: fontSize
-                                                                                   pointingTo: rectToPointTo
-                                                                                withDirection: PointingDirectionDown];
-        
-        //__weak SYNChannelDetailViewController *wself = self;
-        addToChannelPopover.action = ^(id obj){
-            //[wself addItToChannelPresssed: nil];
-        };
-        
-        [appDelegate.onBoardingQueue addPopover: addToChannelPopover];
-        
-        [defaults setBool: YES
-                   forKey: kUserDefaultsAddVideo];
-    }
-    
-    [appDelegate.onBoardingQueue present];
 }
 
 
