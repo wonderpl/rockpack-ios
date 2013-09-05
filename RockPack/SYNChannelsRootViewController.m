@@ -848,6 +848,7 @@ referenceSizeForFooterInSection: (NSInteger) section
     [self.view addSubview: self.arrowImage];
 }
 
+// iPhone
 
 - (void) toggleChannelsCategoryTable: (id) sender
 {
@@ -894,7 +895,9 @@ referenceSizeForFooterInSection: (NSInteger) section
 {
     if([action isEqualToString:@"open"] && [object isKindOfClass:[Genre class]])
     {
-        [self categoryTableController:nil didSelectCategory:object];
+        Genre* genreSelected = (Genre *)object;
+        [self.categoryTableViewController setSelectedCategoryForId:genreSelected.uniqueId];
+        [self categoryTableController:nil didSelectCategory:genreSelected];
         
     }
 }
