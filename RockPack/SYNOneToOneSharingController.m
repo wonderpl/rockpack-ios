@@ -212,31 +212,36 @@
     BOOL hasFacebookSession = [[SYNFacebookManager sharedFBManager] hasActiveSession];
     
     ABAddressBookRequestAccessWithCompletion(addressBookRef, ^(bool granted, CFErrorRef error) {
-        if (granted)
-        {
-            NSLog(@"Address Book Access GRANTED");
-            
-            // populates the friends array
-            [self fetchAddressBookFriends];
-            
-            // if in auth mode
-            if (self.isInAuthorizationScreen)
-            {
-                [self.authorizationView removeFromSuperview];
-            }
-        }
-        else
-        {
-            NSLog(@"Address Book Access DENIED");
-            
-            if (!hasFacebookSession)
-            {
-                [self presentAuthorizationScreen];
-            }
-        }
-        
-        CFRelease(addressBookRef);
-    });
+        dispatch_async(dispatch_get_main_queue(),
+                       ^{
+                           if (granted)
+                           {
+                               
+                               NSLog(@"Address Book Access GRANTED");
+                               
+                               // populates the friends array
+                               [self fetchAddressBookFriends];
+                               
+                               // if in auth mode
+                               if (self.isInAuthorizationScreen)
+                               {
+                                   [self.authorizationView removeFromSuperview];
+                               }
+                           }
+                           else
+                           {
+                               NSLog(@"Address Book Access DENIED");
+                               
+                               if (!hasFacebookSession)
+                               {
+                                   [self presentAuthorizationScreen];
+                               }
+                           }
+                           
+                           CFRelease(addressBookRef);
+
+                       });
+          });
 }
 
 
