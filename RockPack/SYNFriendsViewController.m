@@ -131,7 +131,16 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
         self.searchSlider.frame= searchSliderFrame;
     }
     
-    
+    if (IS_IPAD)
+    {
+        //Semi-transparent background for iOS7
+        if (IS_IOS_7_OR_GREATER)
+        {
+            UIView * whiteBackgroundView = [[UIView alloc]initWithFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.origin.x, self.view.frame.size.width, 1024 - self.view.frame.origin.y)];
+            whiteBackgroundView.backgroundColor = [UIColor colorWithWhite:255.0f/255.0f alpha:0.4];
+            [self.view insertSubview:whiteBackgroundView atIndex:0];
+        }
+    }
 }
 
 -(NSArray*)rockpackFriends
