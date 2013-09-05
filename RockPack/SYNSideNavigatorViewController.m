@@ -174,10 +174,33 @@ typedef enum {
         {
             
             // Do iOS7 Tingz
+            
+            //Blurred Background
             AMBlurView *blurView = [AMBlurView new];
-            [blurView setFrame:CGRectMake(5, 0, self.view.frame.size.width, 1024.0)];
+            [blurView setFrame:CGRectMake(5.0f, 0.0f, self.view.frame.size.width, 1025.0f)];
             self.backgroundImageView.hidden = YES;
             [self.view insertSubview:blurView atIndex:0];
+            
+            //Grey Header Box
+                //Box
+                UIView *headerBackgroundView = [[UIView alloc]initWithFrame:CGRectMake(5.0f, 0.0f, self.view.frame.size.width, 82.0f)];
+                headerBackgroundView.backgroundColor = [UIColor colorWithWhite:220.0f/255.0f alpha:0.2f];
+            
+                //Borders
+                UIView *headerViewBorderDark = [[UIView alloc]initWithFrame:CGRectMake(5.0f, 80.0f, self.view.frame.size.width, 1.0f)];
+                headerViewBorderDark.backgroundColor = [UIColor colorWithWhite:180.0f/255.0f alpha:0.1];
+                UIView *headerViewBorderLight = [[UIView alloc]initWithFrame:CGRectMake(5.0f, 81.0f, self.view.frame.size.width, 1.0f)];
+                headerViewBorderLight.backgroundColor = [UIColor colorWithWhite:255.0f/255.0f alpha:0.5];
+            
+                //Add Subviews
+                [self.view insertSubview:headerViewBorderLight aboveSubview:headerBackgroundView];
+                [self.view insertSubview:headerViewBorderDark aboveSubview:headerBackgroundView];
+                [self.view insertSubview:headerBackgroundView aboveSubview:blurView];
+            
+            //TableView Box
+                UIView *tableBackgroundView = [[UIView alloc]initWithFrame:CGRectMake(5.0f, 82.0f, 189.0f, 1024.0f)];
+                tableBackgroundView.backgroundColor = [UIColor colorWithWhite:220.0f/255.0f alpha:0.2f];
+                [self.view insertSubview:tableBackgroundView aboveSubview:blurView];
         }
         else
         {
