@@ -228,10 +228,11 @@ typedef void (^SYNOAuth2RefreshCompletionBlock)(NSError *error);
                completionHandler: (MKNKUserSuccessBlock) completionBlock
                     errorHandler: (MKNKUserErrorBlock) errorBlock;
 
--(void) emailShareObject:(AbstractCommon*)objectToShare
-              withFriend:(Friend*)friendToShare
-       completionHandler: (MKNKUserSuccessBlock) completionBlock
-            errorHandler: (MKNKUserErrorBlock) errorBlock;
+- (void) emailShareWithObjectType: (NSString *) shareType
+                         objectId: (NSString *) objectId
+                       withFriend: (Friend *) friendToShare
+                completionHandler: (MKNKUserSuccessBlock) completionBlock
+                     errorHandler: (MKNKUserErrorBlock) errorBlock;
 
 - (MKNetworkOperation*) updateChannel: (NSString *) resourceURL
                       forVideosLength: (NSInteger) length

@@ -1313,16 +1313,8 @@
     shareButton.enabled = FALSE;
     
     [self shareChannel: self.channel
-                isOwner: ([self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]) ? @(TRUE): @(FALSE)
-                inView: self.view
-               fromRect: self.shareButton.frame
-            usingImage: nil
-        arrowDirections: UIPopoverArrowDirectionRight
-      activityIndicator: self.shareActivityIndicator
-             onComplete: ^{
-                 // Re-enable button
-                 shareButton.enabled = TRUE;
-             }];
+               isOwner: ([self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]) ? @(TRUE): @(FALSE)
+            usingImage: nil];
 }
 
 

@@ -30,12 +30,13 @@
 #define kNumberOfEmptyRecentSlots 5
 
 
-@interface SYNOneToOneSharingController () <UICollectionViewDataSource, UICollectionViewDelegate,
-UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface SYNOneToOneSharingController () <UICollectionViewDataSource,
+                                            UICollectionViewDelegate,
+                                            UITextFieldDelegate,
+                                            UITableViewDataSource,
+                                            UITableViewDelegate>
 
 @property (nonatomic, readonly) BOOL isInAuthorizationScreen;
-@property (nonatomic, readonly) BOOL isVideo;
-@property (nonatomic, strong) AbstractCommon *resourceToShare;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *loader;
 @property (nonatomic, strong) IBOutlet UIButton *authorizeAddressBookButton;
 @property (nonatomic, strong) IBOutlet UIButton *authorizeFacebookButton;
@@ -64,23 +65,15 @@ UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
 @implementation SYNOneToOneSharingController
 
 
-- (id) initWithResource: (AbstractCommon *) objectToShare andImage: (UIImage *) imageToShare
+- (id) initWithInfo: (NSMutableDictionary *) mutableShareDictionary
 {
     if (self = [super initWithNibName: @"SYNOneToOneSharingController"
                                bundle: nil])
     {
-        self.resourceToShare = objectToShare;
-        self.imageToShare = imageToShare;
+        self.mutableShareDictionary = mutableShareDictionary;
     }
     
     return self;
-}
-
-
-+ (id) withResourceType: (AbstractCommon *) objectToShare andImage: (UIImage *) imageToShare
-{
-    return [[self alloc] initWithResource: objectToShare
-                                 andImage: (UIImage *) imageToShare];
 }
 
 
@@ -180,92 +173,7 @@ UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
 {
     [self fetchFriends];
     
-    // load activities
-    NSString *userName = nil;
-    NSString *subject = @"";
-    
-    SYNAppDelegate *appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
-    
-    User *user = appDelegate.currentUser;
-    
-    if (user.fullNameIsPublicValue)
-    {
-        userName = user.fullName;
-    }
-    
-    if (userName.length < 1)
-    {
-        userName = user.username;
-    }
-    
-    if ([self.resourceToShare isKindOfClass: [Channel class]])
-    {
-        if (!self.imageToShare)
-        {
-            // Capture screen image if we weren't passed an image in
-            UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
-            CGRect keyWindowRect = [keyWindow bounds];
-            UIGraphicsBeginImageContextWithOptions(keyWindowRect.size, YES, 0.0f);
-            CGContextRef context = UIGraphicsGetCurrentContext();
-            [keyWindow.layer
-             renderInContext: context];
-            UIImage *capturedScreenImage = UIGraphicsGetImageFromCurrentImageContext();
-            UIGraphicsEndImageContext();
-            
-            UIInterfaceOrientation orientation = [SYNDeviceManager.sharedInstance orientation];
-            
-            switch (orientation)
-            {
-                case UIDeviceOrientationPortrait:
-                    orientation = UIImageOrientationUp;
-                    break;
-                    
-                case UIDeviceOrientationPortraitUpsideDown:
-                    orientation = UIImageOrientationDown;
-                    break;
-                    
-                case UIDeviceOrientationLandscapeLeft:
-                    orientation = UIImageOrientationLeft;
-                    break;
-                    
-                case UIDeviceOrientationLandscapeRight:
-                    orientation = UIImageOrientationRight;
-                    break;
-                    
-                default:
-                    orientation = UIImageOrientationRight;
-                    DebugLog(@"Unknown orientation");
-                    break;
-            }
-            
-            UIImage *fixedOrientationImage = [UIImage imageWithCGImage: capturedScreenImage.CGImage
-                                                                 scale: capturedScreenImage.scale
-                                                           orientation: orientation];
-            self.imageToShare = fixedOrientationImage;
-        }
-    }
-    
-    if (userName != nil)
-    {
-        NSString *what = @"pack";
-        
-        if (self.isVideo)
-        {
-            what = @"video";
-        }
-        
-        subject = [NSString stringWithFormat: @"%@ has shared a %@ with you", userName, what];
-    }
-    
-    self.mutableShareDictionary = @{@"owner": @(self.isOwner),
-                                    @"video": @(self.isVideo),
-                                    @"subject": subject}.mutableCopy;
-    
-    if (self.imageToShare)
-    {
-        [self.mutableShareDictionary addEntriesFromDictionary: @{@"image": self.imageToShare}];
-    }
-    
+    // load activities    
     OWFacebookActivity *facebookActivity = [[OWFacebookActivity alloc] init];
     OWTwitterActivity *twitterActivity = [[OWTwitterActivity alloc] init];
     
@@ -275,6 +183,8 @@ UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
     {
         OWMailActivity *mailActivity = [[OWMailActivity alloc] init];
         [activities addObject: mailActivity];
+        
+        // TODO: We might want to disable the email icon here if we don't have email on this device (iPod touch or non-configured email)
     }
     
     CGRect aViewFrame = CGRectZero;
@@ -286,27 +196,6 @@ UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
     self.activityViewController.userInfo = self.mutableShareDictionary;
     
     [self.activitiesContainerView addSubview: self.activityViewController.view];
-}
-
-
-- (BOOL) isOwner
-{
-    SYNAppDelegate *appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
-    
-    if ([self.resourceToShare isKindOfClass: [Channel class]])
-    {
-        return [((Channel *) self.resourceToShare).channelOwner.uniqueId isEqualToString : appDelegate.currentUser.uniqueId];
-    }
-    else
-    {
-        return NO;
-    }
-}
-
-
-- (BOOL) isVideo
-{
-    return [self.resourceToShare isKindOfClass: [VideoInstance class]];
 }
 
 
@@ -880,74 +769,75 @@ UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
     
     SYNAppDelegate *appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
     __weak SYNOneToOneSharingController *wself = self;
-    
-    [appDelegate.oAuthNetworkEngine emailShareObject: self.resourceToShare
-                                          withFriend: friend
-                                   completionHandler: ^(id no_content) {
-                                       UIAlertView *prompt = [[UIAlertView alloc] initWithTitle: @"Email Sent!"
-                                                                                        message: nil
-                                                                                       delegate: self
-                                                                              cancelButtonTitle: @"OK"
-                                                                              otherButtonTitles: nil];
-                                       [prompt show];
-                                       
-                                       if (![self isValidEmail: wself.friendToAddEmail.email])                          // if an email has been passed succesfully, register it (temporarily)
-                                       {
-                                           NSError *error;
-                                           [friend.managedObjectContext save: &error];
-                                       }
-                                       else                            // clean it for the next appearence of the table view
-                                       {
-                                           wself.friendToAddEmail.email = nil;
-                                       }
-                                       
-                                       NSMutableArray *updatedRecentFriends = wself.recentFriends.mutableCopy;
-                                       [updatedRecentFriends addObject: wself.friendToAddEmail];
-                                       
-                                       wself.recentFriends = [NSArray arrayWithArray: updatedRecentFriends];
-                                       
-                                       [wself.recentFriendsCollectionView reloadData];
-                                       
-                                       wself.friendToAddEmail = nil;
-                                       
-                                       wself.view.userInteractionEnabled = YES;
-                                       
-                                       wself.loader.hidden = YES;
-                                       [wself.loader stopAnimating];
-                                       wself.recentFriendsCollectionView.hidden = NO;
-                                   } errorHandler: ^(NSDictionary *error) {
-                                       NSString *title = @"Email Couldn't be Sent";
-                                       NSString *reason = @"Unkown reson";
-                                       NSDictionary *formErrors = error[@"form_errors"];
-                                       
-                                       if (formErrors[@"email"])
-                                       {
-                                           reason = @"The email could be wrong or the service down.";
-                                       }
-                                       
-                                       if (formErrors[@"external_system"])
-                                       {
-                                           reason = @"The email could be wrong or the service down.";
-                                       }
-                                       
-                                       if (formErrors[@"object_id"])
-                                       {
-                                           reason = @"The email could be wrong or the service down.";
-                                       }
-                                       
-                                       UIAlertView *prompt = [[UIAlertView alloc]	 initWithTitle: title
-                                                                                         message: reason
-                                                                                        delegate: self
-                                                                               cancelButtonTitle: @"OK"
-                                                                               otherButtonTitles: nil];
-                                       
-                                       [prompt show];
-                                       
-                                       wself.friendToAddEmail.email = nil;
-                                       wself.friendToAddEmail = nil;
-                                       
-                                       self.view.userInteractionEnabled = YES;
-                                   }];
+     
+    [appDelegate.oAuthNetworkEngine emailShareWithObjectType: self.mutableShareDictionary[@"type"]
+                                                    objectId: self.mutableShareDictionary[@"object_id"]
+                                                  withFriend: friend
+                                           completionHandler: ^(id no_content) {
+                                               UIAlertView *prompt = [[UIAlertView alloc] initWithTitle: @"Email Sent!"
+                                                                                                message: nil
+                                                                                               delegate: self
+                                                                                      cancelButtonTitle: @"OK"
+                                                                                      otherButtonTitles: nil];
+                                               [prompt show];
+                                               
+                                               if (![self isValidEmail: wself.friendToAddEmail.email])                          // if an email has been passed succesfully, register it (temporarily)
+                                               {
+                                                   NSError *error;
+                                                   [friend.managedObjectContext save: &error];
+                                               }
+                                               else                            // clean it for the next appearence of the table view
+                                               {
+                                                   wself.friendToAddEmail.email = nil;
+                                               }
+                                               
+                                               NSMutableArray *updatedRecentFriends = wself.recentFriends.mutableCopy;
+                                               [updatedRecentFriends addObject: wself.friendToAddEmail];
+                                               
+                                               wself.recentFriends = [NSArray arrayWithArray: updatedRecentFriends];
+                                               
+                                               [wself.recentFriendsCollectionView reloadData];
+                                               
+                                               wself.friendToAddEmail = nil;
+                                               
+                                               wself.view.userInteractionEnabled = YES;
+                                               
+                                               wself.loader.hidden = YES;
+                                               [wself.loader stopAnimating];
+                                               wself.recentFriendsCollectionView.hidden = NO;
+                                           } errorHandler: ^(NSDictionary *error) {
+                                               NSString *title = @"Email Couldn't be Sent";
+                                               NSString *reason = @"Unkown reson";
+                                               NSDictionary *formErrors = error[@"form_errors"];
+                                               
+                                               if (formErrors[@"email"])
+                                               {
+                                                   reason = @"The email could be wrong or the service down.";
+                                               }
+                                               
+                                               if (formErrors[@"external_system"])
+                                               {
+                                                   reason = @"The email could be wrong or the service down.";
+                                               }
+                                               
+                                               if (formErrors[@"object_id"])
+                                               {
+                                                   reason = @"The email could be wrong or the service down.";
+                                               }
+                                               
+                                               UIAlertView *prompt = [[UIAlertView alloc]	 initWithTitle: title
+                                                                                                 message: reason
+                                                                                                delegate: self
+                                                                                       cancelButtonTitle: @"OK"
+                                                                                       otherButtonTitles: nil];
+                                               
+                                               [prompt show];
+                                               
+                                               wself.friendToAddEmail.email = nil;
+                                               wself.friendToAddEmail = nil;
+                                               
+                                               self.view.userInteractionEnabled = YES;
+                                           }];
 }
 
 @end
