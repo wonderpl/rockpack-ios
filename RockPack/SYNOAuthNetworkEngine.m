@@ -1500,49 +1500,38 @@
     [self enqueueSignedOperation: networkOperation];
 }
 
--(void) emailShareObject: (AbstractCommon*)objectToShare
-              withFriend: (Friend*)friendToShare
-       completionHandler: (MKNKUserSuccessBlock) completionBlock
-            errorHandler: (MKNKUserErrorBlock) errorBlock
+- (void) emailShareWithObjectType: (NSString *) shareType
+                         objectId: (NSString *) objectId
+                       withFriend: (Friend *) friendToShare
+                completionHandler: (MKNKUserSuccessBlock) completionBlock
+                     errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    if(!objectToShare || !friendToShare)
+    if (!objectId || !friendToShare)
     {
-        errorBlock(@{@"params_error":[NSString stringWithFormat:@"params sent: %@ %@", objectToShare, friendToShare]});
+        errorBlock (@{@"params_error": [NSString stringWithFormat: @"params sent: %@ %@", objectId, friendToShare]});
         return;
     }
     
-    if(![friendToShare.externalSystem isEqualToString:@"email"] ||
-       !friendToShare.email ||
-       !friendToShare.externalUID)
+    if (![friendToShare.externalSystem isEqualToString: @"email"] || !friendToShare.email ||  !friendToShare.externalUID)
     {
-        errorBlock(@{@"params_error":[NSString stringWithFormat:@"%@ does has account of type %@", friendToShare, friendToShare.externalSystem]});
+        errorBlock (@{@"params_error": [NSString stringWithFormat: @"%@ does has account of type %@", friendToShare, friendToShare.externalSystem]});
         return;
     }
-        
+    
     NSString *apiString = [NSString stringWithFormat: @"%@?locale=%@", kAPIShareEmail, self.localeString];
     
-    NSString* objectToShareType;
-    if([objectToShare isKindOfClass:[Channel class]])
-        objectToShareType = @"channel";
-    else if([objectToShare isKindOfClass:[VideoInstance class]])
-        objectToShareType = @"video_instance";
-    else
-        return; // forward compatible, bail for other types that currently defined from the back-end
-             
-    NSDictionary* params = @{
-                             @"object_type": objectToShareType,
-                             @"object_id": objectToShare.uniqueId,
+    NSDictionary *params = @{@"object_type": shareType,
+                             @"object_id": objectId,
                              @"email": friendToShare.email,
                              @"external_system": friendToShare.externalSystem,
                              @"external_uid": friendToShare.externalUID,
-                             @"name": friendToShare.displayName ? friendToShare.displayName : [NSNull null]
-                             };
+                             @"name": friendToShare.displayName ? friendToShare.displayName : [NSNull null]};
     
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: params
-                                                                                                   httpMethod: @"POST"
-                                                                                                          ssl: YES];
-    [networkOperation addHeaders: @{@"Content-Type" : @"application/json"}];
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject *) [self operationWithPath: apiString
+                                                                                                         params: params
+                                                                                                     httpMethod: @"POST"
+                                                                                                            ssl: YES];
+    [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
     networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
     
     [self addCommonHandlerToNetworkOperation: networkOperation
@@ -1550,9 +1539,9 @@
                                 errorHandler: errorBlock];
     
     [self enqueueSignedOperation: networkOperation];
-    
-    
 }
+
+
 - (void) reportConcernForUserId: (NSString *) userId
                      objectType: (NSString *) objectType
                        objectId: (NSString *) objectId

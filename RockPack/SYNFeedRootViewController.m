@@ -684,42 +684,7 @@ typedef void(^FeedDataErrorBlock)(void);
 
 - (void) videoOverlayDidDissapear
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL hasShownSubscribeOnBoarding = [defaults boolForKey:kUserDefaultsAddVideo];
-    if (!hasShownSubscribeOnBoarding)
-    {
-        
-        NSString* message = NSLocalizedString(@"onboarding_video", nil);
-        
-        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0 ;
-        CGSize size = IS_IPAD ? CGSizeMake(240.0, 86.0) : CGSizeMake(200.0, 82.0);
-        CGRect rectToPointTo = CGRectZero;
-        PointingDirection directionToPointTo = PointingDirectionDown;
-        if (self.selectedVideoCell)
-        {
-           
-            rectToPointTo = [self.view convertRect:self.selectedVideoCell.frame fromView:self.selectedVideoCell];
-            if (rectToPointTo.origin.y < [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5)
-                directionToPointTo = PointingDirectionUp;
-            
-        }
-        SYNOnBoardingPopoverView* addToChannelPopover = [SYNOnBoardingPopoverView withMessage:message
-                                                                                  withSize:size
-                                                                               andFontSize:fontSize
-                                                                                pointingTo:rectToPointTo
-                                                                             withDirection:directionToPointTo];
-        
-        
-        //__weak SYNFeedRootViewController* wself = self;
-        addToChannelPopover.action = ^(id obj){
-           // [wself videoAddButtonTapped:wself.selectedVideoCell.addButton];
-        };
-        [appDelegate.onBoardingQueue addPopover:addToChannelPopover];
-        
-        [defaults setBool:YES forKey:kUserDefaultsAddVideo];
-        
-        [appDelegate.onBoardingQueue present];
-    }
+    
 }
 
 

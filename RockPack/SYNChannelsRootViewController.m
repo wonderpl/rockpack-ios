@@ -918,6 +918,7 @@ static BOOL lock = NO;
     [self.view addSubview: self.arrowImage];
 }
 
+// iPhone
 
 - (void) toggleChannelsCategoryTable: (id) sender
 {
@@ -964,7 +965,9 @@ static BOOL lock = NO;
 {
     if([action isEqualToString:@"open"] && [object isKindOfClass:[Genre class]])
     {
-        [self categoryTableController:nil didSelectCategory:object];
+        Genre* genreSelected = (Genre *)object;
+        [self.iPhoneCategoryTableViewController setSelectedCategoryForId:genreSelected.uniqueId];
+        [self categoryTableController:nil didSelectCategory:genreSelected];
         
     }
 }

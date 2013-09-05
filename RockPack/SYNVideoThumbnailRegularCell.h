@@ -21,6 +21,9 @@ typedef enum : NSInteger
 
 - (void) videoButtonPressed: (UIButton *) videoButton;
 
+- (void) arcMenuSelectedCell: (UICollectionViewCell *) selectedCell
+           andComponentIndex: (NSInteger) componentIndex;
+
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer;
 
 @end

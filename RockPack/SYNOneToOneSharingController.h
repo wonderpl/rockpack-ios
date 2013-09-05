@@ -11,11 +11,9 @@
 
 @interface SYNOneToOneSharingController : UIViewController
 
+- (id) initWithInfo: (NSMutableDictionary *) mutableInfoDictionary;
 
-+ (id) withResourceType: (AbstractCommon *) objectToShare andImage:(UIImage*)imageToShare;
-- (id) initWithResource: (AbstractCommon *) objectToShare andImage:(UIImage*)imageToShare;
-
--(IBAction)authorizeFacebookButtonPressed:(id)sender;
--(IBAction)authorizeAddressBookButtonPressed:(id)sender;
+- (IBAction) authorizeFacebookButtonPressed: (id) sender;
+- (IBAction) authorizeAddressBookButtonPressed: (id) sender;
 
 @end
