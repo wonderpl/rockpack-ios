@@ -305,10 +305,15 @@
         // Do iOS7 Tingz
         AMBlurView *blurView = [AMBlurView new];
         blurView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        [blurView setFrame:CGRectMake(0.0f, 0.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight] + 2.0f)];
         [blurView setBlurTintColor:[UIColor colorWithRed:21.0f/255.0 green:24.0f/255.0 blue:28.0f/255.0 alpha:1.0f]];
+        [blurView setFrame:CGRectMake(0.0f, 0.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight] + 2.0f)];
+        
+        UIView * darkView = [[UIView alloc] initWithFrame:blurView.frame];
+        darkView.backgroundColor = [UIColor colorWithWhite:0.0f/255.0f alpha:0.35f];
+        
         self.view.backgroundColor = [UIColor clearColor];
         [self.view insertSubview:blurView atIndex:0];
+        [self.view insertSubview:darkView aboveSubview:blurView];
     }
 }
 
