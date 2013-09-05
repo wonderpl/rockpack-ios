@@ -45,12 +45,13 @@
     self.externalUID = [dictionary objectForKey: @"external_uid"];
     
     
-    
     self.resourceURL = [dictionary objectForKey: @"resource_url"];
     
     
     self.hasIOSDevice = [dictionary objectForKey: @"has_ios_device"
-                                     withDefault: @(NO)];
+                                     withDefault: @NO];
+    
+    NSLog(@"resourceURL: %@ - ios: %@", self.resourceURL, self.hasIOSDevice);
     
     self.lastShareDate = [dictionary dateFromISO6801StringForKey:@"last_shared_date"
                                                      withDefault:nil];
