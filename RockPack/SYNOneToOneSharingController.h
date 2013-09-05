@@ -11,11 +11,10 @@
 
 @interface SYNOneToOneSharingController : UIViewController
 
++ (id) withResourceType: (AbstractCommon *) objectToShare andImage: (UIImage *) imageToShare;
+- (id) initWithResource: (AbstractCommon *) objectToShare andImage: (UIImage *) imageToShare;
 
-+ (id) withResourceType: (AbstractCommon *) objectToShare andImage:(UIImage*)imageToShare;
-- (id) initWithResource: (AbstractCommon *) objectToShare andImage:(UIImage*)imageToShare;
-
--(IBAction)authorizeFacebookButtonPressed:(id)sender;
--(IBAction)authorizeAddressBookButtonPressed:(id)sender;
+- (IBAction) authorizeFacebookButtonPressed: (id) sender;
+- (IBAction) authorizeAddressBookButtonPressed: (id) sender;
 
 @end
