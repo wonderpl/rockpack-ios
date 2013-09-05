@@ -67,11 +67,12 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
            startItem: (SYNArcMenuItem *) startItem
          optionMenus: (NSArray *) menuItemArray
        cellIndexPath: (NSIndexPath *) cellIndexPath
+      componentIndex: (NSInteger) componentIndex
 {
     if ((self = [super initWithFrame: frame]))
     {
         // Assume no component index for now
-        self.componentIndex = kArcMenuInvalidComponentIndex;
+        self.componentIndex = componentIndex;
         
         self.backgroundColor = [UIColor clearColor];
         
@@ -104,7 +105,7 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 {
     if (show)
     {
-        self.startButton.highlighted = TRUE;
+        self.startButton.imageView.highlighted = TRUE;
         [self setMenu];
         [self expandMenu];
     }
@@ -122,32 +123,60 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
     int adjustedCount = (count == 1) ? 1 : (count -1);
     
     // If we don't have anu menu items highlighted, then ensure that the main button is highlighted instead
-    self.startButton.highlighted = (currentIndex == -1) ? TRUE : FALSE;
+    self.startButton.imageView.highlighted = (currentIndex == -1) ? TRUE : FALSE;
     
     for (int index = 0; index < count; index++)
     {
         SYNArcMenuItem *item = self.menusArray[index];
         
         if (index == currentIndex)
-        {
-            item.highlighted = TRUE;
+        {            
+            if (item.imageView.highlighted == FALSE)
+            {
+                item.imageView.highlighted = TRUE;
+                
+                // Bounce-o-tron
+                item.label.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.001, 0.001);
+                
+                [UIView animateWithDuration: 0.1f
+                                 animations: ^{
+                                     item.label.alpha = 1.0f;
+                                     item.label.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.1, 1.1);
+                                 } completion: ^(BOOL finished) {
+                                     [UIView animateWithDuration: 0.1f
+                                                      animations: ^{
+                                                          item.label.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.9, 0.9);
+                                                      } completion: ^(BOOL finished) {
+                                                          [UIView animateWithDuration: 0.1f
+                                                                           animations:^{
+                                                                               item.label.transform = CGAffineTransformIdentity;
+                                                                           }];
+                                                      }];
+                                 }];
+            }
             
             CGFloat distance = [self distanceBetweenPoint: tapPoint
                                                  andPoint: item.endPoint];
             
             CGFloat scaleFactor = ((kSYNMinimumActivationDistance - distance) / kSYNMinimumActivationDistance);
             CGFloat zoomFactor = scaleFactor * 0.25;
-//            NSLog (@"Scalefactor %f", scaleFactor);
             
             CGPoint farPoint = CGPointMake(self.startPoint.x + self.endRadius * sinf(currentIndex * self.menuWholeAngle / adjustedCount), self.startPoint.y - self.endRadius * cosf(currentIndex * self.menuWholeAngle / adjustedCount));
             
             item.center = RotateAndScaleCGPointAroundCenter(farPoint, self.startPoint, self.rotateAngle, 1 + (scaleFactor * 0.4));
             
-            item.transform = CGAffineTransformMakeScale(0.5 + zoomFactor, 0.5 + zoomFactor);
+//            item.transform = CGAffineTransformMakeScale(0.5 + zoomFactor, 0.5 + zoomFactor);
+            item.imageView.transform = CGAffineTransformMakeScale(1 + zoomFactor, 1 + zoomFactor);
         }
-        else if (item.highlighted == TRUE)
+        else if (item.imageView.highlighted == TRUE)
         {
-            item.highlighted = FALSE;
+            item.imageView.highlighted = FALSE;
+            
+            [UIView animateWithDuration: 0.1
+                             animations: ^{
+                                 item.label.alpha = 0.0;
+                             } completion: ^(BOOL finished) {
+                             }];
             
             [UIView animateWithDuration: kSYNArcMenuDefaultAnimationDuration
                                   delay: 0.0f
@@ -157,8 +186,7 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
                                  item.transform = CGAffineTransformMakeScale(0.5, 0.5);
                              }
                              completion: ^(BOOL finished){
-                             }
-             ];
+                             }];
         }
     }
 }
@@ -338,7 +366,7 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
     
     for (SYNArcMenuItem *item in self.menusArray)
     {
-        if (item.highlighted == TRUE)
+        if (item.imageView.highlighted == TRUE)
         {
              userDidSelectMenuItem = TRUE;
             
@@ -410,7 +438,10 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
     
     CAAnimationGroup *animationgroup = [CAAnimationGroup animation];
     animationgroup.delegate = self;
-    [animationgroup setValue: @"blowupAnimationAtPoint" forKey:@"animationName"];
+    
+    [animationgroup setValue: @"blowupAnimationAtPoint"
+                      forKey:@"animationName"];
+    
     animationgroup.animations = @[positionAnimation, scaleAnimation, opacityAnimation];
     animationgroup.duration = self.animationDuration;
     animationgroup.fillMode = kCAFillModeForwards;

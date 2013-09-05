@@ -395,30 +395,23 @@
         return;
     
     CGRect screenRect = [[SYNDeviceManager sharedInstance] currentScreenRect];
+    
+    
+    
+    
+    
+    // fade in the background ...
+    
     backgroundView = [[UIView alloc] initWithFrame:screenRect];
     backgroundView.alpha = 0.0f;
     backgroundView.backgroundColor = [UIColor blackColor];
     backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
-    popoverView = view;
-    
-    popoverView.alpha = 0.0;
-    popoverView.center = CGPointMake(screenRect.size.width * 0.5, screenRect.size.height * 0.5);
-    popoverView.frame = CGRectIntegral(view.frame);
-    popoverView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-    
     [self.masterController.view addSubview:backgroundView];
-    [self.masterController.view addSubview:view];
-    
-    
-    
-    // fade in in order
     [UIView animateWithDuration: 0.3
                           delay: 0.0
                         options: UIViewAnimationOptionCurveEaseOut
                      animations: ^{
-                         backgroundView.alpha = 0.8f;
-                         
+                         backgroundView.alpha = 0.7f;
                      }
                      completion:^(BOOL finished) {
                          
@@ -427,32 +420,81 @@
                          [backgroundView addGestureRecognizer:tapToCloseGesture];
                      }];
     
-    [UIView animateWithDuration: 0.3
-                          delay: 0.2
-                        options: UIViewAnimationOptionCurveEaseOut
-                     animations: ^{
-                         
-                         view.alpha = 1.0f;
-                     }
-                     completion:nil];
+    // ... and then the popover
+    [self.masterController.view addSubview:view];
+    popoverView = view;
+    if(IS_IPAD)
+    {
+        popoverView.alpha = 0.0;
+        popoverView.center = CGPointMake(screenRect.size.width * 0.5, screenRect.size.height * 0.5);
+        popoverView.frame = CGRectIntegral(view.frame);
+        popoverView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        
+        [UIView animateWithDuration: 0.3
+                              delay: 0.2
+                            options: UIViewAnimationOptionCurveEaseOut
+                         animations: ^{
+                             
+                             view.alpha = 1.0f;
+                         }
+                         completion:nil];
+    }
+    else
+    {
+        __block CGRect pvFrame = popoverView.frame;
+        pvFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
+        popoverView.frame = pvFrame;
+        
+        [UIView animateWithDuration: 0.3
+                              delay: 0.2
+                            options: UIViewAnimationOptionCurveEaseOut
+                         animations: ^{
+                             pvFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - pvFrame.size.height;
+                             popoverView.frame = pvFrame;
+                         }
+                         completion:nil];
+    }
+    
     
 }
 
 -(void)removePopoverView
 {
-    [UIView animateWithDuration: 0.3
-                          delay: 0.0
-                        options: UIViewAnimationOptionCurveEaseOut
-                     animations: ^{
-                         backgroundView.alpha = 0.0;
-                         popoverView.alpha = 0.0;
-                     }
-                     completion:^(BOOL finished) {
-                         [backgroundView removeFromSuperview];
-                         [popoverView removeFromSuperview];
-                         backgroundView = nil;
-                         popoverView = nil;
-                     }];
+    void(^RemovePopoverComplete)(BOOL) = ^(BOOL finished)
+    {
+        [backgroundView removeFromSuperview];
+        [popoverView removeFromSuperview];
+        backgroundView = nil;
+        popoverView = nil;
+    };
+    
+    if(IS_IPAD)
+    {
+        [UIView animateWithDuration: 0.3
+                              delay: 0.0
+                            options: UIViewAnimationOptionCurveEaseOut
+                         animations: ^{
+                             backgroundView.alpha = 0.0;
+                             popoverView.alpha = 0.0;
+                         }
+                         completion:RemovePopoverComplete];
+    }
+    else
+    {
+        __block CGRect pvFrame = popoverView.frame;
+        
+        [UIView animateWithDuration: 0.3
+                              delay: 0.0
+                            options: UIViewAnimationOptionCurveEaseOut
+                         animations: ^{
+                             pvFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
+                             popoverView.frame = pvFrame;
+                         }
+                         completion:RemovePopoverComplete];
+        
+        
+    }
+    
 }
 
 

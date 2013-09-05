@@ -1064,17 +1064,12 @@ static BOOL lock = NO;
 #pragma mark - Arc menu support
 
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
-                    forCell: (UICollectionViewCell *) cell
 {
-    [super arcMenuUpdateState: recognizer
-                      forCell: cell];
+    [super arcMenuUpdateState: recognizer];
     
     if (recognizer.state == UIGestureRecognizerStateBegan)
     {
-        // Need to set the component index if aggregate celll
-        NSIndexPath *indexPath = [self indexPathForChannelCell: cell];
-        
-        Channel *channel = [self channelInstanceForIndexPath: indexPath
+        Channel *channel = [self channelInstanceForIndexPath: self.arcMenuIndexPath
                                            andComponentIndex: kArcMenuInvalidComponentIndex];
         
         [self requestShareLinkWithObjectType: @"channel"
@@ -1085,10 +1080,8 @@ static BOOL lock = NO;
 
 // Bypass implementation for derived classes
 - (void) superArcMenuUpdateState: (UIGestureRecognizer *) recognizer
-                         forCell: (UICollectionViewCell *) cell
 {
-    [super arcMenuUpdateState: recognizer
-                      forCell: cell];
+    [super arcMenuUpdateState: recognizer];
 }
 
 
@@ -1111,12 +1104,6 @@ static BOOL lock = NO;
         AssertOrLog(@"Invalid Arc Menu index selected");
     }
 }
-
-
-//- (UIView *) arcMenuViewToShade
-//{
-//    return self.channelThumbnailCollectionView;
-//}
 
 
 - (Channel *) channelInstanceForIndexPath: (NSIndexPath *) indexPath

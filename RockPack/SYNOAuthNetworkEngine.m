@@ -1500,8 +1500,8 @@
     [self enqueueSignedOperation: networkOperation];
 }
 
--(void) emailShareObject:(AbstractCommon*)objectToShare
-              withFriend:(Friend*)friendToShare
+-(void) emailShareObject: (AbstractCommon*)objectToShare
+              withFriend: (Friend*)friendToShare
        completionHandler: (MKNKUserSuccessBlock) completionBlock
             errorHandler: (MKNKUserErrorBlock) errorBlock
 {
@@ -1511,7 +1511,9 @@
         return;
     }
     
-    if([friendToShare.externalSystem isEqualToString:@"email"])
+    if(![friendToShare.externalSystem isEqualToString:@"email"] ||
+       !friendToShare.email ||
+       !friendToShare.externalUID)
     {
         errorBlock(@{@"params_error":[NSString stringWithFormat:@"%@ does has account of type %@", friendToShare, friendToShare.externalSystem]});
         return;
@@ -1533,7 +1535,7 @@
                              @"email": friendToShare.email,
                              @"external_system": friendToShare.externalSystem,
                              @"external_uid": friendToShare.externalUID,
-                             @"name": friendToShare.displayName
+                             @"name": friendToShare.displayName ? friendToShare.displayName : [NSNull null]
                              };
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString

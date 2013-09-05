@@ -229,7 +229,7 @@
                                                 }
                                                 else
                                                 {
-                                                    NSLog (@"Channel disappeared from underneath us");
+                                                    DebugLog (@"Channel disappeared from underneath us");
                                                 }
                                                 
                                             } errorHandler: ^(NSDictionary *errorDictionary) {
@@ -285,7 +285,7 @@
                                                   }
                                                   else
                                                   {
-                                                      NSLog (@"Channel disappeared from underneath us");
+                                                      DebugLog (@"Channel disappeared from underneath us");
                                                   }
                                               } errorHandler: ^(NSDictionary *errorDictionary) {
                                                   [[NSNotificationCenter defaultCenter]  postNotificationName: kUpdateFailed
@@ -401,7 +401,7 @@
              }
              else
              {
-                 NSLog (@"Channel disappeared from underneath us");
+                 DebugLog (@"Channel disappeared from underneath us");
              }
              
              [appDelegate.oAuthNetworkEngine userSubscriptionsForUser: ((User *) channelOwner)
@@ -427,7 +427,7 @@
                   }
                   else
                   {
-                      NSLog (@"Channel disappeared from underneath us");
+                      DebugLog (@"Channel disappeared from underneath us");
                   }
               }  onError: errorBlock];
          } onError: errorBlock];

@@ -200,18 +200,12 @@
 
 
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
-                    forCell: (UICollectionViewCell *) cell
 {
-    [self superArcMenuUpdateState: recognizer
-                           forCell: cell];
-    
-    
+    [self superArcMenuUpdateState: recognizer];
+
     if (recognizer.state == UIGestureRecognizerStateBegan)
     {
-        // Need to set the component index if aggregate celll
-        NSIndexPath *indexPath = [self indexPathForChannelCell: cell];
-        
-        Channel *channel = self.user.subscriptions[indexPath.item];
+        Channel *channel = self.user.subscriptions[self.arcMenuIndexPath.item];
         
         [self requestShareLinkWithObjectType: @"channel"
                                     objectId: channel.uniqueId];
@@ -234,10 +228,5 @@
         AssertOrLog(@"Invalid Arc Menu index selected");
     }
 }
-
-//- (UIView *) arcMenuViewToShade
-//{
-//    return self.channelThumbnailCollectionView;
-//}
 
 @end

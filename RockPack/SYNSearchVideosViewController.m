@@ -592,7 +592,6 @@
                 directionToPointTo = PointingDirectionUp;
             }
             
-            //NSLog(@"%f %f", rectToPointTo.origin.x, rectToPointTo.origin.y);
         }
         
         SYNOnBoardingPopoverView *addToChannelPopover = [SYNOnBoardingPopoverView withMessage: message

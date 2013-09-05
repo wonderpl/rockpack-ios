@@ -44,15 +44,19 @@ typedef void (^SYNShareCompletionBlock)(void);
 }
 
 @property (nonatomic) BOOL isAnimating;
-@property (nonatomic) BOOL isLocked; // prevents the back button from firing (not yet implemented)
+
+@property (nonatomic) BOOL isLocked;
+@property (nonatomic) BOOL arcMenuIsChannelCell;
 
 @property (nonatomic) NSInteger dataItemsAvailable;
 @property (nonatomic) NSRange dataRequestRange;
 
 @property (nonatomic, assign) BOOL inDrag;
 @property (nonatomic, assign) CGPoint initialDragCenter;
+@property (nonatomic, assign) NSInteger arcMenuComponentIndex;
 @property (nonatomic, assign, getter = isLoadingMoreContent) BOOL loadingMoreContent;
 @property (nonatomic, readonly) NSString *viewId;
+@property (nonatomic, strong)  NSIndexPath *arcMenuIndexPath;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
 @property (nonatomic, strong) SYNArcMenuView *arcMenu;
@@ -134,6 +138,9 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (CGSize) footerSize;
 
 - (NavigationButtonsAppearance) navigationAppearance;
+
+- (void) arcMenuSelectedCell: (UICollectionViewCell *) selectedCell
+           andComponentIndex: (NSInteger) componentIndex;
 
 
 @end

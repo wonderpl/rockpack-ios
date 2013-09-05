@@ -49,9 +49,9 @@
 {
     self = [super init];
     if (self) {
-        self.presentingController = viewController;
         
-
+        
+        self.presentingController = viewController;
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
             _backgroundView = [[UIView alloc] initWithFrame:self.view.bounds];
@@ -63,11 +63,15 @@
             UITapGestureRecognizer *tapOutside =
             [[UITapGestureRecognizer alloc] initWithTarget:self
                                                     action:@selector(dismissViewControllerOnTouch)];
+            
             [_backgroundView addGestureRecognizer:tapOutside];
             
             [self.view addSubview:_backgroundView];
+            
         } else {
+            
             self.view.frame = CGRectMake(0, 0, 320, 96);
+            
         }
         
         _activities = activities;

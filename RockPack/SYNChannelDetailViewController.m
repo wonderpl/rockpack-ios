@@ -716,7 +716,7 @@
         if (obj == self.channel)
         {
             self.dataItemsAvailable = self.channel.totalVideosValue;
-            DebugLog(@"%d : %@", idx, obj);
+            
             
             self.subscribeButton.selected = self.channel.subscribedByUserValue;
             self.subscribeButton.enabled = YES;
@@ -2634,13 +2634,10 @@ shouldChangeTextInRange: (NSRange) range
       
         //__weak SYNChannelDetailViewController *wself = self;
         addToChannelPopover.action = ^(id obj){
-            
-            if([obj isKindOfClass:[UILongPressGestureRecognizer class]])
+            if ([obj isKindOfClass:[UILongPressGestureRecognizer class]])
             {
-                [self arcMenuUpdateState:obj forCell:randomCell];
+                [self arcMenuUpdateState: obj];
             }
-            
-            
         };
         
         [appDelegate.onBoardingQueue addPopover: addToChannelPopover];
