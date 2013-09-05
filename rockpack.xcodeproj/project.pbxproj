@@ -3174,11 +3174,11 @@
 			isa = PBXGroup;
 			children = (
 				BE7D036A17A69A99008053DC /* Aggregate Cells */,
-				0199F12D166F95C000E479C6 /* Collections */,
-				012632C7162DF4C40009FF9C /* Layout Engine Support */,
-				0111CDF91729312000612186 /* Cover cells */,
-				01B7CD9D166E1616001F4AF0 /* Video cells */,
 				01B7CD9E166E163D001F4AF0 /* Channel cells */,
+				0199F12D166F95C000E479C6 /* Collections */,
+				0111CDF91729312000612186 /* Cover cells */,
+				012632C7162DF4C40009FF9C /* Layout Engine Support */,
+				01B7CD9D166E1616001F4AF0 /* Video cells */,
 			);
 			name = "Collection Assets";
 			sourceTree = "<group>";
