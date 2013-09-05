@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SYNOneToOneFriendCell : UITableViewCell {
-    
-}
+@interface SYNOneToOneFriendCell : UITableViewCell
+
 @property (nonatomic, strong) UIView* customSeparatorView;
+
 @end
