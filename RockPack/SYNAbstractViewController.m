@@ -1053,7 +1053,7 @@
         return;
     
     _mainCollectionViewScrollingDirection = mainCollectionViewScrollingDirection;
-    _mainCollectionViewOffsetDeltaY = 0.0f;
+    self.mainCollectionViewOffsetDeltaY = 0.0f;
     onceToken = 0;
 }
 

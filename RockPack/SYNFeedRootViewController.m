@@ -1431,6 +1431,7 @@ typedef void(^FeedDataErrorBlock)(void);
 {
     CGFloat currentContentOffsetY = scrollView.contentOffset.y;
     
+    // detect direction
     if (_mainCollectionViewLastOffsetY > currentContentOffsetY)
         self.mainCollectionViewScrollingDirection = ScrollingDirectionDown;
     else if (_mainCollectionViewLastOffsetY < currentContentOffsetY)
@@ -1445,9 +1446,10 @@ typedef void(^FeedDataErrorBlock)(void);
         [self loadMoreVideos];
     
     // animate the refresh control
-    if (scrollView.contentOffset.y < COLLECTION_VIEW_INSET)
+    if (scrollView.contentOffset.y < COLLECTION_VIEW_INSET) // contentOffset.y is -90 at rest because of the contentInset (i guess)
     {
-        NSLog(@"-- %f", scrollView.contentOffset.y);
+        
+        
         [UIView animateWithDuration:0.3 animations:^{
             
             if (scrollView.contentOffset.y < -(COLLECTION_VIEW_INSET + REFRESH_HEADER_HEIGHT)) {
@@ -1478,16 +1480,24 @@ typedef void(^FeedDataErrorBlock)(void);
 
 -(void)setMainCollectionViewOffsetDeltaY:(CGFloat)mainCollectionViewOffsetDeltaY
 {
-   
+    
+    NSLog(@"delta Y: %.1f %@ - offset y: %f", _mainCollectionViewOffsetDeltaY,
+          (self.mainCollectionViewScrollingDirection == ScrollingDirectionUp ? @"↑" : @"↓"), self.feedCollectionView.contentOffset.y);
+    
     _mainCollectionViewOffsetDeltaY = mainCollectionViewOffsetDeltaY;
-    if (_mainCollectionViewOffsetDeltaY > kNotableScrollThreshold &&
-        _mainCollectionViewOffsetDeltaY > COLLECTION_VIEW_INSET &&
+    
+    if(self.mainCollectionViewScrollingDirection == ScrollingDirectionUp && self.feedCollectionView.contentOffset.y < 91.0f)
+        return;
+    
+    if (_mainCollectionViewOffsetDeltaY > kNotableScrollThreshold && // 16.0f
+        _mainCollectionViewOffsetDeltaY > COLLECTION_VIEW_INSET && // 90.0f
         !hasPulledToRefresh)
     {
         
         _mainCollectionViewOffsetDeltaY = 0.0f;
         
         dispatch_once(&onceToken, ^{
+            
             [[NSNotificationCenter defaultCenter] postNotificationName:kNotableScrollEvent
                                                                 object:self
                                                               userInfo:@{kNotableScrollDirection:@(_mainCollectionViewScrollingDirection)}];
