@@ -373,6 +373,8 @@ static BOOL lock = NO;
     
     _mainCollectionViewOffsetDeltaY = mainCollectionViewOffsetDeltaY;
     
+    if(self.mainCollectionViewScrollingDirection == ScrollingDirectionUp && self.channelThumbnailCollectionView.contentOffset.y < 91.0f)
+        return;
     
     if (_mainCollectionViewOffsetDeltaY > kNotableScrollThreshold + 12.0f && _mainCollectionViewOffsetDeltaY > 90.0f &&
         !self.isAnimating &&
