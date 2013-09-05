@@ -77,6 +77,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 @synthesize isAnimatingHeader;
 
+
+
 #pragma mark - Object lifecycle
 
 - (id) initWithContainerViewController: (SYNContainerViewController*) root
@@ -313,6 +315,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 #pragma mark - Scroller Changes
+
+
 
 -(void)notableScrollNotification:(NSNotification*)notification
 {

@@ -99,6 +99,8 @@ typedef void (^SYNShareCompletionBlock)(void);
 
 - (void) headerTapped;
 
+-(void)notableScrollNotification:(NSNotification*)notification;
+
 - (IBAction) toggleStarAtIndexPath: (NSIndexPath *) indexPath;
 
 // Share

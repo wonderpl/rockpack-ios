@@ -86,6 +86,12 @@
                                                  selector: @selector(applicationWillEnterForeground:)
                                                      name: UIApplicationWillEnterForegroundNotification
                                                    object: nil];
+        
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(notableScrollNotification:)
+                                                     name:kNotableScrollEvent
+                                                   object:nil];
     }
     
     return self;
@@ -134,7 +140,9 @@
 
 - (void) viewDidScrollToFront
 {
-//    DebugLog (@"%@ came to front", self.title);
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNotableScrollEvent
+                                                        object:self
+                                                      userInfo:@{kNotableScrollDirection:@(ScrollingDirectionDown)}];
 }
 
 
@@ -955,6 +963,11 @@
     _mainCollectionViewScrollingDirection = mainCollectionViewScrollingDirection;
     self.mainCollectionViewOffsetDeltaY = 0.0f;
     onceToken = 0;
+}
+
+-(void)notableScrollNotification:(NSNotification*)notification
+{
+    // add things that should animate specifically to a view
 }
 
 @end

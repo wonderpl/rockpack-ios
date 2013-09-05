@@ -241,6 +241,8 @@ typedef void(^FeedDataErrorBlock)(void);
 
 - (void) viewDidScrollToFront
 {
+    [super viewDidScrollToFront];
+    
     [self updateAnalytics];
     
     self.feedCollectionView.scrollsToTop = YES;
