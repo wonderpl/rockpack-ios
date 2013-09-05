@@ -70,6 +70,14 @@
             self.tableView.backgroundColor = [UIColor colorWithWhite:255.0f/255.0f alpha:0.4];
         }
     }
+    
+    if (IS_IPHONE)
+    {
+        if (IS_IOS_7_OR_GREATER)
+        {
+            self.tableView.backgroundColor = [UIColor colorWithWhite:255.0f/255.0f alpha:0.4];
+        }
+    }
 }
 
 

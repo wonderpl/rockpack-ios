@@ -129,6 +129,12 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
         CGRect searchSliderFrame = self.searchSlider.frame;
         searchSliderFrame.origin.x = searchSliderFrame.size.width;
         self.searchSlider.frame= searchSliderFrame;
+        
+        if (IS_IOS_7_OR_GREATER)
+        {
+            self.view.backgroundColor = [UIColor clearColor];
+        }
+
     }
     
     if (IS_IPAD)
