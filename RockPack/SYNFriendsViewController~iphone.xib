@@ -151,7 +151,7 @@
                             <rect key="frame" x="0.0" y="2" width="228" height="45"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                         </imageView>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="FILTER FRIENDS" adjustsFontSizeToFit="NO" minimumFontSize="18" clearButtonMode="whileEditing" id="20" customClass="SYNTextFieldSearchIPhone">
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search Friends" adjustsFontSizeToFit="NO" minimumFontSize="18" clearButtonMode="whileEditing" id="20" customClass="SYNTextFieldSearchIPhone">
                             <rect key="frame" x="42" y="9" width="174" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
