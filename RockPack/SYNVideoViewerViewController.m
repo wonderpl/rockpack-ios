@@ -497,7 +497,7 @@
     
     self.channelTitleLabel.text = videoInstance.channel.title;
     self.videoTitleLabel.text = videoInstance.title;
-    self.starButton.selected = videoInstance.video.starredByUserValue;
+    self.starButton.selected = videoInstance.starredByUserValue;
     self.likesCountLabel.text = [videoInstance.video.starCount stringValue];
     [self refreshAddbuttonStatus:nil];
 }
@@ -779,17 +779,18 @@
                                               
                                               
                                               
-                                              BOOL previousStarringState = videoInstance.video.starredByUserValue;
+                                              BOOL previousStarringState = videoInstance.starredByUserValue;
+                                              NSNumber* previousStarCount = videoInstance.video.starCount;
                                               if (previousStarringState)
                                               {
                                                   // Currently highlighted, so decrement
-                                                  videoInstance.video.starredByUserValue = NO;
+                                                  videoInstance.starredByUserValue = NO;
                                                   videoInstance.video.starCountValue -= 1;
                                               }
                                               else
                                               {
                                                   // Currently highlighted, so increment
-                                                  videoInstance.video.starredByUserValue = YES;
+                                                  videoInstance.starredByUserValue = YES;
                                                   videoInstance.video.starCountValue += 1;
                                                   [Appirater userDidSignificantEvent: FALSE];
                                               }
@@ -800,8 +801,9 @@
                                               if(![videoInstance.managedObjectContext save:&error]) // something went wrong
                                               {
                                                   // revert to previous state
-                                                  videoInstance.video.starredByUserValue = previousStarringState;
-                                                  videoInstance.video.starCountValue += previousStarringState ? 1 : -1;
+                                                  videoInstance.starredByUserValue = previousStarringState;
+                                                  videoInstance.video.starCount = previousStarCount;
+                                                  button.selected = !button.selected;
                                               }
                                               
                                             finishBlock(response);
@@ -1238,7 +1240,7 @@
     
     for (VideoInstance* vi in self.videoInstanceArray)
     {
-        vi.video.starredByUserValue = YES;
+        vi.starredByUserValue = YES;
     }
     
     NSError* error;

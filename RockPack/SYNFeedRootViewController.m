@@ -1313,31 +1313,41 @@ typedef void(^FeedDataErrorBlock)(void);
     
     self.togglingInProgress = YES;
     
+    __weak SYNFeedRootViewController* wself = self;
+    MKNKUserErrorBlock finishBlock = ^(id obj) {
+        
+        
+        [wself.feedCollectionView reloadData];
+        wself.togglingInProgress = NO;
+        button.enabled = YES;
+    };
+    
     // int starredIndex = self.currentSelectedIndex;
     [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
                                                      action: (didStar ? @"star" : @"unstar")
                                             videoInstanceId: videoInstance.uniqueId
                                           completionHandler: ^(id response) {
+                                              
                                               self.togglingInProgress = NO;
+                                              
+                                              BOOL previousStarringState = videoInstance.video.starredByUserValue;
                                               
                                               if (didStar)
                                               {
                                                   // Currently highlighted, so increment
-                                                  videoInstance.video.starredByUserValue = YES;
+                                                  videoInstance.starredByUserValue = YES;
                                                   videoInstance.video.starCountValue += 1;
                                                   
                                                   button.selected = YES;
                                                   
-                                                  [videoInstance addStarrersObject: appDelegate.currentUser];
                                               }
                                               else
                                               {
                                                   // Currently highlighted, so decrement
-                                                  videoInstance.video.starredByUserValue = NO;
+                                                  videoInstance.starredByUserValue = NO;
                                                   videoInstance.video.starCountValue -= 1;
                                                   
                                                   button.selected = NO;
-                                                  [videoInstance removeStarrersObject: appDelegate.currentUser];
                                               }
                                               
                                               [appDelegate saveContext: YES];
@@ -1362,17 +1372,18 @@ typedef void(^FeedDataErrorBlock)(void);
                                                   }
                                               }
                                               
-                                              [self.feedCollectionView reloadData];
+                                              NSError* error;
+                                              if(![videoInstance.managedObjectContext save:&error]) // something went wrong
+                                              {
+                                                  // revert to previous state
+                                                  videoInstance.video.starredByUserValue = previousStarringState;
+                                                  videoInstance.video.starCountValue += previousStarringState ? 1 : -1;
+                                                  button.selected = !button.selected;
+                                              }
                                               
-                                              button.enabled = YES;
-                                          }
-                                               errorHandler: ^(id error) {
-                                                   self.togglingInProgress = NO;
-                                                   
-                                                   DebugLog(@"Could not star video");
-                                                   
-                                                   button.enabled = YES;
-                                               }];
+                                              finishBlock(response);
+                                              
+                                          } errorHandler: finishBlock];
 }
 
 #pragma mark - Load More Footer

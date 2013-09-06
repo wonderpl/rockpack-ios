@@ -2364,6 +2364,7 @@
 		BE06EEEF17D759390028F2E3 /* ABContactPlaceholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ABContactPlaceholder@2x.png"; path = "Assets/Images/ABContactPlaceholder@2x.png"; sourceTree = "<group>"; };
 		BE06EEF217D78DCA0028F2E3 /* SYNOneToOneFriendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOneToOneFriendCell.h; sourceTree = "<group>"; };
 		BE06EEF317D78DCA0028F2E3 /* SYNOneToOneFriendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOneToOneFriendCell.m; sourceTree = "<group>"; };
+		BE06EFA117DA11E30028F2E3 /* Rockpack 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rockpack 12.xcdatamodel"; sourceTree = "<group>"; };
 		BE08159D16D3EF7F00ADB1DC /* SYNGenreTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNGenreTabViewController.h; sourceTree = "<group>"; };
 		BE08159E16D3EF7F00ADB1DC /* SYNGenreTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNGenreTabViewController.m; sourceTree = "<group>"; };
 		BE0815A016D4DADA00ADB1DC /* SYNTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNTabView.h; sourceTree = "<group>"; };
@@ -7546,6 +7547,7 @@
 			isa = XCVersionGroup;
 			children = (
 				BE8F938E17B3C64E00E7035F /* Rockpack 11.xcdatamodel */,
+				BE06EFA117DA11E30028F2E3 /* Rockpack 12.xcdatamodel */,
 				BE8F938717B1224900E7035F /* Rockpack 10.xcdatamodel */,
 				BE7D035C17A13EF4008053DC /* Rockpack 7.xcdatamodel */,
 				BE82099B17A9651900472ADD /* Rockpack 8.xcdatamodel */,
