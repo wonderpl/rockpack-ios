@@ -89,15 +89,23 @@
 {
   	if ((self = [super init]))
     {
+        
 		self.videoInstanceArray = videoInstanceArray;
+        
         self.currentSelectedIndex = selectedIndex;
         
         //FIXME: FAVOURITES Temporary workaround for missing favourites status. remove when proper fix in place.
+        
         NSMutableArray* favouritesArray = [NSMutableArray arrayWithCapacity:[self.videoInstanceArray count]];
-        for(int i=0; i < [self.videoInstanceArray count]; i++)
+        
+        
+        //NSLog(@"STARRED ? %@", ((VideoInstance*)videoInstanceArray[selectedIndex]).video.starredByUser);
+        for (VideoInstance* vi in videoInstanceArray)
         {
-            [favouritesArray addObject:@(NO)];
+            
+            [favouritesArray addObject:@(vi.video.starCountValue)];
         }
+        
         _favouritesStatusArray = favouritesArray;
 	}
     
@@ -788,7 +796,8 @@
                                                   [Appirater userDidSignificantEvent: FALSE];
                                               }
                                               
-                                              (self.favouritesStatusArray)[starredIndex] = @(button.selected);
+                                              // mark the array element depending on the on/off state of the button
+                                              self.favouritesStatusArray[starredIndex] = @(button.selected);
                                               
                                               [self updateVideoDetailsForIndex: self.currentSelectedIndex];
                                               
