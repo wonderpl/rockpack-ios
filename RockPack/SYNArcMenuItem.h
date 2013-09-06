@@ -25,6 +25,8 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UILabel *label;
+@property (nonatomic, strong) UIView *labelView;
+
 
 - (id) initWithImage: (UIImage *) image
     highlightedImage: (UIImage *) highlightedImage

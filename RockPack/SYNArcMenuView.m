@@ -136,20 +136,20 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
                 item.imageView.highlighted = TRUE;
                 
                 // Bounce-o-tron
-                item.label.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.001, 0.001);
+                item.labelView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.001, 0.001);
                 
                 [UIView animateWithDuration: 0.1f
                                  animations: ^{
-                                     item.label.alpha = 1.0f;
-                                     item.label.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.1, 1.1);
+                                     item.labelView.alpha = 1.0f;
+                                     item.labelView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.1, 1.1);
                                  } completion: ^(BOOL finished) {
                                      [UIView animateWithDuration: 0.1f
                                                       animations: ^{
-                                                          item.label.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.9, 0.9);
+                                                          item.labelView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.9, 0.9);
                                                       } completion: ^(BOOL finished) {
                                                           [UIView animateWithDuration: 0.1f
                                                                            animations:^{
-                                                                               item.label.transform = CGAffineTransformIdentity;
+                                                                               item.labelView.transform = CGAffineTransformIdentity;
                                                                            }];
                                                       }];
                                  }];
@@ -174,7 +174,7 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
             
             [UIView animateWithDuration: 0.1
                              animations: ^{
-                                 item.label.alpha = 0.0;
+                                 item.labelView.alpha = 0.0;
                              } completion: ^(BOOL finished) {
                              }];
             
