@@ -13,7 +13,8 @@
 // Store our date formatter as a static for optimization purposes
 static NSDateFormatter *dateFormatter = nil;
 
-@dynamic starredByUser, starredByUserValue;
+@synthesize starredByUser = _starredByUser;
+@synthesize starredByUserValue;
 
 + (VideoInstance *) instanceFromVideoInstance: (VideoInstance *) existingInstance
                     usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
@@ -263,7 +264,7 @@ static NSDateFormatter *dateFormatter = nil;
     if(starredByUser == nil) // nil is equivalent to NO
         starredByUser = @NO;
     
-    if([starredByUser isEqualToNumber:self.starredByUser])
+    if([starredByUser isEqualToNumber:_starredByUser])
         return;
     
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -274,6 +275,8 @@ static NSDateFormatter *dateFormatter = nil;
     
     self.video.starredByUser = starredByUser;
     
+    _starredByUser = starredByUser;
+    
 }
 -(void)setStarredByUserValue:(BOOL)value
 {
@@ -282,7 +285,7 @@ static NSDateFormatter *dateFormatter = nil;
 }
 -(NSNumber*)starredByUser
 {
-    if(self.video.starredByUserValue)
+    if(self.video.starredByUserValue || [_starredByUser boolValue])
         return @YES;
     
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
