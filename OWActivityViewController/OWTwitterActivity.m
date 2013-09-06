@@ -32,7 +32,7 @@
 - (id) init
 {
     self = [super initWithTitle: NSLocalizedStringFromTable(@"activity.Twitter.title", @"OWActivityViewController", @"Twitter")
-                          image: [UIImage imageNamed: @"ButtonTwitter.png"]
+                          image: [UIImage imageNamed: @"ShareTwitterButton"]
                     actionBlock: nil];
     
     if (!self)

@@ -398,11 +398,7 @@
         return;
     
     CGRect screenRect = [[SYNDeviceManager sharedInstance] currentScreenRect];
-    
-    
-    
-    
-    
+
     // fade in the background ...
     
     backgroundView = [[UIView alloc] initWithFrame:screenRect];
@@ -445,14 +441,14 @@
     else // is IPhone
     {
         __block CGRect pvFrame = popoverView.frame;
-        pvFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
+        pvFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar];
         popoverView.frame = pvFrame;
         
         [UIView animateWithDuration: 0.2
                               delay: 0.1
                             options: UIViewAnimationOptionCurveEaseOut
                          animations: ^{
-                             pvFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - pvFrame.size.height;
+                             pvFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - pvFrame.size.height;
                              popoverView.frame = pvFrame;
                          }
                          completion:nil];

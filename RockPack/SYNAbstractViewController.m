@@ -620,7 +620,7 @@
     __weak VideoInstance *videoInstance = [self videoInstanceForIndexPath: indexPath];
     
     // TODO: I've seen elsewhere in the code that the favourites have been bodged, so check to see if the following line is valid
-    NSString *starAction = (videoInstance.video.starredByUserValue == FALSE) ? @"star" : @"unstar";
+    NSString *starAction = !videoInstance.starredByUserValue ? @"star" : @"unstar";
     
     //    int starredIndex = self.currentSelectedIndex;
     
@@ -629,16 +629,16 @@
                                             videoInstanceId: videoInstance.uniqueId
                                           completionHandler: ^(id response) {
                                               
-                                              if (videoInstance.video.starredByUserValue == TRUE)
+                                              if (videoInstance.starredByUserValue == TRUE)
                                               {
                                                   // Currently highlighted, so decrement
-                                                  videoInstance.video.starredByUserValue = FALSE;
+                                                  videoInstance.starredByUserValue = FALSE;
                                                   videoInstance.video.starCountValue -= 1;
                                               }
                                               else
                                               {
                                                   // Currently highlighted, so increment
-                                                  videoInstance.video.starredByUserValue = TRUE;
+                                                  videoInstance.starredByUserValue = TRUE;
                                                   videoInstance.video.starCountValue += 1;
                                                   [Appirater userDidSignificantEvent: FALSE];
                                               }
@@ -774,7 +774,7 @@
         }
         
         // A bit of a hack, but we need to work out whether the user has starred this videoInstance (we can't completely trust starredByUserValue)
-        BOOL starredByUser = videoInstance.video.starredByUserValue;
+        BOOL starredByUser = videoInstance.starredByUserValue;
         
         if (!starredByUser)
         {
@@ -786,7 +786,7 @@
                 if ([channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId])
                 {
                     starredByUser = TRUE;
-                    videoInstance.video.starredByUserValue = starredByUser;
+                    videoInstance.starredByUserValue = starredByUser;
                     break;
                 }
             }

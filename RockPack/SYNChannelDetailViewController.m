@@ -994,7 +994,7 @@
     
     VideoInstance *videoInstance = self.channel.videoInstances [indexPath.item];
     
-    videoInstance.video.starredByUserValue = self.channel.favouritesValue;
+    videoInstance.starredByUserValue = self.channel.favouritesValue;
     
     [videoThumbnailCell.imageView
      setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]

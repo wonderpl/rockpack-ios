@@ -21,6 +21,18 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		010AAE9E17D9EF48001DD5FA /* ShareFacebookButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 010AAE9217D9EF48001DD5FA /* ShareFacebookButton.png */; };
+		010AAE9F17D9EF48001DD5FA /* ShareFacebookButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 010AAE9317D9EF48001DD5FA /* ShareFacebookButton@2x.png */; };
+		010AAEA017D9EF48001DD5FA /* ShareFacebookButton@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 010AAE9417D9EF48001DD5FA /* ShareFacebookButton@2x~iphone.png */; };
+		010AAEA117D9EF48001DD5FA /* ShareFacebookButton~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 010AAE9517D9EF48001DD5FA /* ShareFacebookButton~iphone.png */; };
+		010AAEA217D9EF48001DD5FA /* ShareMailButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 010AAE9617D9EF48001DD5FA /* ShareMailButton.png */; };
+		010AAEA317D9EF48001DD5FA /* ShareMailButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 010AAE9717D9EF48001DD5FA /* ShareMailButton@2x.png */; };
+		010AAEA417D9EF48001DD5FA /* ShareMailButton@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 010AAE9817D9EF48001DD5FA /* ShareMailButton@2x~iphone.png */; };
+		010AAEA517D9EF48001DD5FA /* ShareMailButton~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 010AAE9917D9EF48001DD5FA /* ShareMailButton~iphone.png */; };
+		010AAEA617D9EF48001DD5FA /* ShareTwitterButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 010AAE9A17D9EF48001DD5FA /* ShareTwitterButton.png */; };
+		010AAEA717D9EF48001DD5FA /* ShareTwitterButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 010AAE9B17D9EF48001DD5FA /* ShareTwitterButton@2x.png */; };
+		010AAEA817D9EF48001DD5FA /* ShareTwitterButton@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 010AAE9C17D9EF48001DD5FA /* ShareTwitterButton@2x~iphone.png */; };
+		010AAEA917D9EF48001DD5FA /* ShareTwitterButton~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 010AAE9D17D9EF48001DD5FA /* ShareTwitterButton~iphone.png */; };
 		010DEFD51629BDC40080F26B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010DEFD41629BDC40080F26B /* UIKit.framework */; };
 		010DEFD71629BDC40080F26B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010DEFD61629BDC40080F26B /* Foundation.framework */; };
 		010DEFD91629BDC40080F26B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 010DEFD81629BDC40080F26B /* CoreGraphics.framework */; };
@@ -552,14 +564,6 @@
 		1FD12373174CD76700144374 /* NavDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD1236F174CD76700144374 /* NavDefault@2x.png */; };
 		1FD12374174CD76700144374 /* NavHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD12370174CD76700144374 /* NavHighlighted.png */; };
 		1FD12375174CD76700144374 /* NavHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD12371174CD76700144374 /* NavHighlighted@2x.png */; };
-		1FD2856D17BBA18A0094F488 /* ButtonEmail.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD2856517BBA18A0094F488 /* ButtonEmail.png */; };
-		1FD2856E17BBA18A0094F488 /* ButtonEmail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD2856617BBA18A0094F488 /* ButtonEmail@2x.png */; };
-		1FD2856F17BBA18A0094F488 /* ButtonFacebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD2856717BBA18A0094F488 /* ButtonFacebook.png */; };
-		1FD2857017BBA18A0094F488 /* ButtonFacebook@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD2856817BBA18A0094F488 /* ButtonFacebook@2x.png */; };
-		1FD2857117BBA18A0094F488 /* ButtonSMS.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD2856917BBA18A0094F488 /* ButtonSMS.png */; };
-		1FD2857217BBA18A0094F488 /* ButtonSMS@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD2856A17BBA18A0094F488 /* ButtonSMS@2x.png */; };
-		1FD2857317BBA18A0094F488 /* ButtonTwitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD2856B17BBA18A0094F488 /* ButtonTwitter.png */; };
-		1FD2857417BBA18A0094F488 /* ButtonTwitter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD2856C17BBA18A0094F488 /* ButtonTwitter@2x.png */; };
 		1FD2857717BBAD6A0094F488 /* PanelShare.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD2857517BBAD6A0094F488 /* PanelShare.png */; };
 		1FD2857817BBAD6A0094F488 /* PanelShare@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD2857617BBAD6A0094F488 /* PanelShare@2x.png */; };
 		1FD8720F176F7F26009F4746 /* LoginErrorPortrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FD8720D176F7F26009F4746 /* LoginErrorPortrait.png */; };
@@ -1329,6 +1333,18 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		010AAE9217D9EF48001DD5FA /* ShareFacebookButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShareFacebookButton.png; path = Assets/Images/ShareFacebookButton.png; sourceTree = "<group>"; };
+		010AAE9317D9EF48001DD5FA /* ShareFacebookButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ShareFacebookButton@2x.png"; path = "Assets/Images/ShareFacebookButton@2x.png"; sourceTree = "<group>"; };
+		010AAE9417D9EF48001DD5FA /* ShareFacebookButton@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ShareFacebookButton@2x~iphone.png"; path = "Assets/Images/ShareFacebookButton@2x~iphone.png"; sourceTree = "<group>"; };
+		010AAE9517D9EF48001DD5FA /* ShareFacebookButton~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ShareFacebookButton~iphone.png"; path = "Assets/Images/ShareFacebookButton~iphone.png"; sourceTree = "<group>"; };
+		010AAE9617D9EF48001DD5FA /* ShareMailButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShareMailButton.png; path = Assets/Images/ShareMailButton.png; sourceTree = "<group>"; };
+		010AAE9717D9EF48001DD5FA /* ShareMailButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ShareMailButton@2x.png"; path = "Assets/Images/ShareMailButton@2x.png"; sourceTree = "<group>"; };
+		010AAE9817D9EF48001DD5FA /* ShareMailButton@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ShareMailButton@2x~iphone.png"; path = "Assets/Images/ShareMailButton@2x~iphone.png"; sourceTree = "<group>"; };
+		010AAE9917D9EF48001DD5FA /* ShareMailButton~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ShareMailButton~iphone.png"; path = "Assets/Images/ShareMailButton~iphone.png"; sourceTree = "<group>"; };
+		010AAE9A17D9EF48001DD5FA /* ShareTwitterButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShareTwitterButton.png; path = Assets/Images/ShareTwitterButton.png; sourceTree = "<group>"; };
+		010AAE9B17D9EF48001DD5FA /* ShareTwitterButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ShareTwitterButton@2x.png"; path = "Assets/Images/ShareTwitterButton@2x.png"; sourceTree = "<group>"; };
+		010AAE9C17D9EF48001DD5FA /* ShareTwitterButton@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ShareTwitterButton@2x~iphone.png"; path = "Assets/Images/ShareTwitterButton@2x~iphone.png"; sourceTree = "<group>"; };
+		010AAE9D17D9EF48001DD5FA /* ShareTwitterButton~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ShareTwitterButton~iphone.png"; path = "Assets/Images/ShareTwitterButton~iphone.png"; sourceTree = "<group>"; };
 		010DEFD01629BDC40080F26B /* rockpack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = rockpack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		010DEFD41629BDC40080F26B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		010DEFD61629BDC40080F26B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1985,14 +2001,6 @@
 		1FD1236F174CD76700144374 /* NavDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NavDefault@2x.png"; path = "Assets/Images/NavDefault@2x.png"; sourceTree = "<group>"; };
 		1FD12370174CD76700144374 /* NavHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NavHighlighted.png; path = Assets/Images/NavHighlighted.png; sourceTree = "<group>"; };
 		1FD12371174CD76700144374 /* NavHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NavHighlighted@2x.png"; path = "Assets/Images/NavHighlighted@2x.png"; sourceTree = "<group>"; };
-		1FD2856517BBA18A0094F488 /* ButtonEmail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonEmail.png; path = Assets/Images/ButtonEmail.png; sourceTree = "<group>"; };
-		1FD2856617BBA18A0094F488 /* ButtonEmail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonEmail@2x.png"; path = "Assets/Images/ButtonEmail@2x.png"; sourceTree = "<group>"; };
-		1FD2856717BBA18A0094F488 /* ButtonFacebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonFacebook.png; path = Assets/Images/ButtonFacebook.png; sourceTree = "<group>"; };
-		1FD2856817BBA18A0094F488 /* ButtonFacebook@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonFacebook@2x.png"; path = "Assets/Images/ButtonFacebook@2x.png"; sourceTree = "<group>"; };
-		1FD2856917BBA18A0094F488 /* ButtonSMS.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonSMS.png; path = Assets/Images/ButtonSMS.png; sourceTree = "<group>"; };
-		1FD2856A17BBA18A0094F488 /* ButtonSMS@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonSMS@2x.png"; path = "Assets/Images/ButtonSMS@2x.png"; sourceTree = "<group>"; };
-		1FD2856B17BBA18A0094F488 /* ButtonTwitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonTwitter.png; path = Assets/Images/ButtonTwitter.png; sourceTree = "<group>"; };
-		1FD2856C17BBA18A0094F488 /* ButtonTwitter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonTwitter@2x.png"; path = "Assets/Images/ButtonTwitter@2x.png"; sourceTree = "<group>"; };
 		1FD2857517BBAD6A0094F488 /* PanelShare.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelShare.png; path = Assets/Images/PanelShare.png; sourceTree = "<group>"; };
 		1FD2857617BBAD6A0094F488 /* PanelShare@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PanelShare@2x.png"; path = "Assets/Images/PanelShare@2x.png"; sourceTree = "<group>"; };
 		1FD8720D176F7F26009F4746 /* LoginErrorPortrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoginErrorPortrait.png; path = Assets/Images/LoginErrorPortrait.png; sourceTree = "<group>"; };
@@ -2364,6 +2372,7 @@
 		BE06EEEF17D759390028F2E3 /* ABContactPlaceholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ABContactPlaceholder@2x.png"; path = "Assets/Images/ABContactPlaceholder@2x.png"; sourceTree = "<group>"; };
 		BE06EEF217D78DCA0028F2E3 /* SYNOneToOneFriendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOneToOneFriendCell.h; sourceTree = "<group>"; };
 		BE06EEF317D78DCA0028F2E3 /* SYNOneToOneFriendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOneToOneFriendCell.m; sourceTree = "<group>"; };
+		BE06EFA117DA11E30028F2E3 /* Rockpack 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rockpack 12.xcdatamodel"; sourceTree = "<group>"; };
 		BE08159D16D3EF7F00ADB1DC /* SYNGenreTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNGenreTabViewController.h; sourceTree = "<group>"; };
 		BE08159E16D3EF7F00ADB1DC /* SYNGenreTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNGenreTabViewController.m; sourceTree = "<group>"; };
 		BE0815A016D4DADA00ADB1DC /* SYNTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNTabView.h; sourceTree = "<group>"; };
@@ -4447,16 +4456,20 @@
 		1FD2856417BBA1640094F488 /* Share Panel */ = {
 			isa = PBXGroup;
 			children = (
+				010AAE9217D9EF48001DD5FA /* ShareFacebookButton.png */,
+				010AAE9317D9EF48001DD5FA /* ShareFacebookButton@2x.png */,
+				010AAE9417D9EF48001DD5FA /* ShareFacebookButton@2x~iphone.png */,
+				010AAE9517D9EF48001DD5FA /* ShareFacebookButton~iphone.png */,
+				010AAE9617D9EF48001DD5FA /* ShareMailButton.png */,
+				010AAE9717D9EF48001DD5FA /* ShareMailButton@2x.png */,
+				010AAE9817D9EF48001DD5FA /* ShareMailButton@2x~iphone.png */,
+				010AAE9917D9EF48001DD5FA /* ShareMailButton~iphone.png */,
+				010AAE9A17D9EF48001DD5FA /* ShareTwitterButton.png */,
+				010AAE9B17D9EF48001DD5FA /* ShareTwitterButton@2x.png */,
+				010AAE9C17D9EF48001DD5FA /* ShareTwitterButton@2x~iphone.png */,
+				010AAE9D17D9EF48001DD5FA /* ShareTwitterButton~iphone.png */,
 				1FD2857517BBAD6A0094F488 /* PanelShare.png */,
 				1FD2857617BBAD6A0094F488 /* PanelShare@2x.png */,
-				1FD2856517BBA18A0094F488 /* ButtonEmail.png */,
-				1FD2856617BBA18A0094F488 /* ButtonEmail@2x.png */,
-				1FD2856717BBA18A0094F488 /* ButtonFacebook.png */,
-				1FD2856817BBA18A0094F488 /* ButtonFacebook@2x.png */,
-				1FD2856917BBA18A0094F488 /* ButtonSMS.png */,
-				1FD2856A17BBA18A0094F488 /* ButtonSMS@2x.png */,
-				1FD2856B17BBA18A0094F488 /* ButtonTwitter.png */,
-				1FD2856C17BBA18A0094F488 /* ButtonTwitter@2x.png */,
 			);
 			name = "Share Panel";
 			sourceTree = "<group>";
@@ -6783,14 +6796,6 @@
 				01F24AE717B8F2C000FC8820 /* ActionShare@2x.png in Resources */,
 				01F24AE817B8F2C000FC8820 /* ActionShareHighlighted.png in Resources */,
 				01F24AE917B8F2C000FC8820 /* ActionShareHighlighted@2x.png in Resources */,
-				1FD2856D17BBA18A0094F488 /* ButtonEmail.png in Resources */,
-				1FD2856E17BBA18A0094F488 /* ButtonEmail@2x.png in Resources */,
-				1FD2856F17BBA18A0094F488 /* ButtonFacebook.png in Resources */,
-				1FD2857017BBA18A0094F488 /* ButtonFacebook@2x.png in Resources */,
-				1FD2857117BBA18A0094F488 /* ButtonSMS.png in Resources */,
-				1FD2857217BBA18A0094F488 /* ButtonSMS@2x.png in Resources */,
-				1FD2857317BBA18A0094F488 /* ButtonTwitter.png in Resources */,
-				1FD2857417BBA18A0094F488 /* ButtonTwitter@2x.png in Resources */,
 				1FD2857717BBAD6A0094F488 /* PanelShare.png in Resources */,
 				1FD2857817BBAD6A0094F488 /* PanelShare@2x.png in Resources */,
 				BE0B151217BC16240053E551 /* ButtonSearch@2x~iphone.png in Resources */,
@@ -6806,6 +6811,18 @@
 				BE06EEED17D759290028F2E3 /* RecentContactPlaceholder@2x.png in Resources */,
 				BE06EEF017D759390028F2E3 /* ABContactPlaceholder.png in Resources */,
 				BE06EEF117D759390028F2E3 /* ABContactPlaceholder@2x.png in Resources */,
+				010AAE9E17D9EF48001DD5FA /* ShareFacebookButton.png in Resources */,
+				010AAE9F17D9EF48001DD5FA /* ShareFacebookButton@2x.png in Resources */,
+				010AAEA017D9EF48001DD5FA /* ShareFacebookButton@2x~iphone.png in Resources */,
+				010AAEA117D9EF48001DD5FA /* ShareFacebookButton~iphone.png in Resources */,
+				010AAEA217D9EF48001DD5FA /* ShareMailButton.png in Resources */,
+				010AAEA317D9EF48001DD5FA /* ShareMailButton@2x.png in Resources */,
+				010AAEA417D9EF48001DD5FA /* ShareMailButton@2x~iphone.png in Resources */,
+				010AAEA517D9EF48001DD5FA /* ShareMailButton~iphone.png in Resources */,
+				010AAEA617D9EF48001DD5FA /* ShareTwitterButton.png in Resources */,
+				010AAEA717D9EF48001DD5FA /* ShareTwitterButton@2x.png in Resources */,
+				010AAEA817D9EF48001DD5FA /* ShareTwitterButton@2x~iphone.png in Resources */,
+				010AAEA917D9EF48001DD5FA /* ShareTwitterButton~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7546,6 +7563,7 @@
 			isa = XCVersionGroup;
 			children = (
 				BE8F938E17B3C64E00E7035F /* Rockpack 11.xcdatamodel */,
+				BE06EFA117DA11E30028F2E3 /* Rockpack 12.xcdatamodel */,
 				BE8F938717B1224900E7035F /* Rockpack 10.xcdatamodel */,
 				BE7D035C17A13EF4008053DC /* Rockpack 7.xcdatamodel */,
 				BE82099B17A9651900472ADD /* Rockpack 8.xcdatamodel */,
