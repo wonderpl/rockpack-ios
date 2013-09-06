@@ -136,35 +136,6 @@
 									<int key="NSfFlags">16</int>
 								</object>
 							</object>
-							<object class="IBUIButton" id="166375579">
-								<reference key="NSNextResponder" ref="691440710"/>
-								<int key="NSvFlags">289</int>
-								<string key="NSFrame">{{954, 11}, {60, 61}}</string>
-								<reference key="NSSuperview" ref="691440710"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="307475558"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIOpaque">NO</bool>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<int key="IBUIContentHorizontalAlignment">0</int>
-								<int key="IBUIContentVerticalAlignment">0</int>
-								<reference key="IBUIHighlightedTitleColor" ref="4391538"/>
-								<object class="NSColor" key="IBUINormalTitleColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
-								</object>
-								<reference key="IBUINormalTitleShadowColor" ref="960150261"/>
-								<object class="NSCustomResource" key="IBUIHighlightedImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">ButtonCancelHighlighted.png</string>
-								</object>
-								<object class="NSCustomResource" key="IBUINormalImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">ButtonCancel.png</string>
-								</object>
-								<reference key="IBUIFontDescription" ref="1042214128"/>
-								<reference key="IBUIFont" ref="454251042"/>
-							</object>
 							<object class="IBUIButton" id="77981967">
 								<reference key="NSNextResponder" ref="691440710"/>
 								<int key="NSvFlags">290</int>
@@ -201,6 +172,35 @@
 							<bytes key="NSRGB">MC45NDkwMTk2MDc4IDAuOTQ5MDE5NjA3OCAwLjk0OTAxOTYwNzgAA</bytes>
 						</object>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+					</object>
+					<object class="IBUIButton" id="166375579">
+						<reference key="NSNextResponder" ref="766721923"/>
+						<int key="NSvFlags">289</int>
+						<string key="NSFrame">{{954, 10}, {60, 61}}</string>
+						<reference key="NSSuperview" ref="766721923"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="307475558"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<reference key="IBUIHighlightedTitleColor" ref="4391538"/>
+						<object class="NSColor" key="IBUINormalTitleColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+						</object>
+						<reference key="IBUINormalTitleShadowColor" ref="960150261"/>
+						<object class="NSCustomResource" key="IBUIHighlightedImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">ButtonCancelHighlighted.png</string>
+						</object>
+						<object class="NSCustomResource" key="IBUINormalImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">ButtonCancel.png</string>
+						</object>
+						<reference key="IBUIFontDescription" ref="1042214128"/>
+						<reference key="IBUIFont" ref="454251042"/>
 					</object>
 					<object class="IBUIView" id="307475558">
 						<reference key="NSNextResponder" ref="766721923"/>
@@ -356,14 +356,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">closeSearchButton</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="166375579"/>
-					</object>
-					<int key="connectionID">127</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">headerButton</string>
 						<reference key="source" ref="841351856"/>
 						<reference key="destination" ref="77981967"/>
@@ -377,6 +369,14 @@
 						<reference key="destination" ref="691440710"/>
 					</object>
 					<int key="connectionID">147</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">closeSearchButton</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="166375579"/>
+					</object>
+					<int key="connectionID">127</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -434,6 +434,7 @@
 							<reference ref="289097721"/>
 							<reference ref="307475558"/>
 							<reference ref="691440710"/>
+							<reference ref="166375579"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -470,7 +471,6 @@
 							<reference ref="430836750"/>
 							<reference ref="1039828572"/>
 							<reference ref="468707721"/>
-							<reference ref="166375579"/>
 							<reference ref="77981967"/>
 						</array>
 						<reference key="parent" ref="766721923"/>
@@ -495,16 +495,16 @@
 						<string key="objectName">Search Button</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">118</int>
-						<reference key="object" ref="166375579"/>
-						<reference key="parent" ref="691440710"/>
-						<string key="objectName">Close Search Button</string>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">138</int>
 						<reference key="object" ref="77981967"/>
 						<reference key="parent" ref="691440710"/>
 						<string key="objectName">Head Tap Button</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">118</int>
+						<reference key="object" ref="166375579"/>
+						<reference key="parent" ref="766721923"/>
+						<string key="objectName">Close Search Button</string>
 					</object>
 				</array>
 			</object>
