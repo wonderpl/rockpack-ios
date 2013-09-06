@@ -59,11 +59,14 @@
 @property (nonatomic, weak) Friend *friendToAddEmail;
 @property (strong, nonatomic) NSMutableDictionary *mutableShareDictionary;
 @property (strong, nonatomic) OWActivityViewController *activityViewController;
+@property (nonatomic) BOOL hasLoadedData;
 
 @end
 
 
 @implementation SYNOneToOneSharingController
+
+@synthesize hasLoadedData;
 
 
 - (id) initWithInfo: (NSMutableDictionary *) mutableShareDictionary
@@ -72,6 +75,7 @@
                                bundle: nil])
     {
         self.mutableShareDictionary = mutableShareDictionary;
+        hasLoadedData = NO;
     }
     
     return self;
@@ -83,6 +87,8 @@
     [super viewDidLoad];
     
     [self.loader hidesWhenStopped];
+    
+    
     
     self.friends = [NSArray array];
     self.recentFriends = [NSArray array];
@@ -112,6 +118,10 @@
         vFrame.size.width = 320.0f;
         
         self.view.frame = vFrame;
+        
+        CGRect cbFrame = self.closeButton.frame;
+        cbFrame.origin.x = 278.0f;
+        self.closeButton.frame = cbFrame;
     }
 }
 
@@ -159,7 +169,7 @@
     {
         // present main view
         [self fetchAddressBookFriends];
-        
+            
         if (hasFacebookSession)
         {
             // Pull up recently shared friends...
@@ -214,8 +224,7 @@
     BOOL hasFacebookSession = [[SYNFacebookManager sharedFBManager] hasActiveSession];
     
     ABAddressBookRequestAccessWithCompletion(addressBookRef, ^(bool granted, CFErrorRef error) {
-        dispatch_async(dispatch_get_main_queue(),
-                       ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
                            if (granted)
                            {
                                NSLog(@"Address Book Access GRANTED");
@@ -315,10 +324,17 @@
                                      [self.loader stopAnimating];
                                      self.loader.hidden = YES;
                                      
+                                     hasLoadedData = YES;
+                                     
                                      [self.recentFriendsCollectionView reloadData];
+                                     
                                  } errorHandler: ^(id dictionary) {
                                      [self.loader stopAnimating];
                                      self.loader.hidden = YES;
+                                     
+                                     hasLoadedData = YES;
+                                     
+                                     [self.recentFriendsCollectionView reloadData];
                                  }];
 }
 
@@ -329,9 +345,8 @@
     ABAddressBookRef addressBookRef = ABAddressBookCreateWithOptions(NULL, &error);
     
     if (addressBookRef == NULL)
-    {
         return;
-    }
+    
     
     NSArray *arrayOfAllPeople = (__bridge_transfer NSArray *) ABAddressBookCopyArrayOfAllPeople(addressBookRef);
     
@@ -348,16 +363,19 @@
         ABRecordID cid;
         
         if (!currentPerson || ((cid = ABRecordGetRecordID(currentPerson)) == kABRecordInvalidID))
-        {
             continue;
-        }
         
-        firstName = (__bridge_transfer NSString *) ABRecordCopyValue(currentPerson, kABPersonFirstNameProperty);
-        lastName = (__bridge_transfer NSString *) ABRecordCopyValue(currentPerson, kABPersonLastNameProperty);
         
         ABMultiValueRef emailAddressMultValue = ABRecordCopyValue(currentPerson, kABPersonEmailProperty);
         NSArray *emailAddresses = (__bridge NSArray *) ABMultiValueCopyArrayOfAllValues(emailAddressMultValue);
         CFRelease(emailAddressMultValue);
+        
+        if(emailAddresses.count > 0) // only keep contacts with email addresses
+            continue;
+        
+        firstName = (__bridge_transfer NSString *) ABRecordCopyValue(currentPerson, kABPersonFirstNameProperty);
+        lastName = (__bridge_transfer NSString *) ABRecordCopyValue(currentPerson, kABPersonLastNameProperty);
+        
         
         imageData = (__bridge_transfer NSData *) ABPersonCopyImageData(currentPerson);
         
@@ -365,7 +383,7 @@
         contactFriend.viewId = kOneToOneSharingViewId;
         contactFriend.uniqueId = [NSString stringWithFormat: @"%i", cid];
         contactFriend.displayName = [NSString stringWithFormat: @"%@ %@", firstName, lastName];
-        contactFriend.email = emailAddresses.count > 0 ? emailAddresses[0] : nil;
+        contactFriend.email =  (NSString*)emailAddresses[0]; // we are guaranteed to have at least one due to the conditional above
         contactFriend.externalSystem = @"email";
         contactFriend.externalUID = [NSString stringWithFormat: @"%i", cid];
         
@@ -399,7 +417,9 @@
 
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
-    return self.recentFriends.count + kNumberOfEmptyRecentSlots; // slots for the recent fake items
+    // prevent the display of the "empty" recent cells before the friends have loaded
+    // then allow for 5 extra slots to display the "empty" cells
+    return (!hasLoadedData ? 0 : self.recentFriends.count + kNumberOfEmptyRecentSlots); 
 }
 
 
@@ -414,8 +434,7 @@
         Friend *friend = self.recentFriends[indexPath.row];
         userThumbnailCell.nameLabel.text = friend.displayName;
         
-        if ([friend.thumbnailURL
-             hasPrefix: @"cached://"])
+        if ([friend.thumbnailURL hasPrefix: @"cached://"])
         {
             NSPurgeableData *pdata = [self.addressBookImageCache objectForKey: friend.thumbnailURL];
             
@@ -695,7 +714,7 @@
     
     self.closeButton.hidden = NO;
     
-    [UIView animateWithDuration: 0.5
+    [UIView animateWithDuration: 0.3
                           delay: 0.0
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
@@ -712,7 +731,7 @@
 
 - (void) textFieldDidEndEditing: (UITextField *) textField
 {
-    [UIView animateWithDuration: 0.5
+    [UIView animateWithDuration: 0.2
                           delay: 0.0
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
@@ -723,10 +742,12 @@
                      completion: nil];
 }
 
-
-#pragma mark - UITextViewDelegate
-
-// to be implemented
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self.searchTextField resignFirstResponder];
+    
+    return YES;
+}
 
 
 #pragma mark - Button Delegates
