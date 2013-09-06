@@ -72,6 +72,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *addVideoButton;
 @property (weak, nonatomic) IBOutlet UIButton *shareButton;
 
+@property (nonatomic, strong) AMBlurView *blurView;
+@property (nonatomic, strong) UIView *darkenBlurView;
+
 //iPhone specific
 
 @property (nonatomic, assign) UIDeviceOrientation currentOrientation;
@@ -303,18 +306,36 @@
     if (IS_IOS_7_OR_GREATER)
     {
         
-        // Do iOS7 Tingz
-        AMBlurView *blurView = [AMBlurView new];
-        blurView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        [blurView setBlurTintColor:[UIColor colorWithRed:21.0f/255.0 green:24.0f/255.0 blue:28.0f/255.0 alpha:1.0f]];
-        [blurView setFrame:CGRectMake(0.0f, 0.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight] + 2.0f)];
+        CGSize screenSize = [[SYNDeviceManager sharedInstance] currentScreenSize];
         
-        UIView * darkView = [[UIView alloc] initWithFrame:blurView.frame];
-        darkView.backgroundColor = [UIColor colorWithWhite:0.0f/255.0f alpha:0.35f];
+        CGRect fullScreenRect = IS_IPHONE && !IS_IPHONE_5 ? CGRectMake(0, 0, screenSize.width, screenSize.height + 70) : CGRectMake(0, 0, screenSize.width, screenSize.height);
+        
+        // Do iOS7 Tingz
+        self.blurView = [AMBlurView new];
+        self.blurView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        [self.blurView setBlurTintColor:[UIColor colorWithRed:21.0f/255.0 green:24.0f/255.0 blue:28.0f/255.0 alpha:1.0f]];
+        
+        self.darkenBlurView = [UIView new];
+        self.darkenBlurView.backgroundColor = [UIColor colorWithWhite:0.0f/255.0f alpha:0.35f];
+        
+        if (IS_IPAD && UIDeviceOrientationIsPortrait([[SYNDeviceManager sharedInstance] currentOrientation]))
+        {
+            self.blurView.frame = CGRectMake(0, 0, 768.0f, 1025.0f);
+            self.darkenBlurView.frame = CGRectMake(0, 0, 768.0f, 1025.0f);
+            self.view.frame = CGRectMake(0, 0, screenSize.width, screenSize.height);
+        }
+        else
+        {
+            self.blurView.frame = fullScreenRect;
+            self.darkenBlurView.frame = fullScreenRect;
+        }
+        
+
         
         self.view.backgroundColor = [UIColor clearColor];
-        [self.view insertSubview:blurView atIndex:0];
-        [self.view insertSubview:darkView aboveSubview:blurView];
+        [self.view insertSubview:self.blurView atIndex:0];
+        [self.view insertSubview:self.darkenBlurView aboveSubview:self.blurView];
+        
     }
 }
 
@@ -400,11 +421,13 @@
                                             duration: duration];
     
     CGRect blackPanelFrame;
+    CGRect blurViewFrame;
     
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
     {
         // Landscape
         blackPanelFrame = CGRectMake(0, 0, 1024, 768);
+        blurViewFrame = CGRectMake(0, 0, 1024, 768);
         
         if (self.isVideoExpanded)
         {
@@ -415,6 +438,8 @@
     {
         // Portrait
         blackPanelFrame = CGRectMake(128, -128, 768, 1024);
+        blurViewFrame = CGRectMake(0, 0, 768.0f, 1025.0f);
+        
         if (self.isVideoExpanded)
         {
             self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0392f, 1.0392f);
@@ -423,6 +448,8 @@
     }
     
     self.blackPanelView.frame = blackPanelFrame;
+    self.blurView.frame = blurViewFrame;
+    self.darkenBlurView.frame = blurViewFrame;
 }
 
 
