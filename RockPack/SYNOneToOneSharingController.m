@@ -58,11 +58,14 @@
 @property (nonatomic, weak) Friend *friendToAddEmail;
 @property (strong, nonatomic) NSMutableDictionary *mutableShareDictionary;
 @property (strong, nonatomic) OWActivityViewController *activityViewController;
+@property (nonatomic) BOOL hasLoadedData;
 
 @end
 
 
 @implementation SYNOneToOneSharingController
+
+@synthesize hasLoadedData;
 
 
 - (id) initWithInfo: (NSMutableDictionary *) mutableShareDictionary
@@ -71,6 +74,7 @@
                                bundle: nil])
     {
         self.mutableShareDictionary = mutableShareDictionary;
+        hasLoadedData = NO;
     }
     
     return self;
@@ -82,6 +86,8 @@
     [super viewDidLoad];
     
     [self.loader hidesWhenStopped];
+    
+    
     
     self.friends = [NSArray array];
     self.recentFriends = [NSArray array];
@@ -112,7 +118,7 @@
         self.view.frame = vFrame;
         
         CGRect cbFrame = self.closeButton.frame;
-        cbFrame.origin.x = 378.0f;
+        cbFrame.origin.x = 278.0f;
         self.closeButton.frame = cbFrame;
     }
 }
@@ -316,10 +322,17 @@
                                      [self.loader stopAnimating];
                                      self.loader.hidden = YES;
                                      
+                                     hasLoadedData = YES;
+                                     
                                      [self.recentFriendsCollectionView reloadData];
+                                     
                                  } errorHandler: ^(id dictionary) {
                                      [self.loader stopAnimating];
                                      self.loader.hidden = YES;
+                                     
+                                     hasLoadedData = YES;
+                                     
+                                     [self.recentFriendsCollectionView reloadData];
                                  }];
 }
 
@@ -330,9 +343,8 @@
     ABAddressBookRef addressBookRef = ABAddressBookCreateWithOptions(NULL, &error);
     
     if (addressBookRef == NULL)
-    {
         return;
-    }
+    
     
     NSArray *arrayOfAllPeople = (__bridge_transfer NSArray *) ABAddressBookCopyArrayOfAllPeople(addressBookRef);
     
@@ -403,7 +415,9 @@
 
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
-    return self.recentFriends.count + kNumberOfEmptyRecentSlots; // slots for the recent fake items
+    // prevent the display of the "empty" recent cells before the friends have loaded
+    // then allow for 5 extra slots to display the "empty" cells
+    return (!hasLoadedData ? 0 : self.recentFriends.count + kNumberOfEmptyRecentSlots); 
 }
 
 
@@ -418,8 +432,7 @@
         Friend *friend = self.recentFriends[indexPath.row];
         userThumbnailCell.nameLabel.text = friend.displayName;
         
-        if ([friend.thumbnailURL
-             hasPrefix: @"cached://"])
+        if ([friend.thumbnailURL hasPrefix: @"cached://"])
         {
             NSPurgeableData *pdata = [self.addressBookImageCache objectForKey: friend.thumbnailURL];
             
