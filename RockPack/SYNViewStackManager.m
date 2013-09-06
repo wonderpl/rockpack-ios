@@ -439,14 +439,14 @@
                          }
                          completion:nil];
     }
-    else
+    else // is IPhone
     {
         __block CGRect pvFrame = popoverView.frame;
         pvFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
         popoverView.frame = pvFrame;
         
-        [UIView animateWithDuration: 0.3
-                              delay: 0.2
+        [UIView animateWithDuration: 0.2
+                              delay: 0.1
                             options: UIViewAnimationOptionCurveEaseOut
                          animations: ^{
                              pvFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - pvFrame.size.height;
@@ -483,7 +483,7 @@
     {
         __block CGRect pvFrame = popoverView.frame;
         
-        [UIView animateWithDuration: 0.3
+        [UIView animateWithDuration: 0.2
                               delay: 0.0
                             options: UIViewAnimationOptionCurveEaseOut
                          animations: ^{
