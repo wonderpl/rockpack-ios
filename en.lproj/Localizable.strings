@@ -1,10 +1,10 @@
-/* 
-  Localizable.strings
-  rockpack
-
-  Created by Michael Michailidis on 09/05/2013.
-  Copyright (c) Rockpack Ltd. All rights reserved.
-*/
+/*
+ Localizable.strings
+ rockpack
+ 
+ Created by Michael Michailidis on 09/05/2013.
+ Copyright (c) Rockpack Ltd. All rights reserved.
+ */
 
 
 
@@ -117,7 +117,7 @@
 
 // == Notifications == //
 
-// 
+//
 
 "%@ has subscribed to your channel" = "%@ subscribed to your pack";
 
@@ -166,7 +166,7 @@
 "channel_creation_screen_channel_delete_dialog_title" = "Delete Video";
 "channel_creation_screen_video_delete_dialog_description" = "Are you sure you want to delete this video?";
 
-// Error AlertViews 
+// Error AlertViews
 "channel_creation_screen_error_existing_dialog_title" = "Title Already Exists";
 "channel_creation_screen_error_existing_dialog_description" = "You've already created a pack with this title. Please choose another.";
 
