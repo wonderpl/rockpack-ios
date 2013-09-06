@@ -44,6 +44,7 @@
 @property (nonatomic, strong) IBOutlet UICollectionView *recentFriendsCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *searchFieldFrameImageView;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
+@property (nonatomic, strong) IBOutlet UILabel *shareLabel;
 @property (nonatomic, strong) IBOutlet UITableView *searchResultsTableView;
 @property (nonatomic, strong) IBOutlet UITextField *searchTextField;
 @property (nonatomic, strong) IBOutlet UITextView *messageTextView;
@@ -102,6 +103,7 @@
     self.messageTextView.font = [UIFont rockpackFontOfSize: self.messageTextView.font.pointSize];
     self.searchTextField.font = [UIFont rockpackFontOfSize: self.searchTextField.font.pointSize];
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
+    self.shareLabel.font = [UIFont rockpackFontOfSize: self.titleLabel.font.pointSize];
     
     [self.recentFriendsCollectionView registerNib: [UINib nibWithNibName: @"SYNFriendThumbnailCell" bundle: nil]
                        forCellWithReuseIdentifier: @"SYNFriendThumbnailCell"];

@@ -32,7 +32,7 @@
 - (id) init
 {
     self = [super initWithTitle: NSLocalizedStringFromTable(@"activity.Facebook.title", @"OWActivityViewController", @"Facebook")
-                          image: [UIImage imageNamed: @"ButtonFacebook.png"]
+                          image: [UIImage imageNamed: @"ShareFacebookButton"]
                     actionBlock: nil];
     
     if (!self)
