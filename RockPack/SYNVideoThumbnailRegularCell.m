@@ -156,6 +156,8 @@
     {
         case UIGestureRecognizerStateBegan:
         {
+            [self.viewControllerDelegate arcMenuSelectedCell: self
+                                           andComponentIndex: kArcMenuInvalidComponentIndex];
             
             // Set lowlight tint
             UIImage *glossImage = [UIImage imageNamed: @"GlossVideo.png"];

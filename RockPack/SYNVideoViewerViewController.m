@@ -118,6 +118,7 @@
     NSLog(@"WTF???");
 }
 
+
 #pragma mark - View lifecycle
 
 - (void) viewDidLoad
@@ -1022,16 +1023,7 @@
     
     videoShareButton.enabled = FALSE;
     
-    [self shareVideoInstance: videoInstance
-                     inView: self.chromeView
-                    fromRect: videoShareButton.frame
-             arrowDirections: UIPopoverArrowDirectionDown
-           activityIndicator: self.shareActivityIndicator
-                  onComplete: ^{
-                     videoShareButton.enabled = TRUE;
-                      [Appirater userDidSignificantEvent: FALSE];
-
-             }];
+    [self shareVideoInstance: videoInstance];
 }
 
 - (IBAction) userTouchedReportConcernButton: (UIButton *) button

@@ -99,27 +99,19 @@ typedef void (^SYNShareCompletionBlock)(void);
 
 - (void) headerTapped;
 
+-(void)notableScrollNotification:(NSNotification*)notification;
+
 - (IBAction) toggleStarAtIndexPath: (NSIndexPath *) indexPath;
 
 // Share
 - (void) requestShareLinkWithObjectType: (NSString *) objectType
                                objectId: (NSString *) objectId;
 
-- (void) shareVideoInstance: (VideoInstance *) videoInstance
-                     inView: (UIView *) inView
-                   fromRect: (CGRect) rect
-            arrowDirections: (UIPopoverArrowDirection) arrowDirections
-          activityIndicator: (UIActivityIndicatorView *) activityIndicatorView
-                 onComplete: (SYNShareCompletionBlock) completionBlock;
+- (void) shareVideoInstance: (VideoInstance *) videoInstance;
 
 - (void) shareChannel: (Channel *) channel
               isOwner: (NSNumber *) isOwner
-               inView: (UIView *) inView
-             fromRect: (CGRect) rect
-           usingImage: (UIImage *) image
-      arrowDirections: (UIPopoverArrowDirection) arrowDirections
-    activityIndicator: (UIActivityIndicatorView *) activityIndicatorView
-           onComplete: (SYNShareCompletionBlock) completionBlock;
+           usingImage: (UIImage *) image;
 
 - (void) addVideoAtIndexPath: (NSIndexPath *) indexPath
                withOperation: (NSString *) operation;

@@ -68,6 +68,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) UIView* accountSettingsCoverView;
 @property (nonatomic, weak) UICollectionView* currentlyObservigCollectionView;
 @property (nonatomic, strong) IBOutlet UIView* headerContainerView;
+@property (nonatomic) CGRect originalSideNavigationButtonFrame;
 @property (nonatomic) BOOL isAnimatingHeader;
 
 @end
@@ -76,6 +77,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @implementation SYNMasterViewController
 
 @synthesize isAnimatingHeader;
+
+
 
 #pragma mark - Object lifecycle
 
@@ -151,6 +154,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // it is the only way to guarantee it will work nicely
     self.sideNavigatorViewController.captiveButton = self.sideNavigationButton;
     self.sideNavigatorViewController.darkOverlay = self.darkOverlayView;
+    
+    self.originalSideNavigationButtonFrame = self.sideNavigationButton.frame;
         
     // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) == //
     
@@ -331,6 +336,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 #pragma mark - Scroller Changes
 
+
+
 -(void)notableScrollNotification:(NSNotification*)notification
 {
     NSNumber* directionNumber = (NSNumber*)[notification userInfo][kNotableScrollDirection];
@@ -350,6 +357,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                              headerRect.origin.y = -headerRect.size.height;
                              
                              self.headerContainerView.frame = headerRect;
+                             if([self.containerViewController.showingViewController.viewId isEqualToString:kChannelsViewId])
+                             {
+                                 CGRect snFrame = self.sideNavigationButton.frame;
+                                 snFrame.origin.y -= IS_IPAD ? 16.0f : 7.0f;
+                                 self.sideNavigationButton.frame = snFrame;
+                             }
                          } completion:^(BOOL finished) {
                              isAnimatingHeader = NO;
                          }];
@@ -363,6 +376,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                         
                              headerRect.origin.y = 0.0f;
                              self.headerContainerView.frame = headerRect;
+                              
+                             self.sideNavigationButton.frame = self.originalSideNavigationButtonFrame;
+                             
                          } completion:^(BOOL finished) {
                              isAnimatingHeader = NO;
                          }];

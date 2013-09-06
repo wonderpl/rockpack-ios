@@ -440,6 +440,8 @@
 
 - (void) viewDidScrollToFront
 {
+    [super viewDidScrollToFront];
+    
     [self updateAnalytics];
     
     if (self.isIPhone)
@@ -961,7 +963,8 @@
     if(self.mainCollectionViewScrollingDirection == ScrollingDirectionUp && self.channelThumbnailCollectionView.contentOffset.y < 91.0f)
         return;
     
-    if (_mainCollectionViewOffsetDeltaY > kNotableScrollThreshold + 12.0f && _mainCollectionViewOffsetDeltaY > 90.0f &&
+    if (_mainCollectionViewOffsetDeltaY > kNotableScrollThreshold + 12.0f &&
+        _mainCollectionViewOffsetDeltaY > 91.0f &&
         !self.isAnimating &&
         !self.isLoadingMoreContent)
     {
@@ -970,63 +973,6 @@
 
         dispatch_once(&onceToken, ^{
             
-            
-            [UIView animateWithDuration:0.3f
-                                  delay:0.0f
-                                options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-                                    
-                                    CGRect hChFrame = self.headerChannelsView.frame;
-                                    CGRect hSubFrame = self.headerSubscriptionsView.frame;
-                                    
-                                    if(IS_IPAD)
-                                    {
-                                        CGRect profPanelFrame = self.userProfileController.view.frame;
-                                        profPanelFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? -82.0f : 80.0f;
-                                        self.userProfileController.view.frame = profPanelFrame;
-                                        
-                                        hChFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? -40.0f : 165.0f;
-                                        hSubFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? -40.0f : 165.0f;
-                                    }
-                                    else
-                                    {
-                                        hChFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? -43.0f : 66.0f;
-                                        hSubFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? -43.0f : 66.0f;
-                                        
-                                        
-                                        CGRect tChFrame = self.channelsTabButton.frame;
-                                        CGRect tSubFrame = self.subscriptionsTabButton.frame;
-                                        
-                                        tChFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? -43.0f : 66.0f;
-                                        tSubFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? -43.0f : 66.0f;
-                                        
-                                        self.subscriptionsTabButton.frame = tSubFrame;
-                                        self.channelsTabButton.frame = tChFrame;
-                                    }
-                                    
-                                    
-                                    
-                                    self.headerChannelsView.frame = hChFrame;
-                                    self.headerSubscriptionsView.frame = hSubFrame;
-                                    
-                                    
-                                    
-                                    UIEdgeInsets ei = self.channelThumbnailCollectionView.contentInset;
-                                    if(_mainCollectionViewScrollingDirection == ScrollingDirectionDown)
-                                    {
-                                        ei.top = (IS_IPAD ? 140.0f : 110.f) + (tabExpanded ? kCategorySecondRowHeight : 0.0f);
-                                    }
-                                    else
-                                    {
-                                        ei.top = 48.0f;
-                                    }
-                                    //self.channelThumbnailCollectionView.contentInset = ei;
-                                    
-                                } completion:^(BOOL finished) {
-                                    
-                                    
-                                    
-                                }];
-            
             [[NSNotificationCenter defaultCenter] postNotificationName:kNotableScrollEvent
                                                                 object:self
                                                               userInfo:@{kNotableScrollDirection:@(_mainCollectionViewScrollingDirection)}];
@@ -1034,12 +980,78 @@
     }
 }
 
+-(void)notableScrollNotification:(NSNotification*)notification
+{
+    
+    NSNumber* directionNumber = (NSNumber*)[notification userInfo][kNotableScrollDirection];
+    if(!directionNumber)
+        return;
+    
+    ScrollingDirection direction = directionNumber.integerValue;
+    
+    [UIView animateWithDuration:0.3f
+                          delay:0.0f
+                        options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                            
+                            CGRect hChFrame = self.headerChannelsView.frame;
+                            CGRect hSubFrame = self.headerSubscriptionsView.frame;
+                            
+                            if(IS_IPAD)
+                            {
+                                CGRect profPanelFrame = self.userProfileController.view.frame;
+                                profPanelFrame.origin.y = direction == ScrollingDirectionUp ? -82.0f : 80.0f;
+                                self.userProfileController.view.frame = profPanelFrame;
+                                
+                                hChFrame.origin.y = direction == ScrollingDirectionUp ? -40.0f : 165.0f;
+                                hSubFrame.origin.y = direction == ScrollingDirectionUp ? -40.0f : 165.0f;
+                            }
+                            else
+                            {
+                                hChFrame.origin.y = direction == ScrollingDirectionUp ? -43.0f : 66.0f;
+                                hSubFrame.origin.y = direction == ScrollingDirectionUp ? -43.0f : 66.0f;
+                                
+                                
+                                CGRect tChFrame = self.channelsTabButton.frame;
+                                CGRect tSubFrame = self.subscriptionsTabButton.frame;
+                                
+                                tChFrame.origin.y = direction == ScrollingDirectionUp ? -43.0f : 66.0f;
+                                tSubFrame.origin.y = direction == ScrollingDirectionUp ? -43.0f : 66.0f;
+                                
+                                self.subscriptionsTabButton.frame = tSubFrame;
+                                self.channelsTabButton.frame = tChFrame;
+                            }
+                            
+                            
+                            
+                            self.headerChannelsView.frame = hChFrame;
+                            self.headerSubscriptionsView.frame = hSubFrame;
+                            
+                            
+                            
+                            UIEdgeInsets ei = self.channelThumbnailCollectionView.contentInset;
+                            if(direction == ScrollingDirectionDown)
+                            {
+                                ei.top = (IS_IPAD ? 140.0f : 110.f) + (tabExpanded ? kCategorySecondRowHeight : 0.0f);
+                            }
+                            else
+                            {
+                                ei.top = 48.0f;
+                            }
+                            //self.channelThumbnailCollectionView.contentInset = ei;
+                            
+                        } completion:^(BOOL finished) {
+                            
+                            
+                            
+                        }];
+}
+
 - (void) resizeScrollViews
 {
     if (self.isIPhone)
         return;
     
-     
+    
     CGSize channelViewSize = self.channelThumbnailCollectionView.collectionViewLayout.collectionViewContentSize;
     CGSize subscriptionsViewSize = self.subscriptionsViewController.collectionView.collectionViewLayout.collectionViewContentSize;
     

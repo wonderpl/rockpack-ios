@@ -49,6 +49,7 @@ static NSString *SearchGenresTableCellIdentifier = @"SYNSearchCategoriesIphoneCe
     self.tableView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, 10.0f, 0.0f);
     
     [self loadData];
+    
 }
 
 -(void)viewDidAppear:(BOOL)animated

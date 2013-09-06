@@ -190,6 +190,8 @@
 
 - (void) viewDidScrollToFront
 {
+    [super viewDidScrollToFront];
+    
     [self updateAnalytics];
     
     // On Boarding
@@ -385,58 +387,67 @@ static BOOL lock = NO;
         
         dispatch_once(&onceToken, ^{
            
-            lock = YES;
-            
-            [UIView animateWithDuration:0.3f
-                                  delay:0.0f
-                                options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-                                    
-                                    CGRect tabFrame;
-                                    UIEdgeInsets ei = self.channelThumbnailCollectionView.contentInset;
-                                    if(IS_IPAD)
-                                    {
-                                        tabFrame = self.tabViewController.tabView.frame;
-                                        tabFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? 0.0f : 90.0f;
-                                        self.tabViewController.tabView.frame = tabFrame;
-                                    }
-                                    else
-                                    {
-                                        tabFrame = self.categorySelectButton.frame;
-                                        tabFrame.origin.y = _mainCollectionViewScrollingDirection == ScrollingDirectionUp ? 0.0f : 60.0f;
-                                        self.categorySelectButton.frame = tabFrame;
-                                        
-                                        
-                                    }
-                                    
-                                    if(_mainCollectionViewScrollingDirection == ScrollingDirectionDown)
-                                    {
-                                        ei.top = (IS_IPAD ? 140.0f : 110.f) + (tabExpanded ? kCategorySecondRowHeight : 0.0f);
-                                    }
-                                    else
-                                    {
-                                        ei.top = 48.0f;
-                                    }
-                                    self.channelThumbnailCollectionView.contentInset = ei;
-                                    
-            } completion:^(BOOL finished) {
-                
-                lock = NO;
-                NSLog(@"Complete");
-                
-                if(IS_IPHONE)
-                {
-                    CGRect tableFrame = self.iPhoneCategoryTableViewController.view.frame;
-                    tableFrame.origin.y = self.categorySelectButton.frame.origin.y + self.categorySelectButton.frame.size.height - 1.0f; // compensate for shadow
-                    tableFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - tableFrame.origin.y;
-                    self.iPhoneCategoryTableViewController.view.frame = tableFrame;
-                }
-            }];
             
             [[NSNotificationCenter defaultCenter] postNotificationName:kNotableScrollEvent
                                                                 object:self
                                                               userInfo:@{kNotableScrollDirection:@(_mainCollectionViewScrollingDirection)}];
         });
     }
+}
+
+-(void)notableScrollNotification:(NSNotification*)notification
+{
+    lock = YES;
+    
+    NSNumber* directionNumber = (NSNumber*)[notification userInfo][kNotableScrollDirection];
+    if(!directionNumber)
+        return;
+    
+    ScrollingDirection direction = directionNumber.integerValue;
+    
+    [UIView animateWithDuration:0.3f
+                          delay:0.0f
+                        options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+                            
+                            CGRect tabFrame;
+                            UIEdgeInsets ei = self.channelThumbnailCollectionView.contentInset;
+                            if(IS_IPAD)
+                            {
+                                tabFrame = self.tabViewController.tabView.frame;
+                                tabFrame.origin.y = direction == ScrollingDirectionUp ? 0.0f : 90.0f;
+                                self.tabViewController.tabView.frame = tabFrame;
+                            }
+                            else
+                            {
+                                tabFrame = self.categorySelectButton.frame;
+                                tabFrame.origin.y = direction == ScrollingDirectionUp ? 0.0f : 60.0f;
+                                self.categorySelectButton.frame = tabFrame;
+                                
+                            }
+                            
+                            if(direction == ScrollingDirectionDown)
+                            {
+                                ei.top = (IS_IPAD ? 140.0f : 110.f) + (tabExpanded ? kCategorySecondRowHeight : 0.0f);
+                            }
+                            else
+                            {
+                                ei.top = 48.0f;
+                            }
+                            self.channelThumbnailCollectionView.contentInset = ei;
+                            
+                        } completion:^(BOOL finished) {
+                            
+                            lock = NO;
+                            NSLog(@"Complete");
+                            
+                            if(IS_IPHONE)
+                            {
+                                CGRect tableFrame = self.iPhoneCategoryTableViewController.view.frame;
+                                tableFrame.origin.y = self.categorySelectButton.frame.origin.y + self.categorySelectButton.frame.size.height - 1.0f; // compensate for shadow
+                                tableFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - tableFrame.origin.y;
+                                self.iPhoneCategoryTableViewController.view.frame = tableFrame;
+                            }
+                        }];
 }
 
 #pragma mark - Display Channels
@@ -918,6 +929,7 @@ static BOOL lock = NO;
     [self.view addSubview: self.arrowImage];
 }
 
+// iPhone
 
 - (void) toggleChannelsCategoryTable: (id) sender
 {
@@ -964,7 +976,9 @@ static BOOL lock = NO;
 {
     if([action isEqualToString:@"open"] && [object isKindOfClass:[Genre class]])
     {
-        [self categoryTableController:nil didSelectCategory:object];
+        Genre* genreSelected = (Genre *)object;
+        [self.iPhoneCategoryTableViewController setSelectedCategoryForId:genreSelected.uniqueId];
+        [self categoryTableController:nil didSelectCategory:genreSelected];
         
     }
 }
