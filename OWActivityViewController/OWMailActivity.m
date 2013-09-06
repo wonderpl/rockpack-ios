@@ -32,7 +32,7 @@
 - (id) init
 {
     self = [super initWithTitle: NSLocalizedStringFromTable(@"activity.Mail.title", @"OWActivityViewController", @"Mail")
-                          image: [UIImage imageNamed: @"ButtonEmail.png"]
+                          image: [UIImage imageNamed: @"ShareMailButton"]
                     actionBlock: nil];
     
     if (!self)
