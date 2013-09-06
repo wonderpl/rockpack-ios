@@ -260,11 +260,21 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [self.navigationContainerView addSubview:self.sideNavigatorViewController.view];
     
-    if (!IS_IOS_7_OR_GREATER && IS_IPHONE) {
+    //Dark Overlay view for slider (iPhone)
+    if (IS_IPHONE)
+    {
         CGRect screenRect = [[UIScreen mainScreen] bounds];
         CGFloat screenWidth = screenRect.size.width;
         CGFloat screenHeight = screenRect.size.height;
-        self.darkOverlayView.frame = CGRectMake(0.0f, 0.0f, screenWidth, screenHeight);
+        if (IS_IOS_7_OR_GREATER)
+        {
+            self.darkOverlayView.frame = CGRectMake(0.0f, 0.0f, screenWidth, 57.0f);
+        }
+        
+        else
+        {
+            self.darkOverlayView.frame = CGRectMake(0.0f, 0.0f, screenWidth, screenHeight);
+        }
     }
 }
 
