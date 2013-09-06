@@ -25,7 +25,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
 
 @interface SYNFriendsViewController () <UIScrollViewDelegate>
 
-@property (nonatomic, strong) NSArray* facebookFriends;
+@property (nonatomic, strong) NSArray* friends;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 @property (nonatomic) BOOL onRockpackFilterOn;
 @property (nonatomic, strong) NSArray* displayFriends;
@@ -59,7 +59,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     
     [self.searchField setAutocorrectionType:UITextAutocorrectionTypeNo];
     
-    self.facebookFriends = [NSArray array];
+    self.friends = [NSArray array];
     
     // Register Cells
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNFriendThumbnailCell"
@@ -156,7 +156,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
         return friend.isOnRockpack; // resourceURL != nil; (derived property)
     }];
     
-    return [self.facebookFriends filteredArrayUsingPredicate:searchPredicate];
+    return [self.friends filteredArrayUsingPredicate:searchPredicate];
 }
 
 -(IBAction)switchClicked:(UIButton*)tab
@@ -206,10 +206,8 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
             return;
         
         NSInteger friendsCount = itemsDictionary.count;
+        NSInteger rockpackFriends = 0;
         
-        [weakSelf.allFriendsButton setTitle:[NSString stringWithFormat:@"ALL FRIENDS (%i)", friendsCount] forState:UIControlStateNormal];
-        [weakSelf.allFriendsButton setTitle:[NSString stringWithFormat:@"ALL FRIENDS (%i)", friendsCount] forState:UIControlStateHighlighted];
-        [weakSelf.allFriendsButton setTitle:[NSString stringWithFormat:@"ALL FRIENDS (%i)", friendsCount] forState:UIControlStateSelected];
         
         NSMutableArray* fbFriendsMutableArray = [NSMutableArray arrayWithCapacity:friendsCount];
         
@@ -228,17 +226,30 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
             
             [fbFriendsMutableArray addObject:friend];
             
-            if(!friend.isOnRockpack)
-                friendsCount--;
+            if(friend.isOnRockpack) {
+                
+                
+                rockpackFriends++;
+            }
+                
             
             
         }
-
-        [weakSelf.onRockpackButton setTitle:[NSString stringWithFormat:@"ON ROCKPACK (%i)", friendsCount] forState:UIControlStateNormal];
-        [weakSelf.onRockpackButton setTitle:[NSString stringWithFormat:@"ON ROCKPACK (%i)", friendsCount] forState:UIControlStateHighlighted];
-        [weakSelf.onRockpackButton setTitle:[NSString stringWithFormat:@"ON ROCKPACK (%i)", friendsCount] forState:UIControlStateSelected];
         
-        weakSelf.facebookFriends = [NSArray arrayWithArray:fbFriendsMutableArray];
+        NSString* firstTabText = [NSString stringWithFormat:@"ALL FRIENDS (%i)", friendsCount];
+        NSString* secondTabText = [NSString stringWithFormat:@"ON ROCKPACK (%i)", rockpackFriends];
+        
+        // set first tab
+        [weakSelf.allFriendsButton setTitle:firstTabText forState:UIControlStateNormal];
+        [weakSelf.allFriendsButton setTitle:firstTabText forState:UIControlStateHighlighted];
+        [weakSelf.allFriendsButton setTitle:firstTabText forState:UIControlStateSelected];
+
+        // set second tab
+        [weakSelf.onRockpackButton setTitle:secondTabText forState:UIControlStateNormal];
+        [weakSelf.onRockpackButton setTitle:secondTabText forState:UIControlStateHighlighted];
+        [weakSelf.onRockpackButton setTitle:secondTabText forState:UIControlStateSelected];
+        
+        weakSelf.friends = [NSArray arrayWithArray:fbFriendsMutableArray];
      
         
         [weakSelf.activityIndicator stopAnimating];
@@ -398,7 +409,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     }
     else
     {
-        _displayFriends = self.facebookFriends;
+        _displayFriends = self.friends;
         
     }
     

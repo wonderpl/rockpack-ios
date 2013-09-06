@@ -52,25 +52,36 @@ static inline CGRect ScaleRect(CGRect rect, float n)
             self.label = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, 200, 36)];
             self.label.textColor = [UIColor whiteColor];
             
-            self.label.backgroundColor = [UIColor colorWithWhite: 0.0f
-                                                           alpha: 0.8f];
-            
-            self.label.font = [UIFont boldRockpackFontOfSize: 28.0f];
+            self.label.backgroundColor = [UIColor clearColor];
+        
+            self.label.font = [UIFont boldSystemFontOfSize: 28.0f];
             self.label.text = labelText;
             self.label.textAlignment = NSTextAlignmentCenter;
             self.label.numberOfLines = 0;
-            self.label.layer.cornerRadius = 22;
             [self.label sizeToFit];
             
-            self.label.frame = CGRectInset(self.label.frame, -10, -8);
+            self.label.frame = CGRectInset(self.label.frame, -12, -4);
             
-            CGPoint c = self.label.center;
+            self.labelView = [[UIView alloc] initWithFrame: self.label.bounds];
+            
+            self.labelView.alpha = 0.0;
+
+            self.labelView.backgroundColor = [UIColor colorWithWhite: 0.0f
+                                                               alpha: 0.8f];
+            
+            CGPoint c = self.labelView.center;
             c.x = self.imageView.center.x;
             c.y = -40;
+            self.labelView.center = c;
+            
+            // Now center our label in the superview
+            self.label.center = CGPointMake(self.labelView.frame.size.width / 2, self.labelView.frame.size.height / 2);
 
-            self.label.center = c;
-            self.label.alpha = 0.0; ;
-            [self addSubview: self.label];
+            self.labelView.layer.cornerRadius = 22;
+            
+            [self.labelView addSubview: self.label];
+            
+            [self addSubview: self.labelView];
         }
     }
     

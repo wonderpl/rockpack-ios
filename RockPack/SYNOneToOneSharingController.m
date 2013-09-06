@@ -216,7 +216,6 @@
                        ^{
                            if (granted)
                            {
-                               
                                NSLog(@"Address Book Access GRANTED");
                                
                                // populates the friends array
