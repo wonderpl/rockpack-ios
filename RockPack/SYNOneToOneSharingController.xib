@@ -78,7 +78,7 @@
 						<string key="NSFrame">{{20, 20}, {379, 21}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="204221981"/>
+						<reference key="NSNextKeyView" ref="63561251"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -111,6 +111,7 @@
 						<string key="NSFrame">{{20, 55}, {34, 45}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="204221981"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -163,7 +164,7 @@
 					<object class="IBUIButton" id="179705294">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">289</int>
-						<string key="NSFrame">{{378, 56}, {41, 44}}</string>
+						<string key="NSFrame">{{366, 56}, {41, 44}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="995286249"/>
@@ -248,7 +249,7 @@
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
 			<object class="IBUIView" id="195490796">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUILabel" id="613842455">
@@ -340,7 +341,6 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{419, 256}</string>
-				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="613842455"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<object class="NSColor" key="IBUIBackgroundColor">
@@ -737,7 +737,6 @@
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="authorizeAddressBookButtonPressed:">id</string>
 						<string key="authorizeFacebookButtonPressed:">id</string>
-						<string key="closeButtonPressed:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="authorizeAddressBookButtonPressed:">
@@ -746,10 +745,6 @@
 						</object>
 						<object class="IBActionInfo" key="authorizeFacebookButtonPressed:">
 							<string key="name">authorizeFacebookButtonPressed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="closeButtonPressed:">
-							<string key="name">closeButtonPressed:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>
@@ -828,14 +823,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/UICollectionViewFlowLayout.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">UICollectionViewLayout</string>
-					<string key="superclassName">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/UICollectionViewLayout.h</string>
 					</object>
 				</object>
 			</array>
