@@ -264,6 +264,23 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notableScrollNotification:) name:kNotableScrollEvent object:nil];
     
     [self.navigationContainerView addSubview:self.sideNavigatorViewController.view];
+    
+    //Dark Overlay view for slider (iPhone)
+    if (IS_IPHONE)
+    {
+        CGRect screenRect = [[UIScreen mainScreen] bounds];
+        CGFloat screenWidth = screenRect.size.width;
+        CGFloat screenHeight = screenRect.size.height;
+        if (IS_IOS_7_OR_GREATER)
+        {
+            self.darkOverlayView.frame = CGRectMake(0.0f, 0.0f, screenWidth, 57.0f);
+        }
+        
+        else
+        {
+            self.darkOverlayView.frame = CGRectMake(0.0f, 0.0f, screenWidth, screenHeight);
+        }
+    }
 }
 
 
@@ -548,33 +565,58 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (IBAction) showAndHideSideNavigation: (UIButton*) sender
 {
 
+    
+    
     if (self.sideNavigatorViewController.state == SideNavigationStateFull ||
         self.sideNavigatorViewController.state == SideNavigationStateHalf)
     {
         self.sideNavigatorViewController.state = SideNavigationStateHidden;
         self.darkOverlayView.alpha = 1.0;
         
-        [UIView animateWithDuration:0.3
-                         animations:^{
-                             self.darkOverlayView.alpha = 0.0;
-                         } completion:^(BOOL finished) {
-                             self.darkOverlayView.hidden = YES;
-                         }];
+        if (IS_IPHONE && IS_IOS_7_OR_GREATER) {
+            [UIView animateWithDuration:0.3
+                             animations:^{
+                                 self.darkOverlayView.alpha = 0.0;
+                             } completion:^(BOOL finished) {
+                                 self.darkOverlayView.hidden = YES;
+                             }];
+        }
+        
+        else
+        {
+            [UIView animateWithDuration:0.3
+                             animations:^{
+                                 self.darkOverlayView.alpha = 0.0;
+                             } completion:^(BOOL finished) {
+                                 self.darkOverlayView.hidden = YES;
+                             }];
+        }
 
-//        sender.selected = NO;
     }
     else
     {
         [self showSideNavigation];
         self.darkOverlayView.alpha = 0.0;
+
+        if (IS_IPHONE && IS_IOS_7_OR_GREATER) {
+            [UIView animateWithDuration:0.2
+                                  delay:0.3
+                                options:UIViewAnimationOptionCurveLinear
+                             animations:^{self.darkOverlayView.alpha = 1.0;}
+                             completion:^(BOOL finished) {
+                                        self.darkOverlayView.hidden = NO;
+                                    }];
+        }
         
-        [UIView animateWithDuration:0.3
-                         animations:^{
-                             self.darkOverlayView.alpha = 1.0;
-                         } completion:^(BOOL finished) {
-                             self.darkOverlayView.hidden = NO;
-                         }];
-//        sender.selected = YES;
+        else
+        {
+            [UIView animateWithDuration:0.3
+                             animations:^{
+                                 self.darkOverlayView.alpha = 1.0;
+                             } completion:^(BOOL finished) {
+                                 self.darkOverlayView.hidden = NO;
+                             }];
+        }
     }
 }
 

@@ -10,10 +10,12 @@
 #import "SYNDeviceManager.h"
 #import "SYNModalSubscribersController.h"
 #import "UIFont+SYNFont.h"
+#import "AMBlurView.h"
 
 @interface SYNModalSubscribersController ()
 
 @property (nonatomic, strong) UIViewController *viewController;
+@property (nonatomic, strong) AMBlurView *blurViewController;
 @property (nonatomic, strong) IBOutlet UIView *containerView;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UIButton *backButton;
@@ -41,11 +43,34 @@
     [super viewDidLoad];
     
     self.titleLabel.font = [UIFont rockpackFontOfSize: self.titleLabel.font.pointSize];
-
-    CGRect containerViewFrame = self.containerView.frame;    
+    
+    CGRect containerViewFrame = self.containerView.frame;
     self.viewController.view.frame = containerViewFrame;
     
-    [self.containerView addSubview: self.viewController.view];
+    if (IS_IOS_7_OR_GREATER)
+    {
+        self.containerView.hidden = YES;
+        
+        self.blurViewController = [AMBlurView new];
+        
+        if (IS_IPHONE_5) {
+            self.blurViewController.frame = CGRectMake(self.containerView.frame.origin.x, self.containerView.frame.origin.y, self.containerView.frame.size.width, self.containerView.frame.size.height + 67 + 22);
+        }
+        
+        else
+        {
+            self.blurViewController.frame = CGRectMake(self.containerView.frame.origin.x, self.containerView.frame.origin.y, self.containerView.frame.size.width, self.containerView.frame.size.height + 22);
+        }
+        
+        [self.blurViewController addSubview: self.viewController.view];
+        [self.view addSubview:self.blurViewController];
+    }
+    
+    else
+    {
+        [self.containerView addSubview: self.viewController.view];
+    }
+    
 }
 
 
