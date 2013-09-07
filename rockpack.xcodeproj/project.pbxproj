@@ -915,6 +915,10 @@
 		BE06EEF017D759390028F2E3 /* ABContactPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = BE06EEEE17D759390028F2E3 /* ABContactPlaceholder.png */; };
 		BE06EEF117D759390028F2E3 /* ABContactPlaceholder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE06EEEF17D759390028F2E3 /* ABContactPlaceholder@2x.png */; };
 		BE06EEF417D78DCA0028F2E3 /* SYNOneToOneFriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE06EEF317D78DCA0028F2E3 /* SYNOneToOneFriendCell.m */; };
+		BE06EFA617DB6C810028F2E3 /* ShareUnconnectedabaccess.png in Resources */ = {isa = PBXBuildFile; fileRef = BE06EFA217DB6C810028F2E3 /* ShareUnconnectedabaccess.png */; };
+		BE06EFA717DB6C810028F2E3 /* ShareUnconnectedabaccess@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE06EFA317DB6C810028F2E3 /* ShareUnconnectedabaccess@2x.png */; };
+		BE06EFA817DB6C810028F2E3 /* ShareUnconnectedFbConnect.png in Resources */ = {isa = PBXBuildFile; fileRef = BE06EFA417DB6C810028F2E3 /* ShareUnconnectedFbConnect.png */; };
+		BE06EFA917DB6C810028F2E3 /* ShareUnconnectedFbConnect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE06EFA517DB6C810028F2E3 /* ShareUnconnectedFbConnect@2x.png */; };
 		BE08159F16D3EF7F00ADB1DC /* SYNGenreTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE08159E16D3EF7F00ADB1DC /* SYNGenreTabViewController.m */; };
 		BE0815A216D4DADB00ADB1DC /* SYNTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815A116D4DADA00ADB1DC /* SYNTabView.m */; };
 		BE0815A516D4E53600ADB1DC /* SYNTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE0815A416D4E53500ADB1DC /* SYNTabViewController.m */; };
@@ -2373,6 +2377,10 @@
 		BE06EEF217D78DCA0028F2E3 /* SYNOneToOneFriendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOneToOneFriendCell.h; sourceTree = "<group>"; };
 		BE06EEF317D78DCA0028F2E3 /* SYNOneToOneFriendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOneToOneFriendCell.m; sourceTree = "<group>"; };
 		BE06EFA117DA11E30028F2E3 /* Rockpack 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rockpack 12.xcdatamodel"; sourceTree = "<group>"; };
+		BE06EFA217DB6C810028F2E3 /* ShareUnconnectedabaccess.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShareUnconnectedabaccess.png; path = Assets/Images/ShareUnconnectedabaccess.png; sourceTree = "<group>"; };
+		BE06EFA317DB6C810028F2E3 /* ShareUnconnectedabaccess@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ShareUnconnectedabaccess@2x.png"; path = "Assets/Images/ShareUnconnectedabaccess@2x.png"; sourceTree = "<group>"; };
+		BE06EFA417DB6C810028F2E3 /* ShareUnconnectedFbConnect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShareUnconnectedFbConnect.png; path = Assets/Images/ShareUnconnectedFbConnect.png; sourceTree = "<group>"; };
+		BE06EFA517DB6C810028F2E3 /* ShareUnconnectedFbConnect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ShareUnconnectedFbConnect@2x.png"; path = "Assets/Images/ShareUnconnectedFbConnect@2x.png"; sourceTree = "<group>"; };
 		BE08159D16D3EF7F00ADB1DC /* SYNGenreTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNGenreTabViewController.h; sourceTree = "<group>"; };
 		BE08159E16D3EF7F00ADB1DC /* SYNGenreTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNGenreTabViewController.m; sourceTree = "<group>"; };
 		BE0815A016D4DADA00ADB1DC /* SYNTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNTabView.h; sourceTree = "<group>"; };
@@ -5577,6 +5585,10 @@
 				BE8F93B017B3D00700E7035F /* ImageFacebookImplicit.png */,
 				BE8F93B117B3D00700E7035F /* ImageFacebookImplicit@2x.png */,
 				BE8F93B217B3D00700E7035F /* ImageFacebookImplicit@2x~iphone.png */,
+				BE06EFA217DB6C810028F2E3 /* ShareUnconnectedabaccess.png */,
+				BE06EFA317DB6C810028F2E3 /* ShareUnconnectedabaccess@2x.png */,
+				BE06EFA417DB6C810028F2E3 /* ShareUnconnectedFbConnect.png */,
+				BE06EFA517DB6C810028F2E3 /* ShareUnconnectedFbConnect@2x.png */,
 				BE8F93B317B3D00700E7035F /* ImageFacebookImplicit~iphone.png */,
 			);
 			name = Sharing;
@@ -6823,6 +6835,10 @@
 				010AAEA717D9EF48001DD5FA /* ShareTwitterButton@2x.png in Resources */,
 				010AAEA817D9EF48001DD5FA /* ShareTwitterButton@2x~iphone.png in Resources */,
 				010AAEA917D9EF48001DD5FA /* ShareTwitterButton~iphone.png in Resources */,
+				BE06EFA617DB6C810028F2E3 /* ShareUnconnectedabaccess.png in Resources */,
+				BE06EFA717DB6C810028F2E3 /* ShareUnconnectedabaccess@2x.png in Resources */,
+				BE06EFA817DB6C810028F2E3 /* ShareUnconnectedFbConnect.png in Resources */,
+				BE06EFA917DB6C810028F2E3 /* ShareUnconnectedFbConnect@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

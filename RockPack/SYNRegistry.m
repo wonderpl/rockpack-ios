@@ -23,8 +23,7 @@
     {
         appDelegate = UIApplication.sharedApplication.delegate;
         importManagedObjectContext = appDelegate.mainManagedObjectContext;
-//        importManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSConfinementConcurrencyType];
-//        importManagedObjectContext.parentContext = appDelegate.mainManagedObjectContext;
+
     }
     
     return self;
@@ -104,8 +103,6 @@
         AssertOrLog(@"clearImportContextFromEntityName: Save failed");
         return NO;
     }
-    
-    [appDelegate saveSearchContext];
     
     return YES;  
 }
