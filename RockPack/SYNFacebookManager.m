@@ -92,22 +92,31 @@
 
 // Logout
 
+
 - (void) logoutOnSuccess: (FacebookLogoutSuccessBlock) successBlock
                onFailure: (FacebookLogoutFailureBlock) failureBlock
 {
     if (FBSession.activeSession.isOpen)
     {
         [FBSession.activeSession closeAndClearTokenInformation];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            successBlock();
-        });
+        if(successBlock)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                successBlock();
+            });
+        }
+        
     }
     else
     {
         // If we get here, then some sort of error has occurred
-        dispatch_async(dispatch_get_main_queue(), ^{
-            failureBlock(@"Session already open");
-        });
+        if(failureBlock)
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                failureBlock(@"Session already open");
+            });
+        }
+        
     }
 }
 

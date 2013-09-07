@@ -837,6 +837,12 @@
                                                                   
                                                               }
                                                               
+                                                              [[SYNFacebookManager sharedFBManager] logoutOnSuccess:^{
+                                                                  
+                                                              } onFailure:^(NSString *errorMessage) {
+                                                                  
+                                                              }];
+                                                              
                                                           }];
         
         
