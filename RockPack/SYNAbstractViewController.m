@@ -112,6 +112,8 @@
 {
     [super viewDidLoad];
     
+    //self.edgesForExtendedLayout = UIRectEdgeNone;
+    
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(clearedLocationBoundData)
                                                  name: kClearedLocationBoundData

@@ -148,7 +148,13 @@
         if (aBookAuthStatus == kABAuthorizationStatusNotDetermined)
         {
             // request authorization
+            DebugLog(@"AddressBook Status: Not Determined, asking for authorization");
             [self requestAddressBookAuthorization];
+        }
+        else // either Denied or Restricted
+        {
+            DebugLog(@"AddressBook Status: %@", aBookAuthStatus == kABAuthorizationStatusDenied ? @"Denied" : @"Restricted");
+            
         }
         
         // in the meantime...
@@ -167,6 +173,8 @@
     }
     else // (status == kABAuthorizationStatusAuthorized)
     {
+        
+        DebugLog(@"AddressBook Status: Authorized, fetching contacts");
         // present main view
         [self fetchAddressBookFriends];
             
@@ -217,13 +225,13 @@
     ABAddressBookRef addressBookRef = ABAddressBookCreateWithOptions(NULL, &error);
     
     if (addressBookRef == NULL)
-    {
         return;
-    }
+    
     
     BOOL hasFacebookSession = [[SYNFacebookManager sharedFBManager] hasActiveSession];
     
     ABAddressBookRequestAccessWithCompletion(addressBookRef, ^(bool granted, CFErrorRef error) {
+        
         dispatch_async(dispatch_get_main_queue(), ^{
                            if (granted)
                            {
@@ -259,7 +267,7 @@
 {
     CGRect aViewRect = self.authorizationView.frame;
     
-    aViewRect.origin.y = 50.0f;
+    aViewRect.origin.y = 55.0f;
     self.authorizationView.frame = aViewRect;
     [self.view addSubview: self.authorizationView];
 }
@@ -370,7 +378,7 @@
         NSArray *emailAddresses = (__bridge NSArray *) ABMultiValueCopyArrayOfAllValues(emailAddressMultValue);
         CFRelease(emailAddressMultValue);
         
-        if(emailAddresses.count > 0) // only keep contacts with email addresses
+        if(emailAddresses.count == 0) // only keep contacts with email addresses
             continue;
         
         firstName = (__bridge_transfer NSString *) ABRecordCopyValue(currentPerson, kABPersonFirstNameProperty);
@@ -397,6 +405,8 @@
         }
         
         [friendsArrayMut addObject: contactFriend];
+        
+        DebugLog(@"AddressBook Friend: '%@' (%@)", contactFriend.displayName, contactFriend.email);
     }
     
     self.friends = [NSArray arrayWithArray: friendsArrayMut]; // already contains the original friends
@@ -713,6 +723,7 @@
     [self.searchResultsTableView reloadData];
     
     self.closeButton.hidden = NO;
+    self.closeButton.alpha = 0.0f;
     
     [UIView animateWithDuration: 0.3
                           delay: 0.0
@@ -721,6 +732,12 @@
                          CGRect vFrame = self.view.frame;
                          vFrame.origin.y -= 160.0f;
                          self.view.frame = vFrame;
+                         
+                         self.closeButton.alpha = 1.0f;
+                         
+                         CGRect sfFrame = self.searchFieldFrameImageView.frame;
+                         sfFrame.size.width -= 30.0f;
+                         self.searchFieldFrameImageView.frame = sfFrame;
                      }
                      completion: nil];
     
@@ -738,8 +755,22 @@
                          CGRect vFrame = self.view.frame;
                          vFrame.origin.y += 160.0f;
                          self.view.frame = vFrame;
+                         
+                         
+                         self.closeButton.alpha = 0.0f;
+                         
+                         CGRect sfFrame = self.searchFieldFrameImageView.frame;
+                         sfFrame.size.width += 30.0f;
+                         self.searchFieldFrameImageView.frame = sfFrame;
                      }
-                     completion: nil];
+                     completion:^(BOOL finished) {
+                         
+                         self.closeButton.hidden = YES;
+                         
+                         
+                         
+                         
+                     }];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
