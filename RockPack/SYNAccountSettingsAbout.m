@@ -106,7 +106,7 @@
     [self rockpackLogoImage];
     
     
-    // Version number display
+    // Version number display ex. ROCKPACK 1.3.0
     [self rockpackVersionLabel];
    
 
@@ -119,12 +119,7 @@
     // Terms Button
     self.termsButton = [[UIButton alloc] initWithFrame:CGRectMake((self.contentSizeForViewInPopover.width * 0.5) - 80.0,
                                                                   
-                                                                  self.logoImageView.frame.origin.y
-                                                                  + self.logoImageView.frame.size.height
-                                                                  + self.rockpackWithVersionLabel.frame.size.height
-                                                                  + self.rockpackCopyrightTextLabel.frame.size.height
-                                                                  + [self.attributionTextView contentSize].height
-                                                                  - 5.0,
+                                                                  300.0f,
                                                                   
                                                                   160.0,
                                                                   
@@ -153,13 +148,7 @@
     // privacy button
     self.privacyButton = [[UIButton alloc] initWithFrame:CGRectMake((self.contentSizeForViewInPopover.width * 0.5) - 80.0,
                                                                   
-                                                                  self.logoImageView.frame.origin.y
-                                                                  + self.logoImageView.frame.size.height
-                                                                  + self.rockpackWithVersionLabel.frame.size.height
-                                                                  + self.rockpackCopyrightTextLabel.frame.size.height
-                                                                  + [self.attributionTextView contentSize].height
-                                                                  + self.termsButton.frame.size.height
-                                                                  + 5.0,
+                                                                  self.termsButton.frame.origin.y + self.termsButton.frame.size.height + 10.0f,
                                                                   
                                                                   160.0,
                                                                   
@@ -282,6 +271,7 @@
     
     [self.scrollView addSubview: self.attributionTextView];
     
+    
     self.attributionTextView.frame = CGRectMake(0.0,
                                                 
                                                 self.logoImageView.frame.origin.y
@@ -292,7 +282,7 @@
                                                 
                                                 self.contentSizeForViewInPopover.width,
                                                 
-                                                [self.attributionTextView contentSize].height);
+                                                300.0f);
 
 }
 

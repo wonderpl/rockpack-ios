@@ -41,6 +41,7 @@
 {
     [super viewDidLoad];
     
+    
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"uiAction"
@@ -65,7 +66,7 @@
     self.tableView = [[UITableView alloc] initWithFrame: CGRectMake((IS_IPAD ? 1.0 : 0.0),
                                                                     self.lastNameInputField.frame.origin.y + 42.0,
                                                                     (IS_IPAD ? 378.0 : 320.0),
-                                                                    100.0) style: UITableViewStyleGrouped];
+                                                                    126.0) style: UITableViewStyleGrouped];
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.opaque = NO;
     self.tableView.delegate = self;
