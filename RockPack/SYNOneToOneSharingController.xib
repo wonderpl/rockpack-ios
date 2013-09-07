@@ -765,6 +765,7 @@
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="authorizeAddressBookButtonPressed:">id</string>
 						<string key="authorizeFacebookButtonPressed:">id</string>
+						<string key="closeButtonPressed:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="authorizeAddressBookButtonPressed:">
@@ -773,6 +774,10 @@
 						</object>
 						<object class="IBActionInfo" key="authorizeFacebookButtonPressed:">
 							<string key="name">authorizeFacebookButtonPressed:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="closeButtonPressed:">
+							<string key="name">closeButtonPressed:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>
@@ -856,6 +861,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/UICollectionViewFlowLayout.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">UICollectionViewLayout</string>
+					<string key="superclassName">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/UICollectionViewLayout.h</string>
 					</object>
 				</object>
 			</array>
