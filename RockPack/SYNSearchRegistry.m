@@ -27,6 +27,17 @@
     return self;
 }
 
+- (BOOL) clearImportContextFromEntityName: (NSString*) entityName
+{
+    if([super clearImportContextFromEntityName:entityName])
+    {
+        [appDelegate saveSearchContext];
+        return YES;
+    }
+    
+    return NO;
+    
+}
 
 - (BOOL) registerVideosFromDictionary: (NSDictionary *) dictionary
 {

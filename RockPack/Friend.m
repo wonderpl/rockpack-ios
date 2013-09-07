@@ -51,7 +51,6 @@
     self.hasIOSDevice = [dictionary objectForKey: @"has_ios_device"
                                      withDefault: @NO];
     
-    NSLog(@"resourceURL: %@ - ios: %@", self.resourceURL, self.hasIOSDevice);
     
     self.lastShareDate = [dictionary dateFromISO6801StringForKey:@"last_shared_date"
                                                      withDefault:nil];

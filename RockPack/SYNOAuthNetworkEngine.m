@@ -1703,7 +1703,7 @@
  "token_expires": "2013-03-28T19:16:13",
  "token_permissions": "read,write",
  "meta": {
- "key": "value"
+    "key": "value"
  }
  }
  */
