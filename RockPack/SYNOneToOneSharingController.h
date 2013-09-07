@@ -13,7 +13,5 @@
 
 - (id) initWithInfo: (NSMutableDictionary *) mutableInfoDictionary;
 
-- (IBAction) authorizeFacebookButtonPressed: (id) sender;
-- (IBAction) authorizeAddressBookButtonPressed: (id) sender;
 
 @end

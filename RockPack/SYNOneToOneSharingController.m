@@ -22,6 +22,7 @@
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
 #import "VideoInstance.h"
+#import "SYNAppDelegate.h"
 #import <AddressBook/AddressBook.h>
 #import <QuartzCore/QuartzCore.h>
 #import <objc/runtime.h>
@@ -38,7 +39,6 @@
 
 @property (nonatomic, readonly) BOOL isInAuthorizationScreen;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *loader;
-@property (nonatomic, strong) IBOutlet UIButton *authorizeAddressBookButton;
 @property (nonatomic, strong) IBOutlet UIButton *authorizeFacebookButton;
 @property (nonatomic, strong) IBOutlet UIButton *closeButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *recentFriendsCollectionView;
@@ -47,7 +47,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *shareLabel;
 @property (nonatomic, strong) IBOutlet UITableView *searchResultsTableView;
 @property (nonatomic, strong) IBOutlet UITextField *searchTextField;
-@property (nonatomic, strong) IBOutlet UITextView *messageTextView;
+@property (nonatomic, strong) IBOutlet UILabel * facebookLabel;
 @property (nonatomic, strong) IBOutlet UIView *activitiesContainerView;
 @property (nonatomic, strong) IBOutlet UIView *authorizationView;
 @property (nonatomic, strong) NSArray *friends;
@@ -57,6 +57,7 @@
 @property (nonatomic, strong) NSMutableString *currentSearchTerm;
 @property (nonatomic, strong) UIImage *imageToShare;
 @property (nonatomic, weak) Friend *friendToAddEmail;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView* facebookLoader;
 @property (strong, nonatomic) NSMutableDictionary *mutableShareDictionary;
 @property (strong, nonatomic) OWActivityViewController *activityViewController;
 @property (nonatomic) BOOL hasLoadedData;
@@ -88,7 +89,7 @@
     
     [self.loader hidesWhenStopped];
     
-    
+    self.facebookLoader.hidden = YES;
     
     self.friends = [NSArray array];
     self.recentFriends = [NSArray array];
@@ -99,8 +100,7 @@
     self.currentSearchTerm = [[NSMutableString alloc] init];
     
     self.closeButton.hidden = YES;
-    
-    self.messageTextView.font = [UIFont rockpackFontOfSize: self.messageTextView.font.pointSize];
+     
     self.searchTextField.font = [UIFont rockpackFontOfSize: self.searchTextField.font.pointSize];
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
     self.shareLabel.font = [UIFont rockpackFontOfSize: self.titleLabel.font.pointSize];
@@ -168,8 +168,8 @@
             // load friends asynchronously and add them to the friends list when done
             [self fetchFriends];
             
-            [self presentActivities];
         }
+        
     }
     else // (status == kABAuthorizationStatusAuthorized)
     {
@@ -184,8 +184,11 @@
             [self fetchFriends];
         }
         
-        [self presentActivities];
     }
+    
+    
+    // always present activities button at the bottom
+    [self presentActivities];
 }
 
 
@@ -406,7 +409,6 @@
         
         [friendsArrayMut addObject: contactFriend];
         
-        DebugLog(@"AddressBook Friend: '%@' (%@)", contactFriend.displayName, contactFriend.email);
     }
     
     self.friends = [NSArray arrayWithArray: friendsArrayMut]; // already contains the original friends
@@ -792,15 +794,63 @@
 }
 
 
-- (IBAction) authorizeFacebookButtonPressed: (id) sender
+- (IBAction) authorizeFacebookButtonPressed: (UIButton*) button
 {
+    
+    button.hidden = YES;
+    self.facebookLoader.hidden = NO;
+    [self.facebookLoader startAnimating];
+    __weak SYNAppDelegate* weakAppDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    SYNFacebookManager* facebookManager = [SYNFacebookManager sharedFBManager];
+    
+    [facebookManager loginOnSuccess: ^(NSDictionary<FBGraphUser> *dictionary) {
+        
+        FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
+        
+        [weakAppDelegate.oAuthNetworkEngine connectFacebookAccountForUserId:weakAppDelegate.currentUser.uniqueId
+                                                         andAccessTokenData:accessTokenData
+                                                          completionHandler:^(id no_responce) {
+                                                              
+                                                              [self.authorizationView removeFromSuperview];
+                                                              
+                                                              [self fetchFriends];
+                                                              self.facebookLoader.hidden = YES;
+                                                              [self.facebookLoader stopAnimating];
+                                                              
+                                                              button.hidden = NO;
+                                                              
+                                                          } errorHandler:^(id error) {
+                                                              
+                                                              button.hidden = NO;
+                                                              self.facebookLoader.hidden = YES;
+                                                              [self.facebookLoader stopAnimating];
+                                                              NSString* message;
+                                                              if([error isKindOfClass:[NSDictionary class]] &&
+                                                                 (message = error[@"message"]))
+                                                              {
+                                                                  
+                                                                  if ([message isEqualToString:@"External account mismatch"])
+                                                                  {
+                                                                      self.facebookLabel.text = @"Log in failed. This account seems to be associated with a different User.";
+                                                                  }
+                                                                  
+                                                              }
+                                                              
+                                                          }];
+        
+        
+    } onFailure: ^(NSString* errorString) {
+        
+        self.facebookLabel.text = @"Log in with Facebook was cancelled.";
+        self.facebookLoader.hidden = YES;
+        [self.facebookLoader stopAnimating];
+        button.hidden = NO;
+        
+    }];
 }
 
 
-- (IBAction) authorizeAddressBookButtonPressed: (id) sender
-{
-    [self requestAddressBookAuthorization];
-}
 
 
 #pragma mark - Helper Methods
