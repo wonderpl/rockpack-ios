@@ -9,4 +9,9 @@
 @property (nonatomic, readonly) NSString* firstName;
 @property (nonatomic, readonly) NSString* lastName;
 
+@property (nonatomic, readonly) BOOL isFromFacebook;
+@property (nonatomic, readonly) BOOL isFromTwitter;
+@property (nonatomic, readonly) BOOL isFromGooglePlus;
+@property (nonatomic, readonly) BOOL isFromAddressBook;
+
 @end

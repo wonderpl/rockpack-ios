@@ -11,6 +11,7 @@
 #import "SYNAppDelegate.h"
 #import "SYNSearchRegistry.h"
 #import "Video.h"
+#import "Friend.h"
 #import "VideoInstance.h"
 
 @implementation SYNSearchRegistry
@@ -37,6 +38,85 @@
     
     return NO;
     
+}
+
+- (BOOL) registerFriendsFromDictionary:(NSDictionary *) dictionary
+{
+    
+    
+    NSDictionary *usersDictionary = dictionary[@"users"];
+    
+    if (!usersDictionary || ![usersDictionary[@"items"] isKindOfClass:[NSArray class]])
+        return NO;
+    
+    // fetch existing friends
+    
+    NSError *error;
+    NSArray *existingFriendsArray;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setEntity: [NSEntityDescription entityForName: @"Friend"
+                                         inManagedObjectContext: appDelegate.searchManagedObjectContext]];
+    
+    
+    
+    existingFriendsArray = [appDelegate.searchManagedObjectContext executeFetchRequest: fetchRequest
+                                                                                 error: &error];
+    
+    
+    
+    NSMutableDictionary* existingFriendsByUID = [NSMutableDictionary dictionaryWithCapacity:existingFriendsArray.count];
+    
+    for (Friend* existingFriend in existingFriendsArray)
+    {
+        
+        existingFriendsByUID[existingFriend.uniqueId] = existingFriend;
+        
+        existingFriend.markedForDeletionValue = YES; 
+    }
+    
+    // parse new data
+    
+    
+    NSArray *itemsDictionary = usersDictionary[@"items"];
+    
+    Friend* friend;
+    
+    
+    for (NSDictionary * itemDictionary in itemsDictionary)
+    {
+        
+        if(!(friend = existingFriendsByUID[itemDictionary[@"id"]]))
+            if(!(friend = [Friend instanceFromDictionary: itemDictionary
+                               usingManagedObjectContext: appDelegate.searchManagedObjectContext]))
+                continue;
+        
+        
+        
+        if (!friend.hasIOSDevice)  // filter for users with iOS devices only
+            continue;
+        
+        
+        friend.markedForDeletionValue = NO;
+        
+        
+        
+    }
+    
+    // delete old friends
+    
+    for (id key in existingFriendsByUID)
+    {
+        Friend* deleteCandidate = (Friend*)existingFriendsByUID[key];
+        
+        if(deleteCandidate && deleteCandidate.markedForDeletionValue)
+            [deleteCandidate.managedObjectContext deleteObject:deleteCandidate];
+    }
+    
+    [appDelegate saveSearchContext];
+    
+    return YES;
 }
 
 - (BOOL) registerVideosFromDictionary: (NSDictionary *) dictionary

@@ -297,54 +297,15 @@
                                      
                                      
                                      
-                                     NSDictionary *usersDictionary = dictionary[@"users"];
-                                     
-                                     if (!usersDictionary)
-                                     {
-                                         return;
-                                     }
-                                     
-                                     NSArray *itemsDictionary = usersDictionary[@"items"];
-                                     
-                                     if (!itemsDictionary)
-                                     {
-                                         return;
-                                     }
-                                     
-                                     // clear the imported friends from previous requests first
                                      SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-                                     BOOL success = [appDelegate.searchRegistry clearImportContextFromEntityName: @"Friend"];
                                      
-                                     if (!success)
-                                     {
-                                         DebugLog(@"Could not clean Channel from search context");
-                                         return;
-                                     }
                                      
-                                     NSLog(@"%@", self.facebookFriends);
-                                     
-                                     NSInteger friendsCount = itemsDictionary.count;
+                                     [appDelegate.searchRegistry registerFriendsFromDictionary:dictionary];
                                      
                                      NSMutableArray *fbFriendsMutableArray = [NSMutableArray array];
-                                     NSMutableArray *recentFriendsMutableArray = [NSMutableArray arrayWithCapacity: friendsCount];
+                                     NSMutableArray *recentFriendsMutableArray = [NSMutableArray array];
                                      
-                                     for (NSDictionary * itemDictionary in itemsDictionary)
-                                     {
-                                         Friend *friend = [Friend instanceFromDictionary: itemDictionary
-                                                               usingManagedObjectContext: appDelegate.searchManagedObjectContext];
-                                         
-                                         if (!friend || !friend.hasIOSDevice)  // filter for users with iOS devices only
-                                             continue;
-                                         
-                                         
-                                         [fbFriendsMutableArray addObject: friend];
-                                         
-                                         
-                                         if (friend.lastShareDate)
-                                         {
-                                             [recentFriendsMutableArray addObject: friend];
-                                         }
-                                     }
+                                     
                                      
                                      weakSelf.facebookFriends = [NSArray arrayWithArray: fbFriendsMutableArray]; // already contains the original friends
                                      
