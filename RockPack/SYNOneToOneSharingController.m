@@ -196,79 +196,7 @@
     [self presentActivities];
 }
 
--(void)fetchAndDisplayFriends
-{
-    __weak SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-    
-    __weak SYNOneToOneSharingController *weakSelf = self;
-    
-    NSError *error;
-    NSArray *existingFriendsArray;
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    [fetchRequest setEntity: [NSEntityDescription entityForName: @"Friend"
-                                         inManagedObjectContext: appDelegate.searchManagedObjectContext]];
-    
-    
-    
-    existingFriendsArray = [appDelegate.searchManagedObjectContext executeFetchRequest: fetchRequest
-                                                                                 error: &error];
-    
-    
-    NSMutableArray *facebookFriendsMutableArray = [NSMutableArray array];
-    NSMutableArray *recentFriendsMutableArray = [NSMutableArray array];
-    
-    
-    for (Friend* existingFriend in existingFriendsArray)
-    {
-        if(existingFriend.isFromFacebook)
-           [facebookFriendsMutableArray addObject:existingFriend];
-        if(existingFriend.lastShareDate)
-            [recentFriendsMutableArray addObject:existingFriend];
-        
-    }
-    
-    self.facebookFriends = [NSArray arrayWithArray: facebookFriendsMutableArray]; 
-    
-    self.recentFriends = [NSArray arrayWithArray: recentFriendsMutableArray];
-    
-    if(hasAttemptedToLoadData) // to avoid infinite recursion
-        return;
-    
-    hasAttemptedToLoadData = YES;
-    
-    [weakSelf showLoader:YES];
-    
-    [appDelegate.oAuthNetworkEngine friendsForUser: appDelegate.currentUser
-                                        onlyRecent: NO
-                                 completionHandler: ^(id dictionary) {
-                                     
-                                     
-                                     if([appDelegate.searchRegistry registerFriendsFromDictionary:dictionary])
-                                     {
-                                         [weakSelf fetchAndDisplayFriends];
-                                     }
-                                     else
-                                     {
-                                         DebugLog(@"There was a problem loading friends");
-                                     }
-                                     
-                                     
-                                     [weakSelf showLoader:NO];
-                                     
-                                     
-                                     [self.recentFriendsCollectionView reloadData];
-                                     
-                                 } errorHandler: ^(id dictionary) {
-                                     
-                                     [weakSelf showLoader:NO];
-                                     
-                                     
-                                     [weakSelf.recentFriendsCollectionView reloadData];
-                                 }];
-    
-}
+
 
 -(void)showLoader:(BOOL)show
 {
@@ -286,7 +214,6 @@
 }
 - (void) presentActivities
 {
-    [self fetchAndDisplayFriends];
     
     // load activities
     OWFacebookActivity *facebookActivity = [[OWFacebookActivity alloc] init];
@@ -370,7 +297,85 @@
 
 #pragma mark - Data Retrieval
 
-
+-(void)fetchAndDisplayFriends
+{
+    __weak SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    __weak SYNOneToOneSharingController *weakSelf = self;
+    
+    NSError *error;
+    NSArray *existingFriendsArray;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setEntity: [NSEntityDescription entityForName: @"Friend"
+                                         inManagedObjectContext: appDelegate.searchManagedObjectContext]];
+    
+    
+    
+    existingFriendsArray = [appDelegate.searchManagedObjectContext executeFetchRequest: fetchRequest
+                                                                                 error: &error];
+    
+    if(!error)
+    {
+        NSMutableArray *facebookFriendsMutableArray = [NSMutableArray array];
+        NSMutableArray *recentFriendsMutableArray = [NSMutableArray array];
+        
+        
+        for (Friend* existingFriend in existingFriendsArray)
+        {
+            if(existingFriend.isFromFacebook)
+                [facebookFriendsMutableArray addObject:existingFriend];
+            if(existingFriend.lastShareDate)
+                [recentFriendsMutableArray addObject:existingFriend];
+            
+        }
+        
+        self.facebookFriends = [NSArray arrayWithArray: facebookFriendsMutableArray];
+        
+        self.recentFriends = [NSArray arrayWithArray: recentFriendsMutableArray];
+        
+        [self.recentFriendsCollectionView reloadData];
+    }
+    
+    
+    
+    if(hasAttemptedToLoadData) // to avoid infinite recursion
+        return;
+    
+    hasAttemptedToLoadData = YES;
+    
+    [weakSelf showLoader:YES];
+    
+    [appDelegate.oAuthNetworkEngine friendsForUser: appDelegate.currentUser
+                                        onlyRecent: NO
+                                 completionHandler: ^(id dictionary) {
+                                     
+                                     
+                                     if([appDelegate.searchRegistry registerFriendsFromDictionary:dictionary])
+                                     {
+                                         [weakSelf fetchAndDisplayFriends];
+                                     }
+                                     else
+                                     {
+                                         DebugLog(@"There was a problem loading friends");
+                                     }
+                                     
+                                     
+                                     [weakSelf showLoader:NO];
+                                     
+                                     
+                                     [self.recentFriendsCollectionView reloadData];
+                                     
+                                 } errorHandler: ^(id dictionary) {
+                                     
+                                     [weakSelf showLoader:NO];
+                                     
+                                     
+                                     [weakSelf.recentFriendsCollectionView reloadData];
+                                 }];
+    
+}
 
 - (void) fetchAddressBookFriends
 {
@@ -491,7 +496,9 @@
         [userThumbnailCell setDisplayName: friend.displayName];
         
         userThumbnailCell.imageView.alpha = 1.0f;
+        
         userThumbnailCell.shadowImageView.alpha = 1.0f;
+        
     }
     else // on the fake slots
     {
