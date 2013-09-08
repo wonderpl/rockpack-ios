@@ -943,6 +943,9 @@
                                                wself.loader.hidden = YES;
                                                [wself.loader stopAnimating];
                                                wself.recentFriendsCollectionView.hidden = NO;
+                                               
+                                               [appDelegate.viewStackManager presentSuccessNotificationWithMessage:@"Email Sent Succesfully"];
+                                               
                                            } errorHandler: ^(NSDictionary *error) {
                                                NSString *title = @"Email Couldn't be Sent";
                                                NSString *reason = @"Unkown reson";
