@@ -1755,7 +1755,7 @@
 }
 
 - (void) friendsForUser: (User*)user
-                 recent: (BOOL)recent
+                 onlyRecent: (BOOL)recent
       completionHandler: (MKNKUserSuccessBlock) completionBlock
            errorHandler: (MKNKUserErrorBlock) errorBlock
 {

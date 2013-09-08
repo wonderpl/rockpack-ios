@@ -177,7 +177,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     
     __weak SYNFriendsViewController* weakSelf = self;
     
-    [appDelegate.oAuthNetworkEngine friendsForUser:appDelegate.currentUser recent:NO completionHandler:^(id dictionary) {
+    [appDelegate.oAuthNetworkEngine friendsForUser:appDelegate.currentUser onlyRecent:NO completionHandler:^(id dictionary) {
         
         self.onRockpackButton.hidden = NO;
         self.allFriendsButton.hidden = NO;

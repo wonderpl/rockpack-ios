@@ -63,14 +63,14 @@
 @property (strong, nonatomic) NSMutableDictionary *mutableShareDictionary;
 @property (strong, nonatomic) OWActivityViewController *activityViewController;
 @property (nonatomic, readonly) NSArray* allFriendsArray;
-@property (nonatomic) BOOL hasLoadedData;
+@property (nonatomic) BOOL hasAttemptedToLoadData;
 
 @end
 
 
 @implementation SYNOneToOneSharingController
 
-@synthesize hasLoadedData;
+@synthesize hasAttemptedToLoadData;
 
 
 - (id) initWithInfo: (NSMutableDictionary *) mutableShareDictionary
@@ -79,7 +79,7 @@
                                bundle: nil])
     {
         self.mutableShareDictionary = mutableShareDictionary;
-        hasLoadedData = NO;
+        hasAttemptedToLoadData = NO;
         
         
     }
@@ -171,7 +171,7 @@
         else
         {
             // load friends asynchronously and add them to the friends list when done
-            [self fetchFriends];
+            [self fetchAndDisplayFriends];
             
         }
         
@@ -186,7 +186,7 @@
         if (hasFacebookSession)
         {
             // Pull up recently shared friends...
-            [self fetchFriends];
+            [self fetchAndDisplayFriends];
         }
         
     }
@@ -196,12 +196,99 @@
     [self presentActivities];
 }
 
+-(void)fetchAndDisplayFriends
+{
+    __weak SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    __weak SYNOneToOneSharingController *weakSelf = self;
+    
+    NSError *error;
+    NSArray *existingFriendsArray;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setEntity: [NSEntityDescription entityForName: @"Friend"
+                                         inManagedObjectContext: appDelegate.searchManagedObjectContext]];
+    
+    
+    
+    existingFriendsArray = [appDelegate.searchManagedObjectContext executeFetchRequest: fetchRequest
+                                                                                 error: &error];
+    
+    
+    NSMutableArray *facebookFriendsMutableArray = [NSMutableArray array];
+    NSMutableArray *recentFriendsMutableArray = [NSMutableArray array];
+    
+    
+    for (Friend* existingFriend in existingFriendsArray)
+    {
+        if(existingFriend.isFromFacebook)
+           [facebookFriendsMutableArray addObject:existingFriend];
+        if(existingFriend.lastShareDate)
+            [recentFriendsMutableArray addObject:existingFriend];
+        
+    }
+    
+    self.facebookFriends = [NSArray arrayWithArray: facebookFriendsMutableArray]; 
+    
+    self.recentFriends = [NSArray arrayWithArray: recentFriendsMutableArray];
+    
+    if(hasAttemptedToLoadData) // to avoid infinite recursion
+        return;
+    
+    hasAttemptedToLoadData = YES;
+    
+    [weakSelf showLoader:YES];
+    
+    [appDelegate.oAuthNetworkEngine friendsForUser: appDelegate.currentUser
+                                        onlyRecent: NO
+                                 completionHandler: ^(id dictionary) {
+                                     
+                                     
+                                     if([appDelegate.searchRegistry registerFriendsFromDictionary:dictionary])
+                                     {
+                                         [weakSelf fetchAndDisplayFriends];
+                                     }
+                                     else
+                                     {
+                                         DebugLog(@"There was a problem loading friends");
+                                     }
+                                     
+                                     
+                                     [weakSelf showLoader:NO];
+                                     
+                                     
+                                     [self.recentFriendsCollectionView reloadData];
+                                     
+                                 } errorHandler: ^(id dictionary) {
+                                     
+                                     [weakSelf showLoader:NO];
+                                     
+                                     
+                                     [weakSelf.recentFriendsCollectionView reloadData];
+                                 }];
+    
+}
 
+-(void)showLoader:(BOOL)show
+{
+    if(show)
+    {
+        
+        [self.loader startAnimating];
+        self.loader.hidden = NO;
+    }
+    else
+    {
+        [self.loader stopAnimating];
+        self.loader.hidden = YES;
+    }
+}
 - (void) presentActivities
 {
-    [self fetchFriends];
+    [self fetchAndDisplayFriends];
     
-    // load activities    
+    // load activities
     OWFacebookActivity *facebookActivity = [[OWFacebookActivity alloc] init];
     OWTwitterActivity *twitterActivity = [[OWTwitterActivity alloc] init];
     
@@ -283,50 +370,6 @@
 
 #pragma mark - Data Retrieval
 
-- (void) fetchFriends
-{
-    __weak SYNOneToOneSharingController *weakSelf = self;
-    SYNAppDelegate *appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
-    
-    self.loader.hidden = NO;
-    [self.loader startAnimating];
-    
-    [appDelegate.oAuthNetworkEngine friendsForUser: appDelegate.currentUser
-                                            recent: NO
-                                 completionHandler: ^(id dictionary) {
-                                     
-                                     
-                                     
-                                     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-                                     
-                                     
-                                     [appDelegate.searchRegistry registerFriendsFromDictionary:dictionary];
-                                     
-                                     NSMutableArray *fbFriendsMutableArray = [NSMutableArray array];
-                                     NSMutableArray *recentFriendsMutableArray = [NSMutableArray array];
-                                     
-                                     
-                                     
-                                     weakSelf.facebookFriends = [NSArray arrayWithArray: fbFriendsMutableArray]; // already contains the original friends
-                                     
-                                     weakSelf.recentFriends = [NSArray arrayWithArray: recentFriendsMutableArray];
-                                     
-                                     [self.loader stopAnimating];
-                                     self.loader.hidden = YES;
-                                     
-                                     hasLoadedData = YES;
-                                     
-                                     [self.recentFriendsCollectionView reloadData];
-                                     
-                                 } errorHandler: ^(id dictionary) {
-                                     [self.loader stopAnimating];
-                                     self.loader.hidden = YES;
-                                     
-                                     hasLoadedData = YES;
-                                     
-                                     [self.recentFriendsCollectionView reloadData];
-                                 }];
-}
 
 
 - (void) fetchAddressBookFriends
@@ -410,7 +453,7 @@
 {
     // prevent the display of the "empty" recent cells before the friends have loaded
     // then allow for 5 extra slots to display the "empty" cells
-    return (!hasLoadedData ? 0 : self.recentFriends.count + kNumberOfEmptyRecentSlots); 
+    return (!hasAttemptedToLoadData ? 0 : self.recentFriends.count + kNumberOfEmptyRecentSlots); 
 }
 
 
@@ -803,7 +846,8 @@
                                                               
                                                               [self.authorizationView removeFromSuperview];
                                                               
-                                                              [self fetchFriends];
+                                                              [self fetchAndDisplayFriends];
+                                                              
                                                               self.facebookLoader.hidden = YES;
                                                               [self.facebookLoader stopAnimating];
                                                               
