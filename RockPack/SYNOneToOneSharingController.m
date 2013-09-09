@@ -902,8 +902,10 @@
                                                           } errorHandler:^(id error) {
                                                               
                                                               button.hidden = NO;
+                                                              
                                                               self.facebookLoader.hidden = YES;
                                                               [self.facebookLoader stopAnimating];
+                                                              
                                                               NSString* message;
                                                               if([error isKindOfClass:[NSDictionary class]] &&
                                                                  (message = error[@"message"]))
@@ -945,6 +947,7 @@
     return [emailCandidate isMatchedByRegex: @"^([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})$"];
 }
 
+#pragma mark - Send Email
 
 - (void) sendEmailToFriend: (Friend *) friend
 {
@@ -965,21 +968,10 @@
                                                
                                                friend.lastShareDate = [NSDate date]; // update the date
                                                
-                                               Friend* foundFriend;
-                                               for (Friend* f in self.friends)
-                                                   if([f.email isEqualToString:friend.email])
-                                                       foundFriend = f;
-                                               
-                                               
-                                               if(!foundFriend)
-                                               {
-                                                   [self.friends addObject:friend];
                                                    
-                                                   NSError* error;
-                                                   [friend.managedObjectContext save:&error];
-                                               }
+                                               NSError* error;
+                                               [friend.managedObjectContext save:&error];
                                                
-                                              
                                                wself.friendToAddEmail = nil;
                                                
                                                wself.view.userInteractionEnabled = YES;
