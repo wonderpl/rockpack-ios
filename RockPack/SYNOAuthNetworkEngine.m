@@ -1703,7 +1703,7 @@
  "token_expires": "2013-03-28T19:16:13",
  "token_permissions": "read,write",
  "meta": {
- "key": "value"
+    "key": "value"
  }
  }
  */
@@ -1755,7 +1755,7 @@
 }
 
 - (void) friendsForUser: (User*)user
-                 recent: (BOOL)recent
+                 onlyRecent: (BOOL)recent
       completionHandler: (MKNKUserSuccessBlock) completionBlock
            errorHandler: (MKNKUserErrorBlock) errorBlock
 {

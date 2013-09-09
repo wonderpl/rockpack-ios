@@ -692,8 +692,11 @@ typedef void(^FeedDataErrorBlock)(void);
                         andComponentIndex: (NSInteger) componentIndex
 {
     if (!indexPath)
+    {
         DebugLog(@"Nil index path");
-    DebugLog (@"indexPath %@", indexPath);
+    }
+        
+    
     Channel *channel;
     
     FeedItem *feedItem = [self feedItemAtIndexPath: indexPath];
@@ -1004,9 +1007,11 @@ typedef void(^FeedDataErrorBlock)(void);
                             andComponentIndex: (NSInteger) componentIndex
 {
     if (!indexPath)
+    {
         DebugLog(@"Nil index path");
+    }
+        
     
-    DebugLog (@"indexPath %@", indexPath);
     
     VideoInstance *videoInstance;
     

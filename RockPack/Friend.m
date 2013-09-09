@@ -1,5 +1,6 @@
 #import "Friend.h"
 #import "NSDictionary+Validation.h"
+#import "AppConstants.h"
 
 @interface Friend ()
 
@@ -51,7 +52,6 @@
     self.hasIOSDevice = [dictionary objectForKey: @"has_ios_device"
                                      withDefault: @NO];
     
-    NSLog(@"resourceURL: %@ - ios: %@", self.resourceURL, self.hasIOSDevice);
     
     self.lastShareDate = [dictionary dateFromISO6801StringForKey:@"last_shared_date"
                                                      withDefault:nil];
@@ -75,6 +75,22 @@
     return (self.resourceURL != nil);
 }
 
+-(BOOL)isFromFacebook
+{
+    return [self.externalSystem isEqualToString:kFacebook];
+}
+-(BOOL)isFromTwitter
+{
+    return [self.externalSystem isEqualToString:kTwitter];
+}
+-(BOOL)isFromGooglePlus
+{
+    return [self.externalSystem isEqualToString:kGooglePlus];
+}
+-(BOOL)isFromAddressBook
+{
+    return [self.externalSystem isEqualToString:kEmail];
+}
 -(NSString*)description
 {
     return [NSString stringWithFormat:@"[Friend (id:%@, name:%@)]", self.externalUID, self.displayName];
