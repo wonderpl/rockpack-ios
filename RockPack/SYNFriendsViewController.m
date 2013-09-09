@@ -285,6 +285,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     
     SYNFacebookManager* facebookManager = [SYNFacebookManager sharedFBManager];
     
+    
     [facebookManager loginOnSuccess: ^(NSDictionary<FBGraphUser> *dictionary) {
         
         FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
@@ -311,6 +312,12 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
                                                               weakSelf.facebookLoginButton.hidden = NO;
                                                               
                                                               weakSelf.preLoginLabel.text = @"We could not Log you in becuase this FB account seems to be associated with a different User.";
+                                                              
+                                                              [[SYNFacebookManager sharedFBManager] logoutOnSuccess:^{
+                                                                  
+                                                              } onFailure:^(NSString *errorMessage) {
+                                                                  
+                                                              }];
             
                                                           }];
         

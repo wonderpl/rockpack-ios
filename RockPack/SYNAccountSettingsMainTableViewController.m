@@ -87,6 +87,8 @@
 {
     [super viewDidLoad];
     
+    //self.edgesForExtendedLayout = UIRectEdgeNone;
+    
     [GAI.sharedInstance.defaultTracker sendView: @"Account Settings - Root"];
     
     self.contentSizeForViewInPopover = CGSizeMake(380, 476);

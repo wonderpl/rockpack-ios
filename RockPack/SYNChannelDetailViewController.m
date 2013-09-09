@@ -1720,8 +1720,7 @@
                                                       }
                                                   }
                                                   
-                                                  [self	 showError: errorMessage
-                                                         showErrorTitle: errorTitle];
+                                                  [self	showError: errorMessage showErrorTitle: errorTitle];
                                                   
                                                   self.saveChannelButton.hidden = NO;
                                                   self.saveChannelButton.enabled = YES;

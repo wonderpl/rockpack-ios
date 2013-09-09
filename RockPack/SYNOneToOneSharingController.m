@@ -22,6 +22,7 @@
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
 #import "VideoInstance.h"
+#import "SYNAppDelegate.h"
 #import <AddressBook/AddressBook.h>
 #import <QuartzCore/QuartzCore.h>
 #import <objc/runtime.h>
@@ -34,11 +35,11 @@
                                             UICollectionViewDelegate,
                                             UITextFieldDelegate,
                                             UITableViewDataSource,
-                                            UITableViewDelegate>
+                                            UITableViewDelegate,
+                                            UIScrollViewDelegate>
 
 @property (nonatomic, readonly) BOOL isInAuthorizationScreen;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *loader;
-@property (nonatomic, strong) IBOutlet UIButton *authorizeAddressBookButton;
 @property (nonatomic, strong) IBOutlet UIButton *authorizeFacebookButton;
 @property (nonatomic, strong) IBOutlet UIButton *closeButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *recentFriendsCollectionView;
@@ -47,18 +48,21 @@
 @property (nonatomic, strong) IBOutlet UILabel *shareLabel;
 @property (nonatomic, strong) IBOutlet UITableView *searchResultsTableView;
 @property (nonatomic, strong) IBOutlet UITextField *searchTextField;
-@property (nonatomic, strong) IBOutlet UITextView *messageTextView;
+@property (nonatomic, strong) IBOutlet UILabel * facebookLabel;
 @property (nonatomic, strong) IBOutlet UIView *activitiesContainerView;
 @property (nonatomic, strong) IBOutlet UIView *authorizationView;
-@property (nonatomic, strong) NSArray *friends;
+@property (nonatomic, strong) NSArray *facebookFriends;
 @property (nonatomic, strong) NSArray *recentFriends;
+@property (nonatomic, strong) NSArray *addressBookFriends;
 @property (nonatomic, strong) NSArray *searchedFriends;
 @property (nonatomic, strong) NSCache *addressBookImageCache;
 @property (nonatomic, strong) NSMutableString *currentSearchTerm;
 @property (nonatomic, strong) UIImage *imageToShare;
 @property (nonatomic, weak) Friend *friendToAddEmail;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView* facebookLoader;
 @property (strong, nonatomic) NSMutableDictionary *mutableShareDictionary;
 @property (strong, nonatomic) OWActivityViewController *activityViewController;
+@property (nonatomic, readonly) NSArray* allFriendsArray;
 @property (nonatomic) BOOL hasLoadedData;
 
 @end
@@ -76,11 +80,12 @@
     {
         self.mutableShareDictionary = mutableShareDictionary;
         hasLoadedData = NO;
+        
+        
     }
     
     return self;
 }
-
 
 - (void) viewDidLoad
 {
@@ -88,19 +93,19 @@
     
     [self.loader hidesWhenStopped];
     
+    self.facebookLoader.hidden = YES;
     
-    
-    self.friends = [NSArray array];
+    self.facebookFriends = [NSArray array];
     self.recentFriends = [NSArray array];
     self.searchedFriends = [NSArray array];
+    self.addressBookFriends = [NSArray array];
     
     self.addressBookImageCache = [[NSCache alloc] init];
     
     self.currentSearchTerm = [[NSMutableString alloc] init];
     
     self.closeButton.hidden = YES;
-    
-    self.messageTextView.font = [UIFont rockpackFontOfSize: self.messageTextView.font.pointSize];
+     
     self.searchTextField.font = [UIFont rockpackFontOfSize: self.searchTextField.font.pointSize];
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
     self.shareLabel.font = [UIFont rockpackFontOfSize: self.titleLabel.font.pointSize];
@@ -148,7 +153,13 @@
         if (aBookAuthStatus == kABAuthorizationStatusNotDetermined)
         {
             // request authorization
+            DebugLog(@"AddressBook Status: Not Determined, asking for authorization");
             [self requestAddressBookAuthorization];
+        }
+        else // either Denied or Restricted
+        {
+            DebugLog(@"AddressBook Status: %@", aBookAuthStatus == kABAuthorizationStatusDenied ? @"Denied" : @"Restricted");
+            
         }
         
         // in the meantime...
@@ -162,11 +173,13 @@
             // load friends asynchronously and add them to the friends list when done
             [self fetchFriends];
             
-            [self presentActivities];
         }
+        
     }
     else // (status == kABAuthorizationStatusAuthorized)
     {
+        
+        DebugLog(@"AddressBook Status: Authorized, fetching contacts");
         // present main view
         [self fetchAddressBookFriends];
             
@@ -176,8 +189,11 @@
             [self fetchFriends];
         }
         
-        [self presentActivities];
     }
+    
+    
+    // always present activities button at the bottom
+    [self presentActivities];
 }
 
 
@@ -217,13 +233,13 @@
     ABAddressBookRef addressBookRef = ABAddressBookCreateWithOptions(NULL, &error);
     
     if (addressBookRef == NULL)
-    {
         return;
-    }
+    
     
     BOOL hasFacebookSession = [[SYNFacebookManager sharedFBManager] hasActiveSession];
     
     ABAddressBookRequestAccessWithCompletion(addressBookRef, ^(bool granted, CFErrorRef error) {
+        
         dispatch_async(dispatch_get_main_queue(), ^{
                            if (granted)
                            {
@@ -259,7 +275,7 @@
 {
     CGRect aViewRect = self.authorizationView.frame;
     
-    aViewRect.origin.y = 50.0f;
+    aViewRect.origin.y = 55.0f;
     self.authorizationView.frame = aViewRect;
     [self.view addSubview: self.authorizationView];
 }
@@ -278,6 +294,9 @@
     [appDelegate.oAuthNetworkEngine friendsForUser: appDelegate.currentUser
                                             recent: NO
                                  completionHandler: ^(id dictionary) {
+                                     
+                                     
+                                     
                                      NSDictionary *usersDictionary = dictionary[@"users"];
                                      
                                      if (!usersDictionary)
@@ -292,10 +311,22 @@
                                          return;
                                      }
                                      
+                                     // clear the imported friends from previous requests first
+                                     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+                                     BOOL success = [appDelegate.searchRegistry clearImportContextFromEntityName: @"Friend"];
+                                     
+                                     if (!success)
+                                     {
+                                         DebugLog(@"Could not clean Channel from search context");
+                                         return;
+                                     }
+                                     
+                                     NSLog(@"%@", self.facebookFriends);
+                                     
                                      NSInteger friendsCount = itemsDictionary.count;
                                      
-                                     NSMutableArray *fbFriendsMutableArray = [NSMutableArray arrayWithArray: self.friends];
-                                     NSMutableArray *rFriendsMutableArray = [NSMutableArray arrayWithCapacity: friendsCount]; // max
+                                     NSMutableArray *fbFriendsMutableArray = [NSMutableArray array];
+                                     NSMutableArray *recentFriendsMutableArray = [NSMutableArray arrayWithCapacity: friendsCount];
                                      
                                      for (NSDictionary * itemDictionary in itemsDictionary)
                                      {
@@ -303,23 +334,21 @@
                                                                usingManagedObjectContext: appDelegate.searchManagedObjectContext];
                                          
                                          if (!friend || !friend.hasIOSDevice)  // filter for users with iOS devices only
-                                         {
-                                             return;
-                                         }
+                                             continue;
+                                         
                                          
                                          [fbFriendsMutableArray addObject: friend];
                                          
-                                         // parse date for recent
                                          
                                          if (friend.lastShareDate)
                                          {
-                                             [rFriendsMutableArray addObject: friend];
+                                             [recentFriendsMutableArray addObject: friend];
                                          }
                                      }
                                      
-                                     weakSelf.friends = [NSArray arrayWithArray: fbFriendsMutableArray]; // already contains the original friends
+                                     weakSelf.facebookFriends = [NSArray arrayWithArray: fbFriendsMutableArray]; // already contains the original friends
                                      
-                                     weakSelf.recentFriends = [NSArray arrayWithArray: rFriendsMutableArray];
+                                     weakSelf.recentFriends = [NSArray arrayWithArray: recentFriendsMutableArray];
                                      
                                      [self.loader stopAnimating];
                                      self.loader.hidden = YES;
@@ -355,7 +384,7 @@
     NSString *firstName, *lastName;
     NSData *imageData;
     Friend *contactFriend;
-    NSMutableArray *friendsArrayMut = [NSMutableArray arrayWithArray: self.friends];
+    NSMutableArray *friendsArrayMut = [NSMutableArray array];
     
     for (NSUInteger peopleCounter = 0; peopleCounter < total; peopleCounter++)
     {
@@ -370,7 +399,7 @@
         NSArray *emailAddresses = (__bridge NSArray *) ABMultiValueCopyArrayOfAllValues(emailAddressMultValue);
         CFRelease(emailAddressMultValue);
         
-        if(emailAddresses.count > 0) // only keep contacts with email addresses
+        if(emailAddresses.count == 0) // only keep contacts with email addresses
             continue;
         
         firstName = (__bridge_transfer NSString *) ABRecordCopyValue(currentPerson, kABPersonFirstNameProperty);
@@ -397,9 +426,10 @@
         }
         
         [friendsArrayMut addObject: contactFriend];
+        
     }
     
-    self.friends = [NSArray arrayWithArray: friendsArrayMut]; // already contains the original friends
+    self.addressBookFriends = [NSArray arrayWithArray: friendsArrayMut]; // already contains the original friends
     
     CFRelease(addressBookRef);
     
@@ -684,11 +714,11 @@
             [[friend.lastName uppercaseString] hasPrefix: self.currentSearchTerm];
         }];
         
-        self.searchedFriends = [self.friends filteredArrayUsingPredicate: searchPredicate];
+        self.searchedFriends = [self.allFriendsArray filteredArrayUsingPredicate: searchPredicate];
     }
     else
     {
-        self.searchedFriends = self.friends;
+        self.searchedFriends = self.allFriendsArray;
     }
     
     [self.searchResultsTableView reloadData];
@@ -699,7 +729,7 @@
 
 - (BOOL) textFieldShouldBeginEditing: (UITextField *) textField
 {
-    self.searchedFriends = self.friends;
+    self.searchedFriends = self.facebookFriends;
     
     CGRect sResTblFrame = self.searchResultsTableView.frame;
     
@@ -713,6 +743,7 @@
     [self.searchResultsTableView reloadData];
     
     self.closeButton.hidden = NO;
+    self.closeButton.alpha = 0.0f;
     
     [UIView animateWithDuration: 0.3
                           delay: 0.0
@@ -721,6 +752,12 @@
                          CGRect vFrame = self.view.frame;
                          vFrame.origin.y -= 160.0f;
                          self.view.frame = vFrame;
+                         
+                         self.closeButton.alpha = 1.0f;
+                         
+                         CGRect sfFrame = self.searchFieldFrameImageView.frame;
+                         sfFrame.size.width -= 30.0f;
+                         self.searchFieldFrameImageView.frame = sfFrame;
                      }
                      completion: nil];
     
@@ -738,8 +775,22 @@
                          CGRect vFrame = self.view.frame;
                          vFrame.origin.y += 160.0f;
                          self.view.frame = vFrame;
+                         
+                         
+                         self.closeButton.alpha = 0.0f;
+                         
+                         CGRect sfFrame = self.searchFieldFrameImageView.frame;
+                         sfFrame.size.width += 30.0f;
+                         self.searchFieldFrameImageView.frame = sfFrame;
                      }
-                     completion: nil];
+                     completion:^(BOOL finished) {
+                         
+                         self.closeButton.hidden = YES;
+                         
+                         
+                         
+                         
+                     }];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -749,6 +800,16 @@
     return YES;
 }
 
+#pragma mark - UIScrollView Delegate
+
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+//    if(scrollView == self.searchResultsTableView)
+//    {
+//        [self.searchTextField resignFirstResponder];
+//    }
+}
 
 #pragma mark - Button Delegates
 
@@ -761,15 +822,69 @@
 }
 
 
-- (IBAction) authorizeFacebookButtonPressed: (id) sender
+- (IBAction) authorizeFacebookButtonPressed: (UIButton*) button
 {
+    
+    button.hidden = YES;
+    self.facebookLoader.hidden = NO;
+    [self.facebookLoader startAnimating];
+    __weak SYNAppDelegate* weakAppDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    SYNFacebookManager* facebookManager = [SYNFacebookManager sharedFBManager];
+    
+    [facebookManager loginOnSuccess: ^(NSDictionary<FBGraphUser> *dictionary) {
+        
+        FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
+        
+        [weakAppDelegate.oAuthNetworkEngine connectFacebookAccountForUserId:weakAppDelegate.currentUser.uniqueId
+                                                         andAccessTokenData:accessTokenData
+                                                          completionHandler:^(id no_responce) {
+                                                              
+                                                              [self.authorizationView removeFromSuperview];
+                                                              
+                                                              [self fetchFriends];
+                                                              self.facebookLoader.hidden = YES;
+                                                              [self.facebookLoader stopAnimating];
+                                                              
+                                                              button.hidden = NO;
+                                                              
+                                                          } errorHandler:^(id error) {
+                                                              
+                                                              button.hidden = NO;
+                                                              self.facebookLoader.hidden = YES;
+                                                              [self.facebookLoader stopAnimating];
+                                                              NSString* message;
+                                                              if([error isKindOfClass:[NSDictionary class]] &&
+                                                                 (message = error[@"message"]))
+                                                              {
+                                                                  
+                                                                  if ([message isEqualToString:@"External account mismatch"])
+                                                                  {
+                                                                      self.facebookLabel.text = @"Log in failed. This account seems to be associated with a different User.";
+                                                                  }
+                                                                  
+                                                              }
+                                                              
+                                                              [[SYNFacebookManager sharedFBManager] logoutOnSuccess:^{
+                                                                  
+                                                              } onFailure:^(NSString *errorMessage) {
+                                                                  
+                                                              }];
+                                                              
+                                                          }];
+        
+        
+    } onFailure: ^(NSString* errorString) {
+        
+        self.facebookLabel.text = @"Log in with Facebook was cancelled.";
+        self.facebookLoader.hidden = YES;
+        [self.facebookLoader stopAnimating];
+        button.hidden = NO;
+        
+    }];
 }
 
 
-- (IBAction) authorizeAddressBookButtonPressed: (id) sender
-{
-    [self requestAddressBookAuthorization];
-}
 
 
 #pragma mark - Helper Methods
@@ -801,12 +916,8 @@
                                                     objectId: self.mutableShareDictionary[@"object_id"]
                                                   withFriend: friend
                                            completionHandler: ^(id no_content) {
-                                               UIAlertView *prompt = [[UIAlertView alloc] initWithTitle: @"Email Sent!"
-                                                                                                message: nil
-                                                                                               delegate: self
-                                                                                      cancelButtonTitle: @"OK"
-                                                                                      otherButtonTitles: nil];
-                                               [prompt show];
+                                               
+                                               
                                                
                                                if (![self isValidEmail: wself.friendToAddEmail.email])                          // if an email has been passed succesfully, register it (temporarily)
                                                {
@@ -865,6 +976,15 @@
                                                
                                                self.view.userInteractionEnabled = YES;
                                            }];
+}
+
+-(NSArray*)allFriendsArray
+{
+    NSMutableArray* allFriendsMutArray = [NSMutableArray arrayWithCapacity:self.facebookFriends.count + self.addressBookFriends.count];
+    [allFriendsMutArray addObjectsFromArray:self.facebookFriends];
+    [allFriendsMutArray addObjectsFromArray:self.addressBookFriends];
+    
+    return [NSArray arrayWithArray:allFriendsMutArray];
 }
 
 @end
