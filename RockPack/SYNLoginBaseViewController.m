@@ -79,8 +79,8 @@
     NSMutableArray* imagesArray = [[NSMutableArray alloc] initWithCapacity:kLoginOnBoardingMessagesNum];
     for (int i = 0; i < kLoginOnBoardingMessagesNum; i++)
     {
-        [imagesArray addObject: [NSString stringWithFormat: @"login_bg_%i.jpg", (i+1)]];
-        
+        //[imagesArray addObject: [NSString stringWithFormat: @"login_bg_%i.jpg", (i+1)]];
+        [imagesArray addObject: [NSString stringWithFormat: @"login_bg_1.jpg"]]; //Only 1 image for now...
     }
     self.backgroundImagesArray = [NSArray arrayWithArray: imagesArray];
 }
@@ -91,7 +91,7 @@
     [super viewDidLoad];
     
     self.onBoardingController = [[SYNLoginOnBoardingController alloc] initWithDelegate: self];
-            
+    
     CGRect totalImageRect;
     
     CGPoint correctPoint;
@@ -110,10 +110,12 @@
     self.loginBackgroundImage.frame = totalImageRect;
     self.loginBackgroundFrontImage.frame = totalImageRect;
     
-    if (IS_IPHONE)
-    {
-        correctPoint.y = IS_IPHONE_5 ? 280.0 : 240.0;
-    }
+    self.backgroundImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"login_bg_1.jpg"]];
+    self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.backgroundImageView.frame = totalImageRect;
+    
+    [self.view insertSubview:self.backgroundImageView atIndex:0];
+
     self.loginBackgroundImage.center = correctPoint;
     self.loginBackgroundFrontImage.center = correctPoint;
     
@@ -121,7 +123,7 @@
     
     
     self.loginBackgroundImage.image = [UIImage imageNamed:self.backgroundImagesArray[0]]; // get the first image
-    
+        
     // localise date format for US and UK
     
     NSString* localeFromDevice = [(NSString*)CFBridgingRelease(CFLocaleCreateCanonicalLanguageIdentifierFromString(NULL, (CFStringRef)[NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier])) lowercaseString];
@@ -329,17 +331,29 @@
                      } completion:^(BOOL finished) {
                          self.onBoardingController.view.hidden = YES;
                      }];
+    
+    //Hide backgroundImageView when Reg or Login buttons are Pressed
+    self.backgroundImageView.alpha = 0.0f;
+    self.backgroundImageView.hidden = YES;
+    
 }
 
 - (void) showOnboarding
 {
+    self.backgroundImageView.hidden = NO;
+    
+    //Show backgroundImageView when back button is Pressed
     self.onBoardingController.view.hidden = NO;
+    
     [UIView animateWithDuration: 0.3f
                           delay: 0.1f
                         options: UIViewAnimationOptionCurveEaseOut
                      animations: ^{
                          self.onBoardingController.view.alpha = 1.0;
+                         self.backgroundImageView.alpha = 1.0f;
                      } completion: nil];
+    
+    
 }
 
 #pragma mark - login facebook

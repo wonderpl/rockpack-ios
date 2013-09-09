@@ -232,6 +232,7 @@
                      } completion:^(BOOL finished) {
                          self.pageViewController.view.hidden = TRUE;
                      }];
+    self.backgroundImageView.hidden = YES;
 }
 
 - (void) showOnboarding
@@ -244,6 +245,8 @@
                      animations: ^{
                          self.pageViewController.view.alpha = 1.0f;
                      } completion: nil];
+    
+    self.backgroundImageView.hidden = NO;
 }
 
 
