@@ -57,12 +57,11 @@
     
     Friend *instance = [Friend insertInManagedObjectContext: managedObjectContext];
     
-    instance.uniqueId = [dictionary objectForKey:@"id"
-                                     withDefault:@""]; // we can instantiate a Friend with no id since they are not always on rockpack
-    
     
     [instance setAttributesFromDictionary: dictionary];
     
+    if([instance.uniqueId isEqualToString:@""]) // if no id OR external system id was found
+        return nil;
     
     return instance;
 }
@@ -73,6 +72,8 @@
     [super setAttributesFromDictionary:dictionary
                    ignoringObjectTypes:kIgnoreChannelObjects];
     
+    self.uniqueId = [dictionary objectForKey:@"id"
+                                 withDefault:@""];
     
     self.externalSystem =
     [[dictionary objectForKey: @"external_system"] isKindOfClass:[NSString class]] ? [dictionary objectForKey: @"external_system"] : nil;
@@ -81,6 +82,8 @@
     self.externalUID =
     [[dictionary objectForKey: @"external_uid"] isKindOfClass:[NSString class]] ? [dictionary objectForKey: @"external_uid"] : nil;
     
+    if([self.uniqueId isEqualToString:@""]) // in the case of FB friends we are not returned a UID, use the FB one.
+        self.uniqueId = self.externalUID;
     
     self.resourceURL =
     [[dictionary objectForKey: @"resource_url"]  isKindOfClass:[NSString class]] ? [dictionary objectForKey: @"resource_url"] : nil;
@@ -132,7 +135,7 @@
 }
 -(NSString*)description
 {
-    return [NSString stringWithFormat:@"[Friend (id:%@, name:%@, email:'%@')]", self.externalUID, self.displayName, self.email];
+    return [NSString stringWithFormat:@"[Friend (id:%@, name:%@, email:'%@')]", self.uniqueId, self.displayName, self.email];
 }
 
 @end

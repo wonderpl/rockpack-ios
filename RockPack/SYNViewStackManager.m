@@ -459,7 +459,7 @@
     successNotification.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"BarSucess"]];
     [successNotification setText: message];
     
-    [self.masterController.errorContainerView addSubview: successNotification];
+    [self.masterController.view addSubview: successNotification];
     
     [UIView animateWithDuration: 0.3f
                           delay: 0.0f

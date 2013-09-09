@@ -113,6 +113,8 @@
     self.searchFieldFrameImageView.image = [[UIImage imageNamed: @"FieldSearch"]
                                             resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 20.0f, 0.0f, 20.0f)];
     
+    
+    
     if (IS_IPHONE)
     {
         // resize for iPhone
@@ -218,11 +220,13 @@
         
         [self.loader startAnimating];
         self.loader.hidden = NO;
+        self.recentFriendsCollectionView.hidden = YES;
     }
     else
     {
         [self.loader stopAnimating];
         self.loader.hidden = YES;
+        self.recentFriendsCollectionView.hidden = NO;
     }
 }
 
@@ -459,7 +463,7 @@
 {
     // prevent the display of the "empty" recent cells before the friends have loaded
     // then allow for 5 extra slots to display the "empty" cells
-    return (!hasAttemptedToLoadData ? 0 : self.recentFriends.count + kNumberOfEmptyRecentSlots); 
+    return (!hasAttemptedToLoadData ? 0 : 1 + self.recentFriends.count + kNumberOfEmptyRecentSlots);
 }
 
 
@@ -469,9 +473,18 @@
     SYNFriendThumbnailCell *userThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNFriendThumbnailCell"
                                                                                           forIndexPath: indexPath];
     
-    if (indexPath.item < self.recentFriends.count)
+    if(indexPath.item == 0)
     {
-        Friend *friend = self.recentFriends[indexPath.row];
+        userThumbnailCell.imageView.image = [UIImage imageNamed:@"ShareAddEntry.jpg"];
+        [userThumbnailCell setDisplayName: @"Add new Email"];
+        
+        userThumbnailCell.imageView.alpha = 1.0f;
+        
+        userThumbnailCell.shadowImageView.alpha = 1.0f;
+    }
+    else if (indexPath.item + 1 < self.recentFriends.count)
+    {
+        Friend *friend = self.recentFriends[indexPath.item - 1];
         userThumbnailCell.nameLabel.text = friend.displayName;
         
         if ([friend.thumbnailURL hasPrefix: @"cached://"])
@@ -507,7 +520,7 @@
         userThumbnailCell.nameLabel.text = @"Recent";
         // userThumbnailCell.backgroundColor = [UIColor redColor];
         
-        CGFloat factor = 1.0f - ((float) (indexPath.row - self.recentFriends.count) / (float) kNumberOfEmptyRecentSlots);
+        CGFloat factor = 1.0f - ((float) ((indexPath.row - 1) - self.recentFriends.count) / (float) kNumberOfEmptyRecentSlots);
         // fade slots
         userThumbnailCell.imageView.alpha = factor;
         userThumbnailCell.shadowImageView.alpha = factor;
@@ -522,13 +535,19 @@
 {
     // "Recent" stub cells are not clickable...
     
-    return indexPath.item < self.recentFriends.count;
+    return indexPath.item - 1 < self.recentFriends.count;
 }
 
 
 - (void)collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    // it will (should) only be called for indexPath.item < self.recentFriends.count
+    // it will (should) only be called for indexPath.item - 1 < self.recentFriends.count so it will exclude stub cells
+    
+    if(indexPath.item == 0) // first cell
+    {
+        [self presentAlertToFillEmailForFriend:nil];
+        return;
+    }
     
     Friend *friend = self.recentFriends[indexPath.row];
     
@@ -569,7 +588,7 @@
     
     if (indexPath.row == self.searchedFriends.count) // last 'special' cell
     {
-        cell.imageView.image = [UIImage imageNamed: @"PlaceholderAvatarChannel"];
+        cell.imageView.image = [UIImage imageNamed: @"ShareAddEntrySmall.jpg"];
         cell.textLabel.text = @"Add a new email address";
         cell.detailTextLabel.text = @"";
         cell.special = YES;
@@ -622,49 +641,61 @@
 - (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 {
     Friend *friend;
-    NSString *titleText = @"Enter a New Email";
+    
     
     if (indexPath.row < self.searchedFriends.count)
     {
         friend = self.searchedFriends[indexPath.row];
-        titleText = [NSString stringWithFormat: @"Enter an Email for %@", friend.firstName];
+        
+        if ([self isValidEmail: friend.email]) // has a valid email
+            [self sendEmailToFriend: friend];
+        
+        else // no email
+            [self presentAlertToFillEmailForFriend:friend];
+        
     }
-    
-    self.friendToAddEmail = friend;
-    
-    if ([self isValidEmail: friend.email]) // has a valid email
+    else // last cell pressed
     {
-        // send email
-        
-        [self sendEmailToFriend: friend];
+        [self presentAlertToFillEmailForFriend:nil];
     }
-    else // either no email or clicked on the last cell
-    {
-        if (!self.friendToAddEmail)
-        {
-            // create friend on the fly
-            SYNAppDelegate *appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
-            
-            self.friendToAddEmail = [Friend insertInManagedObjectContext: appDelegate.searchManagedObjectContext];
-            self.friendToAddEmail.externalSystem = @"email";
-        }
-        
-        UIAlertView *prompt = [[UIAlertView alloc] initWithTitle: titleText
-                                                         message: @"We'll send this channel to their email."
-                                                        delegate: self
-                                               cancelButtonTitle: @"Cancel"
-                                               otherButtonTitles: @"Send", nil];
-        
-        prompt.alertViewStyle = UIAlertViewStylePlainTextInput;
-        prompt.delegate = self;
-        [prompt show];
-    }
+     
+    
     
     [tableView removeFromSuperview];
 }
 
 
 #pragma mark - UIAlertViewDelegate
+
+-(void) presentAlertToFillEmailForFriend:(Friend*)friend
+{
+    // create friend on the fly
+    SYNAppDelegate *appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
+    NSString *titleText;
+    if(!friend) // friend has not yet been created, possibly by pressing the 'add new email' cell
+    {
+        friend = [Friend insertInManagedObjectContext: appDelegate.searchManagedObjectContext];
+        friend.externalSystem = @"email";
+        
+        titleText = @"Enter a New Email";
+    }
+    else
+    {
+        titleText = [NSString stringWithFormat: @"Enter an Email for %@", friend.firstName];
+    }
+    
+    self.friendToAddEmail = friend;
+    
+    UIAlertView *prompt = [[UIAlertView alloc] initWithTitle: titleText
+                                                     message: @"We'll send this channel to their email."
+                                                    delegate: self
+                                           cancelButtonTitle: @"Cancel"
+                                           otherButtonTitles: @"Send", nil];
+    
+    prompt.alertViewStyle = UIAlertViewStylePlainTextInput;
+    prompt.delegate = self;
+    [prompt show];
+}
 
 - (BOOL) alertViewShouldEnableFirstOtherButton: (UIAlertView *) alertView
 {
@@ -745,7 +776,7 @@
     
     CGRect sResTblFrame = self.searchResultsTableView.frame;
     
-    sResTblFrame.origin.y = 110.0f;
+    sResTblFrame.origin.y = 104.0f;
     sResTblFrame.size.height = self.view.frame.size.height - sResTblFrame.origin.y;
     
     self.searchResultsTableView.frame = sResTblFrame;
@@ -915,9 +946,8 @@
 - (void) sendEmailToFriend: (Friend *) friend
 {
     self.view.userInteractionEnabled = NO;
-    self.loader.hidden = NO;
-    [self.loader startAnimating];
-    self.recentFriendsCollectionView.hidden = YES;
+    
+    [self showLoader:YES];
     
     [self.searchTextField resignFirstResponder];
     
@@ -992,6 +1022,8 @@
                                                
                                                wself.friendToAddEmail.email = nil;
                                                wself.friendToAddEmail = nil;
+                                               
+                                               [self showLoader:NO];
                                                
                                                self.view.userInteractionEnabled = YES;
                                            }];

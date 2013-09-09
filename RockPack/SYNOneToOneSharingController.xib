@@ -67,6 +67,7 @@
 							<reference key="IBUICollectionView" ref="995286249"/>
 							<int key="IBUIScrollDirection">1</int>
 							<string key="IBUIItemSize">{90, 90}</string>
+							<float key="IBUIMinimumLineSpacing">10</float>
 							<float key="IBUIMinimumInteritemSpacing">10</float>
 						</object>
 						<array key="IBUICells" id="0"/>
@@ -162,6 +163,7 @@
 						<string key="NSFrame">{{0, 237}, {420, 56}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -563,7 +565,6 @@
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="activitiesContainerView">UIView</string>
-						<string key="authorizationView">UIView</string>
 						<string key="authorizeFacebookButton">UIButton</string>
 						<string key="closeButton">UIButton</string>
 						<string key="facebookLabel">UILabel</string>
@@ -579,10 +580,6 @@
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<object class="IBToOneOutletInfo" key="activitiesContainerView">
 							<string key="name">activitiesContainerView</string>
-							<string key="candidateClassName">UIView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="authorizationView">
-							<string key="name">authorizationView</string>
 							<string key="candidateClassName">UIView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="authorizeFacebookButton">

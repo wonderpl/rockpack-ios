@@ -2198,10 +2198,12 @@
     [appDelegate.oAuthNetworkEngine channelCreatedForUserId: appDelegate.currentOAuth2Credentials.userId
                                                   channelId: channelId
                                           completionHandler: ^(id dictionary) {
+                                              
                                               Channel *createdChannel;
                                               
-                                              if (!isUpdate)                                // its a new creation
+                                              if (!isUpdate) // its a new creation
                                               {
+                                                  
                                                   createdChannel = [Channel instanceFromDictionary: dictionary
                                                                          usingManagedObjectContext: appDelegate.mainManagedObjectContext
                                                                                ignoringObjectTypes: kIgnoreChannelOwnerObject];
@@ -2210,8 +2212,7 @@
                                                   [appDelegate.currentUser.channelsSet
                                                    addObject: createdChannel];
                                                   
-                                                  if ([createdChannel.categoryId
-                                                       isEqualToString: @""])
+                                                  if ([createdChannel.categoryId isEqualToString: @""])
                                                   {
                                                       createdChannel.publicValue = NO;
                                                   }
