@@ -324,8 +324,8 @@
         
         for (Friend* existingFriend in existingFriendsArray)
         {
-            if(existingFriend.isFromFacebook)
-                [facebookFriendsMutableArray addObject:existingFriend];
+            [facebookFriendsMutableArray addObject:existingFriend];
+            
             if(existingFriend.lastShareDate)
                 [recentFriendsMutableArray addObject:existingFriend];
             
@@ -343,7 +343,7 @@
     if(hasAttemptedToLoadData) // to avoid infinite recursion
         return;
     
-    hasAttemptedToLoadData = YES;
+    
     
     [weakSelf showLoader:YES];
     
@@ -364,6 +364,7 @@
                                      
                                      [weakSelf showLoader:NO];
                                      
+                                     hasAttemptedToLoadData = YES;
                                      
                                      [self.recentFriendsCollectionView reloadData];
                                      
@@ -371,6 +372,7 @@
                                      
                                      [weakSelf showLoader:NO];
                                      
+                                     hasAttemptedToLoadData = YES;
                                      
                                      [weakSelf.recentFriendsCollectionView reloadData];
                                  }];

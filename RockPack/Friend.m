@@ -40,17 +40,22 @@
                    ignoringObjectTypes:kIgnoreChannelObjects];
     
     
-    self.externalSystem = [dictionary objectForKey: @"external_system"];
+    self.externalSystem =
+    [[dictionary objectForKey: @"external_system"] isKindOfClass:[NSString class]] ? [dictionary objectForKey: @"external_system"] : nil;
     
     
-    self.externalUID = [dictionary objectForKey: @"external_uid"];
+    self.externalUID =
+    [[dictionary objectForKey: @"external_uid"] isKindOfClass:[NSString class]] ? [dictionary objectForKey: @"external_uid"] : nil;
     
     
-    self.resourceURL = [dictionary objectForKey: @"resource_url"];
+    self.resourceURL =
+    [[dictionary objectForKey: @"resource_url"]  isKindOfClass:[NSString class]] ? [dictionary objectForKey: @"resource_url"] : nil;
     
     
     self.hasIOSDevice = [dictionary objectForKey: @"has_ios_device"
                                      withDefault: @NO];
+    
+    self.email = [[dictionary objectForKey:@"email"] isKindOfClass:[NSString class]] ? [dictionary objectForKey:@"email"] : nil;
     
     
     self.lastShareDate = [dictionary dateFromISO6801StringForKey:@"last_shared_date"
