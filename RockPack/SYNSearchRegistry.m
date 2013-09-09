@@ -80,7 +80,7 @@
     for (Friend* existingFriend in existingFriendsArray)
     {
         
-        existingFriendsByUID[existingFriend.uniqueId] = existingFriend;
+        existingFriendsByUID[existingFriend.email] = existingFriend;
         
         existingFriend.markedForDeletionValue = YES;
         
@@ -111,7 +111,7 @@
                 continue; // if cache AND instatiation fails, bail
         
         contactAsFriend.uniqueId = email; // email serves as a uniqueId for address book friends
-        
+        contactAsFriend.markedForDeletionValue = NO;
         
         firstName = (__bridge_transfer NSString *) ABRecordCopyValue(currentPerson, kABPersonFirstNameProperty);
         lastName = (__bridge_transfer NSString *) ABRecordCopyValue(currentPerson, kABPersonLastNameProperty);

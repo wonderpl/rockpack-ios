@@ -542,14 +542,7 @@
     
     Friend *friend = self.recentFriends[indexPath.row - 1];
     
-    if ([friend.externalSystem isEqualToString: kEmail])
-    {
-        [self sendEmailToFriend: friend];
-    }
-    else if ([friend.externalSystem isEqualToString: kFacebook])
-    {
-        // do facebook stuff
-    }
+    [self sendEmailToFriend: friend];
 }
 
 
