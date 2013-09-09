@@ -419,8 +419,7 @@
     // ... and then the popover
     [self.masterController.view addSubview:view];
     popoverView = view;
-    if(IS_IPAD)
-    {
+    if(IS_IPAD)    {
         popoverView.alpha = 0.0;
         popoverView.center = CGPointMake(screenRect.size.width * 0.5, screenRect.size.height * 0.5);
         popoverView.frame = CGRectIntegral(view.frame);

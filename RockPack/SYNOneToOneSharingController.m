@@ -38,6 +38,7 @@
                                             UITableViewDelegate,
                                             UIScrollViewDelegate>
 
+@property (nonatomic, assign) CGRect originalFrame;
 @property (nonatomic, readonly) BOOL isInAuthorizationScreen;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *loader;
 @property (nonatomic, strong) IBOutlet UIButton *authorizeFacebookButton;
@@ -92,7 +93,6 @@
     [super viewDidLoad];
     
     [self.loader hidesWhenStopped];
-    
     self.facebookLoader.hidden = YES;
     
     self.facebookFriends = [NSArray array];
@@ -128,18 +128,8 @@
         cbFrame.origin.x = 278.0f;
         self.closeButton.frame = cbFrame;
     }
-}
-
-
-- (BOOL) isInAuthorizationScreen
-{
-    return (BOOL) (self.authorizationView.superview != nil);
-}
-
-
-- (void) viewWillAppear: (BOOL) animated
-{
-    [super viewWillAppear: animated];
+    
+    self.originalFrame = self.view.frame;
     
     // Basic recognition
     self.loader.hidden = YES;
@@ -182,7 +172,7 @@
         DebugLog(@"AddressBook Status: Authorized, fetching contacts");
         // present main view
         [self fetchAddressBookFriends];
-            
+        
         if (hasFacebookSession)
         {
             // Pull up recently shared friends...
@@ -196,6 +186,20 @@
     [self presentActivities];
 }
 
+- (void) viewWillAppear: (BOOL) animated
+{
+    if (IS_IPHONE)
+    {
+        // resize for iPhone
+        self.view.frame = self.originalFrame;
+    }
+}
+
+
+- (void) viewWillDisappear: (BOOL) animated
+{
+    self.originalFrame = self.view.frame;
+}
 
 
 -(void)showLoader:(BOOL)show
@@ -212,6 +216,14 @@
         self.loader.hidden = YES;
     }
 }
+
+
+- (BOOL) isInAuthorizationScreen
+{
+    return (BOOL) (self.authorizationView.superview != nil);
+}
+
+
 - (void) presentActivities
 {
     
