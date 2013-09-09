@@ -39,7 +39,6 @@
                                             UIScrollViewDelegate>
 
 @property (nonatomic, assign) CGRect originalFrame;
-@property (nonatomic, readonly) BOOL isInAuthorizationScreen;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *loader;
 @property (nonatomic, strong) IBOutlet UIButton *authorizeFacebookButton;
 @property (nonatomic, strong) IBOutlet UIButton *closeButton;
@@ -51,11 +50,12 @@
 @property (nonatomic, strong) IBOutlet UITextField *searchTextField;
 @property (nonatomic, strong) IBOutlet UILabel * facebookLabel;
 @property (nonatomic, strong) IBOutlet UIView *activitiesContainerView;
-@property (nonatomic, strong) IBOutlet UIView *authorizationView;
-@property (nonatomic, strong) NSArray *facebookFriends;
-@property (nonatomic, strong) NSArray *recentFriends;
-@property (nonatomic, strong) NSArray *addressBookFriends;
-@property (nonatomic, strong) NSArray *searchedFriends;
+
+@property (nonatomic, strong) NSMutableArray *friends;
+@property (nonatomic, readonly) NSMutableArray *recentFriends;
+
+@property (nonatomic, readonly) NSArray *searchedFriends;
+
 @property (nonatomic, strong) NSCache *addressBookImageCache;
 @property (nonatomic, strong) NSMutableString *currentSearchTerm;
 @property (nonatomic, strong) UIImage *imageToShare;
@@ -63,7 +63,6 @@
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* facebookLoader;
 @property (strong, nonatomic) NSMutableDictionary *mutableShareDictionary;
 @property (strong, nonatomic) OWActivityViewController *activityViewController;
-@property (nonatomic, readonly) NSArray* allFriendsArray;
 @property (nonatomic) BOOL hasAttemptedToLoadData;
 
 @end
@@ -95,10 +94,8 @@
     [self.loader hidesWhenStopped];
     self.facebookLoader.hidden = YES;
     
-    self.facebookFriends = [NSArray array];
-    self.recentFriends = [NSArray array];
-    self.searchedFriends = [NSArray array];
-    self.addressBookFriends = [NSArray array];
+    self.friends = [NSMutableArray array];
+    
     
     self.addressBookImageCache = [[NSCache alloc] init];
     
@@ -134,55 +131,39 @@
     // Basic recognition
     self.loader.hidden = YES;
     
-    BOOL hasFacebookSession = [[SYNFacebookManager sharedFBManager] hasActiveSession];
-    ABAuthorizationStatus aBookAuthStatus = ABAddressBookGetAuthorizationStatus();
     
-    if (aBookAuthStatus != kABAuthorizationStatusAuthorized)
-    {
-        // if it is the first time we are requesting authorization
-        if (aBookAuthStatus == kABAuthorizationStatusNotDetermined)
-        {
-            // request authorization
+    // try and find friends you have sent to
+    [self fetchAndDisplayRecentFriends];
+    
+    
+    switch (ABAddressBookGetAuthorizationStatus()) {
+        case kABAuthorizationStatusNotDetermined:
             DebugLog(@"AddressBook Status: Not Determined, asking for authorization");
             [self requestAddressBookAuthorization];
-        }
-        else // either Denied or Restricted
-        {
-            DebugLog(@"AddressBook Status: %@", aBookAuthStatus == kABAuthorizationStatusDenied ? @"Denied" : @"Restricted");
-            
-        }
-        
-        // in the meantime...
-        if (!hasFacebookSession) // if there is neither a FB account
-        {
-            // present view with the two buttons
-            [self presentAuthorizationScreen];
-        }
-        else
-        {
-            // load friends asynchronously and add them to the friends list when done
-            [self fetchAndDisplayFriends];
-            
-        }
-        
+            break;
+        case kABAuthorizationStatusDenied:
+            DebugLog(@"AddressBook Status: Denied");
+            break;
+        case kABAuthorizationStatusRestricted:
+            DebugLog(@"AddressBook Status: Restricted");
+            break;
+        case kABAuthorizationStatusAuthorized:
+            DebugLog(@"AddressBook Status: Authorized, fetching contacts");
+            [self fetchAddressBookFriends];
+            break;
+        default:
+            break;
     }
-    else // (status == kABAuthorizationStatusAuthorized)
+    
+    
+    // if the user is FB connected try and pull his friends
+    if ([[SYNFacebookManager sharedFBManager] hasActiveSession])
     {
-        
-        DebugLog(@"AddressBook Status: Authorized, fetching contacts");
-        // present main view
-        [self fetchAddressBookFriends];
-        
-        if (hasFacebookSession)
-        {
-            // Pull up recently shared friends...
-            [self fetchAndDisplayFriends];
-        }
-        
+        DebugLog(@"The user is FB connected, trying to pull friends from server");
+        [self fetchAndDisplayFriends];
     }
     
-    
-    // always present activities button at the bottom
+    // always present the buttons at the bottom
     [self presentActivities];
 }
 
@@ -246,10 +227,7 @@
 }
 
 
-- (BOOL) isInAuthorizationScreen
-{
-    return (BOOL) (self.authorizationView.superview != nil);
-}
+
 
 
 - (void) presentActivities
@@ -299,14 +277,13 @@
                            {
                                NSLog(@"Address Book Access GRANTED");
                                
-                               // populates the friends array
+                               // saves the address book friends in the DB
                                [self fetchAddressBookFriends];
                                
-                               // if in auth mode
-                               if (self.isInAuthorizationScreen)
-                               {
-                                   [self.authorizationView removeFromSuperview];
-                               }
+                               // populates the self.friends array with possibly new data
+                               [self fetchAndDisplayFriends];
+                               
+                               
                            }
                            else
                            {
@@ -314,7 +291,7 @@
                                
                                if (!hasFacebookSession)
                                {
-                                   [self presentAuthorizationScreen];
+                                   
                                }
                            }
                            
@@ -325,17 +302,46 @@
 }
 
 
-- (void) presentAuthorizationScreen
-{
-    CGRect aViewRect = self.authorizationView.frame;
-    
-    aViewRect.origin.y = 55.0f;
-    self.authorizationView.frame = aViewRect;
-    [self.view addSubview: self.authorizationView];
-}
+
 
 
 #pragma mark - Data Retrieval
+
+// recent friends are copied over from the search context to the main context
+-(void)fetchAndDisplayRecentFriends
+{
+    __weak SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    
+    NSError *error;
+    
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setEntity: [NSEntityDescription entityForName: @"Friend"
+                                         inManagedObjectContext: appDelegate.mainManagedObjectContext]];
+    
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"lastShareDate != nil"];
+    
+    NSArray *existingRecentFriendsArray = [appDelegate.mainManagedObjectContext executeFetchRequest: fetchRequest
+                                                                                              error: &error];
+    
+    if(error)
+    {
+        DebugLog(@"Could not perform fetch for recent friends with predicate '%@' and error %@", fetchRequest.predicate, error.debugDescription);
+        return;
+    }
+    
+     
+    
+    for (Friend* existingRecentFriend in existingRecentFriendsArray)
+    {
+        [self.recentFriends addObject:existingRecentFriend];
+        
+    }
+    
+    [self.recentFriendsCollectionView reloadData];
+}
 
 -(void)fetchAndDisplayFriends
 {
@@ -356,24 +362,24 @@
     existingFriendsArray = [appDelegate.searchManagedObjectContext executeFetchRequest: fetchRequest
                                                                                  error: &error];
     
+    
     if(!error)
     {
-        NSMutableArray *facebookFriendsMutableArray = [NSMutableArray array];
-        NSMutableArray *recentFriendsMutableArray = [NSMutableArray array];
+        //NSLog(@"Friends Found %@:", hasAttemptedToLoadData ? @"AFTER loading data from server" : @"BEFORE laoding data from server");
         
+        [self.friends removeAllObjects];
         
         for (Friend* existingFriend in existingFriendsArray)
         {
-            [facebookFriendsMutableArray addObject:existingFriend];
+            [self.friends addObject:existingFriend];
             
             if(existingFriend.lastShareDate)
-                [recentFriendsMutableArray addObject:existingFriend];
+                [self.recentFriends addObject:existingFriend];
             
+            //NSLog(@"%@", existingFriend);
         }
         
-        self.facebookFriends = [NSArray arrayWithArray: facebookFriendsMutableArray];
-        
-        self.recentFriends = [NSArray arrayWithArray: recentFriendsMutableArray];
+         
         
         [self.recentFriendsCollectionView reloadData];
     }
@@ -401,7 +407,6 @@
                                          DebugLog(@"There was a problem loading friends");
                                      }
                                      
-                                     
                                      [weakSelf showLoader:NO];
                                      
                                      hasAttemptedToLoadData = YES;
@@ -427,64 +432,18 @@
     if (addressBookRef == NULL)
         return;
     
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     
-    NSArray *arrayOfAllPeople = (__bridge_transfer NSArray *) ABAddressBookCopyArrayOfAllPeople(addressBookRef);
+    NSArray *arrayOfAddressBookContacts = (__bridge_transfer NSArray *) ABAddressBookCopyArrayOfAllPeople(addressBookRef);
     
-    SYNAppDelegate *appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
-    NSInteger total = [arrayOfAllPeople count];
-    NSString *firstName, *lastName;
-    NSData *imageData;
-    Friend *contactFriend;
-    NSMutableArray *friendsArrayMut = [NSMutableArray array];
-    
-    for (NSUInteger peopleCounter = 0; peopleCounter < total; peopleCounter++)
-    {
-        ABRecordRef currentPerson = (__bridge ABRecordRef) [arrayOfAllPeople objectAtIndex: peopleCounter];
-        ABRecordID cid;
-        
-        if (!currentPerson || ((cid = ABRecordGetRecordID(currentPerson)) == kABRecordInvalidID))
-            continue;
-        
-        
-        ABMultiValueRef emailAddressMultValue = ABRecordCopyValue(currentPerson, kABPersonEmailProperty);
-        NSArray *emailAddresses = (__bridge NSArray *) ABMultiValueCopyArrayOfAllValues(emailAddressMultValue);
-        CFRelease(emailAddressMultValue);
-        
-        if(emailAddresses.count == 0) // only keep contacts with email addresses
-            continue;
-        
-        firstName = (__bridge_transfer NSString *) ABRecordCopyValue(currentPerson, kABPersonFirstNameProperty);
-        lastName = (__bridge_transfer NSString *) ABRecordCopyValue(currentPerson, kABPersonLastNameProperty);
-        
-        
-        imageData = (__bridge_transfer NSData *) ABPersonCopyImageData(currentPerson);
-        
-        contactFriend = [Friend insertInManagedObjectContext: appDelegate.searchManagedObjectContext];
-        contactFriend.viewId = kOneToOneSharingViewId;
-        contactFriend.uniqueId = [NSString stringWithFormat: @"%i", cid];
-        contactFriend.displayName = [NSString stringWithFormat: @"%@ %@", firstName, lastName];
-        contactFriend.email =  (NSString*)emailAddresses[0]; // we are guaranteed to have at least one due to the conditional above
-        contactFriend.externalSystem = @"email";
-        contactFriend.externalUID = [NSString stringWithFormat: @"%i", cid];
-        
-        if (imageData)
-        {
-            NSString *key = [NSString stringWithFormat: @"cached://%@", contactFriend.uniqueId];
-            contactFriend.thumbnailURL = key;
-            
-            [self.addressBookImageCache setObject: imageData
-                                           forKey: key];
-        }
-        
-        [friendsArrayMut addObject: contactFriend];
-        
-    }
-    
-    self.addressBookFriends = [NSArray arrayWithArray: friendsArrayMut]; // already contains the original friends
+    self.addressBookImageCache  = [appDelegate.searchRegistry registerFriendsFromAddressBookArray:arrayOfAddressBookContacts];
     
     CFRelease(addressBookRef);
     
-    [self.recentFriendsCollectionView reloadData]; // in case we have found new images
+    if(self.addressBookImageCache) // if there is a cache (even if it's empty) then searchRegistry completed succesfully
+        [self.recentFriendsCollectionView reloadData]; 
+    else
+        self.addressBookImageCache = [[NSCache alloc] init]; // keep a valid cache to avoid unexpecatble crashes
 }
 
 
@@ -567,8 +526,7 @@
 }
 
 
-- (void)	  collectionView: (UICollectionView *) collectionView
-          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+- (void)collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     // it will (should) only be called for indexPath.item < self.recentFriends.count
     
@@ -609,52 +567,47 @@
                                             reuseIdentifier: @"SYNOneToOneFriendCell"];
     }
     
-    // set the labels on the cell
-    
-    if (indexPath.row < self.searchedFriends.count)
+    if (indexPath.row == self.searchedFriends.count) // last 'special' cell
     {
-        Friend *friend = self.searchedFriends[indexPath.row];
-        cell.textLabel.text = friend.displayName;
-        
-        if ([self isValidEmail: friend.email])
-        {
-            cell.detailTextLabel.text = friend.email;
-        }
-        else
-        {
-            cell.detailTextLabel.text = @"Pick and email address";
-        }
-        
-        // image
-        
-        if ([friend.thumbnailURL hasPrefix: @"http"])                   // good for http and https
-        {
-            [cell.imageView
-             setImageWithURL: [NSURL URLWithString: friend.thumbnailLargeUrl]
-             placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarChannel"]
-             options: SDWebImageRetryFailed];
-        }
-        else if ([friend.thumbnailURL hasPrefix: @"cached://"])                   // has been cached from the address book access
-        {
-            NSPurgeableData *pdata = [self.addressBookImageCache objectForKey: friend.thumbnailURL];
-            
-            UIImage *img;
-            
-            if (!pdata || !(img = [UIImage imageWithData: pdata]))
-            {
-                img = [UIImage imageNamed: @"ABContactPlaceholder"];
-            }
-            
-            cell.imageView.image = img;
-        }
-        else
-        {
-            cell.imageView.image = [UIImage imageNamed: @"PlaceholderAvatarChannel"];
-        }
-    }
-    else // special last "add new email cell"
-    {
+        cell.imageView.image = [UIImage imageNamed: @"PlaceholderAvatarChannel"];
         cell.textLabel.text = @"Add a new email address";
+        cell.detailTextLabel.text = @"";
+        cell.special = YES;
+        return cell;
+    }
+    
+    cell.special = NO;
+    
+    Friend *friend = self.searchedFriends[indexPath.row];
+    cell.textLabel.text = friend.displayName;
+    
+    
+    cell.detailTextLabel.text = [self isValidEmail: friend.email] ? friend.email : @"Pick and email address";
+    
+    // image
+    
+    if ([friend.thumbnailURL hasPrefix: @"http"]) // good for http and https
+    {
+        [cell.imageView setImageWithURL: [NSURL URLWithString: friend.thumbnailLargeUrl]
+                       placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarChannel"]
+                                options: SDWebImageRetryFailed];
+    }
+    else if ([friend.thumbnailURL hasPrefix: @"cached://"])                   // has been cached from the address book access
+    {
+        NSPurgeableData *pdata = [self.addressBookImageCache objectForKey: friend.thumbnailURL];
+        
+        UIImage *img;
+        
+        if (!pdata || !(img = [UIImage imageWithData: pdata]))
+        {
+            img = [UIImage imageNamed: @"ABContactPlaceholder"];
+        }
+        
+        cell.imageView.image = img;
+    }
+    else
+    {
+        
     }
     
     return cell;
@@ -758,31 +711,37 @@
         [self.currentSearchTerm deleteCharactersInRange: NSMakeRange(self.currentSearchTerm.length - 1, 1)];
     }
     
-    // if a search has actually been typed
     
-    if (self.currentSearchTerm.length > 0)
-    {
-        NSPredicate *searchPredicate = [NSPredicate predicateWithBlock: ^BOOL (Friend *friend, NSDictionary *bindings) {
-            return [[friend.firstName uppercaseString] hasPrefix: self.currentSearchTerm] ||
-            [[friend.lastName uppercaseString] hasPrefix: self.currentSearchTerm];
-        }];
-        
-        self.searchedFriends = [self.allFriendsArray filteredArrayUsingPredicate: searchPredicate];
-    }
-    else
-    {
-        self.searchedFriends = self.allFriendsArray;
-    }
+    
     
     [self.searchResultsTableView reloadData];
     
     return YES;
 }
 
+-(NSArray*)searchedFriends
+{
+    
+    if (self.currentSearchTerm.length > 0)
+    {
+        NSPredicate *searchPredicate = [NSPredicate predicateWithBlock: ^BOOL (Friend *friend, NSDictionary *bindings) {
+            // either first or last name matches
+            return ([[friend.firstName uppercaseString] hasPrefix: self.currentSearchTerm]) ||
+                    ([[friend.lastName uppercaseString] hasPrefix: self.currentSearchTerm]);
+        }];
+        
+        return [self.friends filteredArrayUsingPredicate: searchPredicate];
+    }
+    else
+    {
+        return self.friends;
+    }
+}
+
 
 - (BOOL) textFieldShouldBeginEditing: (UITextField *) textField
 {
-    self.searchedFriends = self.facebookFriends;
+    self.currentSearchTerm = [NSMutableString stringWithString:@""];
     
     CGRect sResTblFrame = self.searchResultsTableView.frame;
     
@@ -893,7 +852,6 @@
                                                          andAccessTokenData:accessTokenData
                                                           completionHandler:^(id no_responce) {
                                                               
-                                                              [self.authorizationView removeFromSuperview];
                                                               
                                                               [self fetchAndDisplayFriends];
                                                               
@@ -973,34 +931,38 @@
                                                
                                                
                                                
-                                               if (![self isValidEmail: wself.friendToAddEmail.email])                          // if an email has been passed succesfully, register it (temporarily)
+                                               if (![self isValidEmail: wself.friendToAddEmail.email]) 
                                                {
+                                                   // if an email has been passed succesfully, register it (temporarily)
                                                    NSError *error;
                                                    [friend.managedObjectContext save: &error];
+                                                   
+                                                   // save that friend permanently in the main context
+                                                   Friend* cpFriend = [Friend friendFromFriend:friend
+                                                                       forManagedObjectContext:appDelegate.mainManagedObjectContext];
+                                                   
+                                                   // save and reload the collection
+                                                   if(cpFriend && [cpFriend.managedObjectContext save: &error])
+                                                       [self fetchAndDisplayRecentFriends];
+                                                   
                                                }
-                                               else                            // clean it for the next appearence of the table view
+                                               else                           
                                                {
-                                                   wself.friendToAddEmail.email = nil;
+                                                   // nullify the email if it could not be sent (possibly incorrect)
+                                                   friend.email = nil;
                                                }
                                                
-                                               NSMutableArray *updatedRecentFriends = wself.recentFriends.mutableCopy;
-                                               [updatedRecentFriends addObject: wself.friendToAddEmail];
-                                               
-                                               wself.recentFriends = [NSArray arrayWithArray: updatedRecentFriends];
-                                               
-                                               [wself.recentFriendsCollectionView reloadData];
-                                               
+                                              
                                                wself.friendToAddEmail = nil;
                                                
                                                wself.view.userInteractionEnabled = YES;
                                                
-                                               wself.loader.hidden = YES;
-                                               [wself.loader stopAnimating];
-                                               wself.recentFriendsCollectionView.hidden = NO;
+                                               [self showLoader:NO];
                                                
                                                [appDelegate.viewStackManager presentSuccessNotificationWithMessage:@"Email Sent Succesfully"];
                                                
                                            } errorHandler: ^(NSDictionary *error) {
+                                               
                                                NSString *title = @"Email Couldn't be Sent";
                                                NSString *reason = @"Unkown reson";
                                                NSDictionary *formErrors = error[@"form_errors"];
@@ -1020,11 +982,11 @@
                                                    reason = @"The email could be wrong or the service down.";
                                                }
                                                
-                                               UIAlertView *prompt = [[UIAlertView alloc]	 initWithTitle: title
-                                                                                                 message: reason
-                                                                                                delegate: self
-                                                                                       cancelButtonTitle: @"OK"
-                                                                                       otherButtonTitles: nil];
+                                               UIAlertView *prompt = [[UIAlertView alloc] initWithTitle: title
+                                                                                                message: reason
+                                                                                               delegate: self
+                                                                                      cancelButtonTitle: @"OK"
+                                                                                      otherButtonTitles: nil];
                                                
                                                [prompt show];
                                                
@@ -1035,13 +997,6 @@
                                            }];
 }
 
--(NSArray*)allFriendsArray
-{
-    NSMutableArray* allFriendsMutArray = [NSMutableArray arrayWithCapacity:self.facebookFriends.count + self.addressBookFriends.count];
-    [allFriendsMutArray addObjectsFromArray:self.facebookFriends];
-    [allFriendsMutArray addObjectsFromArray:self.addressBookFriends];
-    
-    return [NSArray arrayWithArray:allFriendsMutArray];
-}
+
 
 @end

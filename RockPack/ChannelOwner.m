@@ -13,10 +13,12 @@
                   usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
                         ignoringObjectTypes: (IgnoringObjects) ignoringObjects
 {
-    if (!existingChannelOwner)
-        return nil;
+    
     
     ChannelOwner *copyChannelOwner = [ChannelOwner insertInManagedObjectContext: managedObjectContext];
+    
+    if(!existingChannelOwner || !copyChannelOwner)
+        return nil;
     
     copyChannelOwner.uniqueId = existingChannelOwner.uniqueId;
     
@@ -24,7 +26,7 @@
     
     copyChannelOwner.displayName = existingChannelOwner.displayName;
     
-    copyChannelOwner.viewId = viewId;
+    copyChannelOwner.viewId = viewId ? viewId : @"";
     
     if (!(ignoringObjects & kIgnoreChannelObjects))
     {

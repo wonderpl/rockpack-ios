@@ -13,6 +13,40 @@
 
 @synthesize isOnRockpack;
 
++ (Friend *) friendFromFriend:(Friend *)friendToCopy
+      forManagedObjectContext:(NSManagedObjectContext*)managedObjectContext
+{
+    Friend *instance = [Friend insertInManagedObjectContext: managedObjectContext];
+    
+    if(!instance || !friendToCopy)
+        return nil;
+    
+    instance.uniqueId = friendToCopy.uniqueId;
+    
+    instance.thumbnailURL = friendToCopy.thumbnailURL;
+    
+    instance.displayName = friendToCopy.displayName;
+    
+    instance.externalSystem = friendToCopy.externalSystem;
+    
+    
+    instance.externalUID = friendToCopy.externalUID;
+    
+    
+    instance.resourceURL = friendToCopy.resourceURL;
+    
+    
+    instance.hasIOSDevice = friendToCopy.hasIOSDevice;
+    
+    instance.email = friendToCopy.email;
+    
+    
+    instance.lastShareDate = friendToCopy.lastShareDate;
+    
+    return instance;
+    
+}
+
 + (Friend *) instanceFromDictionary: (NSDictionary *) dictionary
                 usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
 {
@@ -98,7 +132,7 @@
 }
 -(NSString*)description
 {
-    return [NSString stringWithFormat:@"[Friend (id:%@, name:%@)]", self.externalUID, self.displayName];
+    return [NSString stringWithFormat:@"[Friend (id:%@, name:%@, email:'%@')]", self.externalUID, self.displayName, self.email];
 }
 
 @end
