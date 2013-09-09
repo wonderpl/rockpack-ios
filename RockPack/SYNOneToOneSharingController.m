@@ -186,6 +186,15 @@
     [self presentActivities];
 }
 
+- (void) viewWillAppear: (BOOL) animated
+{
+    if (IS_IPHONE)
+    {
+        // resize for iPhone
+        self.view.frame = self.originalFrame;
+    }
+}
+
 
 - (void) viewWillDisappear: (BOOL) animated
 {
