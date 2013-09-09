@@ -482,18 +482,19 @@
         
         userThumbnailCell.shadowImageView.alpha = 1.0f;
     }
-    else if (indexPath.item + 1 < self.recentFriends.count)
+    else if (indexPath.item - 1 < self.recentFriends.count)
     {
         Friend *friend = self.recentFriends[indexPath.item - 1];
         
+        NSString* nameToDisplay;
         if(friend.displayName && ![friend.displayName isEqualToString:@""])
-            userThumbnailCell.nameLabel.text = friend.displayName;
+            nameToDisplay = friend.displayName;
         else if (friend.email && ![friend.email isEqualToString:@""])
-            userThumbnailCell.nameLabel.text = friend.email;
+            nameToDisplay = friend.email;
         else
-            userThumbnailCell.nameLabel.text = @"";
+            nameToDisplay = @"";
         
-        if ([friend.thumbnailURL hasPrefix: @"cached://"])
+        if ([friend.thumbnailURL hasPrefix: @"cached://"]) // cached from address book image
         {
             NSPurgeableData *pdata = [self.addressBookImageCache objectForKey: friend.thumbnailURL];
             
@@ -506,14 +507,18 @@
             
             userThumbnailCell.imageView.image = img;
         }
-        else
+        else if([friend.thumbnailURL hasPrefix:@"http"]) // includes https of course
         {
             [userThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: friend.thumbnailLargeUrl]
                                         placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarChannel"]
                                                  options: SDWebImageRetryFailed];
         }
+        else
+        {
+            userThumbnailCell.imageView.image = [UIImage imageNamed:@"PlaceholderAvatarChannel"];
+        }
         
-        [userThumbnailCell setDisplayName: friend.displayName];
+        [userThumbnailCell setDisplayName: nameToDisplay];
         
         userThumbnailCell.imageView.alpha = 1.0f;
         
@@ -555,7 +560,7 @@
         return;
     }
     
-    Friend *friend = self.recentFriends[indexPath.row];
+    Friend *friend = self.recentFriends[indexPath.row - 1];
     
     if ([friend.externalSystem isEqualToString: kEmail])
     {
@@ -721,7 +726,11 @@
     UITextField *textfield = [alertView textFieldAtIndex: 0];
     
     self.friendToAddEmail.email = textfield.text;
-    self.friendToAddEmail.externalUID = self.friendToAddEmail.email; // workaround the fact that we do not have a UID for this new user
+    if([self.friendToAddEmail.externalSystem isEqualToString:kEmail])
+    {
+        self.friendToAddEmail.externalUID = self.friendToAddEmail.email; // workaround the fact that we do not have a UID for this new user
+    }
+    
     
     [self sendEmailToFriend: self.friendToAddEmail];
 }
@@ -972,6 +981,8 @@
                                                                        forManagedObjectContext: appDelegate.mainManagedObjectContext];
                                                    
                                                    cpFriend.lastShareDate = [NSDate date];
+                                                   
+                                                   
                                                    
                                                    // save and reload the collection
                                                    if(cpFriend && [cpFriend.managedObjectContext save: &error])
