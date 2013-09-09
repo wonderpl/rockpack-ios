@@ -129,7 +129,7 @@
         self.closeButton.frame = cbFrame;
     }
     
-    self.originalFrame = self.view.frame;
+    self.originalFrame = CGRectZero;
     
     // Basic recognition
     self.loader.hidden = YES;
@@ -188,16 +188,44 @@
 
 - (void) viewWillAppear: (BOOL) animated
 {
+    [super viewWillAppear: animated];
+    
     if (IS_IPHONE)
     {
         // resize for iPhone
-        self.view.frame = self.originalFrame;
+        if (self.originalFrame.size.height != 0)
+        {
+            self.view.alpha = 0.0;
+        }
+    }
+}
+
+- (void) viewDidAppear: (BOOL) animated
+{
+    [super viewDidAppear: animated];
+    
+    if (IS_IPHONE)
+    {
+        // resize for iPhone
+        if (self.originalFrame.size.height != 0)
+        {
+            CGRect pvFrame = self.originalFrame;
+            pvFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - pvFrame.size.height;
+            self.view.frame = pvFrame;
+            
+            [UIView animateWithDuration: 0.2
+                             animations: ^{
+                                 self.view.alpha = 1.0;
+                             }];
+        }
     }
 }
 
 
 - (void) viewWillDisappear: (BOOL) animated
 {
+    [super viewWillDisappear: animated];
+    
     self.originalFrame = self.view.frame;
 }
 
