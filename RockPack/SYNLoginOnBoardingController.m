@@ -188,6 +188,8 @@
         titleLabel.text = title;
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.textColor = [UIColor whiteColor];
+        titleLabel.shadowColor = [UIColor colorWithWhite:0.0f/255.0f alpha:0.2f];
+        titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
         
         [titleLabel sizeToFit];
         // add the newly created height to the frame
@@ -203,12 +205,21 @@
     if (message)
     {
         UIFont* fontToUse = [UIFont rockpackFontOfSize:  IS_IPHONE ? 16.0f : 22.0f];
+        
+        // Move text on first card down a bit - only ipad
+        if (IS_IPAD)
+        {
+            textLabel.frame = CGRectMake(newFrame.origin.x, newFrame.origin.y + 8.0f, newFrame.size.width, newFrame.size.height);
+        }
+        
         textLabel.font = fontToUse;
         textLabel.numberOfLines =0;
         textLabel.textAlignment = NSTextAlignmentCenter;
         textLabel.text = message;
         textLabel.backgroundColor = [UIColor clearColor];
         textLabel.textColor = [UIColor colorWithRed:255.0f/255.0f green:255.0f/255.0f blue:255.0f/255.0f alpha:1.0f];
+        textLabel.shadowColor = [UIColor colorWithWhite:0.0f/255.0f alpha:0.2f];
+        textLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
         [textLabel sizeToFit];
         [container addSubview:textLabel];
     }
@@ -225,7 +236,7 @@
     //Don't show seperator on First card
     else if (![cardNumber isEqual:@"0"])
     {
-        labelSeperatorView =[[UIView alloc] initWithFrame:IS_IPHONE ? CGRectMake(newFrame.origin.x, newFrame.origin.y + 4.0f, 70.0f, 2.0f) : CGRectMake(newFrame.origin.x, newFrame.origin.y + 9.0f, 70.0f, 2.0f) ];
+        labelSeperatorView =[[UIView alloc] initWithFrame:IS_IPHONE ? CGRectMake(newFrame.origin.x, newFrame.origin.y + 4.0f, 70.0f, 2.0f) : CGRectMake(newFrame.origin.x, newFrame.origin.y + 13.0f, 70.0f, 2.0f) ];
         labelSeperatorView.backgroundColor = [UIColor whiteColor];
         [container addSubview:labelSeperatorView];
     }
