@@ -809,7 +809,7 @@
         SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
                                                             highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]
                                                                         name: kActionShareChannel
-                                                                   labelText: @"Share"];
+                                                                   labelText: @"Share it"];
         menuItems = @[arcMenuItem1];
 
         menuArc = M_PI / 4;
@@ -851,17 +851,17 @@
         SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: (starredByUser == FALSE) ? @"ActionLike" : @"ActionUnlike"]
                                                             highlightedImage: [UIImage imageNamed: (starredByUser == FALSE) ? @"ActionLikeHighlighted" : @"ActionUnlikeHighlighted"]
                                                                         name: kActionLike
-                                                                   labelText: (starredByUser == FALSE) ? @"Like" : @"Unlike"];
+                                                                   labelText: (starredByUser == FALSE) ? @"Like it" : @"Unlike it"];
         
         SYNArcMenuItem *arcMenuItem2 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionAdd"]
                                                             highlightedImage: [UIImage imageNamed: @"ActionAddHighlighted"]
                                                                         name: kActionAdd
-                                                                   labelText: @"Pack"];
+                                                                   labelText: @"Pack it"];
         
         SYNArcMenuItem *arcMenuItem3 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
                                                             highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]
                                                                         name: kActionShareVideo
-                                                                   labelText: @"Share"];
+                                                                   labelText: @"Share it"];
         
         menuItems = @[arcMenuItem1, arcMenuItem2, arcMenuItem3];
         
