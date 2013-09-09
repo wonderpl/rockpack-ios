@@ -52,7 +52,7 @@
 @property (nonatomic, strong) IBOutlet UIView *activitiesContainerView;
 
 @property (nonatomic, strong) NSMutableArray *friends;
-@property (nonatomic, strong) NSMutableArray *recentFriends;
+@property (nonatomic, strong) NSArray *recentFriends;
 
 @property (nonatomic, readonly) NSArray *searchedFriends;
 
@@ -95,7 +95,7 @@
     self.facebookLoader.hidden = YES;
     
     self.friends = [NSMutableArray array];
-    self.recentFriends = [NSMutableArray array];
+    self.recentFriends = [NSArray array];
     
     self.addressBookImageCache = [[NSCache alloc] init];
     
@@ -134,8 +134,6 @@
     self.loader.hidden = YES;
     
     
-    // try and find friends you have sent to
-    [self fetchAndDisplayRecentFriends];
     
     BOOL canReadAddressBook = NO;
     
@@ -320,41 +318,7 @@
 
 #pragma mark - Data Retrieval
 
-// recent friends are copied over from the search context to the main context
--(void)fetchAndDisplayRecentFriends
-{
-    __weak SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-    
-    
-    NSError *error;
-    
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    
-    [fetchRequest setEntity: [NSEntityDescription entityForName: @"Friend"
-                                         inManagedObjectContext: appDelegate.mainManagedObjectContext]];
-    
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"lastShareDate != NULL"];
-    
-    NSArray *existingRecentFriendsArray = [appDelegate.mainManagedObjectContext executeFetchRequest: fetchRequest
-                                                                                              error: &error];
-    
-    if(error)
-    {
-        DebugLog(@"Could not perform fetch for recent friends with predicate '%@' and error %@", fetchRequest.predicate, error.debugDescription);
-        return;
-    }
-    
-    [self.recentFriends removeAllObjects];
-    
-    for (Friend* existingRecentFriend in existingRecentFriendsArray)
-    {
-        [self.recentFriends addObject:existingRecentFriend];
-        
-    }
-    
-    [self.recentFriendsCollectionView reloadData];
-}
+
 
 -(void)fetchAndDisplayFriends
 {
@@ -382,17 +346,24 @@
         
         [self.friends removeAllObjects];
         
+        NSMutableArray* recentlySharedFriendsMutableArray = [NSMutableArray arrayWithCapacity:existingFriendsArray.count]; // maximum
         for (Friend* existingFriend in existingFriendsArray)
         {
             [self.friends addObject:existingFriend];
             
             if(existingFriend.lastShareDate)
-                [self.recentFriends addObject:existingFriend];
+                [recentlySharedFriendsMutableArray addObject:existingFriend];
             
-            //NSLog(@"%@", existingFriend);
+            
         }
         
-         
+        // sort by date
+        
+        
+        self.recentFriends = [recentlySharedFriendsMutableArray sortedArrayUsingComparator:^NSComparisonResult(Friend* friendA, Friend* friendB) {
+                                
+                                return [friendB.lastShareDate compare:friendA.lastShareDate];
+        }];
         
         [self.recentFriendsCollectionView reloadData];
     }
@@ -608,6 +579,7 @@
     
     if (indexPath.row == self.searchedFriends.count) // last 'special' cell
     {
+        
         cell.imageView.image = [UIImage imageNamed: @"ShareAddEntrySmall.jpg"];
         cell.textLabel.text = @"Add a new email address";
         cell.detailTextLabel.text = @"";
@@ -692,7 +664,7 @@
     // create friend on the fly
     SYNAppDelegate *appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
     NSString *titleText;
-    if(!friend) // friend has not yet been created, possibly by pressing the 'add new email' cell
+    if(!friend) // possibly by pressing the 'add new email' cell
     {
         friend = [Friend insertInManagedObjectContext: appDelegate.searchManagedObjectContext];
         friend.externalSystem = @"email";
@@ -714,6 +686,13 @@
     
     prompt.alertViewStyle = UIAlertViewStylePlainTextInput;
     prompt.delegate = self;
+    
+    if([self isValidEmail:self.currentSearchTerm])
+    {
+        UITextField *textField = [prompt textFieldAtIndex:0];
+        [textField setText:self.currentSearchTerm];
+    }
+    
     [prompt show];
 }
 
@@ -727,12 +706,24 @@
 
 - (void) alertView: (UIAlertView *) alertView didDismissWithButtonIndex: (NSInteger) buttonIndex
 {
-    if (buttonIndex == 0)
+    if (buttonIndex == 0) // cancel button pressed
     {
         return;
     }
     
     UITextField *textfield = [alertView textFieldAtIndex: 0];
+    
+    // search if friend already exists by his email
+    for (Friend* f in self.friends)
+    {
+        if([f.email isEqualToString:textfield.text])
+        {
+            self.friendToAddEmail = nil;
+            [self sendEmailToFriend:f];
+            return;
+        }
+        
+    }
     
     self.friendToAddEmail.email = textfield.text;
     if([self.friendToAddEmail.externalSystem isEqualToString:kEmail])
@@ -979,35 +970,28 @@
                                            completionHandler: ^(id no_content) {
                                                
                                                
-                                               if ([self isValidEmail: friend.email])
+                                               friend.lastShareDate = [NSDate date]; // update the date
+                                               
+                                               Friend* foundFriend;
+                                               for (Friend* f in self.friends)
+                                                   if([f.email isEqualToString:friend.email])
+                                                       foundFriend = f;
+                                               
+                                               
+                                               if(!foundFriend)
                                                {
-                                                   // if an email has been passed succesfully, register it (temporarily)
-                                                   NSError *error;
-                                                   [friend.managedObjectContext save: &error];
+                                                   [self.friends addObject:friend];
                                                    
-                                                   // save that friend permanently in the main context
-                                                   Friend* cpFriend = [Friend friendFromFriend: friend
-                                                                       forManagedObjectContext: appDelegate.mainManagedObjectContext];
-                                                   
-                                                   cpFriend.lastShareDate = [NSDate date];
-                                                   
-                                                   
-                                                   
-                                                   // save and reload the collection
-                                                   if(cpFriend && [cpFriend.managedObjectContext save: &error])
-                                                       [self fetchAndDisplayRecentFriends];
-                                                   
-                                               }
-                                               else                           
-                                               {
-                                                   // nullify the email if it could not be sent (possibly incorrect)
-                                                   friend.email = nil;
+                                                   NSError* error;
+                                                   [friend.managedObjectContext save:&error];
                                                }
                                                
                                               
                                                wself.friendToAddEmail = nil;
                                                
                                                wself.view.userInteractionEnabled = YES;
+                                               
+                                               [self fetchAndDisplayFriends];
                                                
                                                [self showLoader:NO];
                                                
