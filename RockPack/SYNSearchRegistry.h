@@ -22,4 +22,6 @@
 
 - (BOOL) registerFriendsFromDictionary:(NSDictionary *) dictionary;
 
+- (NSCache*) registerFriendsFromAddressBookArray:(NSArray*)abArray;
+
 @end

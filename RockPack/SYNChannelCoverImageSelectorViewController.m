@@ -413,6 +413,23 @@ enum ChannelCoverSelectorState {
 }
 
 
+- (CGSize) collectionView: (UICollectionView *) collectionView
+                   layout: (UICollectionViewLayout*) collectionViewLayout
+                   referenceSizeForFooterInSection: (NSInteger) section
+{
+    CGSize footerSize = CGSizeZero;
+    
+    if  (self.fetchedResultsController.sections.count  != 0 && // only the last section can have a loader
+         (self.dataRequestRange.location + self.dataRequestRange.length < self.dataItemsAvailable))
+    {
+        
+        footerSize = IS_IPHONE ? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
+    }
+    
+    return footerSize;
+}
+
+
 // Used for the collection view header
 - (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
             viewForSupplementaryElementOfKind: (NSString *) kind
@@ -423,6 +440,7 @@ enum ChannelCoverSelectorState {
     {
         return nil;
     }
+    
     UICollectionReusableView *supplementaryView = nil;
 
     // TODO: We might want to optimise this instead of creating a new date formatter each time
@@ -441,11 +459,7 @@ enum ChannelCoverSelectorState {
         self.footerView = [self.collectionView dequeueReusableSupplementaryViewOfKind: kind
                                                                                 withReuseIdentifier: @"SYNChannelFooterMoreView"
                                                                                        forIndexPath: indexPath];
-        
 
-        
-        //[self loadMoreChannels:self.footerView.loadMoreButton];
-        
         supplementaryView = self.footerView;
     }
     

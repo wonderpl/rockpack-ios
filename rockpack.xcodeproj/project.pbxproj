@@ -1329,6 +1329,10 @@
 		BEF34486172ABCF2008F98FF /* ButtonCreate.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF34484172ABCF2008F98FF /* ButtonCreate.png */; };
 		BEF34487172ABCF2008F98FF /* ButtonCreate@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEF34485172ABCF2008F98FF /* ButtonCreate@2x.png */; };
 		BEF3448E172FCB7A008F98FF /* SYNSearchBoxView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF3448D172FCB79008F98FF /* SYNSearchBoxView.m */; };
+		BEF5ED8F17DE061E006EF5A1 /* ShareAddEntry.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BEF5ED8B17DE061E006EF5A1 /* ShareAddEntry.jpg */; };
+		BEF5ED9017DE061E006EF5A1 /* ShareAddEntry@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BEF5ED8C17DE061E006EF5A1 /* ShareAddEntry@2x.jpg */; };
+		BEF5ED9117DE061E006EF5A1 /* ShareAddEntrySmall.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BEF5ED8D17DE061E006EF5A1 /* ShareAddEntrySmall.jpg */; };
+		BEF5ED9217DE061E006EF5A1 /* ShareAddEntrySmall@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BEF5ED8E17DE061E006EF5A1 /* ShareAddEntrySmall@2x.jpg */; };
 		BEF9E5B016DCBAC800286113 /* SYNSoundPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = BEF9E5AF16DCBAC800286113 /* SYNSoundPlayer.m */; };
 		BEFAE89817241FD5009B2F66 /* SearchTabSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = BEFAE89617241FD5009B2F66 /* SearchTabSelected.png */; };
 		BEFAE89917241FD5009B2F66 /* SearchTabSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEFAE89717241FD5009B2F66 /* SearchTabSelected@2x.png */; };
@@ -2892,6 +2896,10 @@
 		BEF34485172ABCF2008F98FF /* ButtonCreate@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCreate@2x.png"; path = "Assets/Images/ButtonCreate@2x.png"; sourceTree = "<group>"; };
 		BEF3448C172FCB78008F98FF /* SYNSearchBoxView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSearchBoxView.h; sourceTree = "<group>"; };
 		BEF3448D172FCB79008F98FF /* SYNSearchBoxView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSearchBoxView.m; sourceTree = "<group>"; };
+		BEF5ED8B17DE061E006EF5A1 /* ShareAddEntry.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = ShareAddEntry.jpg; path = Assets/Images/ShareAddEntry.jpg; sourceTree = "<group>"; };
+		BEF5ED8C17DE061E006EF5A1 /* ShareAddEntry@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "ShareAddEntry@2x.jpg"; path = "Assets/Images/ShareAddEntry@2x.jpg"; sourceTree = "<group>"; };
+		BEF5ED8D17DE061E006EF5A1 /* ShareAddEntrySmall.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = ShareAddEntrySmall.jpg; path = Assets/Images/ShareAddEntrySmall.jpg; sourceTree = "<group>"; };
+		BEF5ED8E17DE061E006EF5A1 /* ShareAddEntrySmall@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "ShareAddEntrySmall@2x.jpg"; path = "Assets/Images/ShareAddEntrySmall@2x.jpg"; sourceTree = "<group>"; };
 		BEF9E5AE16DCBAC800286113 /* SYNSoundPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSoundPlayer.h; sourceTree = "<group>"; };
 		BEF9E5AF16DCBAC800286113 /* SYNSoundPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSoundPlayer.m; sourceTree = "<group>"; };
 		BEFAE89617241FD5009B2F66 /* SearchTabSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SearchTabSelected.png; path = Assets/Images/SearchTabSelected.png; sourceTree = "<group>"; };
@@ -5565,6 +5573,10 @@
 		BE8F938F17B3CF9700E7035F /* Sharing */ = {
 			isa = PBXGroup;
 			children = (
+				BEF5ED8B17DE061E006EF5A1 /* ShareAddEntry.jpg */,
+				BEF5ED8C17DE061E006EF5A1 /* ShareAddEntry@2x.jpg */,
+				BEF5ED8D17DE061E006EF5A1 /* ShareAddEntrySmall.jpg */,
+				BEF5ED8E17DE061E006EF5A1 /* ShareAddEntrySmall@2x.jpg */,
 				BE8F939017B3CFD100E7035F /* ButtonNotNow.png */,
 				BE8F939117B3CFD100E7035F /* ButtonNotNow@2x.png */,
 				BE8F939217B3CFD100E7035F /* ButtonNotNow@2x~iphone.png */,
@@ -6838,6 +6850,10 @@
 				BE06EFA717DB6C810028F2E3 /* ShareUnconnectedabaccess@2x.png in Resources */,
 				BE06EFA817DB6C810028F2E3 /* ShareUnconnectedFbConnect.png in Resources */,
 				BE06EFA917DB6C810028F2E3 /* ShareUnconnectedFbConnect@2x.png in Resources */,
+				BEF5ED8F17DE061E006EF5A1 /* ShareAddEntry.jpg in Resources */,
+				BEF5ED9017DE061E006EF5A1 /* ShareAddEntry@2x.jpg in Resources */,
+				BEF5ED9117DE061E006EF5A1 /* ShareAddEntrySmall.jpg in Resources */,
+				BEF5ED9217DE061E006EF5A1 /* ShareAddEntrySmall@2x.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
