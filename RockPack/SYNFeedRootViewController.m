@@ -139,9 +139,7 @@ typedef void(^FeedDataErrorBlock)(void);
                                                               minimumLineSpacing: minimumLineSpacing
                                                                  scrollDirection: UICollectionViewScrollDirectionVertical
                                                                     sectionInset: sectionInset];
-    
-    // standardFlowLayout.footerReferenceSize = [self footerSize];
-    
+
     // Setup the collection view itself
     self.feedCollectionView = [[UICollectionView alloc] initWithFrame: videoCollectionViewFrame
                                                  collectionViewLayout: standardFlowLayout];
