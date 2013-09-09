@@ -546,7 +546,7 @@
 {
     // "Recent" stub cells are not clickable...
     
-    return indexPath.item - 1 < self.recentFriends.count;
+    return (indexPath.item <= self.recentFriends.count);
 }
 
 
