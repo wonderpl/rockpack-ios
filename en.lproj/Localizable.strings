@@ -42,20 +42,20 @@
 // == Login / Registration / Forgot Password == //
 
 // Pre Sign-Up Onboarding
-"startscreen_onboard_1_title" = "Love video again";
-"startscreen_onboard_1" = "";
+"startscreen_onboard_1_title" = " ";
+"startscreen_onboard_1" = "\nLove video again.";
 
-"startscreen_onboard_2_title" = "";
-"startscreen_onboard_2" = "Browse and subscribe to thousands of\npacks of videos from across the web.";
+"startscreen_onboard_2_title" = "INDULGE";
+"startscreen_onboard_2" = "\nStop nibbling on single clips and start feasting on playlists full of handpicked video goodness – also known as ‘packs’.";
 
-"startscreen_onboard_3_title" = "";
-"startscreen_onboard_3" = "Watching a great video? Just press and\nhold to pack, like or share with friends.";
+"startscreen_onboard_3_title" = "CURATE";
+"startscreen_onboard_3" = "\nOrganise your favourite videos into themed packs of concentrated inspiration, delight, usefulness, or nonsense.";
 
-"startscreen_onboard_4_title" = "";
-"startscreen_onboard_4" = "Use your feed to see what’s new and\nwhat your friends are liking. ";
+"startscreen_onboard_4_title" = "LAZE";
+"startscreen_onboard_4" = "\nFollow packs and people and you’ll always have loads of great stuff to watch – just press play.";
 
-"startscreen_onboard_5_title" = "";
-"startscreen_onboard_5" = "Invite Facebook friends to join, share\nvideos and make their own packs.";
+"startscreen_onboard_5_title" = "SCHMOOZE";
+"startscreen_onboard_5" = "\nA well-crafted pack is a gift that keeps on giving, making you the darling that keeps on being darlinged.";
 
 //By Using Rockpack... sentence
 "register_screen_legal" = "By using Rockpack, you agree to our\nTerms of Services and Privacy Policy";
@@ -119,20 +119,20 @@
 
 //
 
-"%@ has subscribed to your channel" = "%@ subscribed to your pack";
+"%@ has subscribed to your channel" = "%@ is now following your pack";
 
 "notification_liked_action" = "liked your video";
-"notification_subscribed_action" = "subscribed to your pack";
+"notification_subscribed_action" = "is now following your pack";
 "notification_joined_action" = "Your Facebook friend %@ has joined Rockpack";
 "your_channel_object" = "your pack";
 "your_video_object" = "your video";
 
 "onboarding_channels" = "Browse packs of videos by category or search for any video.\n ";
-"onboarding_subscription" = "Subscribe for free to get updates in your feed.\n ";
+"onboarding_subscription" = "Follow to get video updates in your feed.\n ";
 "onboarding_video" = "Press and hold anywhere on the video and see what happens!";
 "onboarding_friends" = "Find your friends on Rockpack";
-"onboarding_feed_iphone" = "Your feed will deliver the latest videos from packs you subscribe to, and new packs created by friends.";
-"onboarding_feed" = "Your feed will deliver the latest videos from packs you subscribe to, and new packs created by friends.";
+"onboarding_feed_iphone" = "Your feed will deliver the latest videos from packs you follow, and new packs created by friends.";
+"onboarding_feed" = "Your feed will deliver the latest videos from packs you follow, and new packs created by friends.";
 
 
 // == Channel Detail == //
