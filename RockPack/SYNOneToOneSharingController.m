@@ -52,7 +52,7 @@
 @property (nonatomic, strong) IBOutlet UIView *activitiesContainerView;
 
 @property (nonatomic, strong) NSMutableArray *friends;
-@property (nonatomic, readonly) NSMutableArray *recentFriends;
+@property (nonatomic, strong) NSMutableArray *recentFriends;
 
 @property (nonatomic, readonly) NSArray *searchedFriends;
 
@@ -95,7 +95,7 @@
     self.facebookLoader.hidden = YES;
     
     self.friends = [NSMutableArray array];
-    
+    self.recentFriends = [NSMutableArray array];
     
     self.addressBookImageCache = [[NSCache alloc] init];
     
@@ -325,7 +325,7 @@
     [fetchRequest setEntity: [NSEntityDescription entityForName: @"Friend"
                                          inManagedObjectContext: appDelegate.mainManagedObjectContext]];
     
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"lastShareDate != nil"];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"lastShareDate != NULL"];
     
     NSArray *existingRecentFriendsArray = [appDelegate.mainManagedObjectContext executeFetchRequest: fetchRequest
                                                                                               error: &error];
@@ -336,7 +336,7 @@
         return;
     }
     
-     
+    [self.recentFriends removeAllObjects];
     
     for (Friend* existingRecentFriend in existingRecentFriendsArray)
     {
@@ -485,7 +485,13 @@
     else if (indexPath.item + 1 < self.recentFriends.count)
     {
         Friend *friend = self.recentFriends[indexPath.item - 1];
-        userThumbnailCell.nameLabel.text = friend.displayName;
+        
+        if(friend.displayName && ![friend.displayName isEqualToString:@""])
+            userThumbnailCell.nameLabel.text = friend.displayName;
+        else if (friend.email && ![friend.email isEqualToString:@""])
+            userThumbnailCell.nameLabel.text = friend.email;
+        else
+            userThumbnailCell.nameLabel.text = @"";
         
         if ([friend.thumbnailURL hasPrefix: @"cached://"])
         {
@@ -514,7 +520,7 @@
         userThumbnailCell.shadowImageView.alpha = 1.0f;
         
     }
-    else // on the fake slots
+    else // on the fake slots (stubs)
     {
         userThumbnailCell.imageView.image = [UIImage imageNamed: @"RecentContactPlaceholder"];
         userThumbnailCell.nameLabel.text = @"Recent";
@@ -934,11 +940,6 @@
 
 - (BOOL) isValidEmail: (NSString *) emailCandidate
 {
-    if (!emailCandidate || ![emailCandidate isKindOfClass: [NSString class]])
-    {
-        return NO;
-    }
-    
     return [emailCandidate isMatchedByRegex: @"^([a-zA-Z0-9%_.+\\-]+)@([a-zA-Z0-9.\\-]+?\\.[a-zA-Z]{2,6})$"];
 }
 
@@ -960,16 +961,17 @@
                                            completionHandler: ^(id no_content) {
                                                
                                                
-                                               
-                                               if (![self isValidEmail: wself.friendToAddEmail.email]) 
+                                               if ([self isValidEmail: friend.email])
                                                {
                                                    // if an email has been passed succesfully, register it (temporarily)
                                                    NSError *error;
                                                    [friend.managedObjectContext save: &error];
                                                    
                                                    // save that friend permanently in the main context
-                                                   Friend* cpFriend = [Friend friendFromFriend:friend
-                                                                       forManagedObjectContext:appDelegate.mainManagedObjectContext];
+                                                   Friend* cpFriend = [Friend friendFromFriend: friend
+                                                                       forManagedObjectContext: appDelegate.mainManagedObjectContext];
+                                                   
+                                                   cpFriend.lastShareDate = [NSDate date];
                                                    
                                                    // save and reload the collection
                                                    if(cpFriend && [cpFriend.managedObjectContext save: &error])
@@ -1000,6 +1002,7 @@
                                                if (formErrors[@"email"])
                                                {
                                                    reason = @"The email could be wrong or the service down.";
+                                                   
                                                }
                                                
                                                if (formErrors[@"external_system"])
@@ -1020,7 +1023,8 @@
                                                
                                                [prompt show];
                                                
-                                               wself.friendToAddEmail.email = nil;
+                                               friend.email = nil;
+                                               
                                                wself.friendToAddEmail = nil;
                                                
                                                [self showLoader:NO];
