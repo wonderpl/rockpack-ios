@@ -137,6 +137,7 @@
     // try and find friends you have sent to
     [self fetchAndDisplayRecentFriends];
     
+    BOOL canReadAddressBook = NO;
     
     switch (ABAddressBookGetAuthorizationStatus()) {
         case kABAuthorizationStatusNotDetermined:
@@ -152,6 +153,7 @@
         case kABAuthorizationStatusAuthorized:
             DebugLog(@"AddressBook Status: Authorized, fetching contacts");
             [self fetchAddressBookFriends];
+            canReadAddressBook = YES;
             break;
         default:
             break;
@@ -163,6 +165,13 @@
     {
         DebugLog(@"The user is FB connected, trying to pull friends from server");
         [self fetchAndDisplayFriends];
+    }
+    else
+    {
+        if(!canReadAddressBook)
+        {
+            self.searchTextField.placeholder = @"Type an email address";
+        }
     }
     
     // always present the buttons at the bottom
@@ -546,7 +555,7 @@
 {
     // "Recent" stub cells are not clickable...
     
-    return indexPath.item - 1 < self.recentFriends.count;
+    return (indexPath.item <= self.recentFriends.count);
 }
 
 
