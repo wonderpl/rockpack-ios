@@ -189,7 +189,6 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     {
    
         
-        
         [self setTitleForFriendsTab:[NSString stringWithFormat:@"ALL FRIENDS (%i)", existingFriendsArray.count]
                      andRockpackTab:[NSString stringWithFormat:@"ON ROCKPACK (%i)", self.rockpackFriends.count]];
         
