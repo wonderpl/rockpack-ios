@@ -23,7 +23,9 @@
 
 static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
 
-@interface SYNFriendsViewController () <UIScrollViewDelegate>
+@interface SYNFriendsViewController () <UIScrollViewDelegate> {
+    BOOL hasAttemptedToLoadData;
+}
 
 @property (nonatomic, strong) NSArray* friends;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
@@ -184,89 +186,100 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
 -(void)fetchAndDisplayFriends
 {
     
+    NSError *error;
+    NSArray *existingFriendsArray;
     
-    [self.activityIndicator startAnimating];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
-    self.onRockpackButton.hidden = YES;
-    self.allFriendsButton.hidden = YES;
+    [fetchRequest setEntity: [NSEntityDescription entityForName: @"Friend"
+                                         inManagedObjectContext: appDelegate.searchManagedObjectContext]];
+    
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"externalSystem == \"facebook\""];
+    
+    existingFriendsArray = [appDelegate.searchManagedObjectContext executeFetchRequest: fetchRequest
+                                                                                 error: &error];
+    
+    
+    if(!error)
+    {
+   
+        
+        [self setTitleForFriendsTab:[NSString stringWithFormat:@"FACEBOOK FRIENDS (%i)", existingFriendsArray.count]
+                     andRockpackTab:[NSString stringWithFormat:@"ON ROCKPACK (%i)", self.rockpackFriends.count]];
+        
+        
+        
+        self.friends = [NSArray arrayWithArray:existingFriendsArray];
+        
+        [self.allFriendsButton setSelected:YES];
+        
+        [self.friendsCollectionView reloadData];
+    }
+    
+    
+    if(hasAttemptedToLoadData)
+        return;
+    
     
     __weak SYNFriendsViewController* weakSelf = self;
     
-    [appDelegate.oAuthNetworkEngine friendsForUser:appDelegate.currentUser recent:NO completionHandler:^(id dictionary) {
+    [weakSelf showLoader:YES];
+    
+    [appDelegate.oAuthNetworkEngine friendsForUser:appDelegate.currentUser
+                                        onlyRecent:NO
+                                 completionHandler:^(id dictionary) {
         
+                                     if([appDelegate.searchRegistry registerFriendsFromDictionary:dictionary])
+                                     {
+                                         [weakSelf fetchAndDisplayFriends];
+                                     }
+                                     else
+                                     {
+                                         DebugLog(@"There was a problem loading friends");
+                                     }
+                                     
+                                     
+                                     [weakSelf showLoader:NO];
+        
+        
+                                     [self fetchAndDisplayFriends];
+        
+        
+                                 } errorHandler:^(id dictionary) {
+                                     
+                                     [weakSelf showLoader:NO];
+        
+                                 }];
+}
+-(void)showLoader:(BOOL)show
+{
+    if(show)
+    {
+        [self.activityIndicator startAnimating];
+        
+        self.onRockpackButton.hidden = YES;
+        self.allFriendsButton.hidden = YES;
+    }
+    else
+    {
         self.onRockpackButton.hidden = NO;
         self.allFriendsButton.hidden = NO;
         
-        NSDictionary* usersDictionary = dictionary[@"users"];
-        if(!usersDictionary)
-            return;
         
-        NSArray* itemsDictionary = usersDictionary[@"items"];
-        if(!itemsDictionary)
-            return;
-        
-        NSInteger friendsCount = itemsDictionary.count;
-        NSInteger rockpackFriends = 0;
-        
-        
-        NSMutableArray* fbFriendsMutableArray = [NSMutableArray arrayWithCapacity:friendsCount];
-        
-        for (NSDictionary* itemDictionary in itemsDictionary)
-        {
-            Friend* friend = [Friend instanceFromDictionary:itemDictionary
-                                  usingManagedObjectContext:appDelegate.searchManagedObjectContext];
-            
-            if(!friend || !friend.hasIOSDevice) // filter for users with iOS devices only
-                continue;
-            
-            // for the moment only accept facebook friends
-            
-            if(![friend.externalSystem isEqualToString:@"facebook"])
-                continue;
-            
-            [fbFriendsMutableArray addObject:friend];
-            
-            if(friend.isOnRockpack) {
-                
-                
-                rockpackFriends++;
-            }
-                
-            
-            
-        }
-        
-        NSString* firstTabText = [NSString stringWithFormat:@"ALL FRIENDS (%i)", friendsCount];
-        NSString* secondTabText = [NSString stringWithFormat:@"ON ROCKPACK (%i)", rockpackFriends];
-        
-        // set first tab
-        [weakSelf.allFriendsButton setTitle:firstTabText forState:UIControlStateNormal];
-        [weakSelf.allFriendsButton setTitle:firstTabText forState:UIControlStateHighlighted];
-        [weakSelf.allFriendsButton setTitle:firstTabText forState:UIControlStateSelected];
-
-        // set second tab
-        [weakSelf.onRockpackButton setTitle:secondTabText forState:UIControlStateNormal];
-        [weakSelf.onRockpackButton setTitle:secondTabText forState:UIControlStateHighlighted];
-        [weakSelf.onRockpackButton setTitle:secondTabText forState:UIControlStateSelected];
-        
-        weakSelf.friends = [NSArray arrayWithArray:fbFriendsMutableArray];
-     
-        
-        [weakSelf.activityIndicator stopAnimating];
-        
-        weakSelf.allFriendsButton.enabled = YES;
-        weakSelf.onRockpackButton.enabled = YES;
-        
-        [weakSelf.allFriendsButton setSelected:YES];
-        
-        [weakSelf.friendsCollectionView reloadData];
-        
-    } errorHandler:^(id dictionary) {
-        
-        self.onRockpackButton.hidden = NO;
-        self.allFriendsButton.hidden = NO;
-        [weakSelf.activityIndicator stopAnimating];
-    }];
+        [self.activityIndicator stopAnimating];
+    }
+}
+-(void)setTitleForFriendsTab:(NSString*)ftText andRockpackTab:(NSString*)rtText
+{
+    // set first tab
+    [self.allFriendsButton setTitle:ftText forState:UIControlStateNormal];
+    [self.allFriendsButton setTitle:ftText forState:UIControlStateHighlighted];
+    [self.allFriendsButton setTitle:ftText forState:UIControlStateSelected];
+    
+    // set second tab
+    [self.onRockpackButton setTitle:rtText forState:UIControlStateNormal];
+    [self.onRockpackButton setTitle:rtText forState:UIControlStateHighlighted];
+    [self.onRockpackButton setTitle:rtText forState:UIControlStateSelected];
 }
 
 -(IBAction)facebookLoginPressed:(id)sender
@@ -290,9 +303,9 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
         
         FBAccessTokenData* accessTokenData = [[FBSession activeSession] accessTokenData];
         
-        [weakAppDelegate.oAuthNetworkEngine connectFacebookAccountForUserId:appDelegate.currentUser.uniqueId
-                                                         andAccessTokenData:accessTokenData
-                                                          completionHandler:^(id no_responce) {
+        [weakAppDelegate.oAuthNetworkEngine connectFacebookAccountForUserId: appDelegate.currentUser.uniqueId
+                                                         andAccessTokenData: accessTokenData
+                                                          completionHandler: ^(id no_responce) {
                                                               
                                                               [weakSelf.activityIndicator stopAnimating];
                                                               

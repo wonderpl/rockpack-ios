@@ -11,5 +11,5 @@
 @interface SYNOneToOneFriendCell : UITableViewCell
 
 @property (nonatomic, strong) UIView* customSeparatorView;
-
+@property (nonatomic) BOOL special;
 @end

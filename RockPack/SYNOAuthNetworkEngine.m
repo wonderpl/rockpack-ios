@@ -1026,7 +1026,6 @@
     NSArray* videoIdArray = [[videoInstanceSet array] valueForKey:@"uniqueId"];
     
     
-    
     [networkOperation setCustomPostDataEncodingHandler: ^ NSString * (NSDictionary *postDataDict)
     {
          
@@ -1512,20 +1511,19 @@
         return;
     }
     
-    if (![friendToShare.externalSystem isEqualToString: @"email"] || !friendToShare.email ||  !friendToShare.externalUID)
-    {
-        errorBlock (@{@"params_error": [NSString stringWithFormat: @"%@ does has account of type %@", friendToShare, friendToShare.externalSystem]});
-        return;
-    }
-    
     NSString *apiString = [NSString stringWithFormat: @"%@?locale=%@", kAPIShareEmail, self.localeString];
     
-    NSDictionary *params = @{@"object_type": shareType,
-                             @"object_id": objectId,
-                             @"email": friendToShare.email,
-                             @"external_system": friendToShare.externalSystem,
-                             @"external_uid": friendToShare.externalUID,
-                             @"name": friendToShare.displayName ? friendToShare.displayName : [NSNull null]};
+    NSMutableDictionary *params = @{@"object_type": shareType,
+                                   @"object_id": objectId,
+                                   @"email": friendToShare.email}.mutableCopy;
+    
+    if(friendToShare.displayName)
+        [params addEntriesFromDictionary:@{@"name":friendToShare.displayName}];
+    
+    if(friendToShare.externalSystem && friendToShare.externalUID)
+       [params addEntriesFromDictionary:@{@"external_system":friendToShare.externalSystem,
+                                          @"external_uid":friendToShare.externalUID}];
+    
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject *) [self operationWithPath: apiString
                                                                                                          params: params
@@ -1755,7 +1753,7 @@
 }
 
 - (void) friendsForUser: (User*)user
-                 recent: (BOOL)recent
+                 onlyRecent: (BOOL)recent
       completionHandler: (MKNKUserSuccessBlock) completionBlock
            errorHandler: (MKNKUserErrorBlock) errorBlock
 {

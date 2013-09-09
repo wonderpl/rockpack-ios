@@ -32,6 +32,7 @@ typedef void (^VideoOverlayDismissBlock)(void);
 @property (nonatomic, readonly) BOOL hasSearchBarOn;
 @property (nonatomic, readonly) BOOL isInSearchMode;
 
+@property (nonatomic, strong) IBOutlet UIView* errorContainerView;
 
 @property (nonatomic, strong) IBOutlet UIButton* searchButton;
 

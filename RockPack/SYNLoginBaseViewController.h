@@ -44,6 +44,8 @@ typedef enum {
 @property (nonatomic, strong) SYNLoginOnBoardingController* onBoardingController;
 @property (nonatomic, strong) SYNNetworkErrorView* networkErrorView;
 @property (nonatomic,assign) SYNAppDelegate* appDelegate;
+@property (nonatomic, strong) UIImageView * backgroundImageView;
+
 
 - (BOOL) checkAndSaveRegisteredUser: (SYNOAuth2Credential*) credential;
 
