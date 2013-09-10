@@ -22,6 +22,12 @@
     {
         self.backgroundColor = [UIColor clearColor];
         [self.backgroundImage removeFromSuperview];
+        self.highlightedViewiOS7.hidden = YES;
+    }
+    
+    else
+    {
+        [self.highlightedViewiOS7 removeFromSuperview];
     }
 }
 

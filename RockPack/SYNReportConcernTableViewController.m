@@ -186,30 +186,36 @@
     SYNReportConcernTableCell *oldCell = (SYNReportConcernTableCell *)[self.tableView cellForRowAtIndexPath: oldIndex];
     oldCell.backgroundImage.image = [UIImage imageNamed: @"CategorySlide"];
     oldCell.checkmarkImage.hidden = TRUE;
+    oldCell.highlightedViewiOS7.hidden = TRUE;
     
     oldCell.titleLabel.textColor = [UIColor colorWithRed: 106.0f/255.0f
                                                    green: 114.0f/255.0f
                                                     blue: 122.0f/255.0f
                                                    alpha: 1.0f];
-    
-    oldCell.titleLabel.shadowColor = [UIColor colorWithWhite: 1.0f
-                                                       alpha: 0.75f];
-    
+    if (!IS_IOS_7_OR_GREATER)
+    {
+        oldCell.titleLabel.shadowColor = [UIColor colorWithWhite: 1.0f
+                                                           alpha: 0.75f];
+    }
+
     // Highlight new cell
     SYNReportConcernTableCell *newCell = (SYNReportConcernTableCell *)[self.tableView cellForRowAtIndexPath: indexPath];
-    newCell.backgroundImage.image = [UIImage imageNamed: @"CategorySlideSelected"];
+
     newCell.checkmarkImage.hidden = FALSE;
+    newCell.titleLabel.textColor = [UIColor whiteColor];
     
-    if (IS_IOS_7_OR_GREATER) {
-        newCell.titleLabel.textColor = [UIColor colorWithRed:11.0f/255.0f green:166.0f/255.0f blue:171.0f/255.0f alpha:10.f];
+    if (IS_IOS_7_OR_GREATER)
+    {
+        newCell.highlightedViewiOS7.hidden = FALSE;
     }
+    
     else
     {
-        newCell.titleLabel.textColor = [UIColor whiteColor];
+        newCell.backgroundImage.image = [UIImage imageNamed: @"CategorySlideSelected"];
+        newCell.titleLabel.shadowColor = [UIColor colorWithWhite: 1.0f
+                                                           alpha:  0.15f];
     }
     
-    newCell.titleLabel.shadowColor = [UIColor colorWithWhite: 1.0f
-                                                       alpha:  0.15f];
     return indexPath;
 }
 

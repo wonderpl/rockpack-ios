@@ -14,6 +14,11 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <view contentMode="scaleToFill" id="WUk-x3-vtk" userLabel="Highlighted View iOS7">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="0.043137254901960784" green="0.65098039215686276" blue="0.6705882352941176" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
                     <view contentMode="scaleToFill" id="2At-4Y-3ni" userLabel="Seperator">
                         <rect key="frame" x="0.0" y="43" width="320" height="1"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -41,6 +46,7 @@
             <connections>
                 <outlet property="backgroundImage" destination="4" id="6"/>
                 <outlet property="checkmarkImage" destination="16" id="17"/>
+                <outlet property="highlightedViewiOS7" destination="WUk-x3-vtk" id="hrf-NB-9LS"/>
                 <outlet property="titleLabel" destination="3" id="5"/>
             </connections>
         </tableViewCell>
