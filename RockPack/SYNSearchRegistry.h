@@ -20,5 +20,8 @@
 - (BOOL) registerSubscribersFromDictionary: (NSDictionary *) dictionary
                                byAppending: (BOOL) append;
 
+- (BOOL) registerFriendsFromDictionary:(NSDictionary *) dictionary;
+
+- (NSCache*) registerFriendsFromAddressBookArray:(NSArray*)abArray;
 
 @end

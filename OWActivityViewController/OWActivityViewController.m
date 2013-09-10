@@ -40,7 +40,7 @@
     {
         UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
         self.view = [[UIView alloc] initWithFrame: rootViewController.view.bounds];
-        self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+        self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
     }
     else
@@ -93,8 +93,6 @@
         _activityView.activityViewController = self;
         
         [self.view addSubview: _activityView];
-        
-//        self.contentSizeForViewInPopover = CGSizeMake(320 + 8, self.height);
     }
     
     return self;
@@ -223,26 +221,26 @@
 }
 
 
-- (BOOL) shouldAutorotate
-{
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    {
-        return YES;
-    }
-    
-    return NO;
-}
-
-
-- (BOOL) shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation) orientation
-{
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    {
-        return YES;
-    }
-    
-    return orientation == UIInterfaceOrientationPortrait;
-}
+//- (BOOL) shouldAutorotate
+//{
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+//    {
+//        return YES;
+//    }
+//    
+//    return NO;
+//}
+//
+//
+//- (BOOL) shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation) orientation
+//{
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+//    {
+//        return YES;
+//    }
+//    
+//    return orientation == UIInterfaceOrientationPortrait;
+//}
 
 
 //- (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation

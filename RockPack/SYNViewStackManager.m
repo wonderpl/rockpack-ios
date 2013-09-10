@@ -15,6 +15,7 @@
 #import "SYNSideNavigatorViewController.h"
 #import "SYNViewStackManager.h"
 #import "SYNSearchBoxViewController.h"
+#import "SYNNetworkErrorView.h"
 
 #define STACK_LIMIT 6
 
@@ -422,8 +423,7 @@
     // ... and then the popover
     [self.masterController.view addSubview:view];
     popoverView = view;
-    if(IS_IPAD)
-    {
+    if(IS_IPAD)    {
         popoverView.alpha = 0.0;
         popoverView.center = CGPointMake(screenRect.size.width * 0.5, screenRect.size.height * 0.5);
         popoverView.frame = CGRectIntegral(view.frame);
@@ -455,6 +455,38 @@
     }
     
     
+}
+
+- (void) presentSuccessNotificationWithMessage : (NSString*) message
+{
+    __block SYNNetworkErrorView* successNotification = [[SYNNetworkErrorView alloc] init];
+    successNotification.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"BarSucess"]];
+    [successNotification setText: message];
+    
+    [self.masterController.view addSubview: successNotification];
+    
+    [UIView animateWithDuration: 0.3f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations: ^{
+                         CGRect newFrame = successNotification.frame;
+                         newFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] - newFrame.size.height;
+                         successNotification.frame = newFrame;
+                     }
+                     completion: ^(BOOL finished) {
+                         
+                         [UIView animateWithDuration: 0.3f
+                                               delay: 4.0f
+                                             options: UIViewAnimationOptionCurveEaseIn
+                                          animations: ^{
+                                              CGRect newFrame = successNotification.frame;
+                                              newFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] + newFrame.size.height;
+                                              successNotification.frame = newFrame;
+                                          }
+                                          completion: ^(BOOL finished) {
+                                              [successNotification removeFromSuperview];
+                                          }];
+                     }];
 }
 
 -(void)removePopoverView

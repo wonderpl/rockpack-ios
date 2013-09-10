@@ -108,11 +108,11 @@
         messageText = NSLocalizedString(localisedKey, localisedDefault);    
         
         messageView = [self createNewMessageViewWithMessage:messageText
-                                                   andTitle:titleText];
+                                                   andTitle:titleText
+                                              andCardNumber:[NSString stringWithFormat:@"%i",i]];
         
         messageViewCenter = messageView.center;
         messageViewCenter.x = (i + 0.5) * self.scrollView.frame.size.width;
-        //messageView.center = messageViewCenter;
         
         CGRect integralFrame = CGRectIntegral(messageView.frame);
         
@@ -121,30 +121,22 @@
         CGRect iPhoneMessageRect = CGRectMake((self.view.frame.size.width * 0.5) - (integralFrame.size.width * 0.5), self.view.frame.size.height - 300, integralFrame.size.width, integralFrame.size.height);
         
         messageView.frame = IS_IPAD ? iPadMessageRect : iPhoneMessageRect;
-        
-        
-//        //Get the Image
-//        UIImage * messageImage;
-//        messageImage = [UIImage imageNamed: [NSString stringWithFormat:@"login_onboard_%i", i+1]];
-        
-        //Image Frame
-        CGRect iPadImageRect = CGRectMake((messageView.frame.size.width * 0.5) - 140, messageView.frame.origin.y - 200, 280, 200);
-        CGRect iPhoneImageRect = CGRectMake((messageView.frame.size.width * 0.5) - 140, messageView.frame.origin.y - 220, 280, 200);
-        
-        UIImageView * messageImageView = [[UIImageView alloc]initWithFrame: IS_IPAD ? iPadImageRect : iPhoneImageRect];
-        
+                
+        // Only add Image to first Card
         if (i == 0)
         {
-            messageImageView.image = [UIImage imageNamed: [NSString stringWithFormat:@"login_onboard_%i.png", i+1]];
+            //Image Frame
+            CGRect iPadImageRect = CGRectMake((messageView.frame.size.width * 0.5) - 140, messageView.frame.origin.y - 210, 280, 200);
+            CGRect iPhoneImageRect = CGRectMake((messageView.frame.size.width * 0.5) - 140, messageView.frame.origin.y - 220, 280, 200);
+            
+            UIImageView * messageImageView = [[UIImageView alloc]initWithFrame: IS_IPAD ? iPadImageRect : iPhoneImageRect];
+            
+            messageImageView.image = [UIImage imageNamed: [NSString stringWithFormat:@"login_onboard_1.png"]];
+            [messageView addSubview:messageImageView];
         }
         
-        else
-        {
-        messageImageView.image = [UIImage imageNamed: [NSString stringWithFormat:@"login_onboard_%i.jpg", i+1]];
-        }
 
         [self.scrollView addSubview:messageView];
-        [messageView addSubview:messageImageView];
         
         totalScrollSize.width += self.scrollView.frame.size.width;
     }
@@ -158,42 +150,46 @@
     self.pageControl.userInteractionEnabled = NO; // dont block the screen
     self.pageControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
+    //Tappable Dots
+    self.pageControl.userInteractionEnabled = YES;
+    [self.pageControl addTarget:self action:@selector(pageTurn:) forControlEvents:UIControlEventValueChanged];
+
+    
     [self.view addSubview:self.pageControl];
 }
 
 
 - (UIView*) createNewMessageViewWithMessage: (NSString*) message
                                    andTitle: (NSString*)title
+                              andCardNumber: (NSString*)cardNumber
 {
     CGRect newFrame = CGRectZero;
     
     
     // Limit label width to fit on portrait iPad, or iPhone screen
-    newFrame.size.width = IS_IPHONE ? 300.0f: 728.0f;
+    newFrame.size.width = IS_IPHONE ? 290.0f: 578.0f;
     newFrame.size.height = 0.0f;
     
     UIView* container = [[UIView alloc] initWithFrame:newFrame];
     
     // Title label, Offset from the top of the scroll view;
-    newFrame.origin.y = IS_IPHONE ? 205.0f : 170.0f;
-    
-    UIColor* shadowColor = [UIColor colorWithWhite:0.0f alpha:0.3f];
-    
+    //newFrame.origin.y = IS_IPHONE ? 205.0f : 170.0f;
+    newFrame.origin.y = IS_IPHONE ? 70.0f : 30.0f;
+
     
     UILabel* titleLabel = [[UILabel alloc] initWithFrame:newFrame];
     if(title)
     {
         
-        UIFont* fontTitleToUse = [UIFont boldRockpackFontOfSize: IS_IPHONE ? 19.0f : 28.0f];
+        UIFont* fontTitleToUse = [UIFont boldRockpackFontOfSize: IS_IPHONE ? 25.0f : 28.0f];
         titleLabel.font = fontTitleToUse;
         titleLabel.numberOfLines = 0;
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.text = title;
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.textColor = [UIColor whiteColor];
-        
-        titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-        titleLabel.shadowColor = shadowColor;
+        titleLabel.shadowColor = [UIColor colorWithWhite:0.0f/255.0f alpha:0.2f];
+        titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
         
         [titleLabel sizeToFit];
         // add the newly created height to the frame
@@ -203,22 +199,48 @@
     }
     
     //Text label, laid out under title, if there is one
-    
     newFrame.origin.y += newFrame.size.height;
     
     UILabel* textLabel = [[UILabel alloc] initWithFrame:newFrame];
-    UIFont* fontToUse = [UIFont rockpackFontOfSize:  IS_IPHONE ? 16.0f : 22.0f];
-    textLabel.font = fontToUse;
-    textLabel.numberOfLines =0;
-    textLabel.textAlignment = NSTextAlignmentCenter;
-    textLabel.text = message;
-    textLabel.backgroundColor = [UIColor clearColor];
-    textLabel.textColor = [UIColor colorWithRed:40.0/255.0 green:45.0/255.0 blue:51.0/255.0 alpha:1.0];
-    textLabel.shadowColor = [UIColor whiteColor];
-    textLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-    [textLabel sizeToFit];
-    [container addSubview:textLabel];
+    if (message)
+    {
+        UIFont* fontToUse = [UIFont rockpackFontOfSize:  IS_IPHONE ? 16.0f : 22.0f];
+        
+        // Move text on first card down a bit - only ipad
+        if (IS_IPAD)
+        {
+            textLabel.frame = CGRectMake(newFrame.origin.x, newFrame.origin.y + 8.0f, newFrame.size.width, newFrame.size.height);
+        }
+        
+        textLabel.font = fontToUse;
+        textLabel.numberOfLines =0;
+        textLabel.textAlignment = NSTextAlignmentCenter;
+        textLabel.text = message;
+        textLabel.backgroundColor = [UIColor clearColor];
+        textLabel.textColor = [UIColor colorWithRed:255.0f/255.0f green:255.0f/255.0f blue:255.0f/255.0f alpha:1.0f];
+        textLabel.shadowColor = [UIColor colorWithWhite:0.0f/255.0f alpha:0.2f];
+        textLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+        [textLabel sizeToFit];
+        [container addSubview:textLabel];
+    }
 
+    
+    UIView * labelSeperatorView;
+    
+    //Different Setup for text on First Card
+    if ([cardNumber isEqual:@"0"]) {
+        textLabel.frame = CGRectMake(textLabel.frame.origin.x, IS_IPHONE ? textLabel.frame.origin.y + 0.0f : textLabel.frame.origin.y, textLabel.frame.size.width, textLabel.frame.size.height);
+
+    }
+    
+    //Don't show seperator on First card
+    else if (![cardNumber isEqual:@"0"])
+    {
+        labelSeperatorView =[[UIView alloc] initWithFrame:IS_IPHONE ? CGRectMake(newFrame.origin.x, newFrame.origin.y + 4.0f, 70.0f, 2.0f) : CGRectMake(newFrame.origin.x, newFrame.origin.y + 13.0f, 70.0f, 2.0f) ];
+        labelSeperatorView.backgroundColor = [UIColor whiteColor];
+        [container addSubview:labelSeperatorView];
+    }
+    
     
     // Resize the container to match the label heights
     newFrame = container.frame;
@@ -233,10 +255,44 @@
     center = titleLabel.center;
     center.x = container.center.x;
     titleLabel.center = center;
-
+    
+    //Center the Seperator Line
+    center = labelSeperatorView.center;
+    center.x = container.center.x;
+    labelSeperatorView.center = center;
+    
     return container;
     
     
+}
+
+- (void) pageTurn: (UIPageControl *) aPageControl
+{
+    int whichPage = aPageControl.currentPage;
+    
+    [UIView animateWithDuration:0.3f
+                          delay:0.0
+                        options:UIViewAnimationCurveEaseInOut
+                     animations:^{
+                         if (IS_IPHONE)
+                         {
+                             self.scrollView.contentOffset = CGPointMake(320.0f * whichPage, 0.0f);
+                         }
+                         
+                         else
+                         {
+                             if ([[SYNDeviceManager sharedInstance] isLandscape])
+                             {
+                                 self.scrollView.contentOffset = CGPointMake(1024.0f * whichPage, 0.0f);
+                             }
+                             
+                             else
+                             {
+                                 self.scrollView.contentOffset = CGPointMake(768.0f * whichPage, 0.0f);
+                             }
+                         }
+                     }
+                     completion:nil];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -269,6 +325,7 @@
     CGPoint newCOffset = CGPointMake(self.pageControl.currentPage * self.scrollView.frame.size.width, self.scrollView.contentOffset.y);
     
     [self.scrollView setContentOffset: newCOffset];
+    
 }
 
 

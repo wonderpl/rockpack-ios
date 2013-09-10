@@ -398,6 +398,7 @@ typedef enum : NSInteger {
 #define kGooglePlus @"google"
 #define kAPNS   @"apns"
 
+
 typedef enum {
     LoginOriginRockpack = 0,
     LoginOriginFacebook = 1

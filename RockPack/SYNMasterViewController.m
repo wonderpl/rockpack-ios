@@ -53,7 +53,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIButton* headerButton;
 @property (nonatomic, strong) IBOutlet UIButton* hideNavigationButton;
 @property (nonatomic, strong) IBOutlet UILabel* pageTitleLabel;
-@property (nonatomic, strong) IBOutlet UIView* errorContainerView;
 @property (nonatomic, strong) IBOutlet UIView* navigationContainerView;
 @property (nonatomic, strong) SYNAccountSettingsModalContainer* modalAccountContainer;
 @property (nonatomic, strong) SYNBackButtonControl* backButtonControl;
@@ -1234,33 +1233,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void) presentSuccessNotificationWithMessage : (NSString*) message
 {
     
-    __block SYNNetworkErrorView* successNotification = [[SYNNetworkErrorView alloc] init];
-    successNotification.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"BarSucess"]];
-    [successNotification setText: message];
-    [self.errorContainerView addSubview: successNotification];
-    
-    [UIView animateWithDuration: 0.3f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseOut
-                     animations: ^{
-                         CGRect newFrame = successNotification.frame;
-                         newFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] - newFrame.size.height;
-                         successNotification.frame = newFrame;
-                     }
-                     completion: ^(BOOL finished) {
-                         
-                         [UIView animateWithDuration: 0.3f
-                                               delay: 4.0f
-                                             options: UIViewAnimationOptionCurveEaseIn
-                                          animations: ^{
-                                              CGRect newFrame = successNotification.frame;
-                                              newFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] + newFrame.size.height;
-                                              successNotification.frame = newFrame;
-                                          }
-                                          completion: ^(BOOL finished) {
-                                              [successNotification removeFromSuperview];
-                                          }];
-                     }];
+    [appDelegate.viewStackManager presentSuccessNotificationWithMessage:message];
 }
 
 
