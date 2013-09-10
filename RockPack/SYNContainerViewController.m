@@ -58,6 +58,7 @@ UITextViewDelegate>
     scrollView.pagingEnabled = YES;
     scrollView.showsHorizontalScrollIndicator = NO;
     scrollView.showsVerticalScrollIndicator = NO;
+    scrollView.bounces = NO;
     scrollView.scrollsToTop = NO;
     
     self.view = scrollView;
@@ -137,7 +138,6 @@ UITextViewDelegate>
     [super viewWillAppear: animated];
     
     [self packViewControllersForInterfaceOrientation: [SYNDeviceManager.sharedInstance orientation]];
-    
     
 }
 
