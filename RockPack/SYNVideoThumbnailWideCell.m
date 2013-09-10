@@ -228,6 +228,9 @@
     {
         case UIGestureRecognizerStateBegan:
         {
+            [self.viewControllerDelegate arcMenuSelectedCell: self
+                                           andComponentIndex: kArcMenuInvalidComponentIndex];
+            
             // Set lowlight tint
             UIImage *glossImage = [UIImage imageNamed: @"GlossVideo.png"];
             UIImage *lowlightImage = [glossImage tintedImageUsingColor: [UIColor colorWithWhite: 0.0
@@ -246,16 +249,16 @@
     }
 }
 
+
 - (void) showVideo: (UILongPressGestureRecognizer *) recognizer
 {
-    [self.viewControllerDelegate performSelector:@selector(videoButtonPressed:) withObject:self.videoPlaceholder];
+    [self.viewControllerDelegate performSelector:@selector(videoButtonPressed:) withObject: self.videoPlaceholder];
 }
 
 
 - (void) showMenu: (UILongPressGestureRecognizer *) recognizer
 {
-    [self.viewControllerDelegate arcMenuUpdateState: recognizer
-                                            forCell: self];
+    [self.viewControllerDelegate arcMenuUpdateState: recognizer];
 }
 
 @end

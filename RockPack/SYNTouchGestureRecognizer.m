@@ -10,32 +10,6 @@
 
 @implementation SYNTouchGestureRecognizer
 
-#pragma mark - Initialization
-
-
-- (id) init
-{
-    if ((self = [super init]))
-    {
-        // Don't have any custom stuff yet
-    }
-    
-    return self;
-}
-
-
-- (id) initWithTarget: (id) target action: (SEL) action
-{
-    if (self = [super initWithTarget: target
-                              action: action])
-    {
-        // Don't have any custom stuff yet
-    }
-    
-    return self;
-}
-
-
 #pragma mark - Co-operation
 
 // Required so that the other gesture recognizers act in parallel

@@ -80,7 +80,7 @@
     [Appirater setUsesUntilPrompt: 3];
     [Appirater setSignificantEventsUntilPrompt: 1];
     [Appirater setTimeBeforeReminding: 20];
-    //    [Appirater setDebug: YES];
+//    [Appirater setDebug: YES];
 #endif
     
     // Enable the Spark Inspector
@@ -91,10 +91,7 @@
 #if USEUDID
     //    [TestFlight setDeviceIdentifier: [[UIDevice currentDevice] uniqueIdentifier]];
 #endif
-    
-
-//    
-    //Google Adwords conversion tracking. TODO: check parameters with Guy!!
+    // Google Adwords conversion tracking. TODO: check parameters with Guy!!
     [GoogleConversionPing pingWithConversionId: @"983664386"
                                          label: @"Km3nCP6G-wQQgo6G1QM"
                                          value: @"0"
@@ -226,7 +223,7 @@
         
         if (userInfo != nil)
         {
-            NSLog(@"Launched from push notification: %@", userInfo);
+            DebugLog(@"Launched from push notification: %@", userInfo);
             
             [self handleRemoteNotification: userInfo];
         }
@@ -818,6 +815,9 @@
 
 - (void) clearCoreDataMainEntities: (BOOL) userBound
 {
+    
+    // this is called when user logs out AND when change of locale, in the latter case the userBound flag is NO so as not to delete one's own videos and subscriptions
+    
     NSError *error;
     NSArray *itemsToDelete;
     
@@ -873,7 +873,7 @@
     
     if (!userBound)
     {
-        // do not delete data relating to the user such as subscriptions and channels
+        // do not delete data relating to the user such as subscriptions and channels (usually when calling the function due to a change in locale)
         NSPredicate *notUserChannels = [NSPredicate predicateWithFormat: @"channelOwner.uniqueId != %@ AND subscribedByUser != YES", self.currentUser.uniqueId];
         [fetchRequest setPredicate: notUserChannels];
     }
@@ -932,11 +932,32 @@
     
     fetchRequest.predicate = nil;
     
+    
+    // == Clear Friends (if not just changing locale) == //
+    
+    if(!userBound)
+    {
+        [fetchRequest setEntity: [NSEntityDescription entityForName: @"Friend"
+                                             inManagedObjectContext: self.mainManagedObjectContext]];
+        
+        
+        itemsToDelete = [self.mainManagedObjectContext executeFetchRequest: fetchRequest
+                                                                     error: &error];
+        
+        for (NSManagedObject *objectToDelete in itemsToDelete)
+        {
+            [self.mainManagedObjectContext deleteObject: objectToDelete];
+        }
+    }
+    
+    
     // == Save == //
+    
     [self saveContext: YES];
     
     if (!userBound)
     {
+        // notify that the cleaning of the data due to a change in locale has been performed
         [[NSNotificationCenter defaultCenter] postNotificationName: kClearedLocationBoundData
                                                             object: self];
     }
@@ -1185,7 +1206,7 @@
 - (void) application: (UIApplication *) application
          didFailToRegisterForRemoteNotificationsWithError: (NSError *) error
 {
-    NSLog(@"Failed to get token, error: %@", error);
+    DebugLog(@"Failed to get token, error: %@", error);
     self.apnsToken = nil;
 }
 
@@ -1237,7 +1258,7 @@
 - (void) application: (UIApplication*) application
          didReceiveRemoteNotification: (NSDictionary*) userInfo
 {
-	NSLog(@"Received notification: %@", userInfo);
+	DebugLog(@"Received notification: %@", userInfo);
     
     UIApplicationState state = [application applicationState];
     

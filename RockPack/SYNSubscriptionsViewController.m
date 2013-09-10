@@ -110,6 +110,8 @@
         [channelThumbnailCell setChannelTitle: channel.title];
     }
     
+    [channelThumbnailCell setViewControllerDelegate: (id<SYNChannelMidCellDelegate>) self];
+    
     return channelThumbnailCell;
 }
 
@@ -165,5 +167,66 @@
     [self.channelThumbnailCollectionView reloadData];
 }
 
+
+- (void) channelTapped: (UICollectionViewCell *) cell
+{
+    SYNChannelMidCell *selectedCell = (SYNChannelMidCell *) cell;
+    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: selectedCell.center];
+    
+    Channel *channel = self.user.subscriptions[indexPath.item];
+    
+    [appDelegate.viewStackManager viewChannelDetails: channel];
+}
+
+
+- (NSIndexPath *) indexPathForChannelCell: (UICollectionViewCell *) cell
+{
+    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForCell: cell];
+    return  indexPath;
+}
+
+- (Channel *) channelInstanceForIndexPath: (NSIndexPath *) indexPath
+                        andComponentIndex: (NSInteger) componentIndex
+{
+    if (componentIndex != kArcMenuInvalidComponentIndex)
+    {
+        AssertOrLog(@"Unexpectedly valid componentIndex");
+    }
+    
+    Channel *channel = self.user.subscriptions[indexPath.item];
+    
+    return channel;
+}
+
+
+- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
+{
+    [self superArcMenuUpdateState: recognizer];
+
+    if (recognizer.state == UIGestureRecognizerStateBegan)
+    {
+        Channel *channel = self.user.subscriptions[self.arcMenuIndexPath.item];
+        
+        [self requestShareLinkWithObjectType: @"channel"
+                                    objectId: channel.uniqueId];
+    }
+}
+
+
+- (void) arcMenu: (SYNArcMenuView *) menu
+         didSelectMenuName: (NSString *) menuName
+         forCellAtIndex: (NSIndexPath *) cellIndexPath
+         andComponentIndex: (NSInteger) componentIndex
+{
+    if ([menuName isEqualToString: kActionShareChannel])
+    {
+        [self shareChannelAtIndexPath: cellIndexPath
+                    andComponentIndex: componentIndex];
+    }
+    else
+    {
+        AssertOrLog(@"Invalid Arc Menu index selected");
+    }
+}
 
 @end

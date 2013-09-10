@@ -169,7 +169,7 @@
         self.likesNumberLabel.text = [NSString stringWithFormat: @"%i", likesNumber.integerValue];
     }
     
-    if (users.count > 1 && users.count < 4)
+    if (users.count > 1 && users.count < 4 && IS_IPAD)
     {
         [attributedCompleteString appendAttributedString: [[NSAttributedString alloc] initWithString: @"including "
                                                                                           attributes: self.lightTextAttributes]];
@@ -217,7 +217,6 @@
             }
         }
         
-        NSLog(@"============");
     }
     
     self.likeLabel.attributedText = attributedCompleteString;
@@ -245,12 +244,15 @@
 // This is used to lowlight the gloss image on touch
 - (void) showGlossLowlight: (SYNTouchGestureRecognizer *) recognizer
 {
-    UIImage *glossImage = [UIImage imageNamed: @"GlossFeedVideo.png"];
+    UIImage *glossImage = [UIImage imageNamed: @"GlossFeedVideo"];
     
     switch (recognizer.state)
     {
         case UIGestureRecognizerStateBegan:
         {
+            [self.viewControllerDelegate arcMenuSelectedCell: self
+                                           andComponentIndex: kArcMenuInvalidComponentIndex];
+            
             // Set lowlight tint
             UIImage *lowlightImage = [glossImage tintedImageUsingColor: [UIColor colorWithWhite: 0.0
                                                                                           alpha: 0.3]];
@@ -271,14 +273,13 @@
 
 - (void) showVideo: (UITapGestureRecognizer *) recognizer
 {
-    [self.viewControllerDelegate pressedAggregateCellCoverView: self.userThumbnailButton];
+    [self.viewControllerDelegate touchedAggregateCell];
 }
 
 
 - (void) showMenu: (UILongPressGestureRecognizer *) recognizer
 {
-    [self.viewControllerDelegate arcMenuUpdateState: recognizer
-                                            forCell: self];
+    [self.viewControllerDelegate arcMenuUpdateState: recognizer];
 }
 
 

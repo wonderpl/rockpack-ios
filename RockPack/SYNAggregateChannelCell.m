@@ -8,6 +8,7 @@
 
 #import "AppConstants.h"
 #import "SYNAggregateChannelCell.h"
+#import "SYNArcMenuView.h"
 #import "SYNTouchGestureRecognizer.h"
 #import "UIImage+Tint.h"
 
@@ -54,32 +55,10 @@
 }
 
 
-- (void) setCoverImageWithString: (NSString *) imageString
-{
-    if (!imageString)
-    {
-        return;
-    }
-    
-    UIImageView *imageView;
-    
-    for (imageView in self.imageContainer.subviews)
-    {
-        [imageView removeFromSuperview];
-    }
-    
-    imageView = [[UIImageView alloc] initWithFrame: self.imageContainer.frame];
-    
-    [self.imageContainer addSubview: imageView];
-    
-    [imageView setImageWithURL: [NSURL URLWithString: imageString]
-              placeholderImage: [UIImage imageNamed: @"PlaceholderChannelSmall.png"]
-                       options: SDWebImageRetryFailed];
-}
-
-
 - (void) prepareForReuse
 {
+    [super prepareForReuse];
+    
     if (self.buttonContainerView)
     {
         [self.buttonContainerView removeFromSuperview];
@@ -107,7 +86,14 @@
     
     self.originalImageContainerRect = self.imageContainer.frame;
     
+    // Remove all out images
     for (UIImageView *imageView in self.imageContainer.subviews) // there should only be UIImageView instances
+    {
+        [imageView removeFromSuperview];
+    }
+    
+    // Remove all our image buttons      
+    for (UIImageView *imageView in self.buttonContainerView.subviews) // there should only be UIImageView instances
     {
         [imageView removeFromSuperview];
     }
@@ -152,9 +138,11 @@
         CGRect smallerCellFrame = self.imageContainer.frame; // the 2 - 3 options have a smaller total frame
         smallerCellFrame.size.height = IS_IPAD ? shrinkingSelfFrame.size.height : 155.0f;
         
-        if(IS_IPHONE) {
+        if (IS_IPHONE)
+        {
             smallerCellFrame.origin.y = 54.0f;
         }
+        
         self.imageContainer.frame = smallerCellFrame;
         
         containerRect.size = self.imageContainer.frame.size;
@@ -233,9 +221,6 @@
         self.mainTitleLabel.hidden = YES;
 
         containerRect.size = self.imageContainer.frame.size; // {{0, 0}, {298, 298}} (IPAD),
-        
-        
-        
         // container.origin = CGPointZero from above -> {{0, 0}, {310, 310}}
         
         self.buttonContainerView = [[UIView alloc] initWithFrame: self.imageContainer.frame];
@@ -288,9 +273,7 @@
             expectedLabelSize = [channelTitle sizeWithFont: label.font
                                          constrainedToSize: CGSizeMake(containerRect.size.width, 500.0)
                                              lineBreakMode: label.lineBreakMode];
-            
-            
-            
+
             label.frame = CGRectMake(containerRect.origin.x + 6.0, (containerRect.origin.y + containerRect.size.height) - (expectedLabelSize.height), expectedLabelSize.width, expectedLabelSize.height);
             label.text = channelTitle;
             
@@ -325,7 +308,6 @@
             buttonLongPress.delegate = self;
             [simulatedButtonView addGestureRecognizer: buttonLongPress];
 #endif
-            
             // Tap for showing video
             UITapGestureRecognizer *buttonTap = [[UITapGestureRecognizer alloc] initWithTarget: self
                                                                                         action: @selector(showChannel:)];
@@ -344,17 +326,6 @@
     [self.userThumbnailButton addTarget: self.viewControllerDelegate
                                  action: @selector(profileButtonTapped:)
                        forControlEvents: UIControlEventTouchUpInside];
-}
-
-
-- (NSInteger) indexForSimulatedButtonPressed: (UIView *) view
-{
-    if (!self.buttonContainerView)
-    {
-        return -1;
-    }
-    
-    return [self.buttonContainerView.subviews indexOfObject: view];
 }
 
 
@@ -386,23 +357,42 @@
 // This is used to lowlight the gloss image on touch
 - (void) showGlossLowlight: (SYNTouchGestureRecognizer *) recognizer
 {
+    UIImageView *simulatedButton = self.lowlightImageView;
     UIImage *glossImage = [UIImage imageNamed: @"channelFeedCover"];
+    
+    // Special-case container views
+    if (self.buttonContainerView)
+    {
+        simulatedButton = (UIImageView *) recognizer.view;
+        glossImage = [UIImage imageNamed: @"channelFeedCoverFourth"];
+    }
     
     switch (recognizer.state)
     {
         case UIGestureRecognizerStateBegan:
         {
+            NSInteger componentIndex = kArcMenuInvalidComponentIndex;
+            
+            if (self.buttonContainerView)
+            {
+                componentIndex =  [self.buttonContainerView.subviews indexOfObject: simulatedButton];
+            }
+            
+            [self.viewControllerDelegate arcMenuSelectedCell: self
+                                           andComponentIndex: componentIndex];
+            
             // Set lowlight tint
             UIImage *lowlightImage = [glossImage tintedImageUsingColor: [UIColor colorWithWhite: 0.0
                                                                                           alpha: 0.3]];
-            self.lowlightImageView.image = lowlightImage;
+            
+            simulatedButton.image = lowlightImage;
             break;
         }
             
         case UIGestureRecognizerStateEnded:
         case UIGestureRecognizerStateCancelled:
         {
-            self.lowlightImageView.image = glossImage;
+            simulatedButton.image = glossImage;
         }
         default:
             break;
@@ -412,22 +402,13 @@
 
 - (void) showChannel: (UITapGestureRecognizer *) recognizer
 {
-    UIImageView *simulatedButton = self.lowlightImageView;
-    
-    if (self.buttonContainerView)
-    {
-        DebugLog (@"Multiple channels");
-        simulatedButton = (UIImageView *) recognizer.view;
-    }
-    
-    [self.viewControllerDelegate pressedAggregateCellCoverView: simulatedButton];
+    [self.viewControllerDelegate touchedAggregateCell];
 }
 
 
 - (void) showMenu: (UILongPressGestureRecognizer *) recognizer
 {
-    [self.viewControllerDelegate arcMenuUpdateState: recognizer
-                                            forCell: self];
+    [self.viewControllerDelegate arcMenuUpdateState: recognizer];
 }
 
 

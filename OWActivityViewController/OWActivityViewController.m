@@ -23,169 +23,239 @@
 // THE SOFTWARE.
 //
 
-#import "OWActivityViewController.h"
 #import "OWActivityView.h"
+#import "OWActivityViewController.h"
 
 @interface OWActivityViewController ()
 
-- (NSInteger)height;
+- (NSInteger) height;
 
 @end
 
 @implementation OWActivityViewController
 
-- (void)loadView
+- (void) loadView
 {
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
         UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
-        self.view = [[UIView alloc] initWithFrame:rootViewController.view.bounds];
+        self.view = [[UIView alloc] initWithFrame: rootViewController.view.bounds];
         self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    } else {
+
+    }
+    else
+    {
         [super loadView];
     }
 }
 
-- (id)initWithViewController:(UIViewController *)viewController activities:(NSArray *)activities
+
+- (id) initWithViewController: (UIViewController *) viewController
+                   activities: (NSArray *) activities
 {
     self = [super init];
-    if (self) {
+    
+    if (self)
+    {
         self.presentingController = viewController;
         
-
-        
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-            _backgroundView = [[UIView alloc] initWithFrame:self.view.bounds];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+        {
+             self.view.frame = CGRectMake(0, 0, 420, 96);
+            
+            _backgroundView = [[UIView alloc] initWithFrame: self.view.bounds];
             _backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             _backgroundView.backgroundColor = [UIColor blackColor];
             _backgroundView.alpha = 0;
             
             // Tap outside of view to close share
             UITapGestureRecognizer *tapOutside =
-            [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                    action:@selector(dismissViewControllerOnTouch)];
-            [_backgroundView addGestureRecognizer:tapOutside];
+            [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                    action: @selector(dismissViewControllerOnTouch)];
             
-            [self.view addSubview:_backgroundView];
-        } else {
-            self.view.frame = CGRectMake(0, 0, 320, 96);
+            [_backgroundView addGestureRecognizer: tapOutside];
+            
+            [self.view addSubview: _backgroundView];
+        }
+        else
+        {
+            self.view.frame = CGRectMake(0, 0, 420, 96);
         }
         
         _activities = activities;
-        _activityView = [[OWActivityView alloc] initWithFrame:CGRectMake(0,
-                                                                         UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ?
-                                                                         [UIScreen mainScreen].bounds.size.height : 0,
-                                                                         self.view.frame.size.width, self.height)
-                                                   activities:activities];
-        _activityView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        _activityView.activityViewController = self;
-        [self.view addSubview:_activityView];
         
-        self.contentSizeForViewInPopover = CGSizeMake(320 + 8, self.height);
+        _activityView = [[OWActivityView alloc] initWithFrame: CGRectMake(0, 0,
+                                                                          self.view.frame.size.width, self.height)
+                                                   activities: activities];
+        
+        _activityView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        
+        _activityView.activityViewController = self;
+        
+        [self.view addSubview: _activityView];
     }
+    
     return self;
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion
+
+- (void) dismissViewControllerAnimated: (BOOL) flag completion: (void (^)(void)) completion
 {
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        __typeof (&*self) __weak weakSelf = self;
-        [UIView animateWithDuration:0.2 animations:^{
-            _backgroundView.alpha = 0;
-            CGRect frame = _activityView.frame;
-            frame.origin.y = [UIScreen mainScreen].bounds.size.height;
-            _activityView.frame = frame;
-        } completion:^(BOOL finished) {
-            [weakSelf.view removeFromSuperview];
-            [weakSelf removeFromParentViewController];
-            if (completion)
-                completion();
-        }];
-    } else {
-        [self.presentingPopoverController dismissPopoverAnimated:YES];
-        [self performBlock:^{
-            if (completion)
-                completion();
-        } afterDelay:0.4];
-    }
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+//    {
+//        __typeof(&*self) __weak weakSelf = self;
+//        [UIView animateWithDuration: 0.2
+//                         animations: ^{
+//                             _backgroundView.alpha = 0;
+//                             CGRect frame = _activityView.frame;
+//                             frame.origin.y = [UIScreen mainScreen].bounds.size.height;
+//                             _activityView.frame = frame;
+//                         }
+//                         completion: ^(BOOL finished) {
+//                             [weakSelf.view removeFromSuperview];
+//                             [weakSelf removeFromParentViewController];
+//                             
+//                             if (completion)
+//                             {
+//                                 completion();
+//                             }
+//                         }];
+//    }
+//    else
+//    {
+//        [self.presentingPopoverController dismissPopoverAnimated: YES];
+//        
+//        [self performBlock: ^{
+//            if (completion)
+//            {
+//                completion();
+//            }
+//        } afterDelay: 0.4];
+//    }
+    
+    completion();
 }
+
 
 //This handles the tap outside
-- (void)dismissViewControllerOnTouch
+- (void) dismissViewControllerOnTouch
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated: YES
+                             completion: nil];
 }
 
-- (void)presentFromRootViewController
+
+- (void) presentFromRootViewController
 {
     UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
-    [rootViewController addChildViewController:self];
-    [rootViewController.view addSubview:self.view];
-    [self didMoveToParentViewController:rootViewController];
+    
+    [rootViewController addChildViewController: self];
+    [rootViewController.view addSubview: self.view];
+    [self didMoveToParentViewController: rootViewController];
 }
 
-- (void)didMoveToParentViewController:(UIViewController *)parent
+
+- (void) didMoveToParentViewController: (UIViewController *) parent
 {
-    [super didMoveToParentViewController:parent];
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        [UIView animateWithDuration:0.2 animations:^{
-            _backgroundView.alpha = 0.4;
-            
-            CGRect frame = _activityView.frame;
-            frame.origin.y = self.view.frame.size.height - self.height;
-            _activityView.frame = frame;
-        }];
+    [super didMoveToParentViewController: parent];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        [UIView animateWithDuration: 0.2
+                         animations: ^{
+                             _backgroundView.alpha = 0.4;
+                             
+                             CGRect frame = _activityView.frame;
+                             frame.origin.y = self.view.frame.size.height - self.height;
+                             _activityView.frame = frame;
+                         }];
     }
 }
 
-- (NSInteger)height
-{   
-    if (_activities.count <= 4) return 96;
-    if (_activities.count <= 8) return 192;
-    return 417;
+
+- (NSInteger) height
+{
+    return 56;
 }
 
-- (void)viewDidLoad
+
+- (void) viewDidLoad
 {
     [super viewDidLoad];
 }
 
-#pragma mark - 
+
+#pragma mark -
 #pragma mark Helpers
 
-- (void)performBlock:(void (^)(void))block afterDelay:(NSTimeInterval)delay
+- (void) performBlock: (void (^)(void)) block afterDelay: (NSTimeInterval) delay
 {
     block = [block copy];
-    [self performSelector:@selector(runBlockAfterDelay:) withObject:block afterDelay:delay];
+    
+    [self performSelector: @selector(runBlockAfterDelay:)
+               withObject: block
+               afterDelay: delay];
 }
 
-- (void)runBlockAfterDelay:(void (^)(void))block
+
+- (void) runBlockAfterDelay: (void (^)(void)) block
 {
-	if (block != nil)
-		block();
+    if (block != nil)
+    {
+        block();
+    }
 }
+
 
 #pragma mark -
 #pragma mark Orientation
 
-- (NSUInteger)supportedInterfaceOrientations
+- (NSUInteger) supportedInterfaceOrientations
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
         return UIInterfaceOrientationMaskAll;
+    }
+    
     return UIInterfaceOrientationMaskPortrait;
 }
 
-- (BOOL)shouldAutorotate
-{
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-        return YES;
-    return NO;
-}
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation
-{
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-        return YES;
-    return (orientation == UIInterfaceOrientationPortrait);
-}
+//- (BOOL) shouldAutorotate
+//{
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+//    {
+//        return YES;
+//    }
+//    
+//    return NO;
+//}
+//
+//
+//- (BOOL) shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation) orientation
+//{
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+//    {
+//        return YES;
+//    }
+//    
+//    return orientation == UIInterfaceOrientationPortrait;
+//}
+
+
+//- (void) willAnimateRotationToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation
+//                                          duration: (NSTimeInterval) duration
+//{
+//    [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
+//                                            duration: duration];
+//    
+//    self.view.center = self.view.superview.center;
+//}
+//
+//- (void) updateLayoutForNewOrientation: (UIInterfaceOrientation) orientation
+//{
+//        self.view.center = self.view.superview.center;
+//}
+
 
 @end

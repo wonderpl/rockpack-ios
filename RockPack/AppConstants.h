@@ -148,6 +148,7 @@ typedef enum _FeedItemResourceType {
 
 // Share link
 #define kAPIShareLink               @"/ws/share/link/"                          /* POST */
+#define kAPIShareEmail              @"/ws/share/email/"                          /* POST */
 
 // Report concerns
 
@@ -258,6 +259,11 @@ typedef enum _NavigationButtonsAppearance {
     
 } NavigationButtonsAppearance;
 
+
+typedef enum : NSInteger {
+    kArcMenuInvalidComponentIndex = 999999
+} kArcMenuComponentIndex;
+
 //
 // Colours
 //
@@ -271,6 +277,8 @@ typedef enum _NavigationButtonsAppearance {
 //
 // Animations
 //
+
+#define kArcMenuStartButtonTag 456
 
 // Text cross-fade
 #define kTextCrossfadeDuration 0.3f
@@ -380,10 +388,12 @@ typedef enum _NavigationButtonsAppearance {
 // Accounts
 
 #define kFacebook @"facebook"
+#define kEmail @"email"
 #define kRockpack @"rockpack"
 #define kTwitter @"twitter"
 #define kGooglePlus @"google"
 #define kAPNS   @"apns"
+
 
 typedef enum {
     LoginOriginRockpack = 0,

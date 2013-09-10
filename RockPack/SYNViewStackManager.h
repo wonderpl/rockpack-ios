@@ -39,26 +39,26 @@ typedef void(^ViewStackReturnBlock)(void);
 - (void) pushController: (SYNAbstractViewController *) controller;
 
 - (void) presentModallyController: (UIViewController *) controller;
-- (void) presentPopoverView:(UIView*)view;
-- (void)removePopoverView;
+- (void) presentPopoverView: (UIView*) view;
+- (void) removePopoverView;
 
--(void)addSubvievOnTopOfEverything:(UIView*)view;
+- (void) presentSuccessNotificationWithMessage : (NSString*) message;
 
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner;
 - (void) viewChannelDetails: (Channel *) channel withAutoplayId: (NSString *) autoplayId;
 - (void) viewChannelDetails: (Channel *) channel;
 
--(void)dismissSearchBar;
--(void)presentSearchBar;
+- (void) dismissSearchBar;
+- (void) presentSearchBar;
 
--(void)dismissSearchBarTotal:(BOOL)total;
+- (void) dismissSearchBarTotal: (BOOL) total;
 
 - (void) hideModalController;
 
 - (void) hideSideNavigator;
 - (void) showSideNavigator;
 
--(void) openSideNavigatorToIndex:(NSInteger)index;
+-(void) openSideNavigatorToIndex: (NSInteger) index;
 
 - (void) displaySideNavigatorFromPushNotification;
 

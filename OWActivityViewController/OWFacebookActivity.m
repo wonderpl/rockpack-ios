@@ -32,7 +32,7 @@
 - (id) init
 {
     self = [super initWithTitle: NSLocalizedStringFromTable(@"activity.Facebook.title", @"OWActivityViewController", @"Facebook")
-                          image: [UIImage imageNamed: @"ButtonFacebook.png"]
+                          image: [UIImage imageNamed: @"ShareFacebookButton"]
                     actionBlock: nil];
     
     if (!self)
@@ -42,6 +42,7 @@
     
     __typeof(&*self) __weak weakSelf = self;
     self.actionBlock = ^(OWActivity *activity, OWActivityViewController *activityViewController) {
+        
         UIViewController *presenter = activityViewController.presentingController;
         NSDictionary *userInfo = weakSelf.userInfo ? weakSelf.userInfo : activityViewController.userInfo;
         

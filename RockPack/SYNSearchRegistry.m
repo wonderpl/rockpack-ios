@@ -11,7 +11,10 @@
 #import "SYNAppDelegate.h"
 #import "SYNSearchRegistry.h"
 #import "Video.h"
+#import "Friend.h"
 #import "VideoInstance.h"
+#import "AppConstants.h"
+#import <AddressBook/AddressBook.h>
 
 @implementation SYNSearchRegistry
 
@@ -27,6 +30,212 @@
     return self;
 }
 
+- (BOOL) clearImportContextFromEntityName: (NSString*) entityName
+{
+    if([super clearImportContextFromEntityName:entityName])
+    {
+        [appDelegate saveSearchContext];
+        return YES;
+    }
+    
+    return NO;
+    
+}
+
+// returns a cached image dictionary
+- (NSCache*) registerFriendsFromAddressBookArray:(NSArray*)abArray
+{
+    
+    NSInteger total = [abArray count];
+    
+    // placeholders
+    NSString *firstName, *lastName, *email;
+    NSData *imageData;
+    Friend *contactAsFriend;
+    
+    
+    NSCache* imageCache = [[NSCache alloc] init];
+    
+    // fetch existing friends from DB
+    
+    NSError *error;
+    NSArray *existingFriendsArray;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setEntity: [NSEntityDescription entityForName: @"Friend"
+                                         inManagedObjectContext: appDelegate.searchManagedObjectContext]];
+    
+    
+    // friends from address book only
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"externalSystem == %@ AND localOrigin == YES", kEmail];
+    
+    existingFriendsArray = [appDelegate.searchManagedObjectContext executeFetchRequest: fetchRequest
+                                                                                 error: &error];
+    
+    
+    
+    NSMutableDictionary* existingFriendsByUID = [NSMutableDictionary dictionaryWithCapacity:existingFriendsArray.count];
+    
+    for (Friend* existingFriend in existingFriendsArray)
+    {
+        
+        existingFriendsByUID[existingFriend.email] = existingFriend;
+        
+        existingFriend.markedForDeletionValue = YES;
+        
+    }
+    
+    // parse friends from address book array
+    
+    for (NSUInteger peopleCounter = 0; peopleCounter < total; peopleCounter++)
+    {
+        ABRecordRef currentPerson = (__bridge ABRecordRef) [abArray objectAtIndex: peopleCounter];
+        ABRecordID cid;
+        
+        if (!currentPerson || ((cid = ABRecordGetRecordID(currentPerson)) == kABRecordInvalidID))
+            continue;
+        
+        
+        ABMultiValueRef emailAddressMultValue = ABRecordCopyValue(currentPerson, kABPersonEmailProperty);
+        NSArray *emailAddresses = (__bridge NSArray *) ABMultiValueCopyArrayOfAllValues(emailAddressMultValue);
+        CFRelease(emailAddressMultValue);
+        
+        if(emailAddresses.count == 0) // only keep contacts with email addresses
+            continue;
+        
+        email = (NSString*)emailAddresses[0];
+        
+        if(!(contactAsFriend = existingFriendsByUID[email]))
+            if(!(contactAsFriend = [Friend insertInManagedObjectContext: appDelegate.searchManagedObjectContext]))
+                continue; // if cache AND instatiation fails, bail
+        
+        contactAsFriend.uniqueId = email; // email serves as a uniqueId for address book friends
+        contactAsFriend.markedForDeletionValue = NO;
+        contactAsFriend.localOriginValue = YES;
+        
+        firstName = (__bridge_transfer NSString *) ABRecordCopyValue(currentPerson, kABPersonFirstNameProperty);
+        lastName = (__bridge_transfer NSString *) ABRecordCopyValue(currentPerson, kABPersonLastNameProperty);
+        contactAsFriend.displayName = [NSString stringWithFormat: @"%@ %@", firstName, lastName];
+        
+        imageData = (__bridge_transfer NSData *) ABPersonCopyImageData(currentPerson);
+        
+        
+        contactAsFriend.email =  email; 
+        contactAsFriend.externalSystem = kEmail;
+        contactAsFriend.externalUID = [NSString stringWithFormat: @"%i", cid];
+        
+        if (imageData)
+        {
+            NSString *key = [NSString stringWithFormat: @"cached://%@", contactAsFriend.uniqueId];
+            
+            contactAsFriend.thumbnailURL = key;
+            
+            [imageCache setObject: imageData
+                           forKey: key];
+        }
+        
+    }
+    
+    // delete old friends cached
+    Friend* deleteCandidate;
+    for (id key in existingFriendsByUID)
+    {
+        deleteCandidate = (Friend*)existingFriendsByUID[key];
+        
+        if(deleteCandidate && deleteCandidate.markedForDeletionValue)
+            [deleteCandidate.managedObjectContext deleteObject:deleteCandidate];
+    }
+    
+    if(![appDelegate.searchManagedObjectContext save:&error])
+        return nil; //
+    
+    return imageCache;
+    
+    
+}
+
+- (BOOL) registerFriendsFromDictionary:(NSDictionary *) dictionary
+{
+    
+    
+    NSDictionary *usersDictionary = dictionary[@"users"];
+    
+    if (!usersDictionary || ![usersDictionary[@"items"] isKindOfClass:[NSArray class]])
+        return NO;
+    
+    // fetch existing friends
+    
+    NSError *error;
+    NSArray *existingFriendsArray;
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    [fetchRequest setEntity: [NSEntityDescription entityForName: @"Friend"
+                                         inManagedObjectContext: appDelegate.searchManagedObjectContext]];
+    
+    
+    // friends from address book are not found in the web service responce and should be protected from deletion
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"externalSystem != %@", kEmail];
+    
+    existingFriendsArray = [appDelegate.searchManagedObjectContext executeFetchRequest: fetchRequest
+                                                                                 error: &error];
+    
+    
+    
+    NSMutableDictionary* existingFriendsByUID = [NSMutableDictionary dictionaryWithCapacity:existingFriendsArray.count];
+    
+    for (Friend* existingFriend in existingFriendsArray)
+    {
+        
+        existingFriendsByUID[existingFriend.uniqueId] = existingFriend;
+        
+        existingFriend.markedForDeletionValue = YES;
+            
+    }
+    
+    // parse new data
+    
+    
+    NSArray *itemsDictionary = usersDictionary[@"items"];
+    
+    Friend* friend;
+    
+    
+    for (NSDictionary * itemDictionary in itemsDictionary)
+    {
+        
+        if(!(friend = existingFriendsByUID[itemDictionary[@"id"]]))
+            if(!(friend = [Friend instanceFromDictionary: itemDictionary
+                               usingManagedObjectContext: appDelegate.searchManagedObjectContext]))
+                continue;
+        
+        
+        
+        if (!friend.hasIOSDevice)  // filter for users with iOS devices only
+            continue;
+        
+        
+        friend.markedForDeletionValue = NO;
+        
+        
+        
+    }
+    
+    // delete old friends
+    
+    for (id key in existingFriendsByUID)
+    {
+        Friend* deleteCandidate = (Friend*)existingFriendsByUID[key];
+        
+        if(deleteCandidate && deleteCandidate.markedForDeletionValue)
+            [deleteCandidate.managedObjectContext deleteObject:deleteCandidate];
+    }
+    
+    [appDelegate saveSearchContext];
+    
+    return YES;
+}
 
 - (BOOL) registerVideosFromDictionary: (NSDictionary *) dictionary
 {
@@ -178,7 +387,6 @@
     
     [fetchRequest setPredicate: [NSPredicate predicateWithFormat: @"viewId == %@", viewId]];
     
-    NSLog(@"%@", fetchRequest.predicate);
     
     itemsToDelete = [appDelegate.searchManagedObjectContext
                      executeFetchRequest: fetchRequest

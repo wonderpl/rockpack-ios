@@ -15,6 +15,7 @@
 #import "SYNSideNavigatorViewController.h"
 #import "SYNViewStackManager.h"
 #import "SYNSearchBoxViewController.h"
+#import "SYNNetworkErrorView.h"
 
 #define STACK_LIMIT 6
 
@@ -395,30 +396,19 @@
         return;
     
     CGRect screenRect = [[SYNDeviceManager sharedInstance] currentScreenRect];
+
+    // fade in the background ...
+    
     backgroundView = [[UIView alloc] initWithFrame:screenRect];
     backgroundView.alpha = 0.0f;
     backgroundView.backgroundColor = [UIColor blackColor];
     backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
-    popoverView = view;
-    
-    popoverView.alpha = 0.0;
-    popoverView.center = CGPointMake(screenRect.size.width * 0.5, screenRect.size.height * 0.5);
-    popoverView.frame = CGRectIntegral(view.frame);
-    popoverView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-    
     [self.masterController.view addSubview:backgroundView];
-    [self.masterController.view addSubview:view];
-    
-    
-    
-    // fade in in order
     [UIView animateWithDuration: 0.3
                           delay: 0.0
                         options: UIViewAnimationOptionCurveEaseOut
                      animations: ^{
-                         backgroundView.alpha = 0.8f;
-                         
+                         backgroundView.alpha = 0.7f;
                      }
                      completion:^(BOOL finished) {
                          UITapGestureRecognizer* tapToCloseGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -426,32 +416,112 @@
                          [backgroundView addGestureRecognizer:tapToCloseGesture];
                      }];
     
-    [UIView animateWithDuration: 0.3
-                          delay: 0.2
+    // ... and then the popover
+    [self.masterController.view addSubview:view];
+    popoverView = view;
+    if(IS_IPAD)    {
+        popoverView.alpha = 0.0;
+        popoverView.center = CGPointMake(screenRect.size.width * 0.5, screenRect.size.height * 0.5);
+        popoverView.frame = CGRectIntegral(view.frame);
+        popoverView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        
+        [UIView animateWithDuration: 0.3
+                              delay: 0.2
+                            options: UIViewAnimationOptionCurveEaseOut
+                         animations: ^{
+                             
+                             view.alpha = 1.0f;
+                         }
+                         completion:nil];
+    }
+    else // is IPhone
+    {
+        __block CGRect pvFrame = popoverView.frame;
+        pvFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar];
+        popoverView.frame = pvFrame;
+        
+        [UIView animateWithDuration: 0.2
+                              delay: 0.1
+                            options: UIViewAnimationOptionCurveEaseOut
+                         animations: ^{
+                             pvFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - pvFrame.size.height;
+                             popoverView.frame = pvFrame;
+                         }
+                         completion:nil];
+    }
+    
+    
+}
+
+- (void) presentSuccessNotificationWithMessage : (NSString*) message
+{
+    __block SYNNetworkErrorView* successNotification = [[SYNNetworkErrorView alloc] init];
+    successNotification.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"BarSucess"]];
+    [successNotification setText: message];
+    
+    [self.masterController.view addSubview: successNotification];
+    
+    [UIView animateWithDuration: 0.3f
+                          delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseOut
                      animations: ^{
-                         
-                         view.alpha = 1.0f;
+                         CGRect newFrame = successNotification.frame;
+                         newFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] - newFrame.size.height;
+                         successNotification.frame = newFrame;
                      }
-                     completion:nil];
-    
+                     completion: ^(BOOL finished) {
+                         
+                         [UIView animateWithDuration: 0.3f
+                                               delay: 4.0f
+                                             options: UIViewAnimationOptionCurveEaseIn
+                                          animations: ^{
+                                              CGRect newFrame = successNotification.frame;
+                                              newFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] + newFrame.size.height;
+                                              successNotification.frame = newFrame;
+                                          }
+                                          completion: ^(BOOL finished) {
+                                              [successNotification removeFromSuperview];
+                                          }];
+                     }];
 }
 
 -(void)removePopoverView
 {
-    [UIView animateWithDuration: 0.3
-                          delay: 0.0
-                        options: UIViewAnimationOptionCurveEaseOut
-                     animations: ^{
-                         backgroundView.alpha = 0.0;
-                         popoverView.alpha = 0.0;
-                     }
-                     completion:^(BOOL finished) {
-                         [backgroundView removeFromSuperview];
-                         [popoverView removeFromSuperview];
-                         backgroundView = nil;
-                         popoverView = nil;
-                     }];
+    void(^RemovePopoverComplete)(BOOL) = ^(BOOL finished)
+    {
+        [backgroundView removeFromSuperview];
+        [popoverView removeFromSuperview];
+        backgroundView = nil;
+        popoverView = nil;
+    };
+    
+    if(IS_IPAD)
+    {
+        [UIView animateWithDuration: 0.3
+                              delay: 0.0
+                            options: UIViewAnimationOptionCurveEaseOut
+                         animations: ^{
+                             backgroundView.alpha = 0.0;
+                             popoverView.alpha = 0.0;
+                         }
+                         completion:RemovePopoverComplete];
+    }
+    else
+    {
+        __block CGRect pvFrame = popoverView.frame;
+        
+        [UIView animateWithDuration: 0.2
+                              delay: 0.0
+                            options: UIViewAnimationOptionCurveEaseOut
+                         animations: ^{
+                             pvFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
+                             popoverView.frame = pvFrame;
+                         }
+                         completion:RemovePopoverComplete];
+        
+        
+    }
+    
 }
 
 
@@ -515,11 +585,6 @@
                          [modalViewController.view removeFromSuperview];
                          [modalViewController removeFromParentViewController];
                      }];
-}
-
--(void)addSubvievOnTopOfEverything:(UIView*)view
-{
-    [self.masterController.view addSubview:view];
 }
 
 

@@ -32,18 +32,19 @@
 #import "SYNVideoThumbnailWideCell.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
+#import "SYNOneToOneSharingController.h"
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNAbstractViewController ()  <UITextFieldDelegate,
                                           UIPopoverControllerDelegate>
 
-
 @property (getter = isVideoQueueVisible) BOOL videoQueueVisible;
 @property (nonatomic, assign) BOOL shouldPlaySound;
 @property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, strong) IBOutlet UIImageView *channelOverlayView;
 @property (nonatomic, strong) IBOutlet UITextField *channelNameTextField;
+@property (nonatomic, strong) SYNOneToOneSharingController* oneToOneViewController;
 @property (nonatomic, strong) UIPopoverController *activityPopoverController;
 @property (nonatomic, strong) UIView *dropZoneView;
 @property (strong, nonatomic) NSMutableDictionary *mutableShareDictionary;
@@ -57,7 +58,6 @@
 
 
 @implementation SYNAbstractViewController
-
 
 @synthesize fetchedResultsController = fetchedResultsController;
 @synthesize selectedIndex = _selectedIndex;
@@ -111,6 +111,8 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    //self.edgesForExtendedLayout = UIRectEdgeNone;
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(clearedLocationBoundData)
@@ -206,18 +208,7 @@
     NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoShareButton];
     VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
-    // Stop multiple clicks by disabling button 
-    videoShareButton.enabled = FALSE;
-    
-    [self shareVideoInstance: videoInstance
-                      inView: self.view
-                    fromRect: videoShareButton.frame
-             arrowDirections: UIPopoverArrowDirectionDown
-           activityIndicator: nil
-                  onComplete: ^{
-                 // Re-enable button
-                 videoShareButton.enabled = TRUE;
-             }];
+    [self shareVideoInstance: videoInstance];
 }
 
 
@@ -396,11 +387,6 @@
 #pragma mark - Social network sharing
 
 - (void) shareVideoInstance: (VideoInstance *) videoInstance
-                     inView: (UIView *) inView
-                   fromRect: (CGRect) rect
-            arrowDirections: (UIPopoverArrowDirection) arrowDirections
-          activityIndicator: (UIActivityIndicatorView *) activityIndicatorView
-                 onComplete: (SYNShareCompletionBlock) completionBlock
 {
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
@@ -411,28 +397,18 @@
     
     // At this point it is safe to assume that the video thumbnail image is in the cache
     UIImage *thumbnailImage = [SDWebImageManager.sharedManager.imageCache imageFromMemoryCacheForKey: videoInstance.video.thumbnailURL];
-
+    
     [self shareObjectType: @"video_instance"
                  objectId: videoInstance.uniqueId
-                  isOwner: @FALSE
-                  isVideo: @TRUE
-               usingImage: thumbnailImage
-                   inView: inView
-                 fromRect: rect
-          arrowDirections: arrowDirections
-        activityIndicator: activityIndicatorView
-               onComplete: completionBlock];
+                  isOwner: @NO
+                  isVideo: @YES
+               usingImage: thumbnailImage];
 }
 
 
 - (void) shareChannel: (Channel *) channel
               isOwner: (NSNumber *) isOwner
-               inView: (UIView *) inView
-             fromRect: (CGRect) rect
            usingImage: (UIImage *) image
-      arrowDirections: (UIPopoverArrowDirection) arrowDirections
-    activityIndicator: (UIActivityIndicatorView *) activityIndicatorView
-           onComplete: (SYNShareCompletionBlock) completionBlock
 {
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
@@ -441,16 +417,11 @@
                          withLabel: nil
                          withValue: nil];
     
-    [self shareObjectType: @"channel"
+    [self shareObjectType:  @"channel"
                  objectId: channel.uniqueId
                   isOwner: isOwner
-                  isVideo: @FALSE
-               usingImage: image
-                   inView: inView
-                 fromRect: rect
-          arrowDirections: arrowDirections
-        activityIndicator: activityIndicatorView
-               onComplete: completionBlock];
+                  isVideo: @NO
+               usingImage: image];
 }
 
 
@@ -459,11 +430,6 @@
                  isOwner: (NSNumber *) isOwner
                  isVideo: (NSNumber *) isVideo
               usingImage: (UIImage *) usingImage
-                  inView: (UIView *) inView
-                fromRect: (CGRect) rect
-         arrowDirections: (UIPopoverArrowDirection) arrowDirections
-       activityIndicator: (UIActivityIndicatorView *) activityIndicatorView
-              onComplete: (SYNShareCompletionBlock) completionBlock
 {
     if ([objectType isEqualToString: @"channel"])
     {
@@ -549,61 +515,11 @@
         [self.mutableShareDictionary addEntriesFromDictionary: @{@"image": usingImage}];
     }
  
-    // Prepare activities
-    OWFacebookActivity *facebookActivity = [[OWFacebookActivity alloc] init];
-    OWTwitterActivity *twitterActivity = [[OWTwitterActivity alloc] init];
+    self.oneToOneViewController = [[SYNOneToOneSharingController alloc] initWithInfo: self.mutableShareDictionary];
     
-    // Compile activities into an array, we will pass that array to
-    // OWActivityViewController on the next step
-    NSMutableArray *activities = @[facebookActivity, twitterActivity].mutableCopy;
-    
-    if ([MFMailComposeViewController canSendMail])
-    {
-        OWMailActivity *mailActivity = [[OWMailActivity alloc] init];
-        [activities addObject: mailActivity
-         ];
-    }
-    
-    if ([MFMessageComposeViewController canSendText])
-    {
-        OWMessageActivity *messageActivity = [[OWMessageActivity alloc] init];
-        [activities addObject: messageActivity];
-    }
-    
-    
-    // Create OWActivityViewController controller and assign data source
-    //
-    self.activityViewController = [[OWActivityViewController alloc]	 initWithViewController: self
-                                                                                 activities: activities];
-    
-    self.activityViewController.userInfo = self.mutableShareDictionary;
-
-    // Check to see if the user has moved away from this window (by the time we got our link)
-    if (inView.window)
-    {
-        // The activity controller needs to be presented from a popup on iPad, but normally on iPhone
-        if (IS_IPAD)
-        {
-            self.activityPopoverController = [[UIPopoverController alloc] initWithContentViewController: self.activityViewController];
-            self.activityPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
-            
-            self.activityViewController.presentingPopoverController = _activityPopoverController;
-            
-            self.activityPopoverController.delegate = self;
-            
-            [self.activityPopoverController presentPopoverFromRect: rect
-                                                            inView: inView
-                                          permittedArrowDirections: arrowDirections
-                                                          animated: YES];
-        }
-        else
-        {
-            [self.activityViewController presentFromRootViewController];
-        }
-    }
-    
-    completionBlock();
+    [appDelegate.viewStackManager presentPopoverView: self.oneToOneViewController.view];
 }
+
 
 - (void) requestShareLinkWithObjectType: (NSString *) objectType
                                objectId: (NSString *) objectId
@@ -625,27 +541,29 @@
          NSString *messageTwitter = [responseDictionary objectForKey: @"message_twitter"
                                                          withDefault: @""];
          
+         NSString *messageFacebook = [responseDictionary objectForKey: @"message_facebook"
+                                                         withDefault: @""];
+         
          NSURL *resourceURL = [NSURL URLWithString: resourceURLString];
          
-         self.mutableShareDictionary = @{@"text": message,
-                                         @"text_email": messageEmail,
-                                         @"text_twitter": messageTwitter,
-                                         @"url": resourceURL}.mutableCopy;
+         self.mutableShareDictionary = @{@"type" : objectType,
+                                         @"object_id" : objectId,
+                                         @"text" : message,
+                                         @"text_email" : messageEmail,
+                                         @"text_twitter" : messageTwitter,
+                                         @"text_facebook" : messageFacebook,
+                                         @"url" : resourceURL}.mutableCopy;
          
      } errorHandler: ^(NSDictionary *errorDictionary) {
-         self.mutableShareDictionary = @{@"text": @"",
-                                         @"text_email": @"",
-                                         @"text_twitter": @"",
-                                         @"url": [NSURL URLWithString: @"http://rockpack.com"]}.mutableCopy;
+         self.mutableShareDictionary = @{@"type" : objectType,
+                                         @"object_id" : objectId,
+                                         @"text" : @"",
+                                         @"text_email" : @"",
+                                         @"text_twitter" : @"",
+                                         @"text_facebook" : @"",
+                                         @"url" : [NSURL URLWithString: @"http://rockpack.com"]}.mutableCopy;
      }];
 }
-
-
-
-//- (void) popoverControllerDidDismissPopover: (UIPopoverController *) popoverController
-//{
-//    self.activityPopoverController.delegate = nil;
-//}
 
 
 #pragma mark - Purchase
@@ -708,7 +626,7 @@
     return NavigationButtonsAppearanceBlack;
 }
 
--(BOOL)alwaysDisplaysSearchBox
+- (BOOL) alwaysDisplaysSearchBox
 {
     return NO;
 }
@@ -781,12 +699,8 @@
                                                   [Appirater userDidSignificantEvent: FALSE];
                                               }
 
-                                              
-                                              
                                               [appDelegate saveContext: YES];
-                                              
-                                              
-                                              
+  
                                           } errorHandler: ^(id error) {
                                               DebugLog(@"Could not star video");
                                           }];
@@ -797,17 +711,7 @@
 {
     VideoInstance *videoInstance = [self videoInstanceForIndexPath: indexPath];
     
-    CGRect rect = CGRectMake([SYNDeviceManager.sharedInstance currentScreenWidth] * 0.5,
-                             480.0f, 1, 1);
-    
-    [self shareVideoInstance: videoInstance
-                      inView: self.view
-                    fromRect: rect
-             arrowDirections: 0
-           activityIndicator: nil
-                  onComplete: ^{
-                      [Appirater userDidSignificantEvent: FALSE];
-                  }];
+    [self shareVideoInstance: videoInstance];
 }
 
 - (void) shareChannelAtIndexPath: (NSIndexPath *) indexPath
@@ -825,19 +729,10 @@
         thumbnailImage = [SDWebImageManager.sharedManager.imageCache imageFromMemoryCacheForKey: channel.channelCover.imageUrl];
     }
     
-    CGRect rect = CGRectMake([SYNDeviceManager.sharedInstance currentScreenWidth] * 0.5,
-                             480.0f, 1, 1);
-    
     [self shareChannel: channel
                isOwner: ([channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]) ? @(TRUE): @(FALSE)
-                inView: self.view
-              fromRect: rect
             usingImage: thumbnailImage
-       arrowDirections: 0
-     activityIndicator: nil
-            onComplete: ^{
-                [Appirater userDidSignificantEvent: FALSE];
-            }];
+     ];
 }
 
 #define kRotateThresholdX 100
@@ -847,6 +742,13 @@
 
 
 - (VideoInstance *) videoInstanceForIndexPath: (NSIndexPath *) indexPath
+{
+    AssertOrLog(@"Shouldn't be calling abstract function");
+    return  nil;
+}
+
+- (VideoInstance *) videoInstanceForIndexPath: (NSIndexPath *) indexPath
+                            andComponentIndex: (NSInteger) componentIndex
 {
     AssertOrLog(@"Shouldn't be calling abstract function");
     return  nil;
@@ -873,25 +775,41 @@
     return  nil;
 }
 
-- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
-                    forCell: (UICollectionViewCell *) cell
+- (void) arcMenuSelectedCell: (UICollectionViewCell *) selectedCell
+           andComponentIndex: (NSInteger) componentIndex
 {
+    if ([self isChannelCell: selectedCell])
+    {
+        // Channel
+        self.arcMenuIsChannelCell = TRUE;
+        self.arcMenuIndexPath = [self indexPathForChannelCell: selectedCell];
+    }
+    else
+    {
+        // Video
+        self.arcMenuIsChannelCell = FALSE;
+        self.arcMenuIndexPath = [self indexPathForVideoCell: selectedCell];
+    }
 
+    self.arcMenuComponentIndex = componentIndex;
+}
+
+
+- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
+{
     NSArray *menuItems;
     float menuArc, menuStartAngle;
     NSString *analyticsLabel;
-    NSIndexPath *cellIndexPath;
     
-    if ([self isChannelCell: cell])
+    if (self.arcMenuIsChannelCell)
     {
         // Channel cell
         analyticsLabel = @"channel";
         
-        cellIndexPath = [self indexPathForChannelCell: cell];
-        
         SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
                                                             highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]
-                                                                        name: kActionShareChannel];
+                                                                        name: kActionShareChannel
+                                                                   labelText: @"Share it"];
         menuItems = @[arcMenuItem1];
 
         menuArc = M_PI / 4;
@@ -901,10 +819,8 @@
     {
         // Video cell
         analyticsLabel = @"video";
-        
-        cellIndexPath = [self indexPathForVideoCell: cell];
-        
-        VideoInstance *videoInstance = [self videoInstanceForIndexPath: cellIndexPath];
+
+        VideoInstance *videoInstance = [self videoInstanceForIndexPath: self.arcMenuIndexPath];
         
         // Get resource URL in parallel
         if (recognizer.state == UIGestureRecognizerStateBegan)
@@ -913,17 +829,39 @@
                                         objectId: videoInstance.uniqueId];
         }
         
-        SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: (videoInstance.video.starredByUserValue == FALSE) ? @"ActionLike" : @"ActionUnlike"]
-                                                            highlightedImage: [UIImage imageNamed: (videoInstance.video.starredByUserValue == FALSE) ? @"ActionLikeHighlighted" : @"ActionUnlikeHighlighted"]
-                                                                        name: kActionLike];
+        // A bit of a hack, but we need to work out whether the user has starred this videoInstance (we can't completely trust starredByUserValue)
+        BOOL starredByUser = videoInstance.video.starredByUserValue;
+        
+        if (!starredByUser)
+        {
+            // Double check, by iterating through the list of starrers to see if we are there
+            NSArray *starrers = [videoInstance.starrers array];
+            
+            for (ChannelOwner *channelOwner in starrers)
+            {
+                if ([channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId])
+                {
+                    starredByUser = TRUE;
+                    videoInstance.video.starredByUserValue = starredByUser;
+                    break;
+                }
+            }
+        }
+        
+        SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: (starredByUser == FALSE) ? @"ActionLike" : @"ActionUnlike"]
+                                                            highlightedImage: [UIImage imageNamed: (starredByUser == FALSE) ? @"ActionLikeHighlighted" : @"ActionUnlikeHighlighted"]
+                                                                        name: kActionLike
+                                                                   labelText: (starredByUser == FALSE) ? @"Like it" : @"Unlike it"];
         
         SYNArcMenuItem *arcMenuItem2 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionAdd"]
                                                             highlightedImage: [UIImage imageNamed: @"ActionAddHighlighted"]
-                                                                        name: kActionAdd];
+                                                                        name: kActionAdd
+                                                                   labelText: @"Pack it"];
         
         SYNArcMenuItem *arcMenuItem3 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
                                                             highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]
-                                                                        name: kActionShareVideo];
+                                                                        name: kActionShareVideo
+                                                                   labelText: @"Share it"];
         
         menuItems = @[arcMenuItem1, arcMenuItem2, arcMenuItem3];
         
@@ -932,7 +870,8 @@
     }
     
     [self arcMenuUpdateState: recognizer
-          forCellAtIndexPath: cellIndexPath
+          forCellAtIndexPath: self.arcMenuIndexPath
+          withComponentIndex: self.arcMenuComponentIndex
                    menuItems: menuItems
                      menuArc: menuArc
               menuStartAngle: menuStartAngle];
@@ -949,28 +888,33 @@
 
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
          forCellAtIndexPath: (NSIndexPath *) cellIndexPath
+         withComponentIndex: (NSInteger) componentIndex
                   menuItems: (NSArray *) menuItems
                     menuArc: (float) menuArc
              menuStartAngle: (float) menuStartAngle
 {
-    CGPoint tapPoint = [recognizer locationInView: self.view];
+    UIView *referenceView = appDelegate.masterViewController.view;
+    
+    CGPoint tapPoint = [recognizer locationInView: referenceView];
     
     if (recognizer.state == UIGestureRecognizerStateBegan)
     {
         SYNArcMenuItem *mainMenuItem = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionRingNoTouch"]
                                                             highlightedImage: [UIImage imageNamed: @"ActionRingTouch"]
-                                                                        name: kActionNone];
+                                                                        name: kActionNone
+                                                                   labelText: nil];
         
-        self.arcMenu = [[SYNArcMenuView alloc] initWithFrame: self.view.bounds
+        self.arcMenu = [[SYNArcMenuView alloc] initWithFrame: referenceView.bounds
                                                    startItem: mainMenuItem
                                                  optionMenus: menuItems
-                                               cellIndexPath: cellIndexPath];
+                                               cellIndexPath: cellIndexPath
+                                              componentIndex: componentIndex];
         self.arcMenu.delegate = self;
         self.arcMenu.startPoint = tapPoint;
         self.arcMenu.menuWholeAngle = menuArc;
         self.arcMenu.rotateAngle = menuStartAngle;
         
-        CGFloat screenWidth = self.view.frame.size.width;
+        CGFloat screenWidth = referenceView.bounds.size.width;
         
         if (tapPoint.x < kRotateThresholdX)
         {
@@ -1005,8 +949,7 @@
             self.arcMenu.rotateAngle += M_PI;
         }
         
-        
-        [appDelegate.viewStackManager addSubvievOnTopOfEverything:self.arcMenu];
+        [appDelegate.masterViewController.view addSubview: self.arcMenu];
         
         [self.arcMenu show: YES];
     }
@@ -1057,9 +1000,10 @@
     }
 }
 
+
 - (UIView *) arcMenuViewToShade
 {
-    return self.videoThumbnailCollectionView;
+    return appDelegate.masterViewController.view;
 }
 
 

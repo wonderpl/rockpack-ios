@@ -12,8 +12,11 @@
 @protocol SYNChannelThumbnailCellDelegate <NSObject>
 
 - (void) channelTapped: (UICollectionViewCell *) cell;
-- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
-                    forCell: (UICollectionViewCell *) cell;
+
+- (void) arcMenuSelectedCell: (UICollectionViewCell *) selectedCell
+           andComponentIndex: (NSInteger) componentIndex;
+
+- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer;
 
 @end
 

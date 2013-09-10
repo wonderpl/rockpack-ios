@@ -714,7 +714,7 @@
         if (obj == self.channel)
         {
             self.dataItemsAvailable = self.channel.totalVideosValue;
-            DebugLog(@"%d : %@", idx, obj);
+            
             
             self.subscribeButton.selected = self.channel.subscribedByUserValue;
             self.subscribeButton.enabled = YES;
@@ -1020,16 +1020,6 @@
     return cell;
 }
 
-- (IBAction) toggleStarAtIndexPath: (NSIndexPath *) indexPath
-{
-    [super toggleStarAtIndexPath:indexPath];
-    
-    VideoInstance *videoInstance = [self videoInstanceForIndexPath: indexPath];
-    
-    [self.channel.videoInstancesSet removeObject:videoInstance];
-    
-    [self.videoThumbnailCollectionView reloadData];
-}
 
 - (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
             viewForSupplementaryElementOfKind: (NSString *) kind
@@ -1323,16 +1313,8 @@
     shareButton.enabled = FALSE;
     
     [self shareChannel: self.channel
-                isOwner: ([self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]) ? @(TRUE): @(FALSE)
-                inView: self.view
-               fromRect: self.shareButton.frame
-            usingImage: nil
-        arrowDirections: UIPopoverArrowDirectionRight
-      activityIndicator: self.shareActivityIndicator
-             onComplete: ^{
-                 // Re-enable button
-                 shareButton.enabled = TRUE;
-             }];
+               isOwner: ([self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]) ? @(TRUE): @(FALSE)
+            usingImage: nil];
 }
 
 
@@ -1736,8 +1718,7 @@
                                                       }
                                                   }
                                                   
-                                                  [self	 showError: errorMessage
-                                                         showErrorTitle: errorTitle];
+                                                  [self	showError: errorMessage showErrorTitle: errorTitle];
                                                   
                                                   self.saveChannelButton.hidden = NO;
                                                   self.saveChannelButton.enabled = YES;
@@ -2217,10 +2198,12 @@
     [appDelegate.oAuthNetworkEngine channelCreatedForUserId: appDelegate.currentOAuth2Credentials.userId
                                                   channelId: channelId
                                           completionHandler: ^(id dictionary) {
+                                              
                                               Channel *createdChannel;
                                               
-                                              if (!isUpdate)                                // its a new creation
+                                              if (!isUpdate) // its a new creation
                                               {
+                                                  
                                                   createdChannel = [Channel instanceFromDictionary: dictionary
                                                                          usingManagedObjectContext: appDelegate.mainManagedObjectContext
                                                                                ignoringObjectTypes: kIgnoreChannelOwnerObject];
@@ -2229,8 +2212,7 @@
                                                   [appDelegate.currentUser.channelsSet
                                                    addObject: createdChannel];
                                                   
-                                                  if ([createdChannel.categoryId
-                                                       isEqualToString: @""])
+                                                  if ([createdChannel.categoryId isEqualToString: @""])
                                                   {
                                                       createdChannel.publicValue = NO;
                                                   }
@@ -2642,13 +2624,10 @@ shouldChangeTextInRange: (NSRange) range
       
         //__weak SYNChannelDetailViewController *wself = self;
         addToChannelPopover.action = ^(id obj){
-            
-            if([obj isKindOfClass:[UILongPressGestureRecognizer class]])
+            if ([obj isKindOfClass:[UILongPressGestureRecognizer class]])
             {
-                [self arcMenuUpdateState:obj forCell:randomCell];
+                [self arcMenuUpdateState: obj];
             }
-            
-            
         };
         
         [appDelegate.onBoardingQueue addPopover: addToChannelPopover];
@@ -3347,46 +3326,7 @@ shouldChangeTextInRange: (NSRange) range
 
 - (void) videoOverlayDidDissapear
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL hasShownAddVideoOnBoarding = [defaults boolForKey: kUserDefaultsAddVideo];
     
-    if (!hasShownAddVideoOnBoarding && IS_IPHONE)
-    {
-        NSString *message = NSLocalizedString(@"onboarding_video", nil);
-        
-        // FIXME: Surely these iPad checks are not required (see above)
-        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0;
-        CGSize size = IS_IPAD ? CGSizeMake(240.0, 86.0) : CGSizeMake(200.0, 82.0);
-        
-        SYNVideoThumbnailRegularCell *randomCell =
-        (SYNVideoThumbnailRegularCell *) [self.videoThumbnailCollectionView cellForItemAtIndexPath: [NSIndexPath indexPathForItem: 0
-                                                                                                                        inSection: 0]];
-        
-        
-        CGRect rectToPointTo = [self.view  convertRect: randomCell.frame
-                                              fromView: randomCell];
-        
-        rectToPointTo = CGRectOffset(rectToPointTo, -5, 0);
-        //randomCell.addItButton.hidden = YES;
-        
-        SYNOnBoardingPopoverView *addToChannelPopover = [SYNOnBoardingPopoverView withMessage: message
-                                                                                     withSize: size
-                                                                                  andFontSize: fontSize
-                                                                                   pointingTo: rectToPointTo
-                                                                                withDirection: PointingDirectionDown];
-        
-        //__weak SYNChannelDetailViewController *wself = self;
-        addToChannelPopover.action = ^(id obj){
-            //[wself addItToChannelPresssed: nil];
-        };
-        
-        [appDelegate.onBoardingQueue addPopover: addToChannelPopover];
-        
-        [defaults setBool: YES
-                   forKey: kUserDefaultsAddVideo];
-    }
-    
-    [appDelegate.onBoardingQueue present];
 }
 
 

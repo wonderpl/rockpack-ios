@@ -10,6 +10,7 @@
 #import "SYNAccountSettingsTextInputController.h"
 #import "SYNDeviceManager.h"
 #import "UIFont+SYNFont.h"
+#import "RegexKitLite.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface SYNAccountSettingsTextInputController ()

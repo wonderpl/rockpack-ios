@@ -1026,7 +1026,6 @@
     NSArray* videoIdArray = [[videoInstanceSet array] valueForKey:@"uniqueId"];
     
     
-    
     [networkOperation setCustomPostDataEncodingHandler: ^ NSString * (NSDictionary *postDataDict)
     {
          
@@ -1500,6 +1499,46 @@
     [self enqueueSignedOperation: networkOperation];
 }
 
+- (void) emailShareWithObjectType: (NSString *) shareType
+                         objectId: (NSString *) objectId
+                       withFriend: (Friend *) friendToShare
+                completionHandler: (MKNKUserSuccessBlock) completionBlock
+                     errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    if (!objectId || !friendToShare)
+    {
+        errorBlock (@{@"params_error": [NSString stringWithFormat: @"params sent: %@ %@", objectId, friendToShare]});
+        return;
+    }
+    
+    NSString *apiString = [NSString stringWithFormat: @"%@?locale=%@", kAPIShareEmail, self.localeString];
+    
+    NSMutableDictionary *params = @{@"object_type": shareType,
+                                   @"object_id": objectId,
+                                   @"email": friendToShare.email}.mutableCopy;
+    
+    if(friendToShare.displayName)
+        [params addEntriesFromDictionary:@{@"name":friendToShare.displayName}];
+    
+    if(friendToShare.externalSystem && friendToShare.externalUID)
+       [params addEntriesFromDictionary:@{@"external_system":friendToShare.externalSystem,
+                                          @"external_uid":friendToShare.externalUID}];
+    
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject *) [self operationWithPath: apiString
+                                                                                                         params: params
+                                                                                                     httpMethod: @"POST"
+                                                                                                            ssl: YES];
+    [networkOperation addHeaders: @{@"Content-Type": @"application/json"}];
+    networkOperation.postDataEncoding = MKNKPostDataEncodingTypeJSON;
+    
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
 
 - (void) reportConcernForUserId: (NSString *) userId
                      objectType: (NSString *) objectType
@@ -1662,7 +1701,7 @@
  "token_expires": "2013-03-28T19:16:13",
  "token_permissions": "read,write",
  "meta": {
- "key": "value"
+    "key": "value"
  }
  }
  */
@@ -1714,6 +1753,7 @@
 }
 
 - (void) friendsForUser: (User*)user
+                 onlyRecent: (BOOL)recent
       completionHandler: (MKNKUserSuccessBlock) completionBlock
            errorHandler: (MKNKUserErrorBlock) errorBlock
 {
@@ -1725,13 +1765,14 @@
     
     NSString *apiString = [kAPIFriends stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
-    NSDictionary *params = @{@"device_filter": @"ios"};
+    NSMutableDictionary *params = @{@"device_filter": @"ios"}.mutableCopy;
+    if(recent)
+        [params setObject:@"share_filter" forKey:@YES];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: params
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: YES];
-    
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
                                 errorHandler: errorBlock];

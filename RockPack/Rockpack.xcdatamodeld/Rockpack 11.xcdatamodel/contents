@@ -77,9 +77,12 @@
         <relationship name="feedItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="FeedItem" inverseName="aggregate" inverseEntity="FeedItem" syncable="YES"/>
     </entity>
     <entity name="Friend" representedClassName="Friend" parentEntity="ChannelOwner" syncable="YES">
+        <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="externalSystem" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="externalUID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="hasIOSDevice" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="lastShareDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="localOrigin" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="resourceURL" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Genre" representedClassName="Genre" parentEntity="AbstractCommon" syncable="YES">
@@ -137,10 +140,10 @@
         <element name="CoverArt" positionX="-324" positionY="-180" width="128" height="103"/>
         <element name="ExternalAccount" positionX="-522" positionY="405" width="128" height="180"/>
         <element name="FeedItem" positionX="142" positionY="-316" width="128" height="208"/>
-        <element name="Friend" positionX="-533" positionY="-13" width="128" height="103"/>
+        <element name="Friend" positionX="-533" positionY="-13" width="128" height="150"/>
         <element name="Genre" positionX="-290" positionY="-326" width="128" height="88"/>
         <element name="SubGenre" positionX="-461" positionY="-319" width="128" height="73"/>
-        <element name="User" positionX="-513" positionY="117" width="128" height="238"/>
+        <element name="User" positionX="-531" positionY="149" width="128" height="238"/>
         <element name="Video" positionX="162" positionY="218" width="128" height="223"/>
         <element name="VideoInstance" positionX="-306" positionY="234" width="128" height="148"/>
     </elements>

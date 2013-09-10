@@ -8,18 +8,31 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol SYNChannelMidCellDelegate <NSObject>
+
+- (void) channelTapped: (UICollectionViewCell *) cell;
+
+- (void) arcMenuSelectedCell: (UICollectionViewCell *) selectedCell
+           andComponentIndex: (NSInteger) componentIndex;
+
+- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer;
+
+@end
+
+
 @interface SYNChannelMidCell : UICollectionViewCell
-@property (nonatomic, strong) IBOutlet UIImageView *imageView;
-@property (nonatomic, strong) IBOutlet UILabel *titleLabel;
-@property (nonatomic, strong) IBOutlet UIImageView* panelSelectedImageView;
-@property (nonatomic, strong) IBOutlet UIButton* deleteButton;
-@property (nonatomic, strong) IBOutlet UIImageView* shadowOverlayImageView;
 
 @property (nonatomic) BOOL specialSelected;
+@property (nonatomic, strong) IBOutlet UIButton* deleteButton;
+@property (nonatomic, strong) IBOutlet UIImageView *imageView;
+@property (nonatomic, strong) IBOutlet UIImageView* panelSelectedImageView;
+@property (nonatomic, strong) IBOutlet UIImageView* shadowOverlayImageView;
+@property (nonatomic, strong) IBOutlet UILabel *titleLabel;
+@property (nonatomic, weak) id<SYNChannelMidCellDelegate> viewControllerDelegate;
 
 - (void) setChannelTitle: (NSString*) titleString;
 
-- (void) setViewControllerDelegate: (UIViewController *) viewControllerDelegate;
+
 
 
 @end

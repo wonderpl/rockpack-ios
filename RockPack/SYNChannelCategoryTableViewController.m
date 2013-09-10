@@ -274,7 +274,7 @@
 }
 
 
-#pragma mark - Table view data source
+#pragma mark - UITableView Delegate/Data Source
 
 - (NSInteger) numberOfSectionsInTableView: (UITableView *) tableView
 {
@@ -376,11 +376,11 @@
     
     [header.headerButton addTarget: self
                             action: @selector(pressedHeader:)
-                  forControlEvents: UIControlEventTouchDown];
+                  forControlEvents: UIControlEventTouchDown]; // make highlighted
     
     [header.headerButton addTarget: self
                             action: @selector(releasedHeader:)
-                  forControlEvents: UIControlEventTouchUpOutside];
+                  forControlEvents: UIControlEventTouchUpOutside]; // make un-highlighted
     
     header.headerButton.tag = section;
     
@@ -732,7 +732,8 @@
     headerView.backgroundImage.image = [UIImage imageNamed: @"CategorySlide"];
 }
 
-#pragma mark - set selected Genre
+#pragma mark - Set Selected Genre
+
 - (void) setSelectedCategoryForId: (NSString *) selectedCategoryId
 {
     if (!selectedCategoryId)

@@ -33,15 +33,17 @@
 #import "SYNImplicitSharingController.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "Appirater.h"
+#import "AMBlurView.h"
 
 @interface SYNVideoViewerViewController () <UIGestureRecognizerDelegate>
 
-@property (nonatomic, assign) CGRect originalFrame;
 
+@property (nonatomic, assign) CGRect originalFrame;
 @property (nonatomic, assign) CGRect originalSwipeFrame;
 @property (nonatomic, assign) int currentSelectedIndex;
 @property (nonatomic, copy) NSArray *videoInstanceArray;
 @property (nonatomic, getter = isVideoExpanded) BOOL videoExpanded;
+@property (nonatomic, strong) AMBlurView *blurView;
 @property (nonatomic, strong) IBOutlet BBCyclingLabel *channelCreatorLabel;
 @property (nonatomic, strong) IBOutlet BBCyclingLabel *channelTitleLabel;
 @property (nonatomic, strong) IBOutlet BBCyclingLabel *videoTitleLabel;
@@ -59,13 +61,13 @@
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelThumbnailImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *panelImageView;
+@property (nonatomic, strong) IBOutlet UILabel* likesCountLabel;
 @property (nonatomic, strong) IBOutlet UIView *swipeView;
 @property (nonatomic, strong) SYNReportConcernTableViewController *reportConcernTableViewController;
 @property (nonatomic, strong) SYNVideoViewerThumbnailLayout *layout;
 @property (nonatomic, strong) UISwipeGestureRecognizer* leftSwipeRecogniser;
 @property (nonatomic, strong) UISwipeGestureRecognizer* rightSwipeRecogniser;
 @property (nonatomic, strong) UITapGestureRecognizer* tapRecogniser;
-@property (nonatomic, strong) IBOutlet UILabel* likesCountLabel;
 @property (weak, nonatomic) IBOutlet UIButton *addVideoButton;
 @property (weak, nonatomic) IBOutlet UIButton *shareButton;
 
@@ -290,8 +292,29 @@
     
     
     // likes count
-    self.likesCountLabel.font = [UIFont rockpackFontOfSize:self.likesCountLabel.font.pointSize];
+    self.likesCountLabel.font = [UIFont boldRockpackFontOfSize:self.likesCountLabel.font.pointSize];
     self.likesCountLabel.text = @"0";
+    
+    
+    
+    //iOS 7 Blur
+    if (IS_IOS_7_OR_GREATER)
+    {
+        // Do iOS7 Tingz
+        self.blurView = [AMBlurView new];
+//        self.blurView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        [self.blurView setFrame: CGRectMake(0.0f, 0.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight] + 2.0f)];
+        
+        [self.blurView setBlurTintColor: [UIColor colorWithRed: 21.0f / 255.0
+                                                         green: 24.0f / 255.0
+                                                          blue: 28.0f / 255.0
+                                                         alpha: 1.0f]];
+        
+        self.view.backgroundColor = [UIColor clearColor];
+        
+        [self.view insertSubview: self.blurView
+                         atIndex: 0];
+    }
 }
 
 
@@ -376,12 +399,13 @@
                                             duration: duration];
     
     CGRect blackPanelFrame;
+    CGRect blurViewFrame;
     
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
     {
         // Landscape
         blackPanelFrame = CGRectMake(0, 0, 1024, 768);
-        
+        blurViewFrame = CGRectMake(0, 0, 1024, 768);        
         if (self.isVideoExpanded)
         {
             self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.384f, 1.384f);
@@ -391,6 +415,8 @@
     {
         // Portrait
         blackPanelFrame = CGRectMake(128, -128, 768, 1024);
+        blurViewFrame = CGRectMake(0, 0, 768, 1024);
+        
         if (self.isVideoExpanded)
         {
             self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0392f, 1.0392f);
@@ -399,6 +425,7 @@
     }
     
     self.blackPanelView.frame = blackPanelFrame;
+    self.blurView.frame = blurViewFrame;
 }
 
 
@@ -999,16 +1026,7 @@
     
     videoShareButton.enabled = FALSE;
     
-    [self shareVideoInstance: videoInstance
-                     inView: self.chromeView
-                    fromRect: videoShareButton.frame
-             arrowDirections: UIPopoverArrowDirectionDown
-           activityIndicator: self.shareActivityIndicator
-                  onComplete: ^{
-                     videoShareButton.enabled = TRUE;
-                      [Appirater userDidSignificantEvent: FALSE];
-
-             }];
+    [self shareVideoInstance: videoInstance];
 }
 
 - (IBAction) userTouchedReportConcernButton: (UIButton *) button
@@ -1248,6 +1266,7 @@
 
 -(void)runAppearAnimation
 {
+    
     [UIView animateWithDuration:0.5f delay:0.5f options:UIViewAnimationCurveEaseInOut animations:^{
         
         self.addVideoButton.transform = CGAffineTransformIdentity;
