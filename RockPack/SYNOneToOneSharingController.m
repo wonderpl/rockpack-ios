@@ -964,6 +964,7 @@
     
     [self.searchTextField resignFirstResponder];
     
+    
     SYNAppDelegate *appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
     __weak SYNOneToOneSharingController *wself = self;
      
@@ -987,7 +988,10 @@
                                                
                                                [self showLoader:NO];
                                                
-                                               [appDelegate.viewStackManager presentSuccessNotificationWithMessage:@"Email Sent Succesfully"];
+                                               NSString* typeName = [self.mutableShareDictionary[@"type"] isEqualToString:@"channel"] ? @"Pack" : @"Video";
+                                               
+                                               NSString* notificationText = [NSString stringWithFormat:@"Your %@ has been successfully sent", typeName];
+                                               [appDelegate.viewStackManager presentSuccessNotificationWithMessage:notificationText];
                                                
                                            } errorHandler: ^(NSDictionary *error) {
                                                
