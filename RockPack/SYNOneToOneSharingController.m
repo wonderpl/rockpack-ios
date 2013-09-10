@@ -721,6 +721,7 @@
     self.friendToAddEmail.email = textfield.text;
     if([self.friendToAddEmail.externalSystem isEqualToString:kEmail])
     {
+        self.friendToAddEmail.uniqueId = self.friendToAddEmail.email;
         self.friendToAddEmail.externalUID = self.friendToAddEmail.email; // workaround the fact that we do not have a UID for this new user
     }
     
@@ -987,6 +988,8 @@
                                                NSString *title = @"Email Couldn't be Sent";
                                                NSString *reason = @"Unkown reson";
                                                NSDictionary *formErrors = error[@"form_errors"];
+                                               
+                                               NSLog(@"%@", error);
                                                
                                                if (formErrors[@"email"])
                                                {

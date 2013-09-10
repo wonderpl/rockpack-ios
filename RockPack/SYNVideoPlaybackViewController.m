@@ -486,17 +486,28 @@ static UIWebView* vimeoideoWebViewInstance;
     
     // Add the progress bar over the background, but underneath the slider
     self.bufferingProgressView = [[UIProgressView alloc] initWithFrame: CGRectMake(sliderOffset+1, 17, shuttleBarFrame.size.width - 4 -(2 * sliderOffset), 10)];
-    UIImage *progressImage = [[UIImage imageNamed: @"ShuttleBarBufferBar.png"] resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f)];
+//    UIImage *progressImage = [[UIImage imageNamed: @"ShuttleBarBufferBar.png"] resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f)];
+//    // Note: this image needs to be exactly the same size at the left hand-track bar, or the bar will only display as a line
+//	UIImage *shuttleSliderRightTrack = [[UIImage imageNamed: @"ShuttleBarRemainingBar.png"] resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f)];
+    
+    UIImage *progressImage = [[UIImage imageNamed: @"ShuttleBarBufferBar.png"] resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f)];
     // Note: this image needs to be exactly the same size at the left hand-track bar, or the bar will only display as a line
-	UIImage *shuttleSliderRightTrack = [[UIImage imageNamed: @"ShuttleBarRemainingBar.png"] resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f)];
+	UIImage *shuttleSliderRightTrack = [UIImage imageNamed: @"ShuttleBarRemainingBar.png"];
 
     self.bufferingProgressView.progressImage = progressImage;
     self.bufferingProgressView.trackImage = shuttleSliderRightTrack;
     self.bufferingProgressView.progress = 0.0f;
-    self.bufferingProgressView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.bufferingProgressView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [shuttleBarView addSubview: self.bufferingProgressView];
     
-    self.shuttleSlider = [[UISlider alloc] initWithFrame: CGRectMake(sliderOffset, 9, shuttleBarFrame.size.width - (2 * sliderOffset), 25)];
+    CGFloat sliderYOffset = 9.0f;
+    
+    if (IS_IOS_7_OR_GREATER)
+    {
+        sliderYOffset = 5.0f;
+    }
+    
+    self.shuttleSlider = [[UISlider alloc] initWithFrame: CGRectMake(sliderOffset, sliderYOffset, shuttleBarFrame.size.width - (2 * sliderOffset), 25)];
     
     UIImage *shuttleSliderLeftTrack = [[UIImage imageNamed: @"ShuttleBarProgressBar.png"] resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f)];
 
