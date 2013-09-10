@@ -12,9 +12,7 @@
 #import "UIImage+ImageEffects.h"
 #import "UIInterpolatingMotionEffect+DualAxis.h"
 
-@implementation SYNParallaxView
-
-@interface FLBlurredView ()
+@interface SYNParallaxView ()
 {
     BOOL _needsUpdateBackground;
     BOOL _isRenderingBackground;
@@ -28,7 +26,8 @@
 
 @end
 
-@implementation FLBlurredView
+
+@implementation SYNParallaxView
 
 static const CGFloat kFLDownscaleFactorDefault = 8.0f;
 static const CGFloat kFLBlurRadiusDefault = 30.0f;
@@ -136,9 +135,9 @@ static UIColor *kFLBackgroundTintColorDefault;
 }
 
 
-- (void) setMotionEffectAmplitude: (CGFloat) motionEffectAmplitude
+- (void) setMotionEffectDisplacement: (CGFloat) motionEffectDisplacement
 {
-    _motionEffectAmplitude = motionEffectAmplitude;
+    _motionEffectDisplacement = motionEffectDisplacement;
     
     if (_motionEffect != nil)
     {
@@ -152,12 +151,13 @@ static UIColor *kFLBackgroundTintColorDefault;
     
     [self updateBackgroundFrame];
     
-    if (motionEffectAmplitude != 0.0f)
+    if (motionEffectDisplacement != 0.0f)
     {
         _motionEffect = [UIInterpolatingMotionEffect bidirectionalCenterMotionEffectAttachedToView: self
-                                                                                     withAmplitude: motionEffectAmplitude];
+                                                                                     withAmplitude: motionEffectDisplacement];
+        
         _backgroundMotionEffect = [UIInterpolatingMotionEffect bidirectionalCenterMotionEffectAttachedToView: _backgroundView
-                                                                                               withAmplitude: -motionEffectAmplitude];
+                                                                                               withAmplitude: -motionEffectDisplacement];
     }
 }
 

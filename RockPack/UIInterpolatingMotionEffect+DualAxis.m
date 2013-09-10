@@ -14,7 +14,7 @@
 
 + (UIMotionEffectGroup *) dualAxisMotionEffectWithMaxDisplacement: (CGFloat) displacement
 {
-    if (view == nil || amplitude == 0.0f)
+    if (displacement == 0.0f)
     {
         return nil;
     }
