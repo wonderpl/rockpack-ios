@@ -77,11 +77,13 @@
                            NSLocalizedString (@"Spam", nil),
                            NSLocalizedString (@"Other", nil)];
     
+    self.reportTableTitleLabel.font = [UIFont rockpackFontOfSize: self.reportTableTitleLabel.font.pointSize];
+    
+    //No more X button on report popover
+    /*
     UIButton *customCancelButton = [UIButton buttonWithType: UIButtonTypeCustom];
     UIImage* customCancelButtonImage = [UIImage imageNamed: @"ButtonPopoverCancel"];
     UIImage* customCancelButtonHighlightedImage = [UIImage imageNamed: @"ButtonPopoverCancelHighlighted"];
-    
-    self.reportTableTitleLabel.font = [UIFont rockpackFontOfSize: self.reportTableTitleLabel.font.pointSize];
     
     [customCancelButton setImage: customCancelButtonImage
                         forState: UIControlStateNormal];
@@ -95,32 +97,23 @@
     
     customCancelButton.frame = CGRectMake(0.0, 0.0, customCancelButtonImage.size.width, customCancelButtonImage.size.height);
     UIBarButtonItem *customCancelButtonItem = [[UIBarButtonItem alloc] initWithCustomView: customCancelButton];
-    
+    self.navigationItem.leftBarButtonItem = customCancelButtonItem;
+     */
+
     if (IS_IOS_7_OR_GREATER)
     {
         self.tableView.backgroundColor = [UIColor clearColor];
         
-        AMBlurView * blurredBackgroundView = [AMBlurView new];
-        
-        blurredBackgroundView.frame = CGRectMake(0, 88, self.tableView.frame.size.width, [[SYNDeviceManager sharedInstance] currentScreenHeight] - 86);
-        
-        [self.view insertSubview:blurredBackgroundView atIndex:0];
-        
-//        if (IS_IPHONE_5) {
-//            blurredBackgroundView.frame = CGRectMake(self.containerView.frame.origin.x, self.containerView.frame.origin.y, self.containerView.frame.size.width, self.containerView.frame.size.height + 67 + 22);
-//        }
-//        
-//        else
-//        {
-//            blurredBackgroundView.frame = CGRectMake(self.containerView.frame.origin.x, self.containerView.frame.origin.y, self.containerView.frame.size.width, self.containerView.frame.size.height + 22);
-//        }
-//        
-//        [self.blurViewController addSubview: self.viewController.view];
-//        [self.view addSubview:self.blurViewController];
+        if (IS_IPHONE)
+        {
+            AMBlurView * blurredBackgroundView = [AMBlurView new];
+            
+            blurredBackgroundView.frame = CGRectMake(0, 88, self.tableView.frame.size.width, [[SYNDeviceManager sharedInstance] currentScreenHeight] - 86);
+            
+            [self.view insertSubview:blurredBackgroundView atIndex:0];
+        }
     }
-    
-    self.navigationItem.leftBarButtonItem = customCancelButtonItem;
-    
+        
     UIButton *customUseButton = [UIButton buttonWithType: UIButtonTypeCustom];
     UIImage* customUseButtonImage = [UIImage imageNamed: @"ButtonPopoverReport"];
     UIImage* customUseButtonHighlightedImage = [UIImage imageNamed: @"ButtonPopoverReportHighlighted.png"];
@@ -292,20 +285,23 @@ didSelectRowAtIndexPath: (NSIndexPath *) indexPath
         containerView.backgroundColor = [UIColor clearColor];
         UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake (0, 4, 80, 28)];
         label.backgroundColor = [UIColor clearColor];
-        label.font = [UIFont boldRockpackFontOfSize: 20.0];
+        label.font = [UIFont rockpackFontOfSize: 20.0];
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = [UIColor blackColor];
-        label.shadowColor = [UIColor whiteColor];
+        label.shadowColor = IS_IOS_7_OR_GREATER ? [UIColor clearColor] : [UIColor whiteColor];
         label.shadowOffset = CGSizeMake(0.0, 1.0);
-        label.text = NSLocalizedString(@"REPORT", nil);
+        label.text = NSLocalizedString(@"Report", nil);
         [containerView addSubview: label];
         self.navigationItem.titleView = containerView;
         
         // Need show the popover controller
         self.reportConcernPopoverController = [[UIPopoverController alloc] initWithContentViewController: navController];
-        self.reportConcernPopoverController.popoverContentSize = CGSizeMake(245, 344);
+        self.reportConcernPopoverController.popoverContentSize = CGSizeMake(240, 351);
         self.reportConcernPopoverController.delegate = self;
-        self.reportConcernPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
+        
+        if (!IS_IOS_7_OR_GREATER) {
+            self.reportConcernPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
+        }
         
         CGRect popoverFrame = [viewController.view convertRect:presentingButton.frame fromView:presentingButton.superview];
         

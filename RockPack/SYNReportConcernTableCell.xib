@@ -60,7 +60,7 @@
 								<int key="NSvFlags">274</int>
 								<string key="NSFrame">{{0, 43}, {320, 1}}</string>
 								<reference key="NSSuperview" ref="891453384"/>
-								<reference key="NSNextKeyView" ref="818385557"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">3</int>
@@ -123,20 +123,6 @@
 								</object>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 							</object>
-							<object class="IBUIImageView" id="818385557">
-								<reference key="NSNextResponder" ref="891453384"/>
-								<int key="NSvFlags">-2147483359</int>
-								<string key="NSFrame">{{287, 0}, {27, 44}}</string>
-								<reference key="NSSuperview" ref="891453384"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<int key="IBUIContentMode">4</int>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<object class="NSCustomResource" key="IBUIImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">IconReportConcernWhiteCheck.png</string>
-								</object>
-							</object>
 						</array>
 						<string key="NSFrameSize">{320, 43}</string>
 						<reference key="NSSuperview" ref="134009771"/>
@@ -184,14 +170,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">checkmarkImage</string>
-						<reference key="source" ref="134009771"/>
-						<reference key="destination" ref="818385557"/>
-					</object>
-					<int key="connectionID">17</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">highlightedViewiOS7</string>
 						<reference key="source" ref="134009771"/>
 						<reference key="destination" ref="290895430"/>
@@ -224,7 +202,6 @@
 						<array class="NSMutableArray" key="children">
 							<reference ref="15914496"/>
 							<reference ref="950317831"/>
-							<reference ref="818385557"/>
 							<reference ref="290895430"/>
 							<reference ref="720210676"/>
 						</array>
@@ -238,11 +215,6 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">3</int>
 						<reference key="object" ref="15914496"/>
-						<reference key="parent" ref="134009771"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">16</int>
-						<reference key="object" ref="818385557"/>
 						<reference key="parent" ref="134009771"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -265,7 +237,6 @@
 				<string key="-1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="-2.CustomClassName">UIResponder</string>
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="16.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="18.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="19.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="2.CustomClassName">SYNReportConcernTableCell</string>
@@ -284,10 +255,10 @@
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="CategorySlide.png">{1, 44}</string>
-			<string key="IconReportConcernWhiteCheck.png">{14, 14}</string>
-		</dictionary>
+		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="NS.key.0">CategorySlide.png</string>
+			<string key="NS.object.0">{1, 44}</string>
+		</object>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
 </archive>
