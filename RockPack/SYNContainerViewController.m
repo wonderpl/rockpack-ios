@@ -297,6 +297,7 @@ UITextViewDelegate>
 
 - (void) scrollViewDidEndDecelerating: (UIScrollView *) scrollView
 {
+    
     self.currentPageOffset = self.scrollView.contentOffset;
     
     // These are the things we need to do if the page has actually changed

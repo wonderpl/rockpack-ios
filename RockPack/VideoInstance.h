@@ -4,7 +4,7 @@
 @interface VideoInstance : _VideoInstance
 
 @property (nonatomic) BOOL selectedForVideoQueue;
-@property (nonatomic, weak) NSNumber* starredByUser;
+@property (nonatomic, strong) NSNumber* starredByUser;
 @property (nonatomic) BOOL starredByUserValue;
 
 + (VideoInstance *) instanceFromDictionary: (NSDictionary *) dictionary

@@ -264,7 +264,7 @@ static NSDateFormatter *dateFormatter = nil;
     if(starredByUser == nil) // nil is equivalent to NO
         starredByUser = @NO;
     
-    if([starredByUser isEqualToNumber:_starredByUser])
+    if(_starredByUser && [starredByUser isEqualToNumber:_starredByUser])
         return;
     
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -285,7 +285,7 @@ static NSDateFormatter *dateFormatter = nil;
 }
 -(NSNumber*)starredByUser
 {
-    if(self.video.starredByUserValue || [_starredByUser boolValue])
+    if(self.video.starredByUserValue || [_starredByUser boolValue]) // check ivar for "caching"
         return @YES;
     
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
