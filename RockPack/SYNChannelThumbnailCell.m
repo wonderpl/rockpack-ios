@@ -61,6 +61,11 @@
     self.byLabel.font = [UIFont rockpackFontOfSize: self.byLabel.font.pointSize];
     
     self.deleteButton.hidden = YES;
+    
+    
+    if (IS_IOS_7_OR_GREATER) {
+        self.displayNameLabel.frame = CGRectMake(self.displayNameLabel.frame.origin.x, self.displayNameLabel.frame.origin.y - 1.0f, self.displayNameLabel.frame.size.width, self.displayNameLabel.frame.size.height);
+    }
 }
 
 
