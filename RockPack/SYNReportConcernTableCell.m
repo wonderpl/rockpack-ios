@@ -17,6 +17,12 @@
     [super awakeFromNib];
     
     self.titleLabel.font = [UIFont rockpackFontOfSize: self.titleLabel.font.pointSize];
+    
+    if (IS_IOS_7_OR_GREATER)
+    {
+        self.backgroundColor = [UIColor clearColor];
+        [self.backgroundImage removeFromSuperview];
+    }
 }
 
 
