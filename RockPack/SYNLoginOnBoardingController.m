@@ -128,8 +128,9 @@
             //Image Frame
             CGRect iPadImageRect = CGRectMake((messageView.frame.size.width * 0.5) - 140, messageView.frame.origin.y - 210, 280, 200);
             CGRect iPhoneImageRect = CGRectMake((messageView.frame.size.width * 0.5) - 140, messageView.frame.origin.y - 220, 280, 200);
+            CGRect iPhoneiOS7ImageRect = CGRectMake((messageView.frame.size.width * 0.5) - 140, messageView.frame.origin.y - 232, 280, 200);
             
-            UIImageView * messageImageView = [[UIImageView alloc]initWithFrame: IS_IPAD ? iPadImageRect : iPhoneImageRect];
+            UIImageView * messageImageView = [[UIImageView alloc]initWithFrame: IS_IPAD ? iPadImageRect : IS_IOS_7_OR_GREATER ? iPhoneiOS7ImageRect : iPhoneImageRect];
             
             messageImageView.image = [UIImage imageNamed: [NSString stringWithFormat:@"login_onboard_1.png"]];
             [messageView addSubview:messageImageView];
@@ -236,7 +237,7 @@
     //Don't show seperator on First card
     else if (![cardNumber isEqual:@"0"])
     {
-        labelSeperatorView =[[UIView alloc] initWithFrame:IS_IPHONE ? CGRectMake(newFrame.origin.x, newFrame.origin.y + 4.0f, 70.0f, 2.0f) : CGRectMake(newFrame.origin.x, newFrame.origin.y + 13.0f, 70.0f, 2.0f) ];
+        labelSeperatorView =[[UIView alloc] initWithFrame:IS_IPHONE ? IS_IOS_7_OR_GREATER ? CGRectMake(newFrame.origin.x, newFrame.origin.y + 6.0f, 70.0f, 2.0f)  : CGRectMake(newFrame.origin.x, newFrame.origin.y + 4.0f, 70.0f, 2.0f) : CGRectMake(newFrame.origin.x, newFrame.origin.y + 13.0f, 70.0f, 2.0f) ];
         labelSeperatorView.backgroundColor = [UIColor whiteColor];
         [container addSubview:labelSeperatorView];
     }

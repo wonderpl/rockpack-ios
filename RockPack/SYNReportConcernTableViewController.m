@@ -13,6 +13,8 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNPopoverBackgroundView.h"
 #import "SYNMasterViewController.h"
+#import "AMBlurView.h"
+#import "SYNDeviceManager.h"
 
 #define kConcernsCellId @"SYNReportConcernTableCell"
 
@@ -94,6 +96,29 @@
     customCancelButton.frame = CGRectMake(0.0, 0.0, customCancelButtonImage.size.width, customCancelButtonImage.size.height);
     UIBarButtonItem *customCancelButtonItem = [[UIBarButtonItem alloc] initWithCustomView: customCancelButton];
     
+    if (IS_IOS_7_OR_GREATER)
+    {
+        self.tableView.backgroundColor = [UIColor clearColor];
+        
+        AMBlurView * blurredBackgroundView = [AMBlurView new];
+        
+        blurredBackgroundView.frame = CGRectMake(0, 88, self.tableView.frame.size.width, [[SYNDeviceManager sharedInstance] currentScreenHeight] - 86);
+        
+        [self.view insertSubview:blurredBackgroundView atIndex:0];
+        
+//        if (IS_IPHONE_5) {
+//            blurredBackgroundView.frame = CGRectMake(self.containerView.frame.origin.x, self.containerView.frame.origin.y, self.containerView.frame.size.width, self.containerView.frame.size.height + 67 + 22);
+//        }
+//        
+//        else
+//        {
+//            blurredBackgroundView.frame = CGRectMake(self.containerView.frame.origin.x, self.containerView.frame.origin.y, self.containerView.frame.size.width, self.containerView.frame.size.height + 22);
+//        }
+//        
+//        [self.blurViewController addSubview: self.viewController.view];
+//        [self.view addSubview:self.blurViewController];
+    }
+    
     self.navigationItem.leftBarButtonItem = customCancelButtonItem;
     
     UIButton *customUseButton = [UIButton buttonWithType: UIButtonTypeCustom];
@@ -161,22 +186,36 @@
     SYNReportConcernTableCell *oldCell = (SYNReportConcernTableCell *)[self.tableView cellForRowAtIndexPath: oldIndex];
     oldCell.backgroundImage.image = [UIImage imageNamed: @"CategorySlide"];
     oldCell.checkmarkImage.hidden = TRUE;
+    oldCell.highlightedViewiOS7.hidden = TRUE;
     
     oldCell.titleLabel.textColor = [UIColor colorWithRed: 106.0f/255.0f
                                                    green: 114.0f/255.0f
                                                     blue: 122.0f/255.0f
                                                    alpha: 1.0f];
-    
-    oldCell.titleLabel.shadowColor = [UIColor colorWithWhite: 1.0f
-                                                       alpha: 0.75f];
-    
+    if (!IS_IOS_7_OR_GREATER)
+    {
+        oldCell.titleLabel.shadowColor = [UIColor colorWithWhite: 1.0f
+                                                           alpha: 0.75f];
+    }
+
     // Highlight new cell
     SYNReportConcernTableCell *newCell = (SYNReportConcernTableCell *)[self.tableView cellForRowAtIndexPath: indexPath];
-    newCell.backgroundImage.image = [UIImage imageNamed: @"CategorySlideSelected"];
+
     newCell.checkmarkImage.hidden = FALSE;
     newCell.titleLabel.textColor = [UIColor whiteColor];
-    newCell.titleLabel.shadowColor = [UIColor colorWithWhite: 1.0f
-                                                       alpha:  0.15f];
+    
+    if (IS_IOS_7_OR_GREATER)
+    {
+        newCell.highlightedViewiOS7.hidden = FALSE;
+    }
+    
+    else
+    {
+        newCell.backgroundImage.image = [UIImage imageNamed: @"CategorySlideSelected"];
+        newCell.titleLabel.shadowColor = [UIColor colorWithWhite: 1.0f
+                                                           alpha:  0.15f];
+    }
+    
     return indexPath;
 }
 
@@ -283,7 +322,7 @@ didSelectRowAtIndexPath: (NSIndexPath *) indexPath
             [UIView animateWithDuration: kChannelEditModeAnimationDuration
                              animations: ^{
                                  // Fade out the category tab controller
-                                 weakSelf.view.alpha = 0.0f;
+                                 weakSelf.view.frame = CGRectMake(0, [[SYNDeviceManager sharedInstance] currentScreenHeight] + 22, weakSelf.view.frame.size.width, weakSelf.view.frame.size.height);
                              }
                              completion: nil];
             [weakSelf reportConcern: reportString];
@@ -296,7 +335,7 @@ didSelectRowAtIndexPath: (NSIndexPath *) indexPath
             [UIView animateWithDuration: kChannelEditModeAnimationDuration
                              animations: ^{
                                  // Fade out the category tab controller
-                                 weakSelf.view.alpha = 0.0f;
+                                 weakSelf.view.frame = CGRectMake(0, [[SYNDeviceManager sharedInstance] currentScreenHeight] + 22, weakSelf.view.frame.size.width, weakSelf.view.frame.size.height);
                              }
                              completion: ^(BOOL success){
                                  [weakSelf.view removeFromSuperview];
