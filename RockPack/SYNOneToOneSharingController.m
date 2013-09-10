@@ -111,7 +111,7 @@
                        forCellWithReuseIdentifier: @"SYNFriendThumbnailCell"];
     
     self.searchFieldFrameImageView.image = [[UIImage imageNamed: @"FieldSearch"]
-                                            resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 20.0f, 0.0f, 20.0f)];
+                                            resizableImageWithCapInsets: UIEdgeInsetsMake(2.0f, 20.0f, 2.0f, 20.0f)];
     
     
     
