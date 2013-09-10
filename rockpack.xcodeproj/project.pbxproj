@@ -39,6 +39,7 @@
 		010DEFDF1629BDC40080F26B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 010DEFDD1629BDC40080F26B /* InfoPlist.strings */; };
 		010DEFE11629BDC40080F26B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 010DEFE01629BDC40080F26B /* main.m */; };
 		010DEFE51629BDC40080F26B /* SYNAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 010DEFE41629BDC40080F26B /* SYNAppDelegate.m */; };
+		0110AE6117DF383C00DC7724 /* SYNProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0110AE5F17DF383C00DC7724 /* SYNProgressView.m */; };
 		0111CDE717284DD700612186 /* ButtonVideoDelete.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE117284DD700612186 /* ButtonVideoDelete.png */; };
 		0111CDE817284DD700612186 /* ButtonVideoDelete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE217284DD700612186 /* ButtonVideoDelete@2x.png */; };
 		0111CDE917284DD700612186 /* ButtonVideoDeleteHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 0111CDE317284DD700612186 /* ButtonVideoDeleteHighlighted.png */; };
@@ -1360,6 +1361,8 @@
 		010DEFE21629BDC40080F26B /* rockpack-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "rockpack-Prefix.pch"; sourceTree = "<group>"; };
 		010DEFE31629BDC40080F26B /* SYNAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYNAppDelegate.h; sourceTree = "<group>"; };
 		010DEFE41629BDC40080F26B /* SYNAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SYNAppDelegate.m; sourceTree = "<group>"; };
+		0110AE5F17DF383C00DC7724 /* SYNProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNProgressView.m; sourceTree = "<group>"; };
+		0110AE6017DF383C00DC7724 /* SYNProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNProgressView.h; sourceTree = "<group>"; };
 		0111CDE117284DD700612186 /* ButtonVideoDelete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonVideoDelete.png; path = Assets/Images/ButtonVideoDelete.png; sourceTree = "<group>"; };
 		0111CDE217284DD700612186 /* ButtonVideoDelete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonVideoDelete@2x.png"; path = "Assets/Images/ButtonVideoDelete@2x.png"; sourceTree = "<group>"; };
 		0111CDE317284DD700612186 /* ButtonVideoDeleteHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonVideoDeleteHighlighted.png; path = Assets/Images/ButtonVideoDeleteHighlighted.png; sourceTree = "<group>"; };
@@ -2957,7 +2960,6 @@
 		010DEFC51629BDC40080F26B = {
 			isa = PBXGroup;
 			children = (
-				BE3574EB17CE09B80083CBB1 /* AddressBook.framework */,
 				010DEFDA1629BDC40080F26B /* rockpack */,
 				01901A9A1771CCBA007DBEAC /* Tests */,
 				019824DD1629CA3700216900 /* Resources */,
@@ -2984,9 +2986,9 @@
 				0173E6CB1718231F00EEE76B /* libGoogleAnalytics.a */,
 				019824EE1629CC7600216900 /* libTestFlight.a */,
 				019824F11629CE1600216900 /* libz.dylib */,
-				BE2AF28717BE33C700A20127 /* FacebookSDK.framework */,
 				012502C416CA99710029C7C8 /* Accounts.framework */,
 				012502C216CA99630029C7C8 /* AdSupport.framework */,
+				BE3574EB17CE09B80083CBB1 /* AddressBook.framework */,
 				011C16891730047300CF50B9 /* AssetsLibrary.framework */,
 				01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */,
 				011CC67F164AA42300F02B6D /* AVFoundation.framework */,
@@ -2995,19 +2997,20 @@
 				0173F70216E0B899005B3ECA /* CoreImage.framework */,
 				010DEFD81629BDC40080F26B /* CoreGraphics.framework */,
 				011CC67D164AA41700F02B6D /* CoreMedia.framework */,
+				BE2AF28717BE33C700A20127 /* FacebookSDK.framework */,
 				010DEFD61629BDC40080F26B /* Foundation.framework */,
 				012BD2C5173BE79F00BE28B6 /* ImageIO.framework */,
 				0126331E162E2A060009FF9C /* MediaPlayer.framework */,
 				011C16871730046700CF50B9 /* MessageUI.framework */,
 				01982575162AFB9600216900 /* QuartzCore.framework */,
 				0170717F165550BE00A3C7C4 /* Security.framework */,
+				01901A961771CCBA007DBEAC /* SenTestingKit.framework */,
 				012502C616CA99790029C7C8 /* Social.framework */,
 				016B97161770C42200892211 /* StoreKit.framework */,
 				0170717D165550A900A3C7C4 /* SystemConfiguration.framework */,
 				011C16851730043000CF50B9 /* Twitter.framework */,
 				010DEFD41629BDC40080F26B /* UIKit.framework */,
 				3685246F69AA4C9B93DDEDAC /* libPods.a */,
-				01901A961771CCBA007DBEAC /* SenTestingKit.framework */,
 				D9D50C4D95B04D83AF3B374D /* libPods-rockpackTests.a */,
 			);
 			name = Frameworks;
@@ -3636,6 +3639,8 @@
 		019824E31629CADE00216900 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0110AE5F17DF383C00DC7724 /* SYNProgressView.m */,
+				0110AE6017DF383C00DC7724 /* SYNProgressView.h */,
 				019CE3F217B8EF670059822C /* Arc menu */,
 				BE285DAD1725A20B00D995AB /* Slide In Messages */,
 				0198E468176F0AEC00AFBE2F /* SYNPageView.h */,
@@ -7161,6 +7166,7 @@
 				BE3574E917CE07B00083CBB1 /* SYNOneToOneSharingController.m in Sources */,
 				BE06EEE417D6344E0028F2E3 /* SYNStrictInteractionView.m in Sources */,
 				BE06EEF417D78DCA0028F2E3 /* SYNOneToOneFriendCell.m in Sources */,
+				0110AE6117DF383C00DC7724 /* SYNProgressView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
