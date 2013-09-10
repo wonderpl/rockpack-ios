@@ -81,7 +81,7 @@
     UIImage* customCancelButtonImage = [UIImage imageNamed: @"ButtonPopoverCancel"];
     UIImage* customCancelButtonHighlightedImage = [UIImage imageNamed: @"ButtonPopoverCancelHighlighted"];
     
-    self.reportTableTitleLabel.font = [UIFont boldRockpackFontOfSize: self.reportTableTitleLabel.font.pointSize];
+    self.reportTableTitleLabel.font = [UIFont rockpackFontOfSize: self.reportTableTitleLabel.font.pointSize];
     
     [customCancelButton setImage: customCancelButtonImage
                         forState: UIControlStateNormal];

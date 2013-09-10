@@ -23,6 +23,7 @@
         self.backgroundColor = [UIColor clearColor];
         [self.backgroundImage removeFromSuperview];
         self.highlightedViewiOS7.hidden = YES;
+        self.titleLabel.frame = CGRectMake(self.titleLabel.frame.origin.x, self.titleLabel.frame.origin.y - 2.0f, self.titleLabel.frame.size.width, self.titleLabel.frame.size.height);
     }
     
     else
