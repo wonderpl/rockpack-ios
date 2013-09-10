@@ -280,6 +280,20 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             self.darkOverlayView.frame = CGRectMake(0.0f, 0.0f, screenWidth, screenHeight);
         }
     }
+    
+    if(IS_IOS_7_OR_GREATER)
+    {
+        CGRect childFrame;
+        for (UIView* child in self.headerContainerView.subviews)
+        {
+            childFrame = child.frame;
+            childFrame.origin.y += 20.0f;
+            child.frame = childFrame;
+            
+            
+        }
+        
+    }
 }
 
 
@@ -373,7 +387,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                             options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
                          animations:^{
                         
-                             headerRect.origin.y = 0.0f;
+                             headerRect.origin.y = 20.0f;
                              self.headerContainerView.frame = headerRect;
                               
                              self.sideNavigationButton.frame = self.originalSideNavigationButtonFrame;
