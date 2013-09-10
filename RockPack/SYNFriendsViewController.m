@@ -136,15 +136,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     
 }
 
--(NSArray*)rockpackFriends
-{
-    NSPredicate* searchPredicate = [NSPredicate predicateWithBlock:^BOOL(Friend* friend, NSDictionary *bindings) {
-        
-        return friend.isOnRockpack; // resourceURL != nil; (derived property)
-    }];
-    
-    return [self.friends filteredArrayUsingPredicate:searchPredicate];
-}
+
 
 -(IBAction)switchClicked:(UIButton*)tab
 {
@@ -182,6 +174,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
                                          inManagedObjectContext: appDelegate.searchManagedObjectContext]];
     
     
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"externalSystem != %@", kEmail];
     
     existingFriendsArray = [appDelegate.searchManagedObjectContext executeFetchRequest: fetchRequest
                                                                                  error: &error];
@@ -422,7 +415,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     }
     else
     {
-        _displayFriends = self.friends;
+        _displayFriends = [self facebookFriends];
         
     }
     
@@ -569,6 +562,19 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     } completion:^(BOOL finished) {
         [self.searchField becomeFirstResponder];
     }];
+}
+
+#pragma mark - Helper Methods
+
+-(NSArray*)facebookFriends
+{
+    return [self.friends filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"externalSystem == %@", kFacebook]];
+}
+
+-(NSArray*)rockpackFriends
+{
+    
+    return [self.friends filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"resourceURL != NULL"]];
 }
 
 @end

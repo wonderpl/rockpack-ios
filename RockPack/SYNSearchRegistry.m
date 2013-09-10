@@ -68,7 +68,7 @@
     
     
     // friends from address book only
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"externalSystem == %@", kEmail];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"externalSystem == %@ AND localOrigin == YES", kEmail];
     
     existingFriendsArray = [appDelegate.searchManagedObjectContext executeFetchRequest: fetchRequest
                                                                                  error: &error];
@@ -112,6 +112,7 @@
         
         contactAsFriend.uniqueId = email; // email serves as a uniqueId for address book friends
         contactAsFriend.markedForDeletionValue = NO;
+        contactAsFriend.localOriginValue = YES;
         
         firstName = (__bridge_transfer NSString *) ABRecordCopyValue(currentPerson, kABPersonFirstNameProperty);
         lastName = (__bridge_transfer NSString *) ABRecordCopyValue(currentPerson, kABPersonLastNameProperty);
