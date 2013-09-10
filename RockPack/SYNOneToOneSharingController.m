@@ -375,7 +375,6 @@
     
     
     
-    [weakSelf showLoader:YES];
     
     [appDelegate.oAuthNetworkEngine friendsForUser: appDelegate.currentUser
                                         onlyRecent: NO
@@ -391,7 +390,6 @@
                                          DebugLog(@"There was a problem loading friends");
                                      }
                                      
-                                     [weakSelf showLoader:NO];
                                      
                                      hasAttemptedToLoadData = YES;
                                      
@@ -399,7 +397,6 @@
                                      
                                  } errorHandler: ^(id dictionary) {
                                      
-                                     [weakSelf showLoader:NO];
                                      
                                      hasAttemptedToLoadData = YES;
                                      
@@ -450,6 +447,8 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
+    
+    
     SYNFriendThumbnailCell *userThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNFriendThumbnailCell"
                                                                                           forIndexPath: indexPath];
     
@@ -562,6 +561,8 @@
 
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath
 {
+    
+    
     SYNOneToOneFriendCell *cell = [tableView dequeueReusableCellWithIdentifier: @"SYNOneToOneFriendCell"];
     
     if (cell == nil)
@@ -585,8 +586,12 @@
     Friend *friend = self.searchedFriends[indexPath.row];
     cell.textLabel.text = friend.displayName;
     
-    
-    cell.detailTextLabel.text = [self isValidEmail: friend.email] ? friend.email : @"Pick and email address";
+    if(friend.isOnRockpack)
+        cell.detailTextLabel.text = @"Is on Rockpack";
+    else if([self isValidEmail:friend.email])
+        cell.detailTextLabel.text = friend.email;
+    else
+        cell.detailTextLabel.text = @"Pick and email address";
     
     // image
     
@@ -611,7 +616,7 @@
     }
     else
     {
-        
+        cell.imageView.image = [UIImage imageNamed: @"PlaceholderAvatarChannel"];
     }
     
     return cell;
