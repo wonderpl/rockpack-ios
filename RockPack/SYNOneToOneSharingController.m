@@ -59,7 +59,7 @@
 @property (nonatomic, strong) NSCache *addressBookImageCache;
 @property (nonatomic, strong) NSMutableString *currentSearchTerm;
 @property (nonatomic, strong) UIImage *imageToShare;
-@property (nonatomic, weak) Friend *friendToAddEmail;
+@property (nonatomic, strong) Friend *friendToAddEmail;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* facebookLoader;
 @property (strong, nonatomic) NSMutableDictionary *mutableShareDictionary;
 @property (strong, nonatomic) OWActivityViewController *activityViewController;
@@ -654,11 +654,13 @@
 
 -(void) presentAlertToFillEmailForFriend:(Friend*)friend
 {
-    // create friend on the fly
+    
     SYNAppDelegate *appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
     NSString *titleText;
+    
     if(!friend) // possibly by pressing the 'add new email' cell
     {
+        // create friend on the fly
         friend = [Friend insertInManagedObjectContext: appDelegate.searchManagedObjectContext];
         friend.externalSystem = @"email";
         
@@ -669,7 +671,7 @@
         titleText = [NSString stringWithFormat: @"Enter an Email for %@", friend.firstName];
     }
     
-    self.friendToAddEmail = friend;
+    self.friendToAddEmail = friend; // either a newly created or
     
     UIAlertView *prompt = [[UIAlertView alloc] initWithTitle: titleText
                                                      message: @"We'll send this channel to their email."
@@ -678,6 +680,7 @@
                                            otherButtonTitles: @"Send", nil];
     
     prompt.alertViewStyle = UIAlertViewStylePlainTextInput;
+    
     prompt.delegate = self;
     
     if([self isValidEmail:self.currentSearchTerm])
@@ -689,6 +692,7 @@
     [prompt show];
 }
 
+// as the user types in the alert box, only enable the SEND button when a valid address has been entered
 - (BOOL) alertViewShouldEnableFirstOtherButton: (UIAlertView *) alertView
 {
     UITextField *textfield = [alertView textFieldAtIndex: 0];
@@ -700,27 +704,30 @@
 - (void) alertView: (UIAlertView *) alertView didDismissWithButtonIndex: (NSInteger) buttonIndex
 {
     if (buttonIndex == 0) // cancel button pressed
-    {
         return;
-    }
     
+    // Send Button has been pressed
     UITextField *textfield = [alertView textFieldAtIndex: 0];
     
     // search if friend already exists by his email
-    for (Friend* f in self.friends)
+    for (Friend* loadedFriend in self.friends)
     {
-        if([f.email isEqualToString:textfield.text])
+        if([loadedFriend.email isEqualToString:textfield.text])
         {
             self.friendToAddEmail = nil;
-            [self sendEmailToFriend:f];
+            
+            [self sendEmailToFriend:loadedFriend];
+            
             return;
         }
         
     }
     
     self.friendToAddEmail.email = textfield.text;
-    if([self.friendToAddEmail.externalSystem isEqualToString:kEmail])
+    
+    if([self.friendToAddEmail.externalSystem isEqualToString:kEmail]) // otherwise it might be facebook
     {
+        self.friendToAddEmail.uniqueId = self.friendToAddEmail.email;
         self.friendToAddEmail.externalUID = self.friendToAddEmail.email; // workaround the fact that we do not have a UID for this new user
     }
     
@@ -987,6 +994,8 @@
                                                NSString *title = @"Email Couldn't be Sent";
                                                NSString *reason = @"Unkown reson";
                                                NSDictionary *formErrors = error[@"form_errors"];
+                                               
+                                               NSLog(@"%@", error);
                                                
                                                if (formErrors[@"email"])
                                                {

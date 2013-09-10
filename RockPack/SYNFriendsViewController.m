@@ -136,15 +136,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     
 }
 
--(NSArray*)rockpackFriends
-{
-    NSPredicate* searchPredicate = [NSPredicate predicateWithBlock:^BOOL(Friend* friend, NSDictionary *bindings) {
-        
-        return friend.isOnRockpack; // resourceURL != nil; (derived property)
-    }];
-    
-    return [self.friends filteredArrayUsingPredicate:searchPredicate];
-}
+
 
 -(IBAction)switchClicked:(UIButton*)tab
 {
@@ -171,6 +163,8 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
 -(void)fetchAndDisplayFriends
 {
     
+    
+    
     NSError *error;
     NSArray *existingFriendsArray;
     
@@ -179,7 +173,8 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     [fetchRequest setEntity: [NSEntityDescription entityForName: @"Friend"
                                          inManagedObjectContext: appDelegate.searchManagedObjectContext]];
     
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"externalSystem == \"facebook\""];
+    
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"externalSystem != %@", kEmail];
     
     existingFriendsArray = [appDelegate.searchManagedObjectContext executeFetchRequest: fetchRequest
                                                                                  error: &error];
@@ -205,6 +200,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     if(hasAttemptedToLoadData)
         return;
     
+    hasAttemptedToLoadData = YES;
     
     __weak SYNFriendsViewController* weakSelf = self;
     
@@ -226,13 +222,18 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
                                      
                                      [weakSelf showLoader:NO];
         
+                                     
         
                                      [self fetchAndDisplayFriends];
         
         
                                  } errorHandler:^(id dictionary) {
                                      
+                                     
+                                     
+                                     
                                      [weakSelf showLoader:NO];
+                                     
         
                                  }];
 }
@@ -414,7 +415,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     }
     else
     {
-        _displayFriends = self.friends;
+        _displayFriends = [self facebookFriends];
         
     }
     
@@ -561,6 +562,19 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     } completion:^(BOOL finished) {
         [self.searchField becomeFirstResponder];
     }];
+}
+
+#pragma mark - Helper Methods
+
+-(NSArray*)facebookFriends
+{
+    return [self.friends filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"externalSystem == %@", kFacebook]];
+}
+
+-(NSArray*)rockpackFriends
+{
+    
+    return [self.friends filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"resourceURL != NULL"]];
 }
 
 @end
