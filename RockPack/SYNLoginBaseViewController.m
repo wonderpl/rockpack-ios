@@ -116,10 +116,10 @@
     
     [self.view insertSubview:self.backgroundImageView atIndex:0];
 
-    self.loginBackgroundImage.center = correctPoint;
-    self.loginBackgroundFrontImage.center = correctPoint;
-    
-    self.loginBackgroundImage.center = CGPointMake(self.view.center.x, self.loginBackgroundImage.center.y);
+//    self.loginBackgroundImage.center = correctPoint;
+//    self.loginBackgroundFrontImage.center = correctPoint;
+//    
+//    self.loginBackgroundImage.center = CGPointMake(self.view.center.x, self.loginBackgroundImage.center.y);
     
     
     self.loginBackgroundImage.image = [UIImage imageNamed:self.backgroundImagesArray[0]]; // get the first image

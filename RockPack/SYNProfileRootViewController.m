@@ -259,7 +259,6 @@ SYNImagePickerControllerDelegate>
         
         if (IS_IOS_7_OR_GREATER)
         {
-            
             // Do iOS7 Tingz
             AMBlurView *blurView = [AMBlurView new];
             
