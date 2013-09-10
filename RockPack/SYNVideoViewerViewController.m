@@ -314,15 +314,19 @@
         self.darkenBlurView = [UIView new];
         self.darkenBlurView.backgroundColor = [UIColor colorWithWhite:0.0f/255.0f alpha:0.35f];
         
+        
+        //FIXME: I am setting the frame of the blurview background to 1024x1024 for ipad to fix that issue
         if (IS_IPAD && UIDeviceOrientationIsPortrait([[SYNDeviceManager sharedInstance] currentOrientation]))
         {
-            self.blurView.frame = CGRectMake(0, 0, 768.0f, 1025.0f);
+            //self.blurView.frame = CGRectMake(0, 0, 768.0f, 1025.0f);
+            self.blurView.frame = CGRectMake(0, 0, 1025.0f, 1025.0f);
             self.darkenBlurView.frame = CGRectMake(0, 0, 768.0f, 1025.0f);
             self.view.frame = CGRectMake(0, 0, screenSize.width, screenSize.height);
         }
         else
         {
-            self.blurView.frame = fullScreenRect;
+            //self.blurView.frame = fullScreenRect;
+            self.blurView.frame = CGRectMake(0, 0, 1025.0f, 1025.0f);
             self.darkenBlurView.frame = fullScreenRect;
         }
         
