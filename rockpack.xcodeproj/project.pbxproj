@@ -2374,7 +2374,7 @@
 		BE06EEEF17D759390028F2E3 /* ABContactPlaceholder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ABContactPlaceholder@2x.png"; path = "Assets/Images/ABContactPlaceholder@2x.png"; sourceTree = "<group>"; };
 		BE06EEF217D78DCA0028F2E3 /* SYNOneToOneFriendCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNOneToOneFriendCell.h; sourceTree = "<group>"; };
 		BE06EEF317D78DCA0028F2E3 /* SYNOneToOneFriendCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNOneToOneFriendCell.m; sourceTree = "<group>"; };
-		BE06EFA117DA11E30028F2E3 /* Rockpack 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rockpack 12.xcdatamodel"; sourceTree = "<group>"; };
+		BE06EFA117DA11E30028F2E3 /* Rockpack 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Rockpack 12.xcdatamodel"; sourceTree = "<group>"; };
 		BE06EFA217DB6C810028F2E3 /* ShareUnconnectedabaccess.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShareUnconnectedabaccess.png; path = Assets/Images/ShareUnconnectedabaccess.png; sourceTree = "<group>"; };
 		BE06EFA317DB6C810028F2E3 /* ShareUnconnectedabaccess@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ShareUnconnectedabaccess@2x.png"; path = "Assets/Images/ShareUnconnectedabaccess@2x.png"; sourceTree = "<group>"; };
 		BE06EFA417DB6C810028F2E3 /* ShareUnconnectedFbConnect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShareUnconnectedFbConnect.png; path = Assets/Images/ShareUnconnectedFbConnect.png; sourceTree = "<group>"; };
@@ -2958,7 +2958,6 @@
 		010DEFC51629BDC40080F26B = {
 			isa = PBXGroup;
 			children = (
-				BE3574EB17CE09B80083CBB1 /* AddressBook.framework */,
 				010DEFDA1629BDC40080F26B /* rockpack */,
 				01901A9A1771CCBA007DBEAC /* Tests */,
 				019824DD1629CA3700216900 /* Resources */,
@@ -2981,6 +2980,7 @@
 		010DEFD31629BDC40080F26B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BE3574EB17CE09B80083CBB1 /* AddressBook.framework */,
 				01F7C9671748ED0B00E36994 /* libsqlite3.dylib */,
 				0173E6CB1718231F00EEE76B /* libGoogleAnalytics.a */,
 				019824EE1629CC7600216900 /* libTestFlight.a */,
