@@ -9,6 +9,7 @@ const struct FriendAttributes FriendAttributes = {
 	.externalUID = @"externalUID",
 	.hasIOSDevice = @"hasIOSDevice",
 	.lastShareDate = @"lastShareDate",
+	.localOrigin = @"localOrigin",
 	.resourceURL = @"resourceURL",
 };
 
@@ -46,6 +47,11 @@ const struct FriendFetchedProperties FriendFetchedProperties = {
 	
 	if ([key isEqualToString:@"hasIOSDeviceValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"hasIOSDevice"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
+	if ([key isEqualToString:@"localOriginValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"localOrigin"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -105,6 +111,32 @@ const struct FriendFetchedProperties FriendFetchedProperties = {
 
 @dynamic lastShareDate;
 
+
+
+
+
+
+@dynamic localOrigin;
+
+
+
+- (BOOL)localOriginValue {
+	NSNumber *result = [self localOrigin];
+	return [result boolValue];
+}
+
+- (void)setLocalOriginValue:(BOOL)value_ {
+	[self setLocalOrigin:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveLocalOriginValue {
+	NSNumber *result = [self primitiveLocalOrigin];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveLocalOriginValue:(BOOL)value_ {
+	[self setPrimitiveLocalOrigin:[NSNumber numberWithBool:value_]];
+}
 
 
 
