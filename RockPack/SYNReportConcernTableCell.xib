@@ -22,7 +22,7 @@
                     <view contentMode="scaleToFill" id="2At-4Y-3ni" userLabel="Seperator">
                         <rect key="frame" x="0.0" y="43" width="320" height="1"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="CategorySlide.png" id="4">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
