@@ -171,6 +171,8 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
 -(void)fetchAndDisplayFriends
 {
     
+    
+    
     NSError *error;
     NSArray *existingFriendsArray;
     
@@ -179,7 +181,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     [fetchRequest setEntity: [NSEntityDescription entityForName: @"Friend"
                                          inManagedObjectContext: appDelegate.searchManagedObjectContext]];
     
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"externalSystem == \"facebook\""];
+    
     
     existingFriendsArray = [appDelegate.searchManagedObjectContext executeFetchRequest: fetchRequest
                                                                                  error: &error];
@@ -205,6 +207,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     if(hasAttemptedToLoadData)
         return;
     
+    hasAttemptedToLoadData = YES;
     
     __weak SYNFriendsViewController* weakSelf = self;
     
@@ -226,13 +229,18 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
                                      
                                      [weakSelf showLoader:NO];
         
+                                     
         
                                      [self fetchAndDisplayFriends];
         
         
                                  } errorHandler:^(id dictionary) {
                                      
+                                     
+                                     
+                                     
                                      [weakSelf showLoader:NO];
+                                     
         
                                  }];
 }
