@@ -49,16 +49,8 @@ UITextViewDelegate>
 
 - (void) loadView
 {
-    CGRect scrollerFrame = CGRectMake(0.0, 0.0, [SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight]);
-    SYNContainerScrollView *scrollView = [[SYNContainerScrollView alloc] initWithFrame: scrollerFrame];
     
-    scrollView.autoresizingMask = UIViewAutoresizingNone;
-    scrollView.backgroundColor = [UIColor clearColor];
-    scrollView.delegate = self;
-    scrollView.pagingEnabled = YES;
-    scrollView.showsHorizontalScrollIndicator = NO;
-    scrollView.showsVerticalScrollIndicator = NO;
-    scrollView.scrollsToTop = NO;
+    SYNContainerScrollView *scrollView = [[SYNContainerScrollView alloc] initFullScreenWithDelegate:self];
     
     self.view = scrollView;
     
@@ -126,7 +118,9 @@ UITextViewDelegate>
         self.scrollView.page = self.lastSelectedPageIndex = 1;
     }
     
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kScrollerPageChanged
+                                                        object: self
+                                                      userInfo: @{kCurrentPage: @(self.scrollView.page)}];
 }
 
 
@@ -135,16 +129,6 @@ UITextViewDelegate>
     [super viewWillAppear: animated];
     
     [self packViewControllersForInterfaceOrientation: [SYNDeviceManager.sharedInstance orientation]];
-    
-    // dispatch once so that we do not get notified when we return to the container from say channels details, this will not confict with side navigation
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName: kScrollerPageChanged
-                                                            object: self
-                                                          userInfo: @{kCurrentPage: @(self.scrollView.page)}];
-    });
-    
-    
     
 }
 
