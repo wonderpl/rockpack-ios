@@ -819,7 +819,7 @@
                          self.closeButton.alpha = 1.0f;
                          
                          CGRect sfFrame = self.searchFieldFrameImageView.frame;
-                         sfFrame.size.width -= 30.0f;
+                         sfFrame.size.width -= 38.0f;
                          self.searchFieldFrameImageView.frame = sfFrame;
                      }
                      completion: nil];
