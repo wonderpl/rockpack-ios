@@ -19,7 +19,6 @@
 
 //iPhone specific
 @property (weak, nonatomic) IBOutlet UIButton *integratedCloseButton;
-@property (strong, nonatomic) IBOutlet UIImageView *backgroundSearchPanel;
 
 -(void)resizeForHeight:(CGFloat)height;
 
@@ -39,10 +38,5 @@
  not animated, wrap in UIView animaiton call to animate
  */
 - (void) hideCloseButton;
-
-
-- (void) revealBackgroundPanel;
-- (void) hideBackgroundPanel;
-
 
 @end

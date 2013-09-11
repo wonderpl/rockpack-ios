@@ -40,9 +40,6 @@
 
 #define kDataRequestRange           @"DataRequestRange"
 
-#define kNotableScrollThreshold     16.0f
-#define kNotableScrollDirection     @"kNotableScrollDirection"
-#define kNotableScrollEvent         @"kNotableScrollEvent"
 
 // viewId
 #define kFeedViewId                 NSLocalizedString(@"core_nav_section_feed", nil)
@@ -375,7 +372,6 @@ typedef enum : NSInteger {
 
 #define kCurrentPage        @"kCurrentPage"
 
-
 // UserDefaults
 #define kUserDefaultsNotFirstInstall @"UD_Not_First_Install"
 #define kUserDefaultsSubscribe @"UD_OnBoaring_Subscribe"
@@ -419,8 +415,6 @@ typedef enum {
     ScrollingDirectionNone = 0,
     ScrollingDirectionLeft,
     ScrollingDirectionRight,
-    ScrollingDirectionUp,
-    ScrollingDirectionDown
 } ScrollingDirection;
 
 typedef enum {

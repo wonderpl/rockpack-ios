@@ -107,12 +107,12 @@
     {
         tableViewFrame.origin.x = self.searchTextField.frame.origin.x - 10.0;
         tableViewFrame.origin.y = 66.0;
-        self.searchTextField.placeholder = @"Find videos, packs & people";
+        self.searchTextField.placeholder = @"What are you into?";
     }
     else
     {
         tableViewFrame.origin.y = self.searchBoxView.frame.size.height;
-        self.searchTextField.placeholder = @"Find videos, packs & people";
+        self.searchTextField.placeholder = @"What are you into?";
         
         
         self.searchCategoriesController = [[SYNSearchCategoriesTableViewController alloc] initWithStyle:UITableViewStylePlain];

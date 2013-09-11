@@ -8,12 +8,11 @@
 
 #import "SYNAbstractViewController.h"
 
-#import "SYNRefreshControl.h"
+#import "SYNRefreshButton.h"
 
-@interface SYNFeedRootViewController : SYNAbstractViewController {
-    BOOL hasPulledToRefresh;
-}
+@interface SYNFeedRootViewController : SYNAbstractViewController
 
+@property (nonatomic, strong) SYNRefreshButton* refreshButton;
 
 - (void) removeEmptyGenreMessage;
 - (void) displayEmptyGenreMessage: (NSString*) messageKey

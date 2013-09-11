@@ -45,7 +45,7 @@
 @property (nonatomic, strong) Genre *currentGenre;
 @property (nonatomic, strong) NSMutableArray *channels;
 @property (nonatomic, strong) NSString *currentCategoryId;
-@property (nonatomic, strong) SYNChannelCategoryTableViewController *iPhoneCategoryTableViewController;
+@property (nonatomic, strong) SYNChannelCategoryTableViewController *categoryTableViewController;
 @property (nonatomic, strong) SYNFeedMessagesView *emptyGenreMessageView;
 @property (nonatomic, strong) UIButton *categorySelectButton;
 @property (nonatomic, strong) UIControl *categorySelectDismissControl;
@@ -86,7 +86,7 @@
     
     if (isIPhone)
     {
-        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(158.0f, 169.0f)
+        flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(158.0f, IS_IOS_7_OR_GREATER ? 172.0f : 169.0f)
                                                      minimumInterItemSpacing: 0.0
                                                           minimumLineSpacing: 6.0
                                                              scrollDirection: UICollectionViewScrollDirectionVertical
@@ -103,10 +103,29 @@
     
     flowLayout.footerReferenceSize = [self footerSize];
     
-    // Collection view is full screen on both devices types
+    // Work out how hight the inital tab bar is
+    CGFloat topTabBarHeight = [UIImage imageNamed: @"CategoryBar"].size.height;
+    
     CGRect channelCollectionViewFrame = CGRectZero;
-    channelCollectionViewFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar];
-    channelCollectionViewFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth];
+    
+    if (isIPhone)
+    {
+        channelCollectionViewFrame = CGRectMake(0.0f, 103.0f, [SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight] - 123.0f);
+    }
+    else
+    {
+        channelCollectionViewFrame.origin.x = 0.0f;
+        
+        channelCollectionViewFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar];
+        
+        channelCollectionViewFrame.origin.y = kStandardCollectionViewOffsetY + topTabBarHeight;
+        channelCollectionViewFrame.size.height -= kStandardCollectionViewOffsetY;
+        channelCollectionViewFrame.size.height -= topTabBarHeight;
+        
+        
+        channelCollectionViewFrame.size.width = [SYNDeviceManager.sharedInstance currentScreenWidth];
+        
+    }
     
     self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: channelCollectionViewFrame
                                                              collectionViewLayout: flowLayout];
@@ -117,11 +136,6 @@
     
     self.channelThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.channelThumbnailCollectionView.scrollsToTop = NO;
-    
-    UIEdgeInsets currentInset = self.channelThumbnailCollectionView.contentInset;
-    currentInset.top = IS_IPHONE ? 120.0f : 140.0f;
-    
-    self.channelThumbnailCollectionView.contentInset = currentInset;
     
     CGRect newFrame;
     
@@ -136,9 +150,6 @@
         newFrame = [SYNDeviceManager.sharedInstance isLandscape] ?
         CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar) :
         CGRectMake(0.0f, 0.0f, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar);
-        
-        
-        
     }
     
     self.view = [[UIView alloc] initWithFrame: newFrame];
@@ -150,6 +161,7 @@
     if (self.enableCategoryTable)
 
     {[self layoutChannelsCategoryTable];}
+    
     
     
     self.channelThumbnailCollectionView.showsVerticalScrollIndicator = YES;
@@ -190,8 +202,6 @@
 
 - (void) viewDidScrollToFront
 {
-    [super viewDidScrollToFront];
-    
     [self updateAnalytics];
     
     // On Boarding
@@ -342,26 +352,9 @@
     }
 }
 
-#pragma mark - ScrollView Delegate
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    self.mainCollectionViewOffsetDeltaY = 0.0f;
-}
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
-    CGFloat currentContentOffsetY = scrollView.contentOffset.y;
-    
-    if (_mainCollectionViewLastOffsetY > currentContentOffsetY)
-        self.mainCollectionViewScrollingDirection = ScrollingDirectionDown;
-    else if (_mainCollectionViewLastOffsetY < currentContentOffsetY)
-        self.mainCollectionViewScrollingDirection = ScrollingDirectionUp;
-    
-    self.mainCollectionViewOffsetDeltaY += fabsf(_mainCollectionViewLastOffsetY - currentContentOffsetY);
-    
-    _mainCollectionViewLastOffsetY = currentContentOffsetY;
-    
     // when reaching far right hand side, load a new page
     if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight
         && self.isLoadingMoreContent == NO)
@@ -369,88 +362,6 @@
         [self loadMoreChannels];
     }
 }
-static BOOL lock = NO;
--(void)setMainCollectionViewOffsetDeltaY:(CGFloat)mainCollectionViewOffsetDeltaY
-{
-    
-    _mainCollectionViewOffsetDeltaY = mainCollectionViewOffsetDeltaY;
-    
-    if(self.mainCollectionViewScrollingDirection == ScrollingDirectionUp && self.channelThumbnailCollectionView.contentOffset.y < 91.0f)
-        return;
-    
-    if (_mainCollectionViewOffsetDeltaY > kNotableScrollThreshold + 12.0f && _mainCollectionViewOffsetDeltaY > 90.0f &&
-        !self.isAnimating &&
-        !self.isLoadingMoreContent && !lock)
-    {
-        
-        _mainCollectionViewOffsetDeltaY = 0.0f;
-        
-        dispatch_once(&onceToken, ^{
-           
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:kNotableScrollEvent
-                                                                object:self
-                                                              userInfo:@{kNotableScrollDirection:@(_mainCollectionViewScrollingDirection)}];
-        });
-    }
-}
-
--(void)notableScrollNotification:(NSNotification*)notification
-{
-    lock = YES;
-    
-    NSNumber* directionNumber = (NSNumber*)[notification userInfo][kNotableScrollDirection];
-    if(!directionNumber)
-        return;
-    
-    ScrollingDirection direction = directionNumber.integerValue;
-    
-    [UIView animateWithDuration:0.3f
-                          delay:0.0f
-                        options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-                            
-                            CGRect tabFrame;
-                            UIEdgeInsets ei = self.channelThumbnailCollectionView.contentInset;
-                            if(IS_IPAD)
-                            {
-                                tabFrame = self.tabViewController.tabView.frame;
-                                tabFrame.origin.y = direction == ScrollingDirectionUp ? 0.0f : 90.0f;
-                                self.tabViewController.tabView.frame = tabFrame;
-                            }
-                            else
-                            {
-                                tabFrame = self.categorySelectButton.frame;
-                                tabFrame.origin.y = direction == ScrollingDirectionUp ? 0.0f : 60.0f;
-                                self.categorySelectButton.frame = tabFrame;
-                                
-                            }
-                            
-                            if(direction == ScrollingDirectionDown)
-                            {
-                                ei.top = (IS_IPAD ? 140.0f : 110.f) + (tabExpanded ? kCategorySecondRowHeight : 0.0f);
-                            }
-                            else
-                            {
-                                ei.top = 48.0f;
-                            }
-                            self.channelThumbnailCollectionView.contentInset = ei;
-                            
-                        } completion:^(BOOL finished) {
-                            
-                            lock = NO;
-                            NSLog(@"Complete");
-                            
-                            if(IS_IPHONE)
-                            {
-                                CGRect tableFrame = self.iPhoneCategoryTableViewController.view.frame;
-                                tableFrame.origin.y = self.categorySelectButton.frame.origin.y + self.categorySelectButton.frame.size.height - 1.0f; // compensate for shadow
-                                tableFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - tableFrame.origin.y;
-                                self.iPhoneCategoryTableViewController.view.frame = tableFrame;
-                            }
-                        }];
-}
-
-#pragma mark - Display Channels
 
 
 - (void) displayChannelsForGenre: (Genre *) genre
@@ -526,7 +437,7 @@ static BOOL lock = NO;
     self.emptyGenreMessageView.frame = CGRectIntegral(self.emptyGenreMessageView.frame);
     
     [self.view insertSubview: self.emptyGenreMessageView
-                belowSubview: self.iPhoneCategoryTableViewController.view];
+                belowSubview: self.categoryTableViewController.view];
 }
 
 
@@ -629,8 +540,9 @@ static BOOL lock = NO;
 }
 
 
-- (CGSize)collectionView: (UICollectionView *) collectionView
-                  layout: (UICollectionViewLayout *) collectionViewLayout referenceSizeForFooterInSection: (NSInteger) section
+- (CGSize)			 collectionView: (UICollectionView *) collectionView
+                      layout: (UICollectionViewLayout *) collectionViewLayout
+referenceSizeForFooterInSection: (NSInteger) section
 {
     CGSize footerSize;
     
@@ -657,6 +569,19 @@ static BOOL lock = NO;
 }
 
 
+//- (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+//{
+//    if (self.isAnimating) // prevent double clicking
+//    {
+//        return;
+//    }
+//    
+//    Channel *channel = (Channel *) self.channels[indexPath.row];
+//    
+//    [appDelegate.viewStackManager
+//     viewChannelDetails: channel];
+//}
+
 - (void) channelTapped: (UICollectionViewCell *) cell
 {
     SYNChannelThumbnailCell *selectedCell = (SYNChannelThumbnailCell *) cell;
@@ -672,13 +597,10 @@ static BOOL lock = NO;
     [appDelegate.viewStackManager viewChannelDetails: channel];
 }
 
-#pragma mark - Category Selection Delegate
 
 - (void) handleMainTap: (UIView *) tab
 {
-    
     [super handleMainTap: tab];
-    
     
     if (!tab || tab.tag == 0)
     {
@@ -695,53 +617,51 @@ static BOOL lock = NO;
     {
         return;
     }
+    
     [self animateCollectionViewDown: YES];
 }
 
 
+#pragma mark - Pushing UICollectionView up and down
+
 - (void) animateCollectionViewDown: (BOOL) down
 {
-    __block UIEdgeInsets ei = self.channelThumbnailCollectionView.contentInset;
-    
-    
     if (down && !tabExpanded)
     {
         self.isAnimating = YES;
         
-        ei.top += kCategorySecondRowHeight;
-        
-        self.channelThumbnailCollectionView.contentInset = ei;
-        
-        [UIView animateWithDuration: 0.5f
-                              delay: 0.1f
+        [UIView animateWithDuration: 0.4
+                              delay: 0.0
                             options: UIViewAnimationCurveEaseInOut
                          animations: ^{
-                             CGPoint co = self.channelThumbnailCollectionView.contentOffset;
-                             co.y = -175.0f;
-                             self.channelThumbnailCollectionView.contentOffset = co;
-                             
-                             
-                         } completion: ^(BOOL result) {
+                             CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
+                             currentCollectionViewFrame.origin.y += kCategorySecondRowHeight;
+                             //
+                             self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
+                         }
+         
+         
+                         completion: ^(BOOL result) {
                              tabExpanded = YES;
                              self.isAnimating = NO;
-                             
+                             [self.channelThumbnailCollectionView reloadData];
+                             CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
+                             currentCollectionViewFrame.size.height -= kCategorySecondRowHeight;
+                             self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
                          }];
     }
     else if (tabExpanded)
     {
         self.isAnimating = YES;
         
-        CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
-        currentCollectionViewFrame.size.height += kCategorySecondRowHeight;
-        self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
-        
-        ei.top -= kCategorySecondRowHeight;
-        
         [UIView animateWithDuration: 0.4
                               delay: 0.1
                             options: UIViewAnimationCurveEaseInOut
                          animations: ^{
-                             self.channelThumbnailCollectionView.contentInset = ei;
+                             CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
+                             currentCollectionViewFrame.origin.y -= kCategorySecondRowHeight;
+                             //
+                             self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
                          }
          
          
@@ -749,11 +669,12 @@ static BOOL lock = NO;
                              tabExpanded = NO;
                              self.isAnimating = NO;
                              
+                             [self.channelThumbnailCollectionView reloadData];
+                             
+                             CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
+                             currentCollectionViewFrame.size.height += kCategorySecondRowHeight;
+                             self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
                          }];
-    }
-    else
-    {
-        
     }
 }
 
@@ -774,8 +695,8 @@ static BOOL lock = NO;
 {
     [appDelegate.viewStackManager hideSideNavigator];
     
-    
-    if ([self.currentGenre.uniqueId isEqualToString: genre.uniqueId])
+    if ([self.currentGenre.uniqueId
+         isEqualToString: genre.uniqueId])
     {
         return;
     }
@@ -796,6 +717,13 @@ static BOOL lock = NO;
         self.currentGenre = genre;
     }
     
+    CGPoint currentOffset = self.channelThumbnailCollectionView.contentOffset;
+    currentOffset.y = 0;
+    
+    // Need to do this immediately, as opposed to animated or we may get strange offsets //
+    
+    [self.channelThumbnailCollectionView setContentOffset: currentOffset
+                                                 animated: NO];
     
     // display what is already in the DB and then load and display again
     
@@ -815,7 +743,6 @@ static BOOL lock = NO;
     }
     
     [self loadChannelsForGenre: genre];
-    
 }
 
 
@@ -845,12 +772,17 @@ static BOOL lock = NO;
     self.categorySelectDismissControl.hidden = YES;
     
     
-    self.iPhoneCategoryTableViewController = [[SYNChannelCategoryTableViewController alloc] init];
+    self.categoryTableViewController = [[SYNChannelCategoryTableViewController alloc] init];
+    CGRect newFrame = self.channelThumbnailCollectionView.frame;
+    newFrame.size.width = self.categoryTableViewController.view.frame.size.width;
+    self.categoryTableViewController.view.frame = newFrame;
+    [self.view addSubview: self.categoryTableViewController.view];
+    [self addChildViewController: self.categoryTableViewController];
+    self.categoryTableViewController.categoryTableControllerDelegate = self;
+    self.categoryTableViewController.view.hidden = YES;
     
-    // add button
     
-    CGRect newFrame;
-    newFrame.origin.y = 60.0f;
+    newFrame.origin.y -= 44.0f;
     newFrame.size.height = 44.0f;
     newFrame.size.width = 320.0f;
     self.categorySelectButton = [[UIButton alloc] initWithFrame: newFrame];
@@ -867,24 +799,11 @@ static BOOL lock = NO;
     
     [self.view addSubview: self.categorySelectButton];
     
-    // add side table
+    newFrame.origin.x = 42.0f;
+    newFrame.origin.y += 4.0f;
+    newFrame.size.width = 280.0f;
     
-    CGRect categoryTableFrame = self.iPhoneCategoryTableViewController.view.frame;
-    categoryTableFrame.origin.y = self.categorySelectButton.frame.origin.y + self.categorySelectButton.frame.size.height;
-    self.iPhoneCategoryTableViewController.view.frame = categoryTableFrame;
-    
-    [self.view addSubview: self.iPhoneCategoryTableViewController.view];
-    [self addChildViewController: self.iPhoneCategoryTableViewController];
-    self.iPhoneCategoryTableViewController.categoryTableControllerDelegate = self;
-    self.iPhoneCategoryTableViewController.view.hidden = YES;
-    
-    CGRect labelFrame = CGRectZero;
-    labelFrame.origin.x = 42.0f;
-    labelFrame.origin.y = 4.0f;
-    labelFrame.size.width = 280.0f;
-    labelFrame.size.height = newFrame.size.height;
-    
-    UILabel *newLabel = [[UILabel alloc] initWithFrame: labelFrame];
+    UILabel *newLabel = [[UILabel alloc] initWithFrame: newFrame];
 
     newLabel.font = [UIFont boldRockpackFontOfSize: 15.0f];
     
@@ -907,7 +826,7 @@ static BOOL lock = NO;
     center.x = newLabel.center.x;
     newLabel.center = center;
     self.categoryNameLabel = newLabel;
-    [self.categorySelectButton addSubview: self.categoryNameLabel];
+    [self.view addSubview: self.categoryNameLabel];
     
     
     newLabel = [[UILabel alloc] initWithFrame: self.categoryNameLabel.frame];
@@ -933,21 +852,21 @@ static BOOL lock = NO;
 
 - (void) toggleChannelsCategoryTable: (id) sender
 {
-    if (self.iPhoneCategoryTableViewController.view.hidden)
+    if (self.categoryTableViewController.view.hidden)
     {
-        CGRect startFrame = self.iPhoneCategoryTableViewController.view.frame;
+        CGRect startFrame = self.categoryTableViewController.view.frame;
         startFrame.origin.x = -startFrame.size.width;
-        self.iPhoneCategoryTableViewController.view.frame = startFrame;
-        self.iPhoneCategoryTableViewController.view.hidden = NO;
+        self.categoryTableViewController.view.frame = startFrame;
+        self.categoryTableViewController.view.hidden = NO;
         self.categorySelectDismissControl.hidden = NO;
         
         [UIView animateWithDuration: 0.2f
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseOut
                          animations: ^{
-                             CGRect endFrame = self.iPhoneCategoryTableViewController.view.frame;
+                             CGRect endFrame = self.categoryTableViewController.view.frame;
                              endFrame.origin.x = 0;
-                             self.iPhoneCategoryTableViewController.view.frame = endFrame;
+                             self.categoryTableViewController.view.frame = endFrame;
                          }
          
          
@@ -960,14 +879,14 @@ static BOOL lock = NO;
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseIn
                          animations: ^{
-                             CGRect endFrame = self.iPhoneCategoryTableViewController.view.frame;
+                             CGRect endFrame = self.categoryTableViewController.view.frame;
                              endFrame.origin.x = -endFrame.size.width;
-                             self.iPhoneCategoryTableViewController.view.frame = endFrame;
+                             self.categoryTableViewController.view.frame = endFrame;
                          }
          
          
                          completion: ^(BOOL finished) {
-                             self.iPhoneCategoryTableViewController.view.hidden = YES;
+                             self.categoryTableViewController.view.hidden = YES;
                          }];
     }
 }
@@ -977,7 +896,7 @@ static BOOL lock = NO;
     if([action isEqualToString:@"open"] && [object isKindOfClass:[Genre class]])
     {
         Genre* genreSelected = (Genre *)object;
-        [self.iPhoneCategoryTableViewController setSelectedCategoryForId:genreSelected.uniqueId];
+        [self.categoryTableViewController setSelectedCategoryForId:genreSelected.uniqueId];
         [self categoryTableController:nil didSelectCategory:genreSelected];
         
     }
@@ -1064,7 +983,7 @@ static BOOL lock = NO;
     
     [self handleNewTabSelectionWithGenre: nil];
     
-    if (!self.iPhoneCategoryTableViewController.view.hidden)
+    if (!self.categoryTableViewController.view.hidden)
     {
         [self toggleChannelsCategoryTable: nil];
     }
@@ -1153,11 +1072,6 @@ static BOOL lock = NO;
     
     [appDelegate.viewStackManager
      viewProfileDetails: channel.channelOwner];
-}
-
--(BOOL)canScrollFullScreen
-{
-    return YES;
 }
 
 @end

@@ -58,26 +58,9 @@
     [self.view addSubview: self.logoImageView];
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-
+    
     [self.tableView registerClass: [SYNNotificationsTableViewCell class]
            forCellReuseIdentifier: kNotificationsCellIdent];
-    
-    if (IS_IPAD)
-    {
-        //Semi-transparent background for iOS7
-        if (IS_IOS_7_OR_GREATER)
-        {
-            self.tableView.backgroundColor = [UIColor colorWithWhite:255.0f/255.0f alpha:0.4];
-        }
-    }
-    
-    if (IS_IPHONE)
-    {
-        if (IS_IOS_7_OR_GREATER)
-        {
-            self.tableView.backgroundColor = [UIColor colorWithWhite:255.0f/255.0f alpha:0.4];
-        }
-    }
 }
 
 

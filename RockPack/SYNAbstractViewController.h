@@ -36,21 +36,15 @@ typedef void (^SYNShareCompletionBlock)(void);
     BOOL tabExpanded;
     SYNTabViewController *tabViewController;
     NSString *viewId;
+    NSFetchedResultsController *fetchedResultsController;
     NSString *abstractTitle;
-    CGFloat _mainCollectionViewLastOffsetY;
-    ScrollingDirection _mainCollectionViewScrollingDirection;
-    CGFloat _mainCollectionViewOffsetDeltaY;
-    dispatch_once_t onceToken;
 }
 
 @property (nonatomic) BOOL isAnimating;
-
 @property (nonatomic) BOOL isLocked;
 @property (nonatomic) BOOL arcMenuIsChannelCell;
-
 @property (nonatomic) NSInteger dataItemsAvailable;
 @property (nonatomic) NSRange dataRequestRange;
-
 @property (nonatomic, assign) BOOL inDrag;
 @property (nonatomic, assign) CGPoint initialDragCenter;
 @property (nonatomic, assign) NSInteger arcMenuComponentIndex;
@@ -58,19 +52,17 @@ typedef void (^SYNShareCompletionBlock)(void);
 @property (nonatomic, readonly) NSString *viewId;
 @property (nonatomic, strong)  NSIndexPath *arcMenuIndexPath;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
+@property (nonatomic, strong) SYNAddButtonControl *addButton;
 @property (nonatomic, strong) SYNArcMenuView *arcMenu;
 @property (nonatomic, strong) SYNChannelFooterMoreView *footerView;
 @property (nonatomic, strong) SYNTabViewController *tabViewController;
 @property (nonatomic, strong) UIImageView *draggedView;
 @property (nonatomic, weak) MKNetworkOperation *runningNetworkOperation;
 @property (readonly) BOOL alwaysDisplaysSearchBox;
-@property (readonly) BOOL canScrollFullScreen;
-
-@property (nonatomic) ScrollingDirection mainCollectionViewScrollingDirection;
-@property (nonatomic) CGFloat mainCollectionViewOffsetDeltaY;
-
-@property (nonatomic, readonly) UICollectionView* mainCollectionView;
+@property (readonly) NSManagedObjectContext *mainManagedObjectContext;
+@property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
 
 - (void) performAction: (NSString *) action withObject: (id) object;
 
@@ -78,10 +70,13 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (void) handleNewTabSelectionWithGenre: (Genre *) name;
 
 - (void) videoOverlayDidDissapear;
+- (void) displayVideoViewerFromView: (UIButton *) videoViewButton;
 
+- (NSIndexPath *) indexPathFromVideoInstanceButton: (UIButton *) button;
 
 - (void) reloadCollectionViews;
 
+- (BOOL) collectionView: (UICollectionView *) cv didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath;
 
 - (void) displayVideoViewerWithVideoInstanceArray: (NSArray *) videoInstanceArray
                                  andSelectedIndex: (int) selectedIndex
@@ -98,8 +93,6 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (BOOL) moreItemsToLoad;
 
 - (void) headerTapped;
-
--(void)notableScrollNotification:(NSNotification*)notification;
 
 - (IBAction) toggleStarAtIndexPath: (NSIndexPath *) indexPath;
 

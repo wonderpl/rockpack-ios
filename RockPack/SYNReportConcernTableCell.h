@@ -13,6 +13,5 @@
 @property (weak, nonatomic) IBOutlet UIImageView *checkmarkImage;
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImage;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UIView *highlightedViewiOS7;
 
 @end

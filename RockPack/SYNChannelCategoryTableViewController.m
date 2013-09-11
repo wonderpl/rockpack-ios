@@ -738,7 +738,6 @@
 {
     if (!selectedCategoryId)
     {
-        
         //Set Other selected
         SYNChannelCategoryTableHeader *headerView = (SYNChannelCategoryTableHeader *) self.tableView.tableHeaderView;
         headerView.titleLabel.textColor = [UIColor whiteColor];
