@@ -94,32 +94,18 @@
     {
         // Get the Title
         
+        localisedKey = [NSString stringWithFormat:@"startscreen_onboard_%i_title", i + 1];
+        localisedDefault = [NSString stringWithFormat:@"Text for onboard title %i", i + 1];
+        
+        titleText = NSLocalizedString(localisedKey, localisedDefault);
         
         
         // Get the Message
-        if (IS_IPHONE)
-        {
-            localisedKey = [NSString stringWithFormat:@"startscreen_onboard_%i_iphone", i + 1];
-            localisedDefault = [NSString stringWithFormat:@"Text for onboard screen %i", i + 1];
-            messageText = NSLocalizedString(localisedKey, localisedDefault);
-            
-            localisedKey = [NSString stringWithFormat:@"startscreen_onboard_%i_title_iphone", i + 1];
-            localisedDefault = [NSString stringWithFormat:@"Text for onboard title %i", i + 1];
-            titleText = NSLocalizedString(localisedKey, localisedDefault);
-
-
-        }
-        else
-        {
-            localisedKey = [NSString stringWithFormat:@"startscreen_onboard_%i_ipad", i + 1];
-            localisedDefault = [NSString stringWithFormat:@"Text for onboard screen %i", i + 1];
-            messageText = NSLocalizedString(localisedKey, localisedDefault);
-            
-            localisedKey = [NSString stringWithFormat:@"startscreen_onboard_%i_title_ipad", i + 1];
-            localisedDefault = [NSString stringWithFormat:@"Text for onboard title %i", i + 1];
-            titleText = NSLocalizedString(localisedKey, localisedDefault);
-        }
-
+        
+        localisedKey = [NSString stringWithFormat:@"startscreen_onboard_%i", i + 1];
+        localisedDefault = [NSString stringWithFormat:@"Text for onboard screen %i", i + 1];
+        
+        messageText = NSLocalizedString(localisedKey, localisedDefault);    
         
         messageView = [self createNewMessageViewWithMessage:messageText
                                                    andTitle:titleText
@@ -182,7 +168,7 @@
     
     
     // Limit label width to fit on portrait iPad, or iPhone screen
-    newFrame.size.width = IS_IPHONE ? 260.0f: 578.0f;
+    newFrame.size.width = IS_IPHONE ? 290.0f: 578.0f;
     newFrame.size.height = 0.0f;
     
     UIView* container = [[UIView alloc] initWithFrame:newFrame];

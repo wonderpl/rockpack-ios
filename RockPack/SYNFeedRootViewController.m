@@ -82,9 +82,9 @@ typedef void(^FeedDataErrorBlock)(void);
 {
     [super viewDidLoad];
     
-    self.feedItemsData = @[];
+    self.feedItemsData = [NSArray array];
     
-    self.videosInOrderArray = @[];
+    self.videosInOrderArray = [NSArray array];
     
     SYNIntegralCollectionViewFlowLayout *standardFlowLayout;
     UIEdgeInsets sectionInset, contentInset;
@@ -520,7 +520,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     if(resultsArray.count == 0)
     {
-        self.feedItemsData = @[];
+        self.feedItemsData = [NSArray array];
         [self.feedCollectionView reloadData];
         return;
     }
@@ -533,10 +533,10 @@ typedef void(^FeedDataErrorBlock)(void);
     {
         dateNoTime = [feedItem.dateAdded dateIgnoringTime];
         
-        NSMutableArray* bucket = buckets[dateNoTime];
+        NSMutableArray* bucket = [buckets objectForKey:dateNoTime];
         if(!bucket) { // if the bucket has not been created already, create it
             bucket = [NSMutableArray array];
-            buckets[dateNoTime] = bucket;
+            [buckets setObject:bucket forKey:dateNoTime];
         }
             
         [bucket addObject:feedItem];
@@ -552,7 +552,7 @@ typedef void(^FeedDataErrorBlock)(void);
     NSMutableArray* sortedItemsArray = [NSMutableArray array];
     for (NSDate* dateKey in sortedDateKeys)
     {
-        [sortedItemsArray addObject:buckets[dateKey]];
+        [sortedItemsArray addObject:[buckets objectForKey:dateKey]];
         
     }
     self.feedItemsData = sortedItemsArray;
@@ -562,7 +562,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     // put the videos in order
     
-    self.videosInOrderArray = @[];
+    self.videosInOrderArray = [NSArray array];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         [self sortVideosForPlaylist];
     });
@@ -591,7 +591,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     NSMutableDictionary* mutDictionary = [[NSMutableDictionary alloc] initWithCapacity:resultsArray.count];
     for (VideoInstance* vi in resultsArray) {
-        mutDictionary[vi.uniqueId] = vi;
+        [mutDictionary setObject:vi forKey:vi.uniqueId];
     }
     
     self.feedVideosById = [NSDictionary dictionaryWithDictionary:mutDictionary];
@@ -619,7 +619,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     NSMutableDictionary* mutDictionary = [[NSMutableDictionary alloc] initWithCapacity:resultsArray.count];
     for (Channel* ch in resultsArray) {
-        mutDictionary[ch.uniqueId] = ch;
+        [mutDictionary setObject:ch forKey:ch.uniqueId];
     }
     
     self.feedChannelsById = [NSDictionary dictionaryWithDictionary:mutDictionary];
@@ -718,7 +718,7 @@ typedef void(^FeedDataErrorBlock)(void);
     {
         DebugLog(@"*** feedChannelsById");
         // Aggregate cell with multiple indices
-        channel = (self.feedChannelsById)[feedItem.coverIndexArray[componentIndex]];
+        channel = [self.feedChannelsById objectForKey: feedItem.coverIndexArray[componentIndex]];
     }
 
     return channel;
@@ -816,7 +816,7 @@ typedef void(^FeedDataErrorBlock)(void);
         
         VideoInstance* videoInstance;
         
-        videoInstance = (VideoInstance*)(self.feedVideosById)[feedItem.coverIndexArray[0]]; // there should be only one
+        videoInstance = (VideoInstance*)[self.feedVideosById objectForKey: feedItem.coverIndexArray[0]]; // there should be only one
 
         cell.mainTitleLabel.text = videoInstance.title;
 
@@ -831,7 +831,7 @@ typedef void(^FeedDataErrorBlock)(void);
             cell.messageLabel.text = feedItem.title;
 
         [cell setSupplementaryMessageWithDictionary: @{@"star_count": videoInstance.video ? videoInstance.video.starCount : @0,
-         @"starrers": videoInstance ? [videoInstance.starrers array] : @[]}];
+         @"starrers": videoInstance ? [videoInstance.starrers array] : [NSArray array]}];
         
         [cell setCoverImagesAndTitlesWithArray: @[@{@"image": videoInstance.video ? videoInstance.video.thumbnailURL : @"",
          @"title" : videoInstance ? videoInstance.title : @""}]];
@@ -855,7 +855,7 @@ typedef void(^FeedDataErrorBlock)(void);
             
             for (NSString* resourceId in coverIndexIds)
             {
-                channel = (Channel*)(self.feedChannelsById)[resourceId];
+                channel = (Channel*)[self.feedChannelsById objectForKey:resourceId];
                 [coverImagesAndTitles addObject:@{  @"image": channel.channelCover ? channel.channelCover.imageUrl : @"",
                                                     @"title" : channel.title    }];
             }
@@ -864,7 +864,7 @@ typedef void(^FeedDataErrorBlock)(void);
         }
         else
         {
-            channel = (Channel*)(self.feedChannelsById)[feedItem.resourceId];
+            channel = (Channel*)[self.feedChannelsById objectForKey: feedItem.resourceId];
             
             [cell setCoverImagesAndTitlesWithArray:@[@{@"image": channel.channelCover ? channel.channelCover.imageLargeUrl : @"",
                                                        @"title" : channel.title    }]]; 
@@ -1032,7 +1032,7 @@ typedef void(^FeedDataErrorBlock)(void);
     else
     {
         // Aggregate cell with multiple indices
-        videoInstance = (self.feedVideosById)[feedItem.coverIndexArray[componentIndex]];
+        videoInstance = [self.feedVideosById objectForKey: feedItem.coverIndexArray[componentIndex]];
     }
     
     return videoInstance;
@@ -1051,11 +1051,11 @@ typedef void(^FeedDataErrorBlock)(void);
     
     if (feedItem.itemTypeValue == FeedItemTypeLeaf)
     {
-        videoInstance = (self.feedVideosById)[feedItem.resourceId];
+        videoInstance = [self.feedVideosById objectForKey: feedItem.resourceId];
     }
     else
     {
-        videoInstance = (self.feedVideosById)[feedItem.coverIndexArray[0]];
+        videoInstance = [self.feedVideosById objectForKey: feedItem.coverIndexArray[0]];
     }
     
     return videoInstance;
@@ -1075,11 +1075,11 @@ typedef void(^FeedDataErrorBlock)(void);
     
     if (feedItem.itemTypeValue == FeedItemTypeLeaf)
     {
-        channel = (self.feedChannelsById)[feedItem.resourceId];
+        channel = [self.feedChannelsById objectForKey: feedItem.resourceId];
     }
     else
     {
-        channel = (self.feedChannelsById)[feedItem.coverIndexArray[0]];
+        channel = [self.feedChannelsById objectForKey: feedItem.coverIndexArray[0]];
     }
     
     return channel;
@@ -1101,7 +1101,7 @@ typedef void(^FeedDataErrorBlock)(void);
             
             if (fi.itemTypeValue == FeedItemTypeLeaf)
             {
-                [ma addObject: (self.feedVideosById)[fi.resourceId]];
+                [ma addObject: [self.feedVideosById objectForKey: fi.resourceId]];
             }
             else
             {
@@ -1113,7 +1113,7 @@ typedef void(^FeedDataErrorBlock)(void);
                         continue;
                     }
                     
-                    [ma addObject: (self.feedVideosById)[cfi.resourceId]];
+                    [ma addObject: [self.feedVideosById objectForKey: cfi.resourceId]];
                 }
             }
         }
@@ -1161,11 +1161,11 @@ typedef void(^FeedDataErrorBlock)(void);
         
         if (selectedFeedItem.itemTypeValue == FeedItemTypeLeaf)
         {
-            channel = (self.feedChannelsById)[selectedFeedItem.resourceId];
+            channel = [self.feedChannelsById objectForKey: selectedFeedItem.resourceId];
         }
         else
         {
-            channel = (self.feedChannelsById)[selectedFeedItem.coverIndexArray[self.arcMenuComponentIndex]];
+            channel = [self.feedChannelsById objectForKey: selectedFeedItem.coverIndexArray[self.arcMenuComponentIndex]];
         }
         
         if (channel)
@@ -1218,11 +1218,11 @@ typedef void(^FeedDataErrorBlock)(void);
         
         if (selectedFeedItem.itemTypeValue == FeedItemTypeLeaf)
         {
-            videoInstance = (self.feedVideosById)[selectedFeedItem.resourceId];
+            videoInstance = [self.feedVideosById objectForKey: selectedFeedItem.resourceId];
         }
         else
         {
-            videoInstance = (self.feedVideosById)[selectedFeedItem.coverIndexArray[0]];
+            videoInstance = [self.feedVideosById objectForKey: selectedFeedItem.coverIndexArray[0]];
         }
         
         if (!videoInstance)

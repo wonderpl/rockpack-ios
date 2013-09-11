@@ -470,7 +470,6 @@ typedef enum {
         // == Title == //
 
         cell.textLabel.text = cellTitle;
-        cell.textLabel.backgroundColor = [UIColor clearColor];
         
     }
     

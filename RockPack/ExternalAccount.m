@@ -87,7 +87,7 @@
 // if the autopost value is set to TRUE from anywhere, revert the noautopost flag if it was set
 -(void)setFlagsValue:(int32_t)value_
 {
-    self.flags = @(value_);
+    self.flags = [NSNumber numberWithInt:value_];
     if(value_ & ExternalAccountFlagAutopostStar)
         self.noautopostValue = NO;
 }

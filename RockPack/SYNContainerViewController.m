@@ -58,7 +58,6 @@ UITextViewDelegate>
     scrollView.pagingEnabled = YES;
     scrollView.showsHorizontalScrollIndicator = NO;
     scrollView.showsVerticalScrollIndicator = NO;
-    scrollView.bounces = NO;
     scrollView.scrollsToTop = NO;
     
     self.view = scrollView;
@@ -127,9 +126,7 @@ UITextViewDelegate>
         self.scrollView.page = self.lastSelectedPageIndex = 1;
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: kScrollerPageChanged
-                                                        object: self
-                                                      userInfo: @{kCurrentPage: @(self.scrollView.page)}];
+    
 }
 
 
@@ -138,6 +135,16 @@ UITextViewDelegate>
     [super viewWillAppear: animated];
     
     [self packViewControllersForInterfaceOrientation: [SYNDeviceManager.sharedInstance orientation]];
+    
+    // dispatch once so that we do not get notified when we return to the container from say channels details, this will not confict with side navigation
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName: kScrollerPageChanged
+                                                            object: self
+                                                          userInfo: @{kCurrentPage: @(self.scrollView.page)}];
+    });
+    
+    
     
 }
 

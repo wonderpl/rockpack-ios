@@ -6,7 +6,6 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
-#import "ExternalAccount.h"
 #import "GAI.h"
 #import "NSString+Utils.h"
 #import "RegexKitLite.h"
@@ -17,8 +16,8 @@
 #import "SYNLoginBaseViewController.h"
 #import "SYNNetworkEngine.h"
 #import "SYNOAuthNetworkEngine.h"
-#import "UIInterpolatingMotionEffect+DualAxis.h"
 #import "User.h"
+#import "ExternalAccount.h"
 #import <Accounts/Accounts.h>
 #import <FacebookSDK/FacebookSDK.h>
 
@@ -111,46 +110,20 @@
     self.loginBackgroundImage.frame = totalImageRect;
     self.loginBackgroundFrontImage.frame = totalImageRect;
     
-    self.backgroundImageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"login_bg_1.jpg"]];
+    self.backgroundImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"login_bg_1.jpg"]];
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.backgroundImageView.frame = totalImageRect;
     
-    [self.view insertSubview: self.backgroundImageView
-                    atIndex: 0];
-    
-    if (IS_IOS_7_OR_GREATER)
-    {
-        self.lowerParallaxImageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"LowerParallaxStars"]];
-        self.lowerParallaxImageView.contentMode = UIViewContentModeCenter;
-        self.lowerParallaxImageView.frame = totalImageRect;
-        
-        UIMotionEffectGroup *lowerMotionEffectGroup = [UIInterpolatingMotionEffect dualAxisMotionEffectWithMaxDisplacement: 100.0f];
-        
-        [self.lowerParallaxImageView addMotionEffect: lowerMotionEffectGroup];
-        
-        [self.view insertSubview: self.lowerParallaxImageView
-                         atIndex: 1];
-        
-        self.upperParallaxImageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"UpperParallaxStars"]];
-        self.upperParallaxImageView.contentMode = UIViewContentModeCenter;
-        self.upperParallaxImageView.frame = totalImageRect;
-        
-        UIMotionEffectGroup *upperMotionEffectGroup = [UIInterpolatingMotionEffect dualAxisMotionEffectWithMaxDisplacement: 200.0f];
-        
-        [self.upperParallaxImageView addMotionEffect: upperMotionEffectGroup];
-        
-        [self.view insertSubview: self.upperParallaxImageView
-                         atIndex: 2];
-    }
+    [self.view insertSubview:self.backgroundImageView atIndex:0];
 
 //    self.loginBackgroundImage.center = correctPoint;
 //    self.loginBackgroundFrontImage.center = correctPoint;
 //    
-    self.loginBackgroundImage.center = CGPointMake(self.view.center.x, self.loginBackgroundImage.center.y);
+//    self.loginBackgroundImage.center = CGPointMake(self.view.center.x, self.loginBackgroundImage.center.y);
     
     
-//    self.loginBackgroundImage.image = [UIImage imageNamed:self.backgroundImagesArray[0]]; // get the first image
-    
+    self.loginBackgroundImage.image = [UIImage imageNamed:self.backgroundImagesArray[0]]; // get the first image
+        
     // localise date format for US and UK
     
     NSString* localeFromDevice = [(NSString*)CFBridgingRelease(CFLocaleCreateCanonicalLanguageIdentifierFromString(NULL, (CFStringRef)[NSLocale.autoupdatingCurrentLocale objectForKey: NSLocaleIdentifier])) lowercaseString];
@@ -931,11 +904,58 @@
         return;
     
     _scrollingDirection = scrollingDirection;
+    NSString* nameOfNextImage;
 
     if (self.currentOnBoardingPage < 0)
         self.currentOnBoardingPage = 0;
     else if (self.currentOnBoardingPage > kLoginOnBoardingMessagesNum - 1)
         self.currentOnBoardingPage = kLoginOnBoardingMessagesNum - 1;
+    
+    nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
+    self.loginBackgroundImage.image = [UIImage imageNamed:nameOfNextImage];
+
+    switch (scrollingDirection)
+    {
+        case ScrollingDirectionNone:
+         
+            nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
+            break;
+            
+        case ScrollingDirectionRight:
+            if (self.currentOnBoardingPage + 1 >= self.backgroundImagesArray.count)
+            {
+                
+                nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
+            }
+            else
+            {
+                
+                nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage + 1];
+            }
+                
+            
+            break;
+            
+        case ScrollingDirectionLeft:
+            if (self.currentOnBoardingPage - 1 < 0)
+            {
+                
+                nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
+            }
+            else
+            {
+             
+                nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage - 1];
+            }
+            break;
+            
+            
+        default: // Up and Down are disregarded
+            break;
+    }
+    
+    self.loginBackgroundFrontImage.image = [UIImage imageNamed: nameOfNextImage];
+        
 }
 
 

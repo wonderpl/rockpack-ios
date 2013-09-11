@@ -18,88 +18,59 @@
 
 @implementation AMBlurView
 
-- (instancetype) initWithCoder: (NSCoder *) aDecoder
-{
-    self = [super initWithCoder: aDecoder];
-    
-    if (self)
-    {
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
         [self setup];
     }
-    
     return self;
 }
 
-
-- (instancetype) initWithFrame: (CGRect) frame
-{
-    self = [super initWithFrame: frame];
-    
-    if (self)
-    {
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
         [self setup];
     }
-    
     return self;
 }
 
-
-- (instancetype) init
+- (instancetype)init
 {
     self = [super init];
-    
-    if (self)
-    {
+    if (self) {
         [self setup];
     }
-    
     return self;
 }
 
-
-- (void) setup
-{
-    self.toolbar = [[UIToolbar alloc] initWithFrame: self.bounds];
-    self.blurLayer = self.toolbar.layer;
-  
+- (void)setup {
+    [self setToolbar:[[UIToolbar alloc] initWithFrame:[self bounds]]];
+    [self setBlurLayer:[[self toolbar] layer]];
+    
+    
+    
     UIView *blurView = [UIView new];
-    blurView.userInteractionEnabled = NO;
-    [blurView.layer addSublayer: self.blurLayer];
+    [blurView setUserInteractionEnabled:NO];
+    [blurView.layer addSublayer:[self blurLayer]];
+    [blurView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [blurView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+    [self insertSubview:blurView atIndex:0];
     
-    [blurView setTranslatesAutoresizingMaskIntoConstraints: YES];
-    [blurView setAutoresizingMask: UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[blurView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(blurView)]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(-1)-[blurView]-(-1)-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(blurView)]];
     
-    [self insertSubview: blurView
-                atIndex: 0];
-    
-    [self addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: @"H:|[blurView]|"
-                                                                  options: 0
-                                                                  metrics: nil
-                                                                    views: NSDictionaryOfVariableBindings(blurView)]];
-    
-    [self addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: @"V:|-(-1)-[blurView]-(-1)-|"
-                                                                  options: 0
-                                                                  metrics: nil
-                                                                    views: NSDictionaryOfVariableBindings(blurView)]];
-    
-     self.backgroundColor = [UIColor clearColor];
+    [self setBackgroundColor:[UIColor clearColor]];
 }
 
-
-- (void) setBlurTintColor: (UIColor *) blurTintColor
-{
-    [self.toolbar setValue: blurTintColor
-                    forKey: @"barTintColor"];
-}
-
-
-- (void) setFrame: (CGRect) frame
-{
-    [super setFrame: frame];
+- (void) setBlurTintColor:(UIColor *)blurTintColor {
+    [self.toolbar setValue:blurTintColor forKey:@"barTintColor"];
     
-    self.toolbar.frame = self.bounds;
-//    self.blurLayer.frame = self.bounds;
+    
 }
 
+- (void)setFrame:(CGRect)frame {
+    [super setFrame:frame];
+    [self.blurLayer setFrame:[self bounds]];
+}
 
 @end

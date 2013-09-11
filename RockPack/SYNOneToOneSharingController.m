@@ -95,7 +95,7 @@
     self.facebookLoader.hidden = YES;
     
     self.friends = [NSMutableArray array];
-    self.recentFriends = @[];
+    self.recentFriends = [NSArray array];
     
     self.addressBookImageCache = [[NSCache alloc] init];
     
@@ -111,7 +111,7 @@
                        forCellWithReuseIdentifier: @"SYNFriendThumbnailCell"];
     
     self.searchFieldFrameImageView.image = [[UIImage imageNamed: @"FieldSearch"]
-                                            resizableImageWithCapInsets: UIEdgeInsetsMake(2.0f, 20.0f, 2.0f, 20.0f)];
+                                            resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f, 20.0f, 0.0f, 20.0f)];
     
     
     
@@ -375,6 +375,7 @@
     
     
     
+    [weakSelf showLoader:YES];
     
     [appDelegate.oAuthNetworkEngine friendsForUser: appDelegate.currentUser
                                         onlyRecent: NO
@@ -390,6 +391,7 @@
                                          DebugLog(@"There was a problem loading friends");
                                      }
                                      
+                                     [weakSelf showLoader:NO];
                                      
                                      hasAttemptedToLoadData = YES;
                                      
@@ -397,6 +399,7 @@
                                      
                                  } errorHandler: ^(id dictionary) {
                                      
+                                     [weakSelf showLoader:NO];
                                      
                                      hasAttemptedToLoadData = YES;
                                      
@@ -447,8 +450,6 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) collectionView
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    
-    
     SYNFriendThumbnailCell *userThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNFriendThumbnailCell"
                                                                                           forIndexPath: indexPath];
     
@@ -561,8 +562,6 @@
 
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath
 {
-    
-    
     SYNOneToOneFriendCell *cell = [tableView dequeueReusableCellWithIdentifier: @"SYNOneToOneFriendCell"];
     
     if (cell == nil)
@@ -586,12 +585,8 @@
     Friend *friend = self.searchedFriends[indexPath.row];
     cell.textLabel.text = friend.displayName;
     
-    if(friend.isOnRockpack)
-        cell.detailTextLabel.text = @"Is on Rockpack";
-    else if([self isValidEmail:friend.email])
-        cell.detailTextLabel.text = friend.email;
-    else
-        cell.detailTextLabel.text = @"Pick and email address";
+    
+    cell.detailTextLabel.text = [self isValidEmail: friend.email] ? friend.email : @"Pick and email address";
     
     // image
     
@@ -616,7 +611,7 @@
     }
     else
     {
-        cell.imageView.image = [UIImage imageNamed: @"PlaceholderAvatarChannel"];
+        
     }
     
     return cell;
@@ -819,7 +814,7 @@
                          self.closeButton.alpha = 1.0f;
                          
                          CGRect sfFrame = self.searchFieldFrameImageView.frame;
-                         sfFrame.size.width -= 38.0f;
+                         sfFrame.size.width -= 30.0f;
                          self.searchFieldFrameImageView.frame = sfFrame;
                      }
                      completion: nil];
@@ -969,7 +964,6 @@
     
     [self.searchTextField resignFirstResponder];
     
-    
     SYNAppDelegate *appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
     __weak SYNOneToOneSharingController *wself = self;
      
@@ -993,10 +987,7 @@
                                                
                                                [self showLoader:NO];
                                                
-                                               NSString* typeName = [self.mutableShareDictionary[@"type"] isEqualToString:@"channel"] ? @"Pack" : @"Video";
-                                               
-                                               NSString* notificationText = [NSString stringWithFormat:@"Your %@ has been successfully sent", typeName];
-                                               [appDelegate.viewStackManager presentSuccessNotificationWithMessage:notificationText];
+                                               [appDelegate.viewStackManager presentSuccessNotificationWithMessage:@"Email Sent Succesfully"];
                                                
                                            } errorHandler: ^(NSDictionary *error) {
                                                

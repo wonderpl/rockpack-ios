@@ -155,7 +155,7 @@
     SYNAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     
     
-    NSArray *users = messageDictionary[@"starrers"] ? messageDictionary[@"starrers"] : @[];
+    NSArray *users = messageDictionary[@"starrers"] ? messageDictionary[@"starrers"] : [NSArray array];
     
     // initial setup
     NSMutableAttributedString *attributedCompleteString = [[NSMutableAttributedString alloc] init];
