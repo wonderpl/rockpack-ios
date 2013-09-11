@@ -133,6 +133,11 @@
 "core_nav_section_friends" = "FIND FRIENDS";
 
 
+// == One to One Sharing == //
+
+"sharing_object_sent" = "Your %@ has been sent";
+
+
 // == Notifications == //
 
 //
@@ -144,6 +149,8 @@
 "notification_joined_action" = "Your Facebook friend %@ has joined Rockpack";
 "your_channel_object" = "your pack";
 "your_video_object" = "your video";
+"video_object"  = "video";
+"pack_object"  = "pack";
 
 "onboarding_channels" = "Browse packs of videos by category or search for any video.\n ";
 "onboarding_subscription" = "Follow to get video updates in your feed.\n ";
