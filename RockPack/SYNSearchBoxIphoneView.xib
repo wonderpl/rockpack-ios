@@ -45,6 +45,7 @@
             <color key="backgroundColor" red="0.50980395079999996" green="0.55294120309999995" blue="0.56862747670000002" alpha="0.0" colorSpace="calibratedRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="backgroundSearchPanel" destination="3" id="j0a-fB-a94"/>
                 <outlet property="integratedCloseButton" destination="14" id="16"/>
                 <outlet property="searchFieldFrameImageView" destination="11" id="17"/>
                 <outlet property="searchTextField" destination="12" id="15"/>
