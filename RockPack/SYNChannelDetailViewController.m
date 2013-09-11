@@ -78,6 +78,8 @@
 @property (nonatomic, strong) IBOutlet UILabel *subscribersLabel;
 @property (nonatomic, strong) IBOutlet UIView *avatarBackgroundView;
 @property (nonatomic, strong) IBOutlet UIView *channelTitleTextBackgroundView;
+
+@property (nonatomic, strong) SYNAddButtonControl *addButton;
 @property (nonatomic, strong) IBOutlet UIView *displayControlsView;
 @property (nonatomic, strong) IBOutlet UIView *editControlsView;
 @property (nonatomic, strong) IBOutlet UIView *masterControlsView;
@@ -992,7 +994,7 @@
     
     VideoInstance *videoInstance = self.channel.videoInstances [indexPath.item];
     
-    videoInstance.video.starredByUserValue = self.channel.favouritesValue;
+    videoInstance.starredByUserValue = self.channel.favouritesValue;
     
     [videoThumbnailCell.imageView
      setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]

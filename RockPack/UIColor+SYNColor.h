@@ -18,6 +18,8 @@
 + (UIColor *) rockpacTurcoiseColor;
 + (UIColor *) rockpackHeaderSubtitleColor;
 
++ (UIColor *) rockpackBackgroundGrayColor;
+
 + (UIColor *) rockpacAggregateTextLight;
 + (UIColor *) rockpacAggregateTextBold;
 

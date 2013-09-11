@@ -76,23 +76,23 @@
                                  withDefault:@""];
     
     self.externalSystem =
-    [dictionary[@"external_system"] isKindOfClass:[NSString class]] ? dictionary[@"external_system"] : nil;
+    [[dictionary objectForKey: @"external_system"] isKindOfClass:[NSString class]] ? [dictionary objectForKey: @"external_system"] : nil;
     
     
     self.externalUID =
-    [dictionary[@"external_uid"] isKindOfClass:[NSString class]] ? dictionary[@"external_uid"] : nil;
+    [[dictionary objectForKey: @"external_uid"] isKindOfClass:[NSString class]] ? [dictionary objectForKey: @"external_uid"] : nil;
     
     if([self.uniqueId isEqualToString:@""]) // in the case of FB friends we are not returned a UID, use the FB one.
         self.uniqueId = self.externalUID;
     
     self.resourceURL =
-    [dictionary[@"resource_url"]  isKindOfClass:[NSString class]] ? dictionary[@"resource_url"] : nil;
+    [[dictionary objectForKey: @"resource_url"]  isKindOfClass:[NSString class]] ? [dictionary objectForKey: @"resource_url"] : nil;
     
     
     self.hasIOSDevice = [dictionary objectForKey: @"has_ios_device"
                                      withDefault: @NO];
     
-    self.email = [dictionary[@"email"] isKindOfClass:[NSString class]] ? dictionary[@"email"] : nil;
+    self.email = [[dictionary objectForKey:@"email"] isKindOfClass:[NSString class]] ? [dictionary objectForKey:@"email"] : nil;
     
     
     self.lastShareDate = [dictionary dateFromISO6801StringForKey:@"last_shared_date"

@@ -32,8 +32,8 @@
 #define kInterRowMargin 8.0f
 
 @interface SYNProfileRootViewController () <SYNDeletionWobbleLayoutDelegate,
-                                            UIGestureRecognizerDelegate,
-                                            SYNImagePickerControllerDelegate>
+UIGestureRecognizerDelegate,
+SYNImagePickerControllerDelegate>
 
 @property (nonatomic) BOOL deleteCellModeOn;
 @property (nonatomic) BOOL isIPhone;
@@ -1066,7 +1066,7 @@
 
 
 - (void)	 alertView: (UIAlertView *) alertView
-         willDismissWithButtonIndex: (NSInteger) buttonIndex
+willDismissWithButtonIndex: (NSInteger) buttonIndex
 {
     if (buttonIndex == 1)
     {
@@ -1267,7 +1267,7 @@
     [super arcMenuUpdateState: recognizer];
     
     if (recognizer.state == UIGestureRecognizerStateBegan)
-    {        
+    {
         Channel *channel = [self channelInstanceForIndexPath: self.arcMenuIndexPath
                                            andComponentIndex: kArcMenuInvalidComponentIndex];
         
@@ -1278,9 +1278,9 @@
 
 
 - (void) arcMenu: (SYNArcMenuView *) menu
-         didSelectMenuName: (NSString *) menuName
-         forCellAtIndex: (NSIndexPath *) cellIndexPath
-         andComponentIndex: (NSInteger) componentIndex
+didSelectMenuName: (NSString *) menuName
+  forCellAtIndex: (NSIndexPath *) cellIndexPath
+andComponentIndex: (NSInteger) componentIndex
 {
     if ([menuName isEqualToString: kActionShareVideo])
     {
@@ -1389,7 +1389,7 @@
     {
         channel = self.user.channels[indexPath.row - (self.isUserProfile ? 1 : 0)];
     }
-
+    
     
     [appDelegate.viewStackManager viewChannelDetails: channel];
 }

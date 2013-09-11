@@ -33,6 +33,7 @@
 #import "UIFont+SYNFont.h"
 #import "VideoInstance.h"
 #import "AMBlurView.h"
+#import "UIColor+SYNColor.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define kMovableViewOffX -58
@@ -64,11 +65,19 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) UINavigationController* mainNavigationController;
 @property (nonatomic, strong) UIPopoverController* accountSettingsPopover;
 @property (nonatomic, strong) UIView* accountSettingsCoverView;
+@property (nonatomic, weak) UICollectionView* currentlyObservigCollectionView;
+@property (nonatomic, strong) IBOutlet UIView* headerContainerView;
+@property (nonatomic) CGRect originalSideNavigationButtonFrame;
+@property (nonatomic) BOOL isAnimatingHeader;
 
 @end
 
 
 @implementation SYNMasterViewController
+
+@synthesize isAnimatingHeader;
+
+
 
 #pragma mark - Object lifecycle
 
@@ -144,6 +153,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     // it is the only way to guarantee it will work nicely
     self.sideNavigatorViewController.captiveButton = self.sideNavigationButton;
     self.sideNavigatorViewController.darkOverlay = self.darkOverlayView;
+    
+    self.originalSideNavigationButtonFrame = self.sideNavigationButton.frame;
         
     // == Fade in from splash screen (not in AppDelegate so that the Orientation is known) == //
     
@@ -249,9 +260,26 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scrollerPageChanged:) name:kScrollerPageChanged object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(searchTyped:) name:kSearchTyped object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showAccountSettingsPopover) name:kAccountSettingsPressed object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notableScrollNotification:) name:kNotableScrollEvent object:nil];
     
     [self.navigationContainerView addSubview:self.sideNavigatorViewController.view];
+    
+    //Dark Overlay view for slider (iPhone)
+    if (IS_IPHONE)
+    {
+        CGRect screenRect = [[UIScreen mainScreen] bounds];
+        CGFloat screenWidth = screenRect.size.width;
+        CGFloat screenHeight = screenRect.size.height;
+        if (IS_IOS_7_OR_GREATER)
+        {
+            self.darkOverlayView.frame = CGRectMake(0.0f, 0.0f, screenWidth, 57.0f);
+        }
+        
+        else
+        {
+            self.darkOverlayView.frame = CGRectMake(0.0f, 0.0f, screenWidth, screenHeight);
+        }
+    }
 }
 
 
@@ -287,20 +315,77 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 {
     if ([keyPath isEqualToString: kCollectionViewContentOffsetKey])
     {
-        CGRect scrollViewFrame = self.containerViewController.scrollView.frame;
-        CGSize scrollViewContentSize = self.containerViewController.scrollView.contentSize;
-        CGPoint scrollViewContentOffset = self.containerViewController.scrollView.contentOffset;
         
-        CGFloat frameWidth = scrollViewFrame.size.width;
-        CGFloat contentWidth = scrollViewContentSize.width;
-        CGFloat offset = scrollViewContentOffset.x;
+        if(object == self.containerViewController.scrollView) // move the scroll page indicator
+        {
+            CGRect scrollViewFrame = self.containerViewController.scrollView.frame;
+            CGSize scrollViewContentSize = self.containerViewController.scrollView.contentSize;
+            CGPoint scrollViewContentOffset = self.containerViewController.scrollView.contentOffset;
+            
+            CGFloat frameWidth = scrollViewFrame.size.width;
+            CGFloat contentWidth = scrollViewContentSize.width;
+            CGFloat offset = scrollViewContentOffset.x;
+            
+            self.pagePositionIndicatorView.position = offset / (contentWidth - frameWidth);
+        }
+    
         
-        self.pagePositionIndicatorView.position = offset / (contentWidth - frameWidth);
+    }
+}
+
+#pragma mark - Scroller Changes
+
+
+
+-(void)notableScrollNotification:(NSNotification*)notification
+{
+    NSNumber* directionNumber = (NSNumber*)[notification userInfo][kNotableScrollDirection];
+    if(!directionNumber)
+        return;
+    
+    ScrollingDirection direction = directionNumber.integerValue;
+    
+    __block CGRect headerRect = self.headerContainerView.frame;
+    
+    if(direction == ScrollingDirectionUp)
+    {
+        [UIView animateWithDuration:0.3f
+                              delay:0.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+                             headerRect.origin.y = -headerRect.size.height;
+                             
+                             self.headerContainerView.frame = headerRect;
+                             if([self.containerViewController.showingViewController.viewId isEqualToString:kChannelsViewId])
+                             {
+                                 CGRect snFrame = self.sideNavigationButton.frame;
+                                 snFrame.origin.y -= IS_IPAD ? 16.0f : 7.0f;
+                                 self.sideNavigationButton.frame = snFrame;
+                             }
+                         } completion:^(BOOL finished) {
+                             isAnimatingHeader = NO;
+                         }];
+    }
+    else
+    {
+        [UIView animateWithDuration:0.3f
+                              delay:0.0f
+                            options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+                        
+                             headerRect.origin.y = 0.0f;
+                             self.headerContainerView.frame = headerRect;
+                              
+                             self.sideNavigationButton.frame = self.originalSideNavigationButtonFrame;
+                             
+                         } completion:^(BOOL finished) {
+                             isAnimatingHeader = NO;
+                         }];
     }
 }
 
 
-#pragma mark - Scroller Changes
+
 
 - (void) scrollerPageChanged: (NSNotification*) notification
 {
@@ -310,7 +395,28 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     [self pageChanged: [pageNumber integerValue]];
     
+    // self.currentlyObservigCollectionView = self.containerViewController.showingViewController.mainCollectionView;
     
+    
+    
+}
+
+-(void)setCurrentlyObservigCollectionView:(UICollectionView *)currentlyObservigCollectionView
+{
+    
+    [_currentlyObservigCollectionView removeObserver:self
+                                          forKeyPath:kCollectionViewContentOffsetKey];
+    
+    _currentlyObservigCollectionView = currentlyObservigCollectionView;
+    
+    
+    if(!_currentlyObservigCollectionView)
+        return;
+    
+    [_currentlyObservigCollectionView addObserver:self
+                                       forKeyPath:kCollectionViewContentOffsetKey
+                                          options:NSKeyValueObservingOptionNew
+                                          context:nil];
 }
 
 
@@ -458,33 +564,58 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (IBAction) showAndHideSideNavigation: (UIButton*) sender
 {
 
+    
+    
     if (self.sideNavigatorViewController.state == SideNavigationStateFull ||
         self.sideNavigatorViewController.state == SideNavigationStateHalf)
     {
         self.sideNavigatorViewController.state = SideNavigationStateHidden;
         self.darkOverlayView.alpha = 1.0;
         
-        [UIView animateWithDuration:0.3
-                         animations:^{
-                             self.darkOverlayView.alpha = 0.0;
-                         } completion:^(BOOL finished) {
-                             self.darkOverlayView.hidden = YES;
-                         }];
+        if (IS_IPHONE && IS_IOS_7_OR_GREATER) {
+            [UIView animateWithDuration:0.3
+                             animations:^{
+                                 self.darkOverlayView.alpha = 0.0;
+                             } completion:^(BOOL finished) {
+                                 self.darkOverlayView.hidden = YES;
+                             }];
+        }
+        
+        else
+        {
+            [UIView animateWithDuration:0.3
+                             animations:^{
+                                 self.darkOverlayView.alpha = 0.0;
+                             } completion:^(BOOL finished) {
+                                 self.darkOverlayView.hidden = YES;
+                             }];
+        }
 
-//        sender.selected = NO;
     }
     else
     {
         [self showSideNavigation];
         self.darkOverlayView.alpha = 0.0;
+
+        if (IS_IPHONE && IS_IOS_7_OR_GREATER) {
+            [UIView animateWithDuration:0.2
+                                  delay:0.3
+                                options:UIViewAnimationOptionCurveLinear
+                             animations:^{self.darkOverlayView.alpha = 1.0;}
+                             completion:^(BOOL finished) {
+                                        self.darkOverlayView.hidden = NO;
+                                    }];
+        }
         
-        [UIView animateWithDuration:0.3
-                         animations:^{
-                             self.darkOverlayView.alpha = 1.0;
-                         } completion:^(BOOL finished) {
-                             self.darkOverlayView.hidden = NO;
-                         }];
-//        sender.selected = YES;
+        else
+        {
+            [UIView animateWithDuration:0.3
+                             animations:^{
+                                 self.darkOverlayView.alpha = 1.0;
+                             } completion:^(BOOL finished) {
+                                 self.darkOverlayView.hidden = NO;
+                             }];
+        }
     }
 }
 
@@ -1317,12 +1448,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
 }
 
+
 - (void) navigationController: (UINavigationController *) navigationController
        willShowViewController: (UIViewController *) viewController
                      animated: (BOOL) animated
 {
+    
+    SYNAbstractViewController* abstractController;
+    
     if ([viewController isKindOfClass:[SYNContainerViewController class]]) // special case for the container which is not an abstract view controller
     {
+        abstractController = self.containerViewController.showingViewController;
+        
         [self changeControlButtonsTo:NavigationButtonsAppearanceBlack];
         [self cancelButtonPressed:nil];
     }
@@ -1330,9 +1467,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         
         
-        SYNAbstractViewController* abstractController = (SYNAbstractViewController*)viewController;
+        abstractController = (SYNAbstractViewController*)viewController;
         [self changeControlButtonsTo:abstractController.navigationAppearance];
         
+        // check for search box display
         if (abstractController.alwaysDisplaysSearchBox)
         {
             if (IS_IPHONE)
@@ -1363,6 +1501,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                 [self.searchBoxController.view removeFromSuperview];
             }
         }
+         
+    }
+    
+    if(abstractController.canScrollFullScreen)
+    {
+        self.headerContainerView.backgroundColor = [UIColor rockpackBackgroundGrayColor];
+    }
+    else
+    {
+        self.headerContainerView.backgroundColor = [UIColor clearColor];
     }
     
     if( viewController == self.containerViewController)

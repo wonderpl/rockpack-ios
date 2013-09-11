@@ -3,6 +3,7 @@
 #import "NSDictionary+Validation.h"
 #import "Video.h"
 #import "VideoInstance.h"
+#import "SYNAppDelegate.h"
 #import "ChannelOwner.h"
 
 @implementation VideoInstance
@@ -11,6 +12,9 @@
 
 // Store our date formatter as a static for optimization purposes
 static NSDateFormatter *dateFormatter = nil;
+
+@synthesize starredByUser = _starredByUser;
+@synthesize starredByUserValue;
 
 + (VideoInstance *) instanceFromVideoInstance: (VideoInstance *) existingInstance
                     usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
@@ -101,7 +105,7 @@ static NSDateFormatter *dateFormatter = nil;
     self.dateAdded = [dictionary dateFromISO6801StringForKey: @"date_added"
                                                  withDefault: [NSDate date]];
     
-    NSString *dateAdded = dictionary[@"date_added"];
+    NSString *dateAdded = [dictionary objectForKey: @"date_added"];
     NSString *dayAdded = [dateAdded substringToIndex: [dateAdded rangeOfString: @"T"].location];
     self.dateOfDayAdded = [[VideoInstance DayOfDateFormatter] dateFromString: dayAdded];
     
@@ -111,7 +115,7 @@ static NSDateFormatter *dateFormatter = nil;
     NSArray *filteredVideos;
     if(existingVideos)
     {
-        NSString *videoId = (dictionary[@"video"])[@"id"];
+        NSString *videoId = [dictionary[@"video"] objectForKey: @"id"];
         filteredVideos = [existingVideos filteredArrayUsingPredicate: [NSPredicate predicateWithFormat: @"uniqueId = %@", videoId]];
     }
     
@@ -216,6 +220,14 @@ static NSDateFormatter *dateFormatter = nil;
 
 -(void)addStarrersObject:(ChannelOwner *)value_
 {
+    // avoid double entries
+    
+    for (ChannelOwner* co in self.starrers)
+        if([co.uniqueId isEqualToString:value_.uniqueId])
+            return;
+    
+    
+        
     ChannelOwner* copyOfChannelOwner = [ChannelOwner instanceFromChannelOwner:value_
                                                                     andViewId:self.viewId
                                                     usingManagedObjectContext:self.managedObjectContext
@@ -246,11 +258,51 @@ static NSDateFormatter *dateFormatter = nil;
     }
 }
 
-
-
+#pragma mark - Starred By User Props
+-(void)setStarredByUser:(NSNumber *)starredByUser
+{
+    if(starredByUser == nil) // nil is equivalent to NO
+        starredByUser = @NO;
+    
+    if([starredByUser isEqualToNumber:_starredByUser])
+        return;
+    
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    if([starredByUser boolValue])
+        [self addStarrersObject:appDelegate.currentUser];
+    else
+        [self removeStarrersObject:appDelegate.currentUser];
+    
+    self.video.starredByUser = starredByUser;
+    
+    _starredByUser = starredByUser;
+    
+}
+-(void)setStarredByUserValue:(BOOL)value
+{
+    // box the value into an NSNumber*
+    self.starredByUser = @(value);
+}
+-(NSNumber*)starredByUser
+{
+    if(self.video.starredByUserValue || [_starredByUser boolValue])
+        return @YES;
+    
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    NSString* currentUserUniqueId = appDelegate.currentUser.uniqueId;
+    for (ChannelOwner* co in self.starrers)
+        if([co.uniqueId isEqualToString:currentUserUniqueId])
+            return @YES;
+    
+    return @NO;
+}
+-(BOOL)starredByUserValue
+{
+    return [self.starredByUser boolValue];
+}
 -(void)setMarkedForDeletionValue:(BOOL)value_
 {
-    self.markedForDeletion = @(value_);
+    self.markedForDeletion = [NSNumber numberWithBool:value_];
     self.channel.markedForDeletionValue = value_;
     self.channel.channelOwner.markedForDeletionValue = value_;
 }

@@ -25,7 +25,7 @@
 
 "VIDEOS" = "VIDEOS";
 "CHANNELS" = "PACKS";
-"USERS" = "PEOPLE";
+"USERS" = "USERS";
 "SUBSCRIBERS" = "Followers";
 
 //Camera
@@ -42,38 +42,20 @@
 // == Login / Registration / Forgot Password == //
 
 // Pre Sign-Up Onboarding
-//iPhone - has line breaks
-"startscreen_onboard_1_title_iphone" = " ";
-"startscreen_onboard_1_iphone" = "\nLove video again.";
+"startscreen_onboard_1_title" = " ";
+"startscreen_onboard_1" = "\nLove video again.";
 
-"startscreen_onboard_2_title_iphone" = "INDULGE";
-"startscreen_onboard_2_iphone" = "\nFeast on playlists full of\nhandpicked video goodness.\n(We call them ‘packs’).";
+"startscreen_onboard_2_title" = "INDULGE";
+"startscreen_onboard_2" = "\nStop nibbling on single clips and start feasting on playlists full of handpicked video goodness – also known as ‘packs’.";
 
-"startscreen_onboard_3_title_iphone" = "CURATE";
-"startscreen_onboard_3_iphone" = "\nOrganise your favourite videos into themed packs of inspiration, delight, usefulness, and nonsense.";
+"startscreen_onboard_3_title" = "CURATE";
+"startscreen_onboard_3" = "\nOrganise your favourite videos into themed packs of concentrated inspiration, delight, usefulness, or nonsense.";
 
-"startscreen_onboard_4_title_iphone" = "LAZE";
-"startscreen_onboard_4_iphone" = "\nFollow packs and people and you’ll always have loads of great stuff\nto watch – just press play.";
+"startscreen_onboard_4_title" = "LAZE";
+"startscreen_onboard_4" = "\nFollow packs and people and you’ll always have loads of great stuff to watch – just press play.";
 
-"startscreen_onboard_5_title_iphone" = "SCHMOOZE";
-"startscreen_onboard_5_iphone" = "\nA well-crafted pack is a gift that keeps on giving. You wonderful person you.";
-
-//iPad
-"startscreen_onboard_1_title_ipad" = " ";
-"startscreen_onboard_1_ipad" = "\nLove video again.";
-
-"startscreen_onboard_2_title_ipad" = "INDULGE";
-"startscreen_onboard_2_ipad" = "\nFeast on playlists full of handpicked video goodness.\n(We call them ‘packs’).";
-
-"startscreen_onboard_3_title_ipad" = "CURATE";
-"startscreen_onboard_3_ipad" = "\nOrganise your favourite videos into themed packs of inspiration, delight, usefulness, and nonsense.";
-
-"startscreen_onboard_4_title_ipad" = "LAZE";
-"startscreen_onboard_4_ipad" = "\nFollow packs and people and you’ll always have loads of great stuff to watch – just press play.";
-
-"startscreen_onboard_5_title_ipad" = "SCHMOOZE";
-"startscreen_onboard_5_ipad" = "\nA well-crafted pack is a gift that keeps on giving.\nYou wonderful person you.";
-
+"startscreen_onboard_5_title" = "SCHMOOZE";
+"startscreen_onboard_5" = "\nA well-crafted pack is a gift that keeps on giving, making you the darling that keeps on being darlinged.";
 
 //By Using Rockpack... sentence
 "register_screen_legal" = "By using Rockpack, you agree to our\nTerms of Services and Privacy Policy";
@@ -133,11 +115,6 @@
 "core_nav_section_friends" = "FIND FRIENDS";
 
 
-// == One to One Sharing == //
-
-"sharing_object_sent" = "Your %@ has been sent";
-
-
 // == Notifications == //
 
 //
@@ -149,15 +126,13 @@
 "notification_joined_action" = "Your Facebook friend %@ has joined Rockpack";
 "your_channel_object" = "your pack";
 "your_video_object" = "your video";
-"video_object"  = "video";
-"pack_object"  = "pack";
 
 "onboarding_channels" = "Browse packs of videos by category or search for any video.\n ";
 "onboarding_subscription" = "Follow to get video updates in your feed.\n ";
 "onboarding_video" = "Press and hold anywhere on the video and see what happens!";
 "onboarding_friends" = "Find your friends on Rockpack";
-"onboarding_feed_iphone" = "Hard to believe, but this dull space will soon be bursting with video excitement. Just start following some packs.";
-"onboarding_feed" = "Hard to believe, but this dull space will soon be bursting with video excitement. Just start following some packs.";
+"onboarding_feed_iphone" = "Your feed will deliver the latest videos from packs you follow, and new packs created by friends.";
+"onboarding_feed" = "Your feed will deliver the latest videos from packs you follow, and new packs created by friends.";
 
 
 // == Channel Detail == //
@@ -215,7 +190,7 @@
 // == Feed == //
 
 "feed_screen_section_title" = "FEED";
-"feed_screen_empty_message" = "Hard to believe, but this dull space will soon be bursting with video excitement. Just start following some packs.";
+"feed_screen_empty_message" = "Your feed is empty... follow packs you like to discover new videos here.";
 "feed_screen_loading_error" = "There was a problem while loading your feed, please try again.";
 "feed_screen_updating_error" = "There was a problem while refreshing your feed, please try again.";
 "feed_screen_loading_message" = "Your Video Feed is Being Refreshed, Please Wait...";
