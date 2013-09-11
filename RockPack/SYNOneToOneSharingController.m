@@ -95,7 +95,7 @@
     self.facebookLoader.hidden = YES;
     
     self.friends = [NSMutableArray array];
-    self.recentFriends = [NSArray array];
+    self.recentFriends = @[];
     
     self.addressBookImageCache = [[NSCache alloc] init];
     

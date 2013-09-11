@@ -101,7 +101,7 @@ static NSDateFormatter *dateFormatter = nil;
     self.dateAdded = [dictionary dateFromISO6801StringForKey: @"date_added"
                                                  withDefault: [NSDate date]];
     
-    NSString *dateAdded = [dictionary objectForKey: @"date_added"];
+    NSString *dateAdded = dictionary[@"date_added"];
     NSString *dayAdded = [dateAdded substringToIndex: [dateAdded rangeOfString: @"T"].location];
     self.dateOfDayAdded = [[VideoInstance DayOfDateFormatter] dateFromString: dayAdded];
     
@@ -111,7 +111,7 @@ static NSDateFormatter *dateFormatter = nil;
     NSArray *filteredVideos;
     if(existingVideos)
     {
-        NSString *videoId = [dictionary[@"video"] objectForKey: @"id"];
+        NSString *videoId = (dictionary[@"video"])[@"id"];
         filteredVideos = [existingVideos filteredArrayUsingPredicate: [NSPredicate predicateWithFormat: @"uniqueId = %@", videoId]];
     }
     
@@ -250,7 +250,7 @@ static NSDateFormatter *dateFormatter = nil;
 
 -(void)setMarkedForDeletionValue:(BOOL)value_
 {
-    self.markedForDeletion = [NSNumber numberWithBool:value_];
+    self.markedForDeletion = @(value_);
     self.channel.markedForDeletionValue = value_;
     self.channel.channelOwner.markedForDeletionValue = value_;
 }

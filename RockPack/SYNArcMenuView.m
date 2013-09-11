@@ -427,7 +427,7 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 {
     CAKeyframeAnimation *positionAnimation = [CAKeyframeAnimation animationWithKeyPath: @"position"];
     
-    positionAnimation.values = [NSArray arrayWithObjects: [NSValue valueWithCGPoint: point], nil];
+    positionAnimation.values = @[[NSValue valueWithCGPoint: point]];
     positionAnimation.keyTimes = @[@(0.3f)];
     
     CABasicAnimation *scaleAnimation = [CABasicAnimation animationWithKeyPath: @"transform"];

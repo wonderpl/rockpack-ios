@@ -61,7 +61,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     
     [self.searchField setAutocorrectionType:UITextAutocorrectionTypeNo];
     
-    self.friends = [NSArray array];
+    self.friends = @[];
     
     // Register Cells
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNFriendThumbnailCell"

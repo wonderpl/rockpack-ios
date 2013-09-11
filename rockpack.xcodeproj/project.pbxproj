@@ -167,6 +167,9 @@
 		015487CF16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 015487CE16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m */; };
 		0154E8481768E268001C7B75 /* SYNTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0154E8461768E268001C7B75 /* SYNTimer.m */; };
 		0155FA2817A81D7600B04B51 /* SYNSessionTokenCachingStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0155FA2717A81D7600B04B51 /* SYNSessionTokenCachingStrategy.m */; };
+		01578C2317DF653F00B4F498 /* UIInterpolatingMotionEffect+DualAxis.m in Sources */ = {isa = PBXBuildFile; fileRef = 01578C2117DF653F00B4F498 /* UIInterpolatingMotionEffect+DualAxis.m */; };
+		01578C2B17DF840800B4F498 /* LowerParallaxStars.png in Resources */ = {isa = PBXBuildFile; fileRef = 01578C2917DF840800B4F498 /* LowerParallaxStars.png */; };
+		01578C2C17DF840800B4F498 /* UpperParallaxStars.png in Resources */ = {isa = PBXBuildFile; fileRef = 01578C2A17DF840800B4F498 /* UpperParallaxStars.png */; };
 		015C13C1173B034C001569FE /* SYNReportConcernTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 015C13C0173B034C001569FE /* SYNReportConcernTableViewController.m */; };
 		015CB01616AE039900FEB8E7 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 015CB01516AE039900FEB8E7 /* User.m */; };
 		015CB01916AE03B200FEB8E7 /* _User.m in Sources */ = {isa = PBXBuildFile; fileRef = 015CB01816AE03B200FEB8E7 /* _User.m */; };
@@ -1545,6 +1548,10 @@
 		0154E8471768E268001C7B75 /* SYNTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNTimer.h; sourceTree = "<group>"; };
 		0155FA2617A81D7600B04B51 /* SYNSessionTokenCachingStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNSessionTokenCachingStrategy.h; sourceTree = "<group>"; };
 		0155FA2717A81D7600B04B51 /* SYNSessionTokenCachingStrategy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNSessionTokenCachingStrategy.m; sourceTree = "<group>"; };
+		01578C2017DF653F00B4F498 /* UIInterpolatingMotionEffect+DualAxis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIInterpolatingMotionEffect+DualAxis.h"; sourceTree = "<group>"; };
+		01578C2117DF653F00B4F498 /* UIInterpolatingMotionEffect+DualAxis.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIInterpolatingMotionEffect+DualAxis.m"; sourceTree = "<group>"; };
+		01578C2917DF840800B4F498 /* LowerParallaxStars.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LowerParallaxStars.png; path = Assets/Images/LowerParallaxStars.png; sourceTree = "<group>"; };
+		01578C2A17DF840800B4F498 /* UpperParallaxStars.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UpperParallaxStars.png; path = Assets/Images/UpperParallaxStars.png; sourceTree = "<group>"; };
 		015C13BF173B034C001569FE /* SYNReportConcernTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNReportConcernTableViewController.h; sourceTree = "<group>"; };
 		015C13C0173B034C001569FE /* SYNReportConcernTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNReportConcernTableViewController.m; sourceTree = "<group>"; };
 		015CB01416AE039900FEB8E7 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
@@ -3805,6 +3812,8 @@
 		019825EE162C948000216900 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				01578C2017DF653F00B4F498 /* UIInterpolatingMotionEffect+DualAxis.h */,
+				01578C2117DF653F00B4F498 /* UIInterpolatingMotionEffect+DualAxis.m */,
 				01C9CFA41697496400C42479 /* NSDate-Utilities.h */,
 				01C9CFA51697496400C42479 /* NSDate-Utilities.m */,
 				01C6FD0D169DDEDB00E01AA3 /* NSDictionary+Validation.h */,
@@ -4433,6 +4442,8 @@
 		1F320031175DED7A00310EB5 /* Background */ = {
 			isa = PBXGroup;
 			children = (
+				01578C2917DF840800B4F498 /* LowerParallaxStars.png */,
+				01578C2A17DF840800B4F498 /* UpperParallaxStars.png */,
 				BEB8300D177491ED00AAA8D5 /* login_bg_1.jpg */,
 				BEB8300E177491ED00AAA8D5 /* login_bg_2.jpg */,
 				BEB8300F177491ED00AAA8D5 /* login_bg_3.jpg */,
@@ -5880,6 +5891,7 @@
 				BE270BC716EE493800CDDA6D /* LogoSignup@2x.png in Resources */,
 				BE270BD016EF386300CDDA6D /* DividerLogin.png in Resources */,
 				BE270BD116EF386300CDDA6D /* DividerLogin@2x.png in Resources */,
+				01578C2C17DF840800B4F498 /* UpperParallaxStars.png in Resources */,
 				BE270BD216EF386300CDDA6D /* FieldLogin.png in Resources */,
 				BE270BD316EF386300CDDA6D /* FieldLogin@2x.png in Resources */,
 				BE270BD816EF39E000CDDA6D /* ButtonLoginBigDefault.png in Resources */,
@@ -6096,6 +6108,7 @@
 				0111CDEB17284DD700612186 /* ButtonVideoDeleteSelected.png in Resources */,
 				0111CDEC17284DD700612186 /* ButtonVideoDeleteSelected@2x.png in Resources */,
 				0111CDF317292F3B00612186 /* ButtonCameraPadHighlighted.png in Resources */,
+				01578C2B17DF840800B4F498 /* LowerParallaxStars.png in Resources */,
 				0111CDF417292F3B00612186 /* ButtonCameraPadHighlighted@2x.png in Resources */,
 				0111CDF517292F3B00612186 /* ButtonCameraPadSelected.png in Resources */,
 				0111CDF617292F3B00612186 /* ButtonCameraPadSelected@2x.png in Resources */,
@@ -7073,6 +7086,7 @@
 				3862E8B5172979410066E8E7 /* SYNChannelCategoryTableViewController.m in Sources */,
 				388CAF67172EBDC100721372 /* SYNSideNavigationIphoneCell.m in Sources */,
 				BEF3448E172FCB7A008F98FF /* SYNSearchBoxView.m in Sources */,
+				01578C2317DF653F00B4F498 /* UIInterpolatingMotionEffect+DualAxis.m in Sources */,
 				011C1676173003E800CF50B9 /* OWActivity.m in Sources */,
 				011C1677173003E800CF50B9 /* OWActivityDelegateObject.m in Sources */,
 				011C1678173003E800CF50B9 /* OWActivityView.m in Sources */,
@@ -7280,6 +7294,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 276F95C3CF7F47FE9BF50F40 /* Pods.xcconfig */;
 			buildSettings = {
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = NO;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
 				CODE_SIGN_ENTITLEMENTS = RockPack/RockPack.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -7297,6 +7315,10 @@
 					"USEUDID=1",
 					"SHOWVERSIONNUMBER=1",
 				);
+				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
+				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
+				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				INFOPLIST_FILE = "RockPack/rockpack-Develop-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7332,6 +7354,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 276F95C3CF7F47FE9BF50F40 /* Pods.xcconfig */;
 			buildSettings = {
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = NO;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
 				CODE_SIGN_ENTITLEMENTS = RockPack/RockPack.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Rockpack Ltd. (3M76KMT8LS)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Rockpack Ltd. (3M76KMT8LS)";
@@ -7343,6 +7369,10 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RockPack/rockpack-Prefix.pch";
+				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
+				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
+				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				INFOPLIST_FILE = "RockPack/rockpack-Release-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7471,6 +7501,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 276F95C3CF7F47FE9BF50F40 /* Pods.xcconfig */;
 			buildSettings = {
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = NO;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
 				CODE_SIGN_ENTITLEMENTS = RockPack/RockPack.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Rockpack Ltd. (3M76KMT8LS)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Rockpack Ltd. (3M76KMT8LS)";
@@ -7488,6 +7522,10 @@
 					"USEUDID=1",
 					"SHOWVERSIONNUMBER=1",
 				);
+				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
+				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
+				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				INFOPLIST_FILE = "RockPack/rockpack-Release-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
