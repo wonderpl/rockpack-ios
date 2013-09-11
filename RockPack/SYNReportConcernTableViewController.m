@@ -13,8 +13,6 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNPopoverBackgroundView.h"
 #import "SYNMasterViewController.h"
-#import "AMBlurView.h"
-#import "SYNDeviceManager.h"
 
 #define kConcernsCellId @"SYNReportConcernTableCell"
 
@@ -77,13 +75,11 @@
                            NSLocalizedString (@"Spam", nil),
                            NSLocalizedString (@"Other", nil)];
     
-    self.reportTableTitleLabel.font = [UIFont rockpackFontOfSize: self.reportTableTitleLabel.font.pointSize];
-    
-    //No more X button on report popover
-    /*
     UIButton *customCancelButton = [UIButton buttonWithType: UIButtonTypeCustom];
     UIImage* customCancelButtonImage = [UIImage imageNamed: @"ButtonPopoverCancel"];
     UIImage* customCancelButtonHighlightedImage = [UIImage imageNamed: @"ButtonPopoverCancelHighlighted"];
+    
+    self.reportTableTitleLabel.font = [UIFont boldRockpackFontOfSize: self.reportTableTitleLabel.font.pointSize];
     
     [customCancelButton setImage: customCancelButtonImage
                         forState: UIControlStateNormal];
@@ -97,23 +93,9 @@
     
     customCancelButton.frame = CGRectMake(0.0, 0.0, customCancelButtonImage.size.width, customCancelButtonImage.size.height);
     UIBarButtonItem *customCancelButtonItem = [[UIBarButtonItem alloc] initWithCustomView: customCancelButton];
+    
     self.navigationItem.leftBarButtonItem = customCancelButtonItem;
-     */
-
-    if (IS_IOS_7_OR_GREATER)
-    {
-        self.tableView.backgroundColor = [UIColor clearColor];
-        
-        if (IS_IPHONE)
-        {
-            AMBlurView * blurredBackgroundView = [AMBlurView new];
-            
-            blurredBackgroundView.frame = CGRectMake(0, 88, self.tableView.frame.size.width, [[SYNDeviceManager sharedInstance] currentScreenHeight] - 86);
-            
-            [self.view insertSubview:blurredBackgroundView atIndex:0];
-        }
-    }
-        
+    
     UIButton *customUseButton = [UIButton buttonWithType: UIButtonTypeCustom];
     UIImage* customUseButtonImage = [UIImage imageNamed: @"ButtonPopoverReport"];
     UIImage* customUseButtonHighlightedImage = [UIImage imageNamed: @"ButtonPopoverReportHighlighted.png"];
@@ -179,36 +161,22 @@
     SYNReportConcernTableCell *oldCell = (SYNReportConcernTableCell *)[self.tableView cellForRowAtIndexPath: oldIndex];
     oldCell.backgroundImage.image = [UIImage imageNamed: @"CategorySlide"];
     oldCell.checkmarkImage.hidden = TRUE;
-    oldCell.highlightedViewiOS7.hidden = TRUE;
     
     oldCell.titleLabel.textColor = [UIColor colorWithRed: 106.0f/255.0f
                                                    green: 114.0f/255.0f
                                                     blue: 122.0f/255.0f
                                                    alpha: 1.0f];
-    if (!IS_IOS_7_OR_GREATER)
-    {
-        oldCell.titleLabel.shadowColor = [UIColor colorWithWhite: 1.0f
-                                                           alpha: 0.75f];
-    }
-
+    
+    oldCell.titleLabel.shadowColor = [UIColor colorWithWhite: 1.0f
+                                                       alpha: 0.75f];
+    
     // Highlight new cell
     SYNReportConcernTableCell *newCell = (SYNReportConcernTableCell *)[self.tableView cellForRowAtIndexPath: indexPath];
-
+    newCell.backgroundImage.image = [UIImage imageNamed: @"CategorySlideSelected"];
     newCell.checkmarkImage.hidden = FALSE;
     newCell.titleLabel.textColor = [UIColor whiteColor];
-    
-    if (IS_IOS_7_OR_GREATER)
-    {
-        newCell.highlightedViewiOS7.hidden = FALSE;
-    }
-    
-    else
-    {
-        newCell.backgroundImage.image = [UIImage imageNamed: @"CategorySlideSelected"];
-        newCell.titleLabel.shadowColor = [UIColor colorWithWhite: 1.0f
-                                                           alpha:  0.15f];
-    }
-    
+    newCell.titleLabel.shadowColor = [UIColor colorWithWhite: 1.0f
+                                                       alpha:  0.15f];
     return indexPath;
 }
 
@@ -285,23 +253,20 @@ didSelectRowAtIndexPath: (NSIndexPath *) indexPath
         containerView.backgroundColor = [UIColor clearColor];
         UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake (0, 4, 80, 28)];
         label.backgroundColor = [UIColor clearColor];
-        label.font = [UIFont rockpackFontOfSize: 20.0];
+        label.font = [UIFont boldRockpackFontOfSize: 20.0];
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = [UIColor blackColor];
-        label.shadowColor = IS_IOS_7_OR_GREATER ? [UIColor clearColor] : [UIColor whiteColor];
+        label.shadowColor = [UIColor whiteColor];
         label.shadowOffset = CGSizeMake(0.0, 1.0);
-        label.text = NSLocalizedString(@"Report", nil);
+        label.text = NSLocalizedString(@"REPORT", nil);
         [containerView addSubview: label];
         self.navigationItem.titleView = containerView;
         
         // Need show the popover controller
         self.reportConcernPopoverController = [[UIPopoverController alloc] initWithContentViewController: navController];
-        self.reportConcernPopoverController.popoverContentSize = CGSizeMake(240, 351);
+        self.reportConcernPopoverController.popoverContentSize = CGSizeMake(245, 344);
         self.reportConcernPopoverController.delegate = self;
-        
-        if (!IS_IOS_7_OR_GREATER) {
-            self.reportConcernPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
-        }
+        self.reportConcernPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
         
         CGRect popoverFrame = [viewController.view convertRect:presentingButton.frame fromView:presentingButton.superview];
         
@@ -318,7 +283,7 @@ didSelectRowAtIndexPath: (NSIndexPath *) indexPath
             [UIView animateWithDuration: kChannelEditModeAnimationDuration
                              animations: ^{
                                  // Fade out the category tab controller
-                                 weakSelf.view.frame = CGRectMake(0, [[SYNDeviceManager sharedInstance] currentScreenHeight] + 22, weakSelf.view.frame.size.width, weakSelf.view.frame.size.height);
+                                 weakSelf.view.alpha = 0.0f;
                              }
                              completion: nil];
             [weakSelf reportConcern: reportString];
@@ -331,7 +296,7 @@ didSelectRowAtIndexPath: (NSIndexPath *) indexPath
             [UIView animateWithDuration: kChannelEditModeAnimationDuration
                              animations: ^{
                                  // Fade out the category tab controller
-                                 weakSelf.view.frame = CGRectMake(0, [[SYNDeviceManager sharedInstance] currentScreenHeight] + 22, weakSelf.view.frame.size.width, weakSelf.view.frame.size.height);
+                                 weakSelf.view.alpha = 0.0f;
                              }
                              completion: ^(BOOL success){
                                  [weakSelf.view removeFromSuperview];

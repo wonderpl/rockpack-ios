@@ -94,18 +94,32 @@
     {
         // Get the Title
         
-        localisedKey = [NSString stringWithFormat:@"startscreen_onboard_%i_title", i + 1];
-        localisedDefault = [NSString stringWithFormat:@"Text for onboard title %i", i + 1];
-        
-        titleText = NSLocalizedString(localisedKey, localisedDefault);
         
         
         // Get the Message
-        
-        localisedKey = [NSString stringWithFormat:@"startscreen_onboard_%i", i + 1];
-        localisedDefault = [NSString stringWithFormat:@"Text for onboard screen %i", i + 1];
-        
-        messageText = NSLocalizedString(localisedKey, localisedDefault);    
+        if (IS_IPHONE)
+        {
+            localisedKey = [NSString stringWithFormat:@"startscreen_onboard_%i_iphone", i + 1];
+            localisedDefault = [NSString stringWithFormat:@"Text for onboard screen %i", i + 1];
+            messageText = NSLocalizedString(localisedKey, localisedDefault);
+            
+            localisedKey = [NSString stringWithFormat:@"startscreen_onboard_%i_title_iphone", i + 1];
+            localisedDefault = [NSString stringWithFormat:@"Text for onboard title %i", i + 1];
+            titleText = NSLocalizedString(localisedKey, localisedDefault);
+
+
+        }
+        else
+        {
+            localisedKey = [NSString stringWithFormat:@"startscreen_onboard_%i_ipad", i + 1];
+            localisedDefault = [NSString stringWithFormat:@"Text for onboard screen %i", i + 1];
+            messageText = NSLocalizedString(localisedKey, localisedDefault);
+            
+            localisedKey = [NSString stringWithFormat:@"startscreen_onboard_%i_title_ipad", i + 1];
+            localisedDefault = [NSString stringWithFormat:@"Text for onboard title %i", i + 1];
+            titleText = NSLocalizedString(localisedKey, localisedDefault);
+        }
+
         
         messageView = [self createNewMessageViewWithMessage:messageText
                                                    andTitle:titleText
@@ -128,9 +142,8 @@
             //Image Frame
             CGRect iPadImageRect = CGRectMake((messageView.frame.size.width * 0.5) - 140, messageView.frame.origin.y - 210, 280, 200);
             CGRect iPhoneImageRect = CGRectMake((messageView.frame.size.width * 0.5) - 140, messageView.frame.origin.y - 220, 280, 200);
-            CGRect iPhoneiOS7ImageRect = CGRectMake((messageView.frame.size.width * 0.5) - 140, messageView.frame.origin.y - 232, 280, 200);
             
-            UIImageView * messageImageView = [[UIImageView alloc]initWithFrame: IS_IPAD ? iPadImageRect : IS_IOS_7_OR_GREATER ? iPhoneiOS7ImageRect : iPhoneImageRect];
+            UIImageView * messageImageView = [[UIImageView alloc]initWithFrame: IS_IPAD ? iPadImageRect : iPhoneImageRect];
             
             messageImageView.image = [UIImage imageNamed: [NSString stringWithFormat:@"login_onboard_1.png"]];
             [messageView addSubview:messageImageView];
@@ -168,7 +181,7 @@
     
     
     // Limit label width to fit on portrait iPad, or iPhone screen
-    newFrame.size.width = IS_IPHONE ? 290.0f: 578.0f;
+    newFrame.size.width = IS_IPHONE ? 260.0f: 578.0f;
     newFrame.size.height = 0.0f;
     
     UIView* container = [[UIView alloc] initWithFrame:newFrame];
@@ -237,7 +250,7 @@
     //Don't show seperator on First card
     else if (![cardNumber isEqual:@"0"])
     {
-        labelSeperatorView =[[UIView alloc] initWithFrame:IS_IPHONE ? IS_IOS_7_OR_GREATER ? CGRectMake(newFrame.origin.x, newFrame.origin.y + 6.0f, 70.0f, 2.0f)  : CGRectMake(newFrame.origin.x, newFrame.origin.y + 4.0f, 70.0f, 2.0f) : CGRectMake(newFrame.origin.x, newFrame.origin.y + 13.0f, 70.0f, 2.0f) ];
+        labelSeperatorView =[[UIView alloc] initWithFrame:IS_IPHONE ? CGRectMake(newFrame.origin.x, newFrame.origin.y + 4.0f, 70.0f, 2.0f) : CGRectMake(newFrame.origin.x, newFrame.origin.y + 13.0f, 70.0f, 2.0f) ];
         labelSeperatorView.backgroundColor = [UIColor whiteColor];
         [container addSubview:labelSeperatorView];
     }

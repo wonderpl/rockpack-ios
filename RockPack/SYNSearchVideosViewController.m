@@ -34,9 +34,6 @@
 @property (nonatomic, weak) MKNetworkOperation *runningSearchOperation;
 @property (nonatomic, weak) NSString *searchTerm;
 @property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
-
-@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
-
 @end
 
 
@@ -243,9 +240,9 @@
 
 - (NSFetchedResultsController *) fetchedResultsController
 {
-    if (_fetchedResultsController != nil)
+    if (fetchedResultsController != nil)
     {
-        return _fetchedResultsController;
+        return fetchedResultsController;
     }
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -265,18 +262,18 @@
                                                                         managedObjectContext: appDelegate.searchManagedObjectContext
                                                                           sectionNameKeyPath: nil
                                                                                    cacheName: nil];
-    _fetchedResultsController.delegate = self;
+    fetchedResultsController.delegate = self;
     
     
     
     NSError *error = nil;
     
-    if (![_fetchedResultsController performFetch: &error])
+    if (![fetchedResultsController performFetch: &error])
     {
         AssertOrLog(@"Search Videos Fetch Request Failed: %@\n%@", [error localizedDescription], [error userInfo]);
     }
     
-    return _fetchedResultsController;
+    return fetchedResultsController;
 }
 
 
@@ -342,7 +339,8 @@
 - (UICollectionViewCell *) collectionView: (UICollectionView *) cv
                    cellForItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    VideoInstance *videoInstance = [self.fetchedResultsController
+                                    objectAtIndexPath: indexPath];
     
     SYNVideoThumbnailWideCell *videoThumbnailCell = [cv dequeueReusableCellWithReuseIdentifier: @"SYNVideoThumbnailWideCell"
                                                                                   forIndexPath: indexPath];

@@ -361,17 +361,14 @@
                                               
                                               [searchBoxVC.searchBoxView revealCloseButton];
                                               
+                                              
+                                              
                                           } completion:^(BOOL finished) {
                                               if(!IS_IPAD)
                                                   [searchBoxVC presentSearchCategoriesIPhone]; // already animated
                                           }];
                          
                      }];
-    
-    if (IS_IPHONE && IS_IOS_7_OR_GREATER)
-    {
-        [searchBoxVC.searchBoxView revealBackgroundPanel];
-    }
     
     searchBoxVC.searchBoxView.searchTextField.delegate = searchBoxVC;
 }
@@ -414,7 +411,6 @@
                          backgroundView.alpha = 0.7f;
                      }
                      completion:^(BOOL finished) {
-                         
                          UITapGestureRecognizer* tapToCloseGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                                              action:@selector(removePopoverView)];
                          [backgroundView addGestureRecognizer:tapToCloseGesture];

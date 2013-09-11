@@ -92,6 +92,7 @@
         self.autoresizesSubviews = YES;
 
         self.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
+
     }
     
     return self;
@@ -114,11 +115,6 @@
     
     // Display Search instead of Return on iPhone Keyboard
     self.searchTextField.returnKeyType = UIReturnKeySearch;
-    
-    if (IS_IOS_7_OR_GREATER)
-    {
-        self.backgroundSearchPanel.hidden = YES;
-    }
     
     [self hideCloseButton];
 }
@@ -181,35 +177,6 @@
     newFrame = self.searchFieldFrameImageView.frame;
     newFrame.size.width = self.frame.size.width -10.0f - newFrame.origin.x;
     self.searchFieldFrameImageView.frame = newFrame;
-}
-
-- (void) revealBackgroundPanel
-{
-    self.backgroundSearchPanel.hidden = NO;
-    
-    [UIView animateWithDuration: 0.2
-                          delay: 0.0
-                        options: UIViewAnimationOptionCurveEaseOut
-                     animations: ^{
-                         
-                         self.backgroundSearchPanel.alpha = 1.0f;
-                         
-                     } completion:^(BOOL finished) {
-                     }];
-}
-
-- (void) hideBackgroundPanel
-{
-    [UIView animateWithDuration: 0.2
-                          delay: 0.5
-                        options: UIViewAnimationOptionCurveEaseOut
-                     animations: ^{
-                         
-                         self.backgroundSearchPanel.alpha = 0.0f;
-                         
-                     } completion:^(BOOL finished) {
-                         self.backgroundSearchPanel.hidden = YES;
-                     }];
 }
 
 @end

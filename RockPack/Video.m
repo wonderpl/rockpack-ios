@@ -11,7 +11,7 @@
 + (Video *) instanceFromVideo: (Video *) video
     usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
 {
-    Video *instance = [Video insertInManagedObjectContext: managedObjectContext];
+    Video *instance = instance = [Video insertInManagedObjectContext: managedObjectContext];
     
     instance.uniqueId = video.uniqueId;
     instance.categoryId = video.categoryId;
@@ -22,6 +22,7 @@
     instance.sourceId = video.sourceId;
     instance.sourceUsername = video.sourceUsername;
     instance.starCount = video.starCount;
+    instance.starredByUser = video.starredByUser;
     instance.thumbnailURL = video.thumbnailURL;
     
     return instance;
@@ -45,7 +46,8 @@
                       ignoringObjectTypes: ignoringObjects];
     
     // Update video starred & viewed
-    [SYNActivityManager.sharedInstance updateActivityForVideo: instance];
+    [SYNActivityManager.sharedInstance
+     updateActivityForVideo: instance];
     
     return instance;
 }

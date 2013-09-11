@@ -30,12 +30,6 @@
 #import "SYNMasterViewController.h"
 #import "VideoInstance.h"
 #import "Appirater.h"
-#import "SYNRefreshControl.h"
-#import <QuartzCore/QuartzCore.h>
-
-
-#define REFRESH_HEADER_HEIGHT 40.0f
-#define COLLECTION_VIEW_INSET ( IS_IPAD ? 90.0f : 64.0f )
 
 typedef void(^FeedDataErrorBlock)(void);
 
@@ -47,7 +41,7 @@ typedef void(^FeedDataErrorBlock)(void);
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
-@property (nonatomic, strong) SYNRefreshControl *refreshControl;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, weak)   SYNAggregateVideoCell* selectedVideoCell;
 @property (nonatomic, strong) NSArray* feedItemsData;
 @property (nonatomic, strong) NSDictionary* feedVideosById;
@@ -61,7 +55,6 @@ typedef void(^FeedDataErrorBlock)(void);
 
 
 @implementation SYNFeedRootViewController
-
 
 #pragma mark - Object lifecycle
 
@@ -82,44 +75,43 @@ typedef void(^FeedDataErrorBlock)(void);
 {
     [super viewDidLoad];
     
-    self.feedItemsData = [NSArray array];
+    self.feedItemsData = @[];
     
-    self.videosInOrderArray = [NSArray array];
+    self.videosInOrderArray = @[];
     
     SYNIntegralCollectionViewFlowLayout *standardFlowLayout;
     UIEdgeInsets sectionInset, contentInset;
     CGRect videoCollectionViewFrame, calculatedViewFrame;
-    
-    CGSize screenSize = CGSizeMake([SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight]);
+    CGSize screenSize;
     CGFloat minimumLineSpacing;
     
     // Setup device dependent parametes/dimensions
     
-    calculatedViewFrame = CGRectMake(0.0f, 0.0f,
-                                     screenSize.width,
-                                     [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar]);
-    
-    videoCollectionViewFrame = CGRectMake(0.0f, 0.0f,
-                                          screenSize.width,
-                                          [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar]);
-    
     if (IS_IPHONE)
     {
         // Calculate frame size
-        contentInset = UIEdgeInsetsMake(COLLECTION_VIEW_INSET, 0, 0, 0);
+        screenSize = CGSizeMake([SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight]);
+        
+        calculatedViewFrame = CGRectMake(0.0, 0.0, screenSize.width, screenSize.height - 20.0f);
+        
+        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetYiPhone, screenSize.width, screenSize.height - 20.0f - kStandardCollectionViewOffsetYiPhone);
+        
+        // Collection view parameters
+        contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
         sectionInset = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f);
         minimumLineSpacing = 12.0f;
         
     }
     else
     {
+        calculatedViewFrame = CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar);
+        
+        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY);
         
         // Collection view parameters
-        contentInset = UIEdgeInsetsMake(COLLECTION_VIEW_INSET, 0, 0, 0);
+        contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
         sectionInset = UIEdgeInsetsMake(10.0f, 10.0f, 15.0f, 10.0f);
         minimumLineSpacing = 30.0f;
-        
-        
     }
     
     // Set our view frame and attributes
@@ -161,19 +153,19 @@ typedef void(^FeedDataErrorBlock)(void);
     self.feedCollectionView.showsHorizontalScrollIndicator = NO;
     [self.view addSubview:self.feedCollectionView];
 
-    self.feedCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.feedCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth| UIViewAutoresizingFlexibleHeight;
 
     
     [self.feedCollectionView registerNib: [UINib nibWithNibName: @"SYNAggregateVideoCell" bundle: nil]
-              forCellWithReuseIdentifier: @"SYNAggregateVideoCell"];
+                        forCellWithReuseIdentifier: @"SYNAggregateVideoCell"];
     
     [self.feedCollectionView registerNib: [UINib nibWithNibName: @"SYNAggregateChannelCell" bundle: nil]
               forCellWithReuseIdentifier: @"SYNAggregateChannelCell"];
     
     
     [self.feedCollectionView registerNib: [UINib nibWithNibName: @"SYNHomeSectionHeaderView" bundle: nil]
-              forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
-                     withReuseIdentifier: @"SYNHomeSectionHeaderView"];
+                        forSupplementaryViewOfKind: UICollectionElementKindSectionHeader
+                               withReuseIdentifier: @"SYNHomeSectionHeaderView"];
     
     // Register Footer
     UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
@@ -184,14 +176,19 @@ typedef void(^FeedDataErrorBlock)(void);
                      withReuseIdentifier: @"SYNChannelFooterMoreView"];
     
     
-    // Refresh Control
+    // Refresh control
+    self.refreshControl = [[UIRefreshControl alloc] initWithFrame: CGRectMake(0, -44, 320, 44)];
     
-    self.refreshControl = [SYNRefreshControl refreshControl];
-    self.refreshControl.center = CGPointMake(self.view.center.x, -24.0f);
-    self.refreshControl.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-    [self.feedCollectionView addSubview:self.refreshControl];
+    self.refreshControl.tintColor = [UIColor colorWithRed: (11.0/255.0)
+                                                    green: (166.0/255.0)
+                                                     blue: (171.0/255.0)
+                                                    alpha: (1.0)];
     
+    [self.refreshControl addTarget: self
+                            action: @selector(loadAndUpdateOriginalFeedData)
+                  forControlEvents: UIControlEventValueChanged];
     
+    [self.feedCollectionView addSubview: self.refreshControl];
     
     // We should only setup our date formatter once
     self.dateFormatter = [[NSDateFormatter alloc] init];
@@ -239,8 +236,6 @@ typedef void(^FeedDataErrorBlock)(void);
 
 - (void) viewDidScrollToFront
 {
-    [super viewDidScrollToFront];
-    
     [self updateAnalytics];
     
     self.feedCollectionView.scrollsToTop = YES;
@@ -251,6 +246,7 @@ typedef void(^FeedDataErrorBlock)(void);
     if (self.dataRequestRange.location == 0)
     {
         [self resetDataRequestRange]; // just in case the length is less than standard
+        [self.refreshButton startRefreshCycle];
         [self loadAndUpdateFeedData];
        
     }
@@ -328,6 +324,7 @@ typedef void(^FeedDataErrorBlock)(void);
     if (!appDelegate.currentOAuth2Credentials.userId)
         return;
 
+    [self.refreshButton startRefreshCycle];
     
     __weak SYNFeedRootViewController* wself = self;
     FeedDataErrorBlock errorBlock = ^{
@@ -355,19 +352,13 @@ typedef void(^FeedDataErrorBlock)(void);
         self.loadingMoreContent = NO;
         
         DebugLog(@"Refresh subscription updates failed");
-        
-        [self hidePullToRefresh];
     };
-    
-    // top refresh control
-    
-    [self showPullToRefresh];
     
     [appDelegate.oAuthNetworkEngine feedUpdatesForUserId: appDelegate.currentOAuth2Credentials.userId
                                                    start: self.dataRequestRange.location
                                                     size: self.dataRequestRange.length
                                        completionHandler: ^(NSDictionary *responseDictionary) {
-                                           
+                                                    
                                            
                                            BOOL toAppend = (self.dataRequestRange.location > 0);
                                                     
@@ -418,9 +409,7 @@ typedef void(^FeedDataErrorBlock)(void);
                                                
                                                
                                            }
-
-                                           // for aesthetic purposes
-                                           [self performSelector:@selector(hidePullToRefresh) withObject:nil afterDelay:0.3];
+                                                    
                                            
                                        } errorHandler: ^(NSDictionary* errorDictionary) {
                                                     
@@ -435,7 +424,8 @@ typedef void(^FeedDataErrorBlock)(void);
 - (void) handleRefreshComplete
 {
     self.refreshing = NO;
-    
+    [self.refreshControl endRefreshing];
+    [self.refreshButton endRefreshCycle];
 }
 
 
@@ -520,7 +510,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     if(resultsArray.count == 0)
     {
-        self.feedItemsData = [NSArray array];
+        self.feedItemsData = @[];
         [self.feedCollectionView reloadData];
         return;
     }
@@ -533,10 +523,10 @@ typedef void(^FeedDataErrorBlock)(void);
     {
         dateNoTime = [feedItem.dateAdded dateIgnoringTime];
         
-        NSMutableArray* bucket = [buckets objectForKey:dateNoTime];
+        NSMutableArray* bucket = buckets[dateNoTime];
         if(!bucket) { // if the bucket has not been created already, create it
             bucket = [NSMutableArray array];
-            [buckets setObject:bucket forKey:dateNoTime];
+            buckets[dateNoTime] = bucket;
         }
             
         [bucket addObject:feedItem];
@@ -552,7 +542,7 @@ typedef void(^FeedDataErrorBlock)(void);
     NSMutableArray* sortedItemsArray = [NSMutableArray array];
     for (NSDate* dateKey in sortedDateKeys)
     {
-        [sortedItemsArray addObject:[buckets objectForKey:dateKey]];
+        [sortedItemsArray addObject:buckets[dateKey]];
         
     }
     self.feedItemsData = sortedItemsArray;
@@ -562,7 +552,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     // put the videos in order
     
-    self.videosInOrderArray = [NSArray array];
+    self.videosInOrderArray = @[];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         [self sortVideosForPlaylist];
     });
@@ -591,7 +581,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     NSMutableDictionary* mutDictionary = [[NSMutableDictionary alloc] initWithCapacity:resultsArray.count];
     for (VideoInstance* vi in resultsArray) {
-        [mutDictionary setObject:vi forKey:vi.uniqueId];
+        mutDictionary[vi.uniqueId] = vi;
     }
     
     self.feedVideosById = [NSDictionary dictionaryWithDictionary:mutDictionary];
@@ -619,7 +609,7 @@ typedef void(^FeedDataErrorBlock)(void);
     
     NSMutableDictionary* mutDictionary = [[NSMutableDictionary alloc] initWithCapacity:resultsArray.count];
     for (Channel* ch in resultsArray) {
-        [mutDictionary setObject:ch forKey:ch.uniqueId];
+        mutDictionary[ch.uniqueId] = ch;
     }
     
     self.feedChannelsById = [NSDictionary dictionaryWithDictionary:mutDictionary];
@@ -718,7 +708,7 @@ typedef void(^FeedDataErrorBlock)(void);
     {
         DebugLog(@"*** feedChannelsById");
         // Aggregate cell with multiple indices
-        channel = [self.feedChannelsById objectForKey: feedItem.coverIndexArray[componentIndex]];
+        channel = (self.feedChannelsById)[feedItem.coverIndexArray[componentIndex]];
     }
 
     return channel;
@@ -816,7 +806,7 @@ typedef void(^FeedDataErrorBlock)(void);
         
         VideoInstance* videoInstance;
         
-        videoInstance = (VideoInstance*)[self.feedVideosById objectForKey: feedItem.coverIndexArray[0]]; // there should be only one
+        videoInstance = (VideoInstance*)(self.feedVideosById)[feedItem.coverIndexArray[0]]; // there should be only one
 
         cell.mainTitleLabel.text = videoInstance.title;
 
@@ -831,7 +821,7 @@ typedef void(^FeedDataErrorBlock)(void);
             cell.messageLabel.text = feedItem.title;
 
         [cell setSupplementaryMessageWithDictionary: @{@"star_count": videoInstance.video ? videoInstance.video.starCount : @0,
-         @"starrers": videoInstance ? [videoInstance.starrers array] : [NSArray array]}];
+         @"starrers": videoInstance ? [videoInstance.starrers array] : @[]}];
         
         [cell setCoverImagesAndTitlesWithArray: @[@{@"image": videoInstance.video ? videoInstance.video.thumbnailURL : @"",
          @"title" : videoInstance ? videoInstance.title : @""}]];
@@ -855,7 +845,7 @@ typedef void(^FeedDataErrorBlock)(void);
             
             for (NSString* resourceId in coverIndexIds)
             {
-                channel = (Channel*)[self.feedChannelsById objectForKey:resourceId];
+                channel = (Channel*)(self.feedChannelsById)[resourceId];
                 [coverImagesAndTitles addObject:@{  @"image": channel.channelCover ? channel.channelCover.imageUrl : @"",
                                                     @"title" : channel.title    }];
             }
@@ -864,7 +854,7 @@ typedef void(^FeedDataErrorBlock)(void);
         }
         else
         {
-            channel = (Channel*)[self.feedChannelsById objectForKey: feedItem.resourceId];
+            channel = (Channel*)(self.feedChannelsById)[feedItem.resourceId];
             
             [cell setCoverImagesAndTitlesWithArray:@[@{@"image": channel.channelCover ? channel.channelCover.imageLargeUrl : @"",
                                                        @"title" : channel.title    }]]; 
@@ -1032,7 +1022,7 @@ typedef void(^FeedDataErrorBlock)(void);
     else
     {
         // Aggregate cell with multiple indices
-        videoInstance = [self.feedVideosById objectForKey: feedItem.coverIndexArray[componentIndex]];
+        videoInstance = (self.feedVideosById)[feedItem.coverIndexArray[componentIndex]];
     }
     
     return videoInstance;
@@ -1051,11 +1041,11 @@ typedef void(^FeedDataErrorBlock)(void);
     
     if (feedItem.itemTypeValue == FeedItemTypeLeaf)
     {
-        videoInstance = [self.feedVideosById objectForKey: feedItem.resourceId];
+        videoInstance = (self.feedVideosById)[feedItem.resourceId];
     }
     else
     {
-        videoInstance = [self.feedVideosById objectForKey: feedItem.coverIndexArray[0]];
+        videoInstance = (self.feedVideosById)[feedItem.coverIndexArray[0]];
     }
     
     return videoInstance;
@@ -1075,11 +1065,11 @@ typedef void(^FeedDataErrorBlock)(void);
     
     if (feedItem.itemTypeValue == FeedItemTypeLeaf)
     {
-        channel = [self.feedChannelsById objectForKey: feedItem.resourceId];
+        channel = (self.feedChannelsById)[feedItem.resourceId];
     }
     else
     {
-        channel = [self.feedChannelsById objectForKey: feedItem.coverIndexArray[0]];
+        channel = (self.feedChannelsById)[feedItem.coverIndexArray[0]];
     }
     
     return channel;
@@ -1101,7 +1091,7 @@ typedef void(^FeedDataErrorBlock)(void);
             
             if (fi.itemTypeValue == FeedItemTypeLeaf)
             {
-                [ma addObject: [self.feedVideosById objectForKey: fi.resourceId]];
+                [ma addObject: (self.feedVideosById)[fi.resourceId]];
             }
             else
             {
@@ -1113,7 +1103,7 @@ typedef void(^FeedDataErrorBlock)(void);
                         continue;
                     }
                     
-                    [ma addObject: [self.feedVideosById objectForKey: cfi.resourceId]];
+                    [ma addObject: (self.feedVideosById)[cfi.resourceId]];
                 }
             }
         }
@@ -1161,11 +1151,11 @@ typedef void(^FeedDataErrorBlock)(void);
         
         if (selectedFeedItem.itemTypeValue == FeedItemTypeLeaf)
         {
-            channel = [self.feedChannelsById objectForKey: selectedFeedItem.resourceId];
+            channel = (self.feedChannelsById)[selectedFeedItem.resourceId];
         }
         else
         {
-            channel = [self.feedChannelsById objectForKey: selectedFeedItem.coverIndexArray[self.arcMenuComponentIndex]];
+            channel = (self.feedChannelsById)[selectedFeedItem.coverIndexArray[self.arcMenuComponentIndex]];
         }
         
         if (channel)
@@ -1218,11 +1208,11 @@ typedef void(^FeedDataErrorBlock)(void);
         
         if (selectedFeedItem.itemTypeValue == FeedItemTypeLeaf)
         {
-            videoInstance = [self.feedVideosById objectForKey: selectedFeedItem.resourceId];
+            videoInstance = (self.feedVideosById)[selectedFeedItem.resourceId];
         }
         else
         {
-            videoInstance = [self.feedVideosById objectForKey: selectedFeedItem.coverIndexArray[0]];
+            videoInstance = (self.feedVideosById)[selectedFeedItem.coverIndexArray[0]];
         }
         
         if (!videoInstance)
@@ -1316,41 +1306,31 @@ typedef void(^FeedDataErrorBlock)(void);
     
     self.togglingInProgress = YES;
     
-    __weak SYNFeedRootViewController* wself = self;
-    MKNKUserErrorBlock finishBlock = ^(id obj) {
-        
-        
-        [wself.feedCollectionView reloadData];
-        wself.togglingInProgress = NO;
-        button.enabled = YES;
-    };
-    
     // int starredIndex = self.currentSelectedIndex;
     [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
                                                      action: (didStar ? @"star" : @"unstar")
                                             videoInstanceId: videoInstance.uniqueId
                                           completionHandler: ^(id response) {
-                                              
                                               self.togglingInProgress = NO;
-                                              
-                                              BOOL previousStarringState = videoInstance.video.starredByUserValue;
                                               
                                               if (didStar)
                                               {
                                                   // Currently highlighted, so increment
-                                                  videoInstance.starredByUserValue = YES;
+                                                  videoInstance.video.starredByUserValue = YES;
                                                   videoInstance.video.starCountValue += 1;
                                                   
                                                   button.selected = YES;
                                                   
+                                                  [videoInstance addStarrersObject: appDelegate.currentUser];
                                               }
                                               else
                                               {
                                                   // Currently highlighted, so decrement
-                                                  videoInstance.starredByUserValue = NO;
+                                                  videoInstance.video.starredByUserValue = NO;
                                                   videoInstance.video.starCountValue -= 1;
                                                   
                                                   button.selected = NO;
+                                                  [videoInstance removeStarrersObject: appDelegate.currentUser];
                                               }
                                               
                                               [appDelegate saveContext: YES];
@@ -1375,18 +1355,17 @@ typedef void(^FeedDataErrorBlock)(void);
                                                   }
                                               }
                                               
-                                              NSError* error;
-                                              if(![videoInstance.managedObjectContext save:&error]) // something went wrong
-                                              {
-                                                  // revert to previous state
-                                                  videoInstance.video.starredByUserValue = previousStarringState;
-                                                  videoInstance.video.starCountValue += previousStarringState ? 1 : -1;
-                                                  button.selected = !button.selected;
-                                              }
+                                              [self.feedCollectionView reloadData];
                                               
-                                              finishBlock(response);
-                                              
-                                          } errorHandler: finishBlock];
+                                              button.enabled = YES;
+                                          }
+                                               errorHandler: ^(id error) {
+                                                   self.togglingInProgress = NO;
+                                                   
+                                                   DebugLog(@"Could not star video");
+                                                   
+                                                   button.enabled = YES;
+                                               }];
 }
 
 #pragma mark - Load More Footer
@@ -1406,118 +1385,16 @@ typedef void(^FeedDataErrorBlock)(void);
     [self.feedCollectionView setContentOffset:CGPointZero animated:YES];
 }
 
-#pragma mark - ScrollView Delegate
 
 - (void) scrollViewDidScroll: (UIScrollView *) scrollView
 {
-    CGFloat currentContentOffsetY = scrollView.contentOffset.y;
-    
-    // detect direction
-    if (_mainCollectionViewLastOffsetY > currentContentOffsetY)
-        self.mainCollectionViewScrollingDirection = ScrollingDirectionDown;
-    else if (_mainCollectionViewLastOffsetY < currentContentOffsetY)
-        self.mainCollectionViewScrollingDirection = ScrollingDirectionUp;
-    
-    self.mainCollectionViewOffsetDeltaY += fabsf(_mainCollectionViewLastOffsetY - currentContentOffsetY);
-    
-    _mainCollectionViewLastOffsetY = currentContentOffsetY;
-    
-    CGFloat threshold = scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight;
-    if (currentContentOffsetY >= threshold && !self.isLoadingMoreContent)
+    if (scrollView.contentOffset.y >= scrollView.contentSize.height - scrollView.bounds.size.height - kLoadMoreFooterViewHeight
+        && self.isLoadingMoreContent == NO)
+    {
         [self loadMoreVideos];
-    
-    // animate the refresh control
-    if (scrollView.contentOffset.y < COLLECTION_VIEW_INSET) // contentOffset.y is -90 at rest because of the contentInset (i guess)
-    {
-        
-        
-        [UIView animateWithDuration:0.3 animations:^{
-            
-            if (scrollView.contentOffset.y < -(COLLECTION_VIEW_INSET + REFRESH_HEADER_HEIGHT)) {
-                
-                self.refreshControl.layer.transform = CATransform3DMakeRotation(M_PI/2.0f, 0, 0, 1);
-                
-            } else {
-                
-                self.refreshControl.layer.transform = CATransform3DMakeRotation(M_PI * 2, 0, 0, 1);
-            }
-        }];
-    }
-    
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    
-    if (self.isLoadingMoreContent)
-        return;
-    
-    
-    if (scrollView.contentOffset.y <= -(COLLECTION_VIEW_INSET + REFRESH_HEADER_HEIGHT))
-    {
-        hasPulledToRefresh = YES;
-        [self loadAndUpdateFeedData];
     }
 }
 
--(void)setMainCollectionViewOffsetDeltaY:(CGFloat)mainCollectionViewOffsetDeltaY
-{
-    
-    NSLog(@"delta Y: %.1f %@ - offset y: %f", _mainCollectionViewOffsetDeltaY,
-          (self.mainCollectionViewScrollingDirection == ScrollingDirectionUp ? @"↑" : @"↓"), self.feedCollectionView.contentOffset.y);
-    
-    _mainCollectionViewOffsetDeltaY = mainCollectionViewOffsetDeltaY;
-    
-    if(self.mainCollectionViewScrollingDirection == ScrollingDirectionUp && self.feedCollectionView.contentOffset.y < 91.0f)
-        return;
-    
-    if (_mainCollectionViewOffsetDeltaY > kNotableScrollThreshold && // 16.0f
-        _mainCollectionViewOffsetDeltaY > COLLECTION_VIEW_INSET && // 90.0f
-        !hasPulledToRefresh)
-    {
-        
-        _mainCollectionViewOffsetDeltaY = 0.0f;
-        
-        dispatch_once(&onceToken, ^{
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:kNotableScrollEvent
-                                                                object:self
-                                                              userInfo:@{kNotableScrollDirection:@(_mainCollectionViewScrollingDirection)}];
-        });
-    }
-}
-
--(void)showPullToRefresh
-{
-    if(hasPulledToRefresh)
-    {
-        [UIView animateWithDuration:0.3 animations:^{
-            UIEdgeInsets currentInsets = self.feedCollectionView.contentInset;
-            currentInsets.top = COLLECTION_VIEW_INSET + REFRESH_HEADER_HEIGHT;
-            self.feedCollectionView.contentInset = currentInsets;
-            
-            [self.refreshControl start];
-        }];
-    }
-    
-}
-
--(void)hidePullToRefresh
-{
-    if(hasPulledToRefresh)
-    {
-        [UIView animateWithDuration:0.3 animations:^{
-            UIEdgeInsets currentInsets = self.feedCollectionView.contentInset;
-            currentInsets.top = COLLECTION_VIEW_INSET;
-            self.feedCollectionView.contentInset = currentInsets;
-            
-            [self.refreshControl stop];
-        }];
-        
-        hasPulledToRefresh = NO;
-    }
-}
-
-#pragma mark - Housekeeping functions
 
 - (void) applicationWillEnterForeground: (UIApplication *) application
 {
@@ -1527,13 +1404,5 @@ typedef void(^FeedDataErrorBlock)(void);
     [self loadAndUpdateFeedData];
 }
 
--(UICollectionView *)mainCollectionView
-{
-    return self.feedCollectionView;
-}
 
--(BOOL)canScrollFullScreen
-{
-    return YES;
-}
 @end

@@ -39,9 +39,7 @@
 @interface SYNAbstractViewController ()  <UITextFieldDelegate,
                                           UIPopoverControllerDelegate>
 
-
 @property (getter = isVideoQueueVisible) BOOL videoQueueVisible;
-
 @property (nonatomic, assign) BOOL shouldPlaySound;
 @property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nonatomic, strong) IBOutlet UIImageView *channelOverlayView;
@@ -61,10 +59,11 @@
 
 @implementation SYNAbstractViewController
 
-
+@synthesize fetchedResultsController = fetchedResultsController;
 @synthesize selectedIndex = _selectedIndex;
 
 @synthesize tabViewController;
+@synthesize addButton;
 
 @synthesize viewId;
 
@@ -86,12 +85,6 @@
                                                  selector: @selector(applicationWillEnterForeground:)
                                                      name: UIApplicationWillEnterForegroundNotification
                                                    object: nil];
-        
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(notableScrollNotification:)
-                                                     name:kNotableScrollEvent
-                                                   object:nil];
     }
     
     return self;
@@ -142,9 +135,7 @@
 
 - (void) viewDidScrollToFront
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNotableScrollEvent
-                                                        object:self
-                                                      userInfo:@{kNotableScrollDirection:@(ScrollingDirectionDown)}];
+//    DebugLog (@"%@ came to front", self.title);
 }
 
 
@@ -176,7 +167,7 @@
 }
 
 
-#pragma mark - Data Request Index
+
 
 
 - (BOOL) moreItemsToLoad
@@ -199,7 +190,6 @@
 }
 
 
-
 - (NSIndexPath *) indexPathFromVideoInstanceButton: (UIButton *) button
 {
     UIView* target = button;
@@ -213,6 +203,33 @@
 }
 
 
+- (IBAction) userTouchedVideoShareButton: (UIButton *) videoShareButton
+{
+    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoShareButton];
+    VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    
+    [self shareVideoInstance: videoInstance];
+}
+
+
+- (void) displayVideoViewerFromView: (UIButton *) videoViewButton
+{
+    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: videoViewButton];
+    
+    id selectedVideo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    NSArray* videoArray =  self.fetchedResultsController.fetchedObjects;
+    CGPoint center;
+    if(videoViewButton)
+    {
+        center = [self.view convertPoint:videoViewButton.center fromView:videoViewButton.superview];
+    }
+    else
+    {
+        center = self.view.center;
+    }
+    [self displayVideoViewerWithVideoInstanceArray: videoArray
+                                  andSelectedIndex: [videoArray indexOfObject:selectedVideo] center:center];
+}
 
 
 - (void) displayVideoViewerWithVideoInstanceArray: (NSArray *) videoInstanceArray
@@ -229,7 +246,7 @@
 
 #pragma mark - UICollectionView Data Source Stubs
 
-
+// To be implemented by subclasses
 - (NSInteger) collectionView: (UICollectionView *) cv
       numberOfItemsInSection: (NSInteger) section
 {
@@ -245,12 +262,33 @@
     return nil;
 }
 
+
+- (BOOL) collectionView: (UICollectionView *) cv
+         didSelectItemAtIndexPathAbstract: (NSIndexPath *) indexPath
+{
+    AssertOrLog(@"Shouldn't be calling abstract class method");
+    return NO;
+}
+
+
 - (void) refresh
 {
     AssertOrLog(@"Shouldn't be calling abstract class method");
 }
 
 
+// User pressed the channel thumbnail in a VideoCell
+- (IBAction) channelButtonTapped: (UIButton *) channelButton
+{
+    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: channelButton];
+    
+    if (indexPath)
+    {
+        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+        
+        [appDelegate.viewStackManager viewChannelDetails:videoInstance.channel];
+    }
+}
 
 - (void) videoOverlayDidDissapear
 {
@@ -258,11 +296,28 @@
 }
 
 
+- (IBAction) profileButtonTapped: (UIButton *) profileButton
+{
+    NSIndexPath *indexPath = [self indexPathFromVideoInstanceButton: profileButton];
+    
+    // Bail if we don't have an index path
+    if (indexPath)
+    {
+        VideoInstance *videoInstance = [self.fetchedResultsController objectAtIndexPath: indexPath];
+        
+        [appDelegate.viewStackManager viewProfileDetails: videoInstance.channel.channelOwner];
+    }
+}
+
+
+
+
+
 #pragma mark - Trace
 
 - (NSString*) description
 {
-    return [NSString stringWithFormat: @"SYNAbstractViewController: '%@'", viewId];
+    return [NSString stringWithFormat: @"SYNAbstractViewController '%@'", viewId];
 }
 
 
@@ -272,7 +327,6 @@
 {
     tabViewController = newTabViewController;
     tabViewController.delegate = self;
-    
     [self.view addSubview: tabViewController.tabView];
     
     tabExpanded = NO;
@@ -622,7 +676,7 @@
     __weak VideoInstance *videoInstance = [self videoInstanceForIndexPath: indexPath];
     
     // TODO: I've seen elsewhere in the code that the favourites have been bodged, so check to see if the following line is valid
-    NSString *starAction = !videoInstance.starredByUserValue ? @"star" : @"unstar";
+    NSString *starAction = (videoInstance.video.starredByUserValue == FALSE) ? @"star" : @"unstar";
     
     //    int starredIndex = self.currentSelectedIndex;
     
@@ -631,16 +685,16 @@
                                             videoInstanceId: videoInstance.uniqueId
                                           completionHandler: ^(id response) {
                                               
-                                              if (videoInstance.starredByUserValue == TRUE)
+                                              if (videoInstance.video.starredByUserValue == TRUE)
                                               {
                                                   // Currently highlighted, so decrement
-                                                  videoInstance.starredByUserValue = FALSE;
+                                                  videoInstance.video.starredByUserValue = FALSE;
                                                   videoInstance.video.starCountValue -= 1;
                                               }
                                               else
                                               {
                                                   // Currently highlighted, so increment
-                                                  videoInstance.starredByUserValue = TRUE;
+                                                  videoInstance.video.starredByUserValue = TRUE;
                                                   videoInstance.video.starCountValue += 1;
                                                   [Appirater userDidSignificantEvent: FALSE];
                                               }
@@ -776,7 +830,7 @@
         }
         
         // A bit of a hack, but we need to work out whether the user has starred this videoInstance (we can't completely trust starredByUserValue)
-        BOOL starredByUser = videoInstance.starredByUserValue;
+        BOOL starredByUser = videoInstance.video.starredByUserValue;
         
         if (!starredByUser)
         {
@@ -788,7 +842,7 @@
                 if ([channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId])
                 {
                     starredByUser = TRUE;
-                    videoInstance.starredByUserValue = starredByUser;
+                    videoInstance.video.starredByUserValue = starredByUser;
                     break;
                 }
             }
@@ -952,24 +1006,5 @@
     return appDelegate.masterViewController.view;
 }
 
--(UICollectionView *)mainCollectionView
-{
-    return nil; // to be implemented in subview
-}
-
--(void)setMainCollectionViewScrollingDirection:(ScrollingDirection)mainCollectionViewScrollingDirection
-{
-    if(_mainCollectionViewScrollingDirection == mainCollectionViewScrollingDirection)
-        return;
-    
-    _mainCollectionViewScrollingDirection = mainCollectionViewScrollingDirection;
-    self.mainCollectionViewOffsetDeltaY = 0.0f;
-    onceToken = 0;
-}
-
--(void)notableScrollNotification:(NSNotification*)notification
-{
-    // add things that should animate specifically to a view
-}
 
 @end
