@@ -219,7 +219,7 @@
     
     if (launchOptions != nil)
     {
-        NSDictionary* userInfo = [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
+        NSDictionary* userInfo = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
         
         if (userInfo != nil)
         {

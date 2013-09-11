@@ -261,7 +261,7 @@
     
     
     if(!entityName)
-        return [NSDictionary dictionary]; // return empty dictionary
+        return @{}; // return empty dictionary
     
     
     NSError* error;
@@ -405,7 +405,7 @@
             aggregationFeedItem.viewId = kFeedViewId;
             aggregationFeedItem.markedForDeletionValue = NO;
             
-            [aggregationItems setObject:aggregationFeedItem forKey:aggregationFeedItem.uniqueId];
+            aggregationItems[aggregationFeedItem.uniqueId] = aggregationFeedItem;
             
             
             // == Parse Covers == //

@@ -931,54 +931,11 @@
         return;
     
     _scrollingDirection = scrollingDirection;
-    NSString* nameOfNextImage;
 
     if (self.currentOnBoardingPage < 0)
         self.currentOnBoardingPage = 0;
     else if (self.currentOnBoardingPage > kLoginOnBoardingMessagesNum - 1)
         self.currentOnBoardingPage = kLoginOnBoardingMessagesNum - 1;
-    
-//    nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
-//    self.loginBackgroundImage.image = [UIImage imageNamed:nameOfNextImage];
-//
-//    switch (scrollingDirection)
-//    {
-//        case ScrollingDirectionNone:
-//         
-//            nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
-//            break;
-//            
-//        case ScrollingDirectionRight:
-//            if (self.currentOnBoardingPage + 1 >= self.backgroundImagesArray.count)
-//            {
-//                
-//                nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
-//            }
-//            else
-//            {
-//                
-//                nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage + 1];
-//            }
-//                
-//            
-//            break;
-//            
-//        case ScrollingDirectionLeft:
-//            if (self.currentOnBoardingPage - 1 < 0)
-//            {
-//                
-//                nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage];
-//            }
-//            else
-//            {
-//             
-//                nameOfNextImage = self.backgroundImagesArray[self.currentOnBoardingPage - 1];
-//            }
-//            break;
-//    }
-//    
-//    self.loginBackgroundFrontImage.image = [UIImage imageNamed: nameOfNextImage];
-    
 }
 
 
