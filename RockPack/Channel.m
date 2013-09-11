@@ -168,8 +168,7 @@
         
         for (NSDictionary *itemDictionary in itemArray)
         {
-            id uniqueId = [itemDictionary[@"video"]
-                           objectForKey: @"id"];
+            id uniqueId = (itemDictionary[@"video"])[@"id"];
             
             if (uniqueId)
             {
@@ -356,7 +355,7 @@
     
     for (NSDictionary *itemDictionary in itemArray)
     {
-        id uniqueId = [itemDictionary[@"video"] objectForKey: @"id"];
+        id uniqueId = (itemDictionary[@"video"])[@"id"];
         
         if (uniqueId)
         {
@@ -430,7 +429,7 @@
 
 -(void)setMarkedForDeletionValue:(BOOL)value_
 {
-    self.markedForDeletion = [NSNumber numberWithBool:value_];
+    self.markedForDeletion = @(value_);
     self.channelOwner.markedForDeletionValue = value_;
 }
 
