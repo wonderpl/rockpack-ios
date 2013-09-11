@@ -45,8 +45,6 @@ typedef enum {
 @property (nonatomic, strong) SYNNetworkErrorView* networkErrorView;
 @property (nonatomic,assign) SYNAppDelegate* appDelegate;
 @property (nonatomic, strong) UIImageView * backgroundImageView;
-@property (nonatomic, strong) UIImageView * upperParallaxImageView;
-@property (nonatomic, strong) UIImageView * lowerParallaxImageView;
 
 
 - (BOOL) checkAndSaveRegisteredUser: (SYNOAuth2Credential*) credential;

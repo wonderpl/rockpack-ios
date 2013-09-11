@@ -92,7 +92,7 @@
     
     for (int t = 0; t < tabsArray.count; t++)
     {
-        searchTab = (SYNSearchTabView *) tabsArray[t];
+        searchTab = (SYNSearchTabView *) [tabsArray objectAtIndex: t];
         
         tabRect = searchTab.frame;
         tabRect.origin.x += offsetX;

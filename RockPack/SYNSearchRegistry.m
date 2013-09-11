@@ -90,7 +90,7 @@
     
     for (NSUInteger peopleCounter = 0; peopleCounter < total; peopleCounter++)
     {
-        ABRecordRef currentPerson = (__bridge ABRecordRef) abArray[peopleCounter];
+        ABRecordRef currentPerson = (__bridge ABRecordRef) [abArray objectAtIndex: peopleCounter];
         ABRecordID cid;
         
         if (!currentPerson || ((cid = ABRecordGetRecordID(currentPerson)) == kABRecordInvalidID))
@@ -265,7 +265,8 @@
     
     for (NSDictionary *itemDictionary in itemArray)
     {
-        id uniqueId = (itemDictionary[@"video"])[@"id"];
+        id uniqueId = [itemDictionary[@"video"]
+                       objectForKey: @"id"];
         
         if (uniqueId)
         {

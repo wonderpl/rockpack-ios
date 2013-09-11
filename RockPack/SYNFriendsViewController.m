@@ -61,7 +61,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     
     [self.searchField setAutocorrectionType:UITextAutocorrectionTypeNo];
     
-    self.friends = @[];
+    self.friends = [NSArray array];
     
     // Register Cells
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNFriendThumbnailCell"
@@ -131,9 +131,24 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
         CGRect searchSliderFrame = self.searchSlider.frame;
         searchSliderFrame.origin.x = searchSliderFrame.size.width;
         self.searchSlider.frame= searchSliderFrame;
+        
+        if (IS_IOS_7_OR_GREATER)
+        {
+            self.view.backgroundColor = [UIColor clearColor];
+        }
+
     }
     
-    
+    if (IS_IPAD)
+    {
+        //Semi-transparent background for iOS7
+        if (IS_IOS_7_OR_GREATER)
+        {
+            UIView * whiteBackgroundView = [[UIView alloc]initWithFrame:CGRectMake(self.view.frame.origin.x, self.view.frame.origin.x, self.view.frame.size.width, 1024 - self.view.frame.origin.y)];
+            whiteBackgroundView.backgroundColor = [UIColor colorWithWhite:255.0f/255.0f alpha:0.4];
+            [self.view insertSubview:whiteBackgroundView atIndex:0];
+        }
+    }
 }
 
 

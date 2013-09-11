@@ -9,13 +9,15 @@
 #import <UIKit/UIKit.h>
 
 
-@interface SYNRefreshButton : UIControl
+@interface SYNRefreshControl : UIControl {
+    UIImageView* iconImageView;
+}
 
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* spinner;
 
-- (void) startRefreshCycle;
-- (void) endRefreshCycle;
+- (void) start;
+- (void) stop;
 
-+ (id) refreshButton;
++ (id) refreshControl;
 
 @end

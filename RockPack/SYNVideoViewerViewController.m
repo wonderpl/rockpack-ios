@@ -37,13 +37,12 @@
 
 @interface SYNVideoViewerViewController () <UIGestureRecognizerDelegate>
 
-
 @property (nonatomic, assign) CGRect originalFrame;
+
 @property (nonatomic, assign) CGRect originalSwipeFrame;
 @property (nonatomic, assign) int currentSelectedIndex;
 @property (nonatomic, copy) NSArray *videoInstanceArray;
 @property (nonatomic, getter = isVideoExpanded) BOOL videoExpanded;
-@property (nonatomic, strong) AMBlurView *blurView;
 @property (nonatomic, strong) IBOutlet BBCyclingLabel *channelCreatorLabel;
 @property (nonatomic, strong) IBOutlet BBCyclingLabel *channelTitleLabel;
 @property (nonatomic, strong) IBOutlet BBCyclingLabel *videoTitleLabel;
@@ -61,20 +60,24 @@
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelThumbnailImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *panelImageView;
-@property (nonatomic, strong) IBOutlet UILabel* likesCountLabel;
 @property (nonatomic, strong) IBOutlet UIView *swipeView;
 @property (nonatomic, strong) SYNReportConcernTableViewController *reportConcernTableViewController;
 @property (nonatomic, strong) SYNVideoViewerThumbnailLayout *layout;
+
+@property (nonatomic, strong) SYNAddButtonControl *addButton;
 @property (nonatomic, strong) UISwipeGestureRecognizer* leftSwipeRecogniser;
 @property (nonatomic, strong) UISwipeGestureRecognizer* rightSwipeRecogniser;
 @property (nonatomic, strong) UITapGestureRecognizer* tapRecogniser;
+@property (nonatomic, strong) IBOutlet UILabel* likesCountLabel;
 @property (weak, nonatomic) IBOutlet UIButton *addVideoButton;
 @property (weak, nonatomic) IBOutlet UIButton *shareButton;
+
+@property (nonatomic, strong) AMBlurView *blurView;
+@property (nonatomic, strong) UIView *darkenBlurView;
 
 //iPhone specific
 
 @property (nonatomic, assign) UIDeviceOrientation currentOrientation;
-@property (nonatomic, strong) NSMutableArray* favouritesStatusArray;
 
 @end
 
@@ -88,16 +91,13 @@
 {
   	if ((self = [super init]))
     {
+        
 		self.videoInstanceArray = videoInstanceArray;
+        
         self.currentSelectedIndex = selectedIndex;
         
-        //FIXME: FAVOURITES Temporary workaround for missing favourites status. remove when proper fix in place.
-        NSMutableArray* favouritesArray = [NSMutableArray arrayWithCapacity:[self.videoInstanceArray count]];
-        for(int i=0; i < [self.videoInstanceArray count]; i++)
-        {
-            [favouritesArray addObject:@(NO)];
-        }
-        _favouritesStatusArray = favouritesArray;
+        
+        
 	}
     
 	return self;
@@ -116,6 +116,7 @@
 {
     NSLog(@"WTF???");
 }
+
 
 #pragma mark - View lifecycle
 
@@ -300,20 +301,41 @@
     //iOS 7 Blur
     if (IS_IOS_7_OR_GREATER)
     {
+        
+        CGSize screenSize = [[SYNDeviceManager sharedInstance] currentScreenSize];
+        
+        CGRect fullScreenRect = IS_IPHONE && !IS_IPHONE_5 ? CGRectMake(0, 0, screenSize.width, screenSize.height + 70) : CGRectMake(0, 0, screenSize.width, screenSize.height);
+        
         // Do iOS7 Tingz
         self.blurView = [AMBlurView new];
-//        self.blurView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        [self.blurView setFrame: CGRectMake(0.0f, 0.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight] + 2.0f)];
+        self.blurView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        [self.blurView setBlurTintColor:[UIColor colorWithRed:21.0f/255.0 green:24.0f/255.0 blue:28.0f/255.0 alpha:1.0f]];
         
-        [self.blurView setBlurTintColor: [UIColor colorWithRed: 21.0f / 255.0
-                                                         green: 24.0f / 255.0
-                                                          blue: 28.0f / 255.0
-                                                         alpha: 1.0f]];
+        self.darkenBlurView = [UIView new];
+        self.darkenBlurView.backgroundColor = [UIColor colorWithWhite:0.0f/255.0f alpha:0.35f];
+        
+        
+        //FIXME: I am setting the frame of the blurview background to 1024x1024 for ipad to fix that issue
+        if (IS_IPAD && UIDeviceOrientationIsPortrait([[SYNDeviceManager sharedInstance] currentOrientation]))
+        {
+            //self.blurView.frame = CGRectMake(0, 0, 768.0f, 1025.0f);
+            self.blurView.frame = CGRectMake(0, 0, 1025.0f, 1025.0f);
+            self.darkenBlurView.frame = CGRectMake(0, 0, 768.0f, 1025.0f);
+            self.view.frame = CGRectMake(0, 0, screenSize.width, screenSize.height);
+        }
+        else
+        {
+            //self.blurView.frame = fullScreenRect;
+            self.blurView.frame = CGRectMake(0, 0, 1025.0f, 1025.0f);
+            self.darkenBlurView.frame = fullScreenRect;
+        }
+        
+
         
         self.view.backgroundColor = [UIColor clearColor];
+        [self.view insertSubview:self.blurView atIndex:0];
+        [self.view insertSubview:self.darkenBlurView aboveSubview:self.blurView];
         
-        [self.view insertSubview: self.blurView
-                         atIndex: 0];
     }
 }
 
@@ -405,7 +427,8 @@
     {
         // Landscape
         blackPanelFrame = CGRectMake(0, 0, 1024, 768);
-        blurViewFrame = CGRectMake(0, 0, 1024, 768);        
+        blurViewFrame = CGRectMake(0, 0, 1024, 768);
+        
         if (self.isVideoExpanded)
         {
             self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.384f, 1.384f);
@@ -415,7 +438,7 @@
     {
         // Portrait
         blackPanelFrame = CGRectMake(128, -128, 768, 1024);
-        blurViewFrame = CGRectMake(0, 0, 768, 1024);
+        blurViewFrame = CGRectMake(0, 0, 768.0f, 1025.0f);
         
         if (self.isVideoExpanded)
         {
@@ -426,6 +449,7 @@
     
     self.blackPanelView.frame = blackPanelFrame;
     self.blurView.frame = blurViewFrame;
+    self.darkenBlurView.frame = blurViewFrame;
 }
 
 
@@ -509,7 +533,7 @@
     
     self.channelTitleLabel.text = videoInstance.channel.title;
     self.videoTitleLabel.text = videoInstance.title;
-    self.starButton.selected = [self.favouritesStatusArray[index] boolValue];
+    self.starButton.selected = videoInstance.starredByUserValue;
     self.likesCountLabel.text = [videoInstance.video.starCount stringValue];
     [self refreshAddbuttonStatus:nil];
 }
@@ -775,43 +799,57 @@
     [self.heartActivityIndicator startAnimating];
     
     __weak VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
-    int starredIndex = self.currentSelectedIndex;
+    __weak SYNVideoViewerViewController* wself = self;
+    MKNKUserErrorBlock finishBlock = ^(id obj) {
+        
+        [wself updateVideoDetailsForIndex: self.currentSelectedIndex];
+        
+        [wself.heartActivityIndicator stopAnimating];
+        button.enabled = YES;
+    };
+    
     [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
                                                      action: starAction
                                             videoInstanceId: videoInstance.uniqueId
                                           completionHandler: ^(id response) {
-                                              [self.heartActivityIndicator stopAnimating];
                                               
-                                              if (videoInstance.video.starredByUserValue == TRUE)
+                                              
+                                              
+                                              BOOL previousStarringState = videoInstance.starredByUserValue;
+                                              NSNumber* previousStarCount = videoInstance.video.starCount;
+                                              if (previousStarringState)
                                               {
                                                   // Currently highlighted, so decrement
-                                                  videoInstance.video.starredByUserValue = FALSE;
+                                                  videoInstance.starredByUserValue = NO;
                                                   videoInstance.video.starCountValue -= 1;
                                               }
                                               else
                                               {
                                                   // Currently highlighted, so increment
-                                                  videoInstance.video.starredByUserValue = TRUE;
+                                                  videoInstance.starredByUserValue = YES;
                                                   videoInstance.video.starCountValue += 1;
                                                   [Appirater userDidSignificantEvent: FALSE];
                                               }
                                               
-                                              (self.favouritesStatusArray)[starredIndex] = @(button.selected);
                                               
-                                              [self updateVideoDetailsForIndex: self.currentSelectedIndex];
                                               
-                                              [appDelegate saveContext: YES];
+                                              NSError* error;
+                                              if(![videoInstance.managedObjectContext save:&error]) // something went wrong
+                                              {
+                                                  // revert to previous state
+                                                  videoInstance.starredByUserValue = previousStarringState;
+                                                  videoInstance.video.starCount = previousStarCount;
+                                                  button.selected = !button.selected;
+                                              }
                                               
-                                              button.enabled = YES;
-                                              
-                                          }
-                                               errorHandler: ^(id error) {
-                                                   [self.heartActivityIndicator stopAnimating];
+                                            finishBlock(response);
+     
+                                          } errorHandler: ^(id error) {
+                                                   
                                                    DebugLog(@"Could not star video");
-                                                   button.selected = ! button.selected;
-                                                   button.enabled = YES;
-                                                   [self updateVideoDetailsForIndex: self.currentSelectedIndex];
-                                               }];
+                                                   button.selected = !button.selected;
+                                                finishBlock(error);
+                                            }];
     
     
     
@@ -858,6 +896,7 @@
         [self userTouchedCloseButton:nil];
         return;
     }
+    
     [self.overlayParent removeVideoOverlayController];
     
     // Get the video instance for the currently selected video
@@ -1231,10 +1270,17 @@
 #pragma mark - FIXME: FAVOURITES favourites workaround. Delete when feature has been developed.
 -(void)markAsFavourites
 {
-    for(int i=0; i < [self.videoInstanceArray count]; i++)
+    
+    if(self.videoInstanceArray.count == 0)
+        return;
+    
+    for (VideoInstance* vi in self.videoInstanceArray)
     {
-        (self.favouritesStatusArray)[i] = @(YES);
+        vi.starredByUserValue = YES;
     }
+    
+    NSError* error;
+    [((VideoInstance*)self.videoInstanceArray[0]).managedObjectContext save:&error];
 }
 
 #pragma mark - Appear animation
