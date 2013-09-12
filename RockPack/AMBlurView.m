@@ -88,10 +88,13 @@
 
 - (void) setBlurTintColor: (UIColor *) blurTintColor
 {
-    [self.toolbar setValue: blurTintColor
-                    forKey: @"barTintColor"];
+    self.toolbar.barTintColor = blurTintColor;
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    [self.toolbar setFrame:[self bounds]];
+}
 
 - (void) setFrame: (CGRect) frame
 {
