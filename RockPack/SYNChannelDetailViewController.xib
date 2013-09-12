@@ -209,7 +209,7 @@
                                         <action selector="touchedSubscribersLabel:" destination="-1" eventType="touchDown" id="151"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="121" userLabel="Button - Report Concern">
+                                <button hidden="YES" opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="121" userLabel="Button - Report Concern">
                                     <rect key="frame" x="187" y="480" width="83" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>

@@ -6,11 +6,11 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+#import "AMBlurView.h"
 #import "SYNAppDelegate.h"
 #import "SYNDeviceManager.h"
 #import "SYNModalSubscribersController.h"
 #import "UIFont+SYNFont.h"
-#import "AMBlurView.h"
 
 @interface SYNModalSubscribersController ()
 
@@ -47,7 +47,8 @@
     CGRect containerViewFrame = self.containerView.frame;
     self.viewController.view.frame = containerViewFrame;
     
-    if (IS_IOS_7_OR_GREATER)
+//        if (PLATFORM_CAN_HANDLE_LIVE_BLUR)
+    if (0)
     {
         self.containerView.hidden = YES;
         

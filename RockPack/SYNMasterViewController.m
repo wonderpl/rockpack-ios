@@ -981,7 +981,10 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.accountSettingsPopover.popoverContentSize = CGSizeMake(380, 576);
         self.accountSettingsPopover.delegate = self;
         
-        self.accountSettingsPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
+        if (!IS_IOS_7_OR_GREATER)
+        {
+            self.accountSettingsPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
+        }
         
         CGRect rect = CGRectMake([SYNDeviceManager.sharedInstance currentScreenWidth] * 0.5,
                                  [SYNDeviceManager.sharedInstance currentScreenHeight] * 0.5, 1, 1);

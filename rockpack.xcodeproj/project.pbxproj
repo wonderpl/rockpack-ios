@@ -150,6 +150,7 @@
 		012BD2EA173BE87300BE28B6 /* UIButton+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 012BD2DC173BE87300BE28B6 /* UIButton+WebCache.m */; };
 		012BD2EB173BE87300BE28B6 /* UIImage+GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 012BD2DE173BE87300BE28B6 /* UIImage+GIF.m */; };
 		012BD2EC173BE87300BE28B6 /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 012BD2E0173BE87300BE28B6 /* UIImageView+WebCache.m */; };
+		012CDC3017E1CE1A00C723BB /* UIDevice+Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = 012CDC2F17E1CE1A00C723BB /* UIDevice+Hardware.m */; };
 		01363EB2162F5C8A00FFAA09 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */; };
 		01363EB5162FDEA600FFAA09 /* NSObject+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 01363EB4162FDEA600FFAA09 /* NSObject+Blocks.m */; };
 		01363EC116300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01363EC016300F3A00FFAA09 /* SYNVideoThumbnailWideCell.xib */; };
@@ -1536,6 +1537,8 @@
 		012BD2DE173BE87300BE28B6 /* UIImage+GIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+GIF.m"; sourceTree = "<group>"; };
 		012BD2DF173BE87300BE28B6 /* UIImageView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+WebCache.h"; sourceTree = "<group>"; };
 		012BD2E0173BE87300BE28B6 /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
+		012CDC2E17E1CE1A00C723BB /* UIDevice+Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Hardware.h"; sourceTree = "<group>"; };
+		012CDC2F17E1CE1A00C723BB /* UIDevice+Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Hardware.m"; sourceTree = "<group>"; };
 		0131D25417C3706600D983D2 /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
 		0131D25517C3706600D983D2 /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
 		01363EB1162F5C8A00FFAA09 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -3856,8 +3859,6 @@
 		019825EE162C948000216900 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				01578C2017DF653F00B4F498 /* UIInterpolatingMotionEffect+DualAxis.h */,
-				01578C2117DF653F00B4F498 /* UIInterpolatingMotionEffect+DualAxis.m */,
 				01C9CFA41697496400C42479 /* NSDate-Utilities.h */,
 				01C9CFA51697496400C42479 /* NSDate-Utilities.m */,
 				01C6FD0D169DDEDB00E01AA3 /* NSDictionary+Validation.h */,
@@ -3881,6 +3882,10 @@
 				011A160D16EE53A0008CF25E /* UIImage+Resize.m */,
 				0177002817C382C3006DE415 /* UIImage+Tint.h */,
 				0177002917C382C3006DE415 /* UIImage+Tint.m */,
+				012CDC2E17E1CE1A00C723BB /* UIDevice+Hardware.h */,
+				012CDC2F17E1CE1A00C723BB /* UIDevice+Hardware.m */,
+				01578C2017DF653F00B4F498 /* UIInterpolatingMotionEffect+DualAxis.h */,
+				01578C2117DF653F00B4F498 /* UIInterpolatingMotionEffect+DualAxis.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -7079,6 +7084,7 @@
 				015CEE3F16B9E7DB004BC7A0 /* SYNIntegralCollectionViewFlowLayout.m in Sources */,
 				BE92A87B16CA938200FED47B /* SYNGenreTabView.m in Sources */,
 				BEA043E716CAA8E1005406E7 /* Genre.m in Sources */,
+				012CDC3017E1CE1A00C723BB /* UIDevice+Hardware.m in Sources */,
 				BEA043E816CAA8E1005406E7 /* SubGenre.m in Sources */,
 				BEA043EB16CABF1F005406E7 /* SYNGenreItemView.m in Sources */,
 				012502BD16CA8FE30029C7C8 /* SYNFacebookManager.m in Sources */,

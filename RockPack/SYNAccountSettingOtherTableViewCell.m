@@ -41,12 +41,12 @@
 {
     if(highlighted)
     {
-        self.backgroundColor = [UIColor clearColor];
+        self.backgroundColor = IS_IOS_7_OR_GREATER ? [UIColor colorWithWhite:(247.0/255.0) alpha:(0.6)] :  [UIColor clearColor];
         
     }
     else
     {
-        self.backgroundColor = [UIColor colorWithWhite:(247.0/255.0) alpha:(1.0)];
+        self.backgroundColor = IS_IOS_7_OR_GREATER ? [UIColor colorWithWhite:(247.0/255.0) alpha:(0.2)] : [UIColor colorWithWhite:(247.0/255.0) alpha:(1.0)];
         self.textLabel.backgroundColor = [UIColor clearColor];
     }
 }
