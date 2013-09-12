@@ -505,9 +505,11 @@
         subject = [NSString stringWithFormat: @"%@ has shared a %@ with you", userName, what];
     }
     
-    [self.mutableShareDictionary addEntriesFromDictionary: @{@"owner": isOwner,
-                                                             @"video": isVideo,
-                                                             @"subject": subject}];
+    
+    [self.mutableShareDictionary addEntriesFromDictionary:@{@"owner": isOwner,
+                                                            @"video": isVideo,
+                                                            @"subject": subject}];
+   
     
     // Only add image if we have one
     if (usingImage)
@@ -525,6 +527,16 @@
                                objectId: (NSString *) objectId
 {
     // Get share link
+    
+    self.mutableShareDictionary = @{@"type" : objectType,
+                                    @"object_id" : objectId,
+                                    @"text" : @"",
+                                    @"text_email" : @"",
+                                    @"text_twitter" : @"",
+                                    @"text_facebook" : @"",
+                                    @"url" : [NSNull null] }.mutableCopy; // url is the critial element to check for
+    
+    
     [appDelegate.oAuthNetworkEngine shareLinkWithObjectType: objectType
                                                    objectId: objectId
                                           completionHandler: ^(NSDictionary *responseDictionary)
@@ -542,26 +554,24 @@
                                                          withDefault: @""];
          
          NSString *messageFacebook = [responseDictionary objectForKey: @"message_facebook"
-                                                         withDefault: @""];
+                                                          withDefault: @""];
          
          NSURL *resourceURL = [NSURL URLWithString: resourceURLString];
          
-         self.mutableShareDictionary = @{@"type" : objectType,
-                                         @"object_id" : objectId,
-                                         @"text" : message,
-                                         @"text_email" : messageEmail,
-                                         @"text_twitter" : messageTwitter,
-                                         @"text_facebook" : messageFacebook,
-                                         @"url" : resourceURL}.mutableCopy;
+         self.mutableShareDictionary[@"type"] = objectType;
+         self.mutableShareDictionary[@"object_id"] = objectId;
+         self.mutableShareDictionary[@"text"] = message;
+         self.mutableShareDictionary[@"text_email"] = messageEmail;
+         self.mutableShareDictionary[@"text_twitter"] = messageTwitter;
+         self.mutableShareDictionary[@"text_facebook"] = messageFacebook;
+         self.mutableShareDictionary[@"url"] = resourceURL;
+         
+         [[NSNotificationCenter defaultCenter] postNotificationName:kShareLinkForObjectObtained
+                                                             object:self];
          
      } errorHandler: ^(NSDictionary *errorDictionary) {
-         self.mutableShareDictionary = @{@"type" : objectType,
-                                         @"object_id" : objectId,
-                                         @"text" : @"",
-                                         @"text_email" : @"",
-                                         @"text_twitter" : @"",
-                                         @"text_facebook" : @"",
-                                         @"url" : [NSURL URLWithString: @"http://rockpack.com"]}.mutableCopy;
+         
+         
      }];
 }
 

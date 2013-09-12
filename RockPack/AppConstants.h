@@ -51,6 +51,9 @@
 #define kSideNavigationViewId       @"kSideNavigationViewId"
 #define kSubscribersListViewId      @"kSubscribersListViewId"
 
+
+#define kShareLinkForObjectObtained @"kShareLinkForObjectObtained"
+
 // Feed
 
 typedef enum _FeedItemType {
