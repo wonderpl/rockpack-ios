@@ -50,6 +50,7 @@
 @property (nonatomic, strong) IBOutlet UITextField *searchTextField;
 @property (nonatomic, strong) IBOutlet UILabel * facebookLabel;
 @property (nonatomic, strong) IBOutlet UIView *activitiesContainerView;
+@property (nonatomic, strong) Friend* friendHeldInQueue;
 
 @property (nonatomic, strong) NSMutableArray *friends;
 @property (nonatomic, strong) NSArray *recentFriends;
@@ -80,6 +81,8 @@
                                bundle: nil])
     {
         self.mutableShareDictionary = mutableShareDictionary;
+        
+        
         hasAttemptedToLoadData = NO;
         
         
@@ -972,12 +975,41 @@
 }
 
 #pragma mark - Send Email
-
+-(void)shareLinkObtained
+{
+    DebugLog(@"Getting the Share link completed");
+    [self sendEmailToFriend:self.friendHeldInQueue];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kShareLinkForObjectObtained
+                                                  object:nil];
+}
 - (void) sendEmailToFriend: (Friend *) friend
 {
-    self.view.userInteractionEnabled = NO;
+    // check for info data
+    
+    if(!friend)
+        return;
     
     [self showLoader:YES];
+    
+    self.view.userInteractionEnabled = NO;
+    
+    if(self.mutableShareDictionary[@"url"] == [NSNull null])
+    {
+        // not ready
+        DebugLog(@"Getting the Share link did not seem to finishe, registering for completion");
+        self.friendHeldInQueue = friend;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(shareLinkObtained)
+                                                     name:kShareLinkForObjectObtained
+                                                   object:nil];
+        
+        return;
+    }
+    
+    
+    self.friendHeldInQueue = nil;
     
     [self.searchTextField resignFirstResponder];
     
@@ -1054,5 +1086,8 @@
 }
 
 
-
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 @end
