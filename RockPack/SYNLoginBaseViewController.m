@@ -119,7 +119,7 @@
     [self.view insertSubview: self.backgroundImageView
                     atIndex: 0];
     
-    if (PLATFORM_CAN_HANDLE_LIVE_BLUR_OPTIONALLY)
+    if (IS_IOS_7_OR_GREATER)
     {
         self.lowerParallaxImageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"LowerParallaxStars"]];
         self.lowerParallaxImageView.contentMode = UIViewContentModeCenter;
@@ -242,9 +242,6 @@
         completionHandler: (MKNKUserSuccessBlock) completionBlock
              errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    
-    
-    
     [self.appDelegate.oAuthNetworkEngine doSimpleLoginForUsername: username forPassword: password completionHandler: ^(SYNOAuth2Credential* credential) {
 
         // Case where the user is a member of Rockpack but has not signing in this device
@@ -285,11 +282,7 @@
             else
             {
                 DebugLog(@"ERROR: User not registered (User: %@)", _appDelegate.currentUser);
-               
             }
-            
-            
-            
         } errorHandler:errorBlock];
         
     } errorHandler:errorBlock];
@@ -363,6 +356,10 @@
     //Hide backgroundImageView when Reg or Login buttons are Pressed
     self.backgroundImageView.alpha = 0.0f;
     self.backgroundImageView.hidden = YES;
+    self.lowerParallaxImageView.alpha = 0.0f;
+    self.lowerParallaxImageView.hidden = YES;
+    self.upperParallaxImageView.alpha = 0.0f;
+    self.upperParallaxImageView.hidden = YES;
     
 }
 
@@ -372,6 +369,8 @@
     
     //Show backgroundImageView when back button is Pressed
     self.onBoardingController.view.hidden = NO;
+    self.lowerParallaxImageView.hidden = NO;
+    self.upperParallaxImageView.hidden = NO;
     
     [UIView animateWithDuration: 0.3f
                           delay: 0.1f
@@ -379,6 +378,8 @@
                      animations: ^{
                          self.onBoardingController.view.alpha = 1.0;
                          self.backgroundImageView.alpha = 1.0f;
+                         self.lowerParallaxImageView.alpha = 1.0f;
+                         self.upperParallaxImageView.alpha = 1.0f;
                      } completion: nil];
     
     
