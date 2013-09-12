@@ -242,6 +242,13 @@
 "profile_screen_section_user_created_title" = "PACKS";
 "profile_screen_section_user_subscription_title" = "PACKS FOLLOWED";
 
+// == Instructions == //
+
+"instruction_initial" = "Here are some popular video packs for you";
+"instruction_initial_subtext" = "Choose one to get started";
+"instruction_press_hold" = "Press and hold the video. Go on, try it!";
+"instruction_choose_action" = "Choose an action";
+"instruction_good_job" = "Good job!";
 
 // == Settings == //
 
