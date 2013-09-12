@@ -129,7 +129,7 @@
     [self.tableView reloadData];
     
     self.tableView.backgroundView = nil;
-    self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.backgroundColor = IS_IOS_7_OR_GREATER ? [UIColor clearColor] : [UIColor whiteColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     
     
