@@ -65,6 +65,11 @@
          animated: NO];
 }
 
+- (void) setContentOffset:(CGPoint)contentOffset
+{
+    contentOffset.y = 0.0f;
+    [super setContentOffset:contentOffset];
+}
 
 - (NSInteger) page
 {
