@@ -209,7 +209,7 @@ typedef enum {
             [self.navigationContainerView insertSubview:secondBlurView atIndex:0];
             
             //Border
-            UIView *secondaryBorder = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 66.0f, self.view.frame.size.width, 1.0f)];
+            UIView *secondaryBorder = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 65.0f, self.view.frame.size.width, 1.0f)];
             secondaryBorder.backgroundColor = [UIColor colorWithWhite:180.0f/255.0f alpha:0.1];
             [self.navigationContainerView insertSubview:secondaryBorder aboveSubview:secondBlurView];
         }

@@ -33,8 +33,9 @@
                                                           blue: (170.0f / 255.0f)
                                                          alpha: 1.0f];
         
-        CGRect svFrame = CGRectMake(0.0, 0.0f, 0.0f, 2.0f);
+        CGRect svFrame = CGRectMake(0.0, 0.0f, 0.0f, 1.0f);
         self.customSeparatorView = [[UIView alloc] initWithFrame: svFrame];
+        self.customSeparatorView.backgroundColor = [UIColor clearColor];
         
         UIView *blackLineView = [[UIView alloc] initWithFrame: CGRectZero];
         
@@ -51,7 +52,7 @@
                                                         alpha: 1.0f];
         
         [self.customSeparatorView addSubview: blackLineView];
-        [self.customSeparatorView addSubview: whiteLineView];
+        //[self.customSeparatorView addSubview: whiteLineView];
         [self addSubview: self.customSeparatorView];
     }
     

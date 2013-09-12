@@ -12,6 +12,8 @@
 
 @property (nonatomic) NSInteger page;
 
+- (id) initFullScreenWithDelegate:(id<UIScrollViewDelegate>)controller;
+
 - (void) setPage: (NSInteger) page
         animated: (BOOL) animated;
 
