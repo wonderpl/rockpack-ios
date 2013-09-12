@@ -13,11 +13,27 @@
 
 @dynamic page;
 
+- (id) initFullScreenWithDelegate:(id<UIScrollViewDelegate>)controller
+{
+    
+    if([self initWithFrame:[SYNDeviceManager.sharedInstance currentScreenRect]])
+    {
+        self.delegate = controller;
+    }
+    return self;
+}
+
 - (id) initWithFrame: (CGRect) frame
 {
     if ((self = [super initWithFrame: frame]))
     {
         // Initialization code
+        self.autoresizingMask = UIViewAutoresizingNone;
+        self.backgroundColor = [UIColor clearColor];
+        self.pagingEnabled = YES;
+        self.showsHorizontalScrollIndicator = NO;
+        self.showsVerticalScrollIndicator = NO;
+        self.scrollsToTop = NO;
     }
     
     return self;

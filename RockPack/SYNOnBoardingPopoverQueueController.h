@@ -14,4 +14,5 @@
 -(void)addPopover:(SYNOnBoardingPopoverView*)popoverView;
 -(void)present;
 + (id) queueController;
+
 @end

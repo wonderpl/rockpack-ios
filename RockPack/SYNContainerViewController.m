@@ -49,17 +49,8 @@ UITextViewDelegate>
 
 - (void) loadView
 {
-    CGRect scrollerFrame = CGRectMake(0.0, 0.0, [SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight]);
-    SYNContainerScrollView *scrollView = [[SYNContainerScrollView alloc] initWithFrame: scrollerFrame];
     
-    scrollView.autoresizingMask = UIViewAutoresizingNone;
-    scrollView.backgroundColor = [UIColor clearColor];
-    scrollView.delegate = self;
-    scrollView.pagingEnabled = YES;
-    scrollView.showsHorizontalScrollIndicator = NO;
-    scrollView.showsVerticalScrollIndicator = NO;
-    scrollView.bounces = NO;
-    scrollView.scrollsToTop = NO;
+    SYNContainerScrollView *scrollView = [[SYNContainerScrollView alloc] initFullScreenWithDelegate:self];
     
     self.view = scrollView;
     

@@ -95,7 +95,14 @@
 
 - (void) viewDidAppear: (BOOL) animated
 {
-    self.usersThumbnailCollectionView.backgroundColor = [UIColor whiteColor];
+    if (IS_IPHONE)
+    {
+        self.usersThumbnailCollectionView.backgroundColor = [UIColor clearColor];
+    }
+    else
+    {
+        self.usersThumbnailCollectionView.backgroundColor = [UIColor whiteColor];
+    }
     
     
     self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];

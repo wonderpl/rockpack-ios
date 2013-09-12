@@ -5112,6 +5112,13 @@
 			name = "Search Box";
 			sourceTree = "<group>";
 		};
+		BE1280C317E0B51F00BD5E3A /* Instructions Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Instructions Controller";
+			sourceTree = "<group>";
+		};
 		BE21EE8416FA200C0067223B /* Specific Fields */ = {
 			isa = PBXGroup;
 			children = (
@@ -5310,7 +5317,7 @@
 			name = "One to One Sharing";
 			sourceTree = "<group>";
 		};
-		BE3983CB1768A34700EE9C7B /* OnBoarding Messages */ = {
+		BE3983CB1768A34700EE9C7B /* OnBoarding Messages (Old) */ = {
 			isa = PBXGroup;
 			children = (
 				BE3983CF1768A4AA00EE9C7B /* SYNOnBoardingPopoverView.h */,
@@ -5318,7 +5325,7 @@
 				BE3983D21768B6D800EE9C7B /* SYNOnBoardingPopoverQueueController.h */,
 				BE3983D31768B6D800EE9C7B /* SYNOnBoardingPopoverQueueController.m */,
 			);
-			name = "OnBoarding Messages";
+			name = "OnBoarding Messages (Old)";
 			sourceTree = "<group>";
 		};
 		BE3983D5176A0CC600EE9C7B /* OnBoarding */ = {
@@ -5689,8 +5696,9 @@
 		BEF9E5A516DBCDEF00286113 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				BE1280C317E0B51F00BD5E3A /* Instructions Controller */,
 				BE8F938117B1110A00E7035F /* Sharing Panel */,
-				BE3983CB1768A34700EE9C7B /* OnBoarding Messages */,
+				BE3983CB1768A34700EE9C7B /* OnBoarding Messages (Old) */,
 				015C13BE173B02D8001569FE /* Report Concerns */,
 				BE03A69016F7457900245314 /* Account Settings */,
 				011C1650173002D000CF50B9 /* Activity controller */,
