@@ -64,6 +64,7 @@
 @property (strong, nonatomic) NSMutableDictionary *mutableShareDictionary;
 @property (strong, nonatomic) OWActivityViewController *activityViewController;
 @property (nonatomic) BOOL hasAttemptedToLoadData;
+@property (nonatomic, strong) SYNNetworkOperationJsonObject* lastNetworkOperation;
 
 @end
 
@@ -305,7 +306,8 @@
                                    
                                }
                            }
-                           
+            
+                        if(addressBookRef)
                            CFRelease(addressBookRef);
 
                        });
@@ -370,38 +372,48 @@
     
     
     
-    if(hasAttemptedToLoadData) // to avoid infinite recursion
+    if(self.lastNetworkOperation) // to avoid infinite recursion
         return;
     
     
+    if(self.friends.count == 0)
+        [self showLoader:YES];
     
+    MKNKUserSuccessBlock successBlock = ^(id dictionary) {
+        
+        if([appDelegate.searchRegistry registerFriendsFromDictionary:dictionary])
+        {
+            [weakSelf fetchAndDisplayFriends];
+        }
+        else
+        {
+            DebugLog(@"There was a problem loading friends");
+        }
+        
+        
+        hasAttemptedToLoadData = YES;
+        
+        [self.recentFriendsCollectionView reloadData];
+        
+        
+        [self showLoader:NO];
+        
+    };
     
-    [appDelegate.oAuthNetworkEngine friendsForUser: appDelegate.currentUser
-                                        onlyRecent: NO
-                                 completionHandler: ^(id dictionary) {
-                                     
-                                     
-                                     if([appDelegate.searchRegistry registerFriendsFromDictionary:dictionary])
-                                     {
-                                         [weakSelf fetchAndDisplayFriends];
-                                     }
-                                     else
-                                     {
-                                         DebugLog(@"There was a problem loading friends");
-                                     }
-                                     
-                                     
-                                     hasAttemptedToLoadData = YES;
-                                     
-                                     [self.recentFriendsCollectionView reloadData];
-                                     
-                                 } errorHandler: ^(id dictionary) {
-                                     
-                                     
-                                     hasAttemptedToLoadData = YES;
-                                     
-                                     [weakSelf.recentFriendsCollectionView reloadData];
-                                 }];
+    MKNKUserSuccessBlock failureBlock = ^(id dictionary) {
+        
+        hasAttemptedToLoadData = YES;
+        
+        [weakSelf.recentFriendsCollectionView reloadData];
+        
+        [self showLoader:NO];
+        
+    };
+    
+    self.lastNetworkOperation = [appDelegate.oAuthNetworkEngine friendsForUser: appDelegate.currentUser
+                                                                    onlyRecent: NO
+                                                             completionHandler: successBlock
+                                                                  errorHandler: failureBlock];
     
 }
 

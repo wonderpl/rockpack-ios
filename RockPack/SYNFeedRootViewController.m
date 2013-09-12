@@ -104,9 +104,17 @@ typedef void(^FeedDataErrorBlock)(void);
     }
     else
     {
-        calculatedViewFrame = CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar);
+        calculatedViewFrame = CGRectMake(0.0f,
+                                         0.0f,
+                                         [SYNDeviceManager.sharedInstance currentScreenWidth],
+                                         [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar]);
         
-        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY);
+        
+        videoCollectionViewFrame = calculatedViewFrame;
+        videoCollectionViewFrame.origin.y += kStandardCollectionViewOffsetY;
+        videoCollectionViewFrame.size.height -= kStandardCollectionViewOffsetY;
+        
+        NSLog(@"%@", NSStringFromCGRect(videoCollectionViewFrame));
         
         // Collection view parameters
         contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -117,6 +125,7 @@ typedef void(^FeedDataErrorBlock)(void);
     // Set our view frame and attributes
     self.view.frame = calculatedViewFrame;
     self.view.backgroundColor = [UIColor clearColor];
+    
     
     [self removeEmptyGenreMessage];
     
@@ -204,9 +213,13 @@ typedef void(^FeedDataErrorBlock)(void);
 }
 
 
+
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
+    
+    self.view.backgroundColor = [UIColor redColor];
+    self.feedCollectionView.backgroundColor = [UIColor blueColor];
     
     // Google analytics support
     [self updateAnalytics];

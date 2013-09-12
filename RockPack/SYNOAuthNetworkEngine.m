@@ -1752,14 +1752,14 @@
     [self enqueueSignedOperation: networkOperation];
 }
 
-- (void) friendsForUser: (User*)user
-                 onlyRecent: (BOOL)recent
-      completionHandler: (MKNKUserSuccessBlock) completionBlock
-           errorHandler: (MKNKUserErrorBlock) errorBlock
+- (SYNNetworkOperationJsonObject*) friendsForUser: (User*)user
+                                       onlyRecent: (BOOL)recent
+                                completionHandler: (MKNKUserSuccessBlock) completionBlock
+                                     errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     
     if(!user)
-        return;
+        return nil;
     
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : user.uniqueId};
     
@@ -1779,7 +1779,7 @@
     
     [self enqueueSignedOperation: networkOperation];
     
-    
+    return networkOperation;
 }
 
 -(void)getClientIPBasedLocation
