@@ -118,7 +118,7 @@
 
 -(CGFloat)currentScreenHeightWithStatusBar
 {
-    return [self currentScreenHeight]  - 20.0;
+    return [self currentScreenHeight]  - (IS_IOS_7_OR_GREATER ? 0.0f : 20.0f);
 }
 
 -(UIInterfaceOrientation)currentOrientation

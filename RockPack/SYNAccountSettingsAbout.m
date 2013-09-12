@@ -42,7 +42,7 @@
         
         else
         {
-            self.contentSizeForViewInPopover = CGSizeMake(320, 578);
+            self.contentSizeForViewInPopover = CGSizeMake(320, IS_IOS_7_OR_GREATER ? 598 : 578);
         }
        
     }
@@ -100,6 +100,7 @@
     CGFloat screenHeight = screenRect.size.height;
     
     self.scrollView = [[UIScrollView alloc] initWithFrame: CGRectMake( 0, 0, screenWidth, screenHeight - 144.0)];
+    self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 20, 0);
     [self.scrollView setContentSize: self.contentSizeForViewInPopover];
     
     //Content
@@ -119,7 +120,18 @@
     // Terms Button
     self.termsButton = [[UIButton alloc] initWithFrame:CGRectMake((self.contentSizeForViewInPopover.width * 0.5) - 80.0,
                                                                   
-                                                                  300.0f,
+                                                                  IS_IPHONE ?
+                                                                  
+                                                                    IS_IOS_7_OR_GREATER ?
+                                                                  
+                                                                        self.attributionTextView.frame.size.height + 10.0f + 180.0f
+                                                                        :
+                                                                        self.attributionTextView.frame.size.height + 150.0f
+                                                                  
+                                                                  :
+                                                                  
+                                                                    self.attributionTextView.frame.size.height + 100.0f
+                                                                  ,
                                                                   
                                                                   160.0,
                                                                   
