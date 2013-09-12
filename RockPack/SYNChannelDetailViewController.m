@@ -65,6 +65,7 @@
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
 @property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
+@property (nonatomic, strong) IBOutlet UIButton *deleteChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *playChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *profileImageButton;
 @property (nonatomic, strong) IBOutlet UIButton *reportConcernButton;

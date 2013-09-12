@@ -17,6 +17,7 @@
                 <outlet property="channelTitleTextBackgroundView" destination="59" id="116"/>
                 <outlet property="channelTitleTextView" destination="62" id="79"/>
                 <outlet property="createChannelButton" destination="100" id="102"/>
+                <outlet property="deleteChannelButton" destination="HXM-wg-pZf" id="N8q-Xb-ftF"/>
                 <outlet property="displayControlsView" destination="54" id="78"/>
                 <outlet property="editButton" destination="126" id="128"/>
                 <outlet property="editControlsView" destination="7" id="77"/>
@@ -278,6 +279,14 @@
                                         <action selector="selectCategoryButtonTapped:" destination="-1" eventType="touchUpInside" id="96"/>
                                     </connections>
                                 </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="HXM-wg-pZf">
+                                    <rect key="frame" x="790" y="16" width="44" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <state key="normal" image="DeletePackButton.png">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
@@ -387,6 +396,7 @@
         <image name="ButtonSubscribeHighlighted.png" width="120" height="45"/>
         <image name="ButtonSubscribeSelected.png" width="120" height="45"/>
         <image name="ChannelDetailOverlayBackground.png" width="1024" height="748"/>
+        <image name="DeletePackButton.png" width="33" height="33"/>
         <image name="LogoRockpack.png" width="148" height="27"/>
     </resources>
 </document>
