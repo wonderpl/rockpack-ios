@@ -614,6 +614,10 @@
 		1FE4BA46174BCF26001DC49C /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FE4BA45174BCF26001DC49C /* Default-Landscape@2x~ipad.png */; };
 		1FE4BA49174BF02A001DC49C /* NotificationBubble.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FE4BA47174BF02A001DC49C /* NotificationBubble.png */; };
 		1FE4BA4A174BF02A001DC49C /* NotificationBubble@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FE4BA48174BF02A001DC49C /* NotificationBubble@2x.png */; };
+		1FFAE62B17E21BBC006C92CA /* ShadowPanelFriends@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FFAE62917E21BBC006C92CA /* ShadowPanelFriends@2x~iphone.png */; };
+		1FFAE62C17E21BBC006C92CA /* ShadowPanelFriends~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FFAE62A17E21BBC006C92CA /* ShadowPanelFriends~iphone.png */; };
+		1FFAE63317E230EB006C92CA /* ShadowPanelFriends.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FFAE63117E230EB006C92CA /* ShadowPanelFriends.png */; };
+		1FFAE63417E230EB006C92CA /* ShadowPanelFriends@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1FFAE63217E230EB006C92CA /* ShadowPanelFriends@2x.png */; };
 		38015B4E174CC51A005D3F18 /* SYNUserProfileViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38015B4D174CC51A005D3F18 /* SYNUserProfileViewController~iphone.xib */; };
 		38061BC1173D15BE00A7E349 /* SYNAccountSettingsModalContainer.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38061BC0173D15BE00A7E349 /* SYNAccountSettingsModalContainer.xib */; };
 		38281F1D17439B770024DC18 /* SYNLoginBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38281F1C17439B770024DC18 /* SYNLoginBaseViewController.m */; };
@@ -2082,6 +2086,10 @@
 		1FE4BA45174BCF26001DC49C /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
 		1FE4BA47174BF02A001DC49C /* NotificationBubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NotificationBubble.png; path = Assets/Images/NotificationBubble.png; sourceTree = "<group>"; };
 		1FE4BA48174BF02A001DC49C /* NotificationBubble@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NotificationBubble@2x.png"; path = "Assets/Images/NotificationBubble@2x.png"; sourceTree = "<group>"; };
+		1FFAE62917E21BBC006C92CA /* ShadowPanelFriends@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShadowPanelFriends@2x~iphone.png"; sourceTree = "<group>"; };
+		1FFAE62A17E21BBC006C92CA /* ShadowPanelFriends~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShadowPanelFriends~iphone.png"; sourceTree = "<group>"; };
+		1FFAE63117E230EB006C92CA /* ShadowPanelFriends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ShadowPanelFriends.png; path = Assets/Images/ShadowPanelFriends.png; sourceTree = "<group>"; };
+		1FFAE63217E230EB006C92CA /* ShadowPanelFriends@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ShadowPanelFriends@2x.png"; path = "Assets/Images/ShadowPanelFriends@2x.png"; sourceTree = "<group>"; };
 		276F95C3CF7F47FE9BF50F40 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		3685246F69AA4C9B93DDEDAC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		38015B4D174CC51A005D3F18 /* SYNUserProfileViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "SYNUserProfileViewController~iphone.xib"; sourceTree = "<group>"; };
@@ -4901,6 +4909,8 @@
 				38A2FFE31731607F00FB9F57 /* PanelMenu~iphone.png */,
 				38A2FFE41731607F00FB9F57 /* PanelNotifications@2x~iphone.png */,
 				38A2FFE51731607F00FB9F57 /* PanelNotifications~iphone.png */,
+				1FFAE62917E21BBC006C92CA /* ShadowPanelFriends@2x~iphone.png */,
+				1FFAE62A17E21BBC006C92CA /* ShadowPanelFriends~iphone.png */,
 			);
 			path = sideMenu;
 			sourceTree = "<group>";
@@ -5491,6 +5501,8 @@
 				BE7D0355179ED752008053DC /* ButtonSearchFriendsDefault@2x.png */,
 				BE7D0356179ED752008053DC /* ButtonSearchFriendsHighlighted.png */,
 				BE7D0357179ED752008053DC /* ButtonSearchFriendsHighlighted@2x.png */,
+				1FFAE63117E230EB006C92CA /* ShadowPanelFriends.png */,
+				1FFAE63217E230EB006C92CA /* ShadowPanelFriends@2x.png */,
 			);
 			name = Friends;
 			sourceTree = "<group>";
@@ -5902,6 +5914,7 @@
 				01B34C9816A99D6A002AD8FB /* GlossChannelThumbnail.png in Resources */,
 				01B34C9916A99D6A002AD8FB /* GlossChannelThumbnail@2x.png in Resources */,
 				01A3EC2F16AECE4B008DCE08 /* SYNActivityPopoverViewController.xib in Resources */,
+				1FFAE62C17E21BBC006C92CA /* ShadowPanelFriends~iphone.png in Resources */,
 				01F8E73A16B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay.png in Resources */,
 				01F8E73B16B010F3000D44B9 /* PanelVideoScreenVideoMainOverlay@2x.png in Resources */,
 				01F8E76616B03462000D44B9 /* VimeoIFramePlayer.html in Resources */,
@@ -6100,6 +6113,7 @@
 				BE2D2159171D8A4500B4B755 /* AvatarProfile@2x.png in Resources */,
 				01450AF5171DB4B5009F54CD /* ButtonAddSelected.png in Resources */,
 				01450AF6171DB4B5009F54CD /* ButtonAddSelected@2x.png in Resources */,
+				1FFAE63417E230EB006C92CA /* ShadowPanelFriends@2x.png in Resources */,
 				01450AFA171DB4D7009F54CD /* PlaceholderVideoBottom@2x.png in Resources */,
 				01450AFB171DB4D7009F54CD /* PlaceholderVideoMiddle@2x.png in Resources */,
 				01450AFC171DB4D7009F54CD /* PlaceholderVideoTop@2x.png in Resources */,
@@ -6567,6 +6581,7 @@
 				38BACE95173AB4E600406597 /* SYNChannelCoverImageSelectorViewController~iphone.xib in Resources */,
 				BEB15773173BDBD100DAFA2F /* ButtonReport.png in Resources */,
 				BEB15774173BDBD100DAFA2F /* ButtonReport@2x.png in Resources */,
+				1FFAE62B17E21BBC006C92CA /* ShadowPanelFriends@2x~iphone.png in Resources */,
 				BEB15775173BDBD100DAFA2F /* ButtonReportHighlighted.png in Resources */,
 				BEB15776173BDBD100DAFA2F /* ButtonReportHighlighted@2x.png in Resources */,
 				1F458B2417E1CE8E003C14AC /* AppIcon-Dev-40x40.png in Resources */,
@@ -6756,6 +6771,7 @@
 				BEA2AEED176E043F0099DB74 /* ButtonBackHighlightedCD@2x.png in Resources */,
 				BEA2AEEE176E043F0099DB74 /* ButtonSearchCD.png in Resources */,
 				BEA2AEEF176E043F0099DB74 /* ButtonSearchCD@2x.png in Resources */,
+				1FFAE63317E230EB006C92CA /* ShadowPanelFriends.png in Resources */,
 				BEA2AEF0176E043F0099DB74 /* ButtonSearchHighlightedCD.png in Resources */,
 				BEA2AEF1176E043F0099DB74 /* ButtonSearchHighlightedCD@2x.png in Resources */,
 				BE2AE4C1176E0F2E00A753E3 /* ButtonCancelCD.png in Resources */,
