@@ -41,7 +41,7 @@
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <color key="highlightedColor" red="0.50980395079999996" green="0.55294120309999995" blue="0.56862747670000002" alpha="1" colorSpace="calibratedRGB"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="105" userLabel="Search Button">
+                        <button opaque="NO" tag="516" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="105" userLabel="Search Button">
                             <rect key="frame" x="889" y="12" width="60" height="61"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
@@ -56,7 +56,7 @@
                                 <action selector="showSearchBoxField:" destination="-1" eventType="touchUpInside" id="107"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="118" userLabel="Close Search Button">
+                        <button opaque="NO" tag="515" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="118" userLabel="Close Search Button">
                             <rect key="frame" x="954" y="11" width="60" height="61"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>

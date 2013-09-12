@@ -10,13 +10,20 @@
 
 @implementation SYNStrictInteractionView
 
-- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
+{
+    
+    
     
     for (UIView *subview in self.subviews)
     {
+        if(subview.hidden)
+            continue;
+        
         CGPoint pointInSubview = [subview convertPoint:point fromView:self];
         if ([subview pointInside:pointInSubview withEvent:event])
         {
+            
             return YES;
         }
     }
