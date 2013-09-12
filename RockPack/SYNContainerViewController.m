@@ -201,7 +201,10 @@ UITextViewDelegate>
         newFrame = CGRectMake(0.0, 0.0f, 768.0f, 1004.0f);
     }
     
-    self.scrollView.frame = newFrame;
+    self.scrollView.frame = CGRectMake(0.0f, 0.0f,
+                                       [SYNDeviceManager.sharedInstance currentScreenWidth],
+                                       [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar]);
+    
     
     for (SYNAbstractViewController *controller in self.childViewControllers)
     {
