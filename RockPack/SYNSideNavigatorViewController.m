@@ -6,12 +6,15 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
+#import "AMBlurView.h"
 #import "AppConstants.h"
 #import "GAI.h"
 #import "SYNAccountSettingsMainTableViewController.h"
 #import "SYNAppDelegate.h"
 #import "SYNDeviceManager.h"
+#import "SYNFriendsViewController.h"
 #import "SYNImagePickerController.h"
+#import "SYNMasterViewController.h"
 #import "SYNNotificationsTableViewController.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNRockpackNotification.h"
@@ -22,9 +25,6 @@
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
 #import <QuartzCore/QuartzCore.h>
-#import "SYNFriendsViewController.h"
-#import "SYNMasterViewController.h"
-#import "AMBlurView.h"
 
 #define kSideNavTitle @"kSideNavTitle"
 #define kSideNavType @"kSideNavType"
@@ -162,7 +162,7 @@ typedef enum {
         
         self.navigationContainerBackgroundImage.image = [[UIImage imageNamed:@"PanelMenuSecondLevel"] resizableImageWithCapInsets:UIEdgeInsetsMake(65, 0, 1, 0)];
         
-        if (IS_IOS_7_OR_GREATER)
+        if (PLATFORM_CAN_HANDLE_LIVE_BLUR_OPTIONALLY)
         {
             self.backgroundImageView.hidden = YES;
             self.tableView.backgroundColor = [UIColor clearColor];
@@ -229,7 +229,7 @@ typedef enum {
                                                                         [SYNDeviceManager.sharedInstance currentScreenHeight] - bgHeight)];
         
         //iOS 7 Blur
-        if (IS_IOS_7_OR_GREATER)
+        if (PLATFORM_CAN_HANDLE_LIVE_BLUR_OPTIONALLY)
         {
             //Blurred Background
             AMBlurView *blurView = [AMBlurView new];
@@ -759,7 +759,7 @@ typedef enum {
     
     [self.appDelegate.viewStackManager dismissSearchBar];
     
-    if (IS_IOS_7_OR_GREATER)
+    if (PLATFORM_CAN_HANDLE_LIVE_BLUR_OPTIONALLY)
     {
         [self.searchViewController.searchBoxView hideBackgroundPanel];
     }
@@ -815,7 +815,7 @@ typedef enum {
         [self.searchViewController.searchBoxView resignFirstResponder];
         [self.searchViewController.searchBoxView hideCloseButton];
         
-        if (IS_IOS_7_OR_GREATER)
+        if (PLATFORM_CAN_HANDLE_LIVE_BLUR_OPTIONALLY)
         {
             [self.searchViewController.searchBoxView hideBackgroundPanel];
         }

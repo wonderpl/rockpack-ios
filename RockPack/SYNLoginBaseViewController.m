@@ -17,6 +17,7 @@
 #import "SYNLoginBaseViewController.h"
 #import "SYNNetworkEngine.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "UIDevice+Hardware.h"
 #import "UIInterpolatingMotionEffect+DualAxis.h"
 #import "User.h"
 #import <Accounts/Accounts.h>
@@ -118,7 +119,7 @@
     [self.view insertSubview: self.backgroundImageView
                     atIndex: 0];
     
-    if (IS_IOS_7_OR_GREATER)
+    if (PLATFORM_CAN_HANDLE_LIVE_BLUR_OPTIONALLY)
     {
         self.lowerParallaxImageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"LowerParallaxStars"]];
         self.lowerParallaxImageView.contentMode = UIViewContentModeCenter;

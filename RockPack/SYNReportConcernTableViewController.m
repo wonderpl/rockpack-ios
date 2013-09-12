@@ -6,15 +6,15 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
+#import "AMBlurView.h"
+#import "SYNAppDelegate.h"
+#import "SYNDeviceManager.h"
+#import "SYNMasterViewController.h"
+#import "SYNOAuthNetworkEngine.h"
+#import "SYNPopoverBackgroundView.h"
 #import "SYNReportConcernTableCell.h"
 #import "SYNReportConcernTableViewController.h"
 #import "UIFont+SYNFont.h"
-#import "SYNAppDelegate.h"
-#import "SYNOAuthNetworkEngine.h"
-#import "SYNPopoverBackgroundView.h"
-#import "SYNMasterViewController.h"
-#import "AMBlurView.h"
-#import "SYNDeviceManager.h"
 
 #define kConcernsCellId @"SYNReportConcernTableCell"
 
@@ -100,7 +100,7 @@
     self.navigationItem.leftBarButtonItem = customCancelButtonItem;
      */
 
-    if (IS_IOS_7_OR_GREATER)
+    if (PLATFORM_CAN_HANDLE_LIVE_BLUR_OPTIONALLY)
     {
         self.tableView.backgroundColor = [UIColor clearColor];
         

@@ -6,6 +6,7 @@
 //  Copysubscriptions (c) Rockpack Ltd. All subscriptionss reserved.
 //
 
+#import "AMBlurView.h"
 #import "Channel.h"
 #import "ChannelCover.h"
 #import "GAI.h"
@@ -26,7 +27,6 @@
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
 #import "Video.h"
-#import "AMBlurView.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define kInterRowMargin 8.0f
@@ -54,10 +54,6 @@
 @property (nonatomic, strong) SYNUserProfileViewController *userProfileController;
 @property (nonatomic, strong) SYNYouHeaderView *headerChannelsView;
 @property (nonatomic, strong) SYNYouHeaderView *headerSubscriptionsView;
-@property (nonatomic, strong) UILongPressGestureRecognizer *longPress;
-@property (nonatomic, strong) UITapGestureRecognizer *tap;
-@property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
-@property (nonatomic, strong) UIView *deletionCancelView;
 @property (nonatomic, strong) id orientationDesicionmaker;
 @property (nonatomic, weak) UIButton *channelsTabButton;
 @property (nonatomic, weak) UIButton *subscriptionsTabButton;
@@ -78,9 +74,6 @@
     self.channelThumbnailCollectionView.dataSource = nil;
     self.subscriptionsViewController.collectionView.delegate = nil;
     self.subscriptionsViewController.collectionView.dataSource = nil;
-    self.tapGestureRecognizer.delegate = nil;
-    self.longPress.delegate = nil;
-    self.tap.delegate = nil;
 }
 
 
@@ -225,20 +218,6 @@
                                                           [SYNDeviceManager.sharedInstance currentScreenWidth],
                                                           [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar])];
     
-    self.deletionCancelView = [[UIView alloc] initWithFrame: CGRectMake(0.0f,
-                                                                        0.0f,
-                                                                        [SYNDeviceManager.sharedInstance currentScreenWidth],
-                                                                        [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar])];
-    
-    self.deletionCancelView.backgroundColor = [UIColor clearColor];
-    //    self.deletionCancelView.hidden = TRUE;
-    
-    self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget: self
-                                                                        action: @selector(userTappedDeletionCancelView)];
-    
-    self.tapGestureRecognizer.delegate = self;
-    [self.deletionCancelView addGestureRecognizer: self.tapGestureRecognizer];
-    
     
     self.subscriptionsViewController.headerView = self.headerSubscriptionsView;
     
@@ -257,7 +236,7 @@
         self.userProfileController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
         self.userProfileController.view.frame = userProfileFrame;
         
-        if (IS_IOS_7_OR_GREATER)
+        if (PLATFORM_CAN_HANDLE_LIVE_BLUR_OPTIONALLY)
         {
             // Do iOS7 Tingz
             AMBlurView *blurView = [AMBlurView new];
@@ -268,7 +247,6 @@
         }
     }
     
-    [self.view addSubview: self.deletionCancelView];
     [self.view addSubview: self.channelThumbnailCollectionView];
     [self.view  addSubview: self.subscriptionsViewController.view];
     
@@ -349,20 +327,6 @@
     
     [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
                           forCellWithReuseIdentifier: @"SYNChannelMidCell"];
-    
-    
-    
-    // Long press for entering delete mode
-    self.longPress = [[UILongPressGestureRecognizer alloc] initWithTarget: self
-                                                                   action: @selector(activateDeletionMode:)];
-    self.longPress.delegate = self;
-    [self.channelThumbnailCollectionView addGestureRecognizer: self.longPress];
-    
-    // Tap for exiting delete mode
-    self.tap = [[UITapGestureRecognizer alloc] initWithTarget: self
-                                                       action: @selector(endDeletionMode:)];
-    self.tap.delegate = self;
-    [self.channelThumbnailCollectionView addGestureRecognizer: self.tap];
 }
 
 
@@ -495,83 +459,12 @@
 }
 
 
-#pragma mark - gesture-recognition action methods
-
-
-- (BOOL) gestureRecognizer: (UIGestureRecognizer *) gestureRecognizer
-        shouldReceiveTouch: (UITouch *) touch
-{
-    CGPoint touchPoint = [touch locationInView: self.channelThumbnailCollectionView];
-    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: touchPoint];
-    
-    if (indexPath && [gestureRecognizer isKindOfClass: [UITapGestureRecognizer class]])
-    {
-        return NO;
-    }
-    
-    return YES;
-}
-
-
-- (void) activateDeletionMode: (UILongPressGestureRecognizer *) recognizer
-{
-    if (![self.user.uniqueId isEqualToString: appDelegate.currentUser.uniqueId])                   // cannot delete channels of another user
-    {
-        return;
-    }
-    
-    if (recognizer.state == UIGestureRecognizerStateBegan)
-    {
-        NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: [recognizer locationInView: self.channelThumbnailCollectionView]];
-        
-        if (indexPath)
-        {
-            self.deletionModeActive = YES;
-            SYNDeletionWobbleLayout *layout = (SYNDeletionWobbleLayout *) self.channelThumbnailCollectionView.collectionViewLayout;
-            [layout invalidateLayout];
-        }
-    }
-}
-
-
-- (void) endDeletionMode: (UITapGestureRecognizer *) recognizer
-{
-    if (self.isDeletionModeActive)
-    {
-        self.deletionModeActive = NO;
-    }
-}
-
-
-- (void) setDeletionModeActive: (BOOL) deletionModeActive
-{
-    _deletionModeActive = deletionModeActive;
-    SYNDeletionWobbleLayout *layout = (SYNDeletionWobbleLayout *) self.channelThumbnailCollectionView.collectionViewLayout;
-    [layout invalidateLayout];
-    
-    self.deletionCancelView.hidden = _deletionModeActive ? FALSE : TRUE;
-}
-
-
-- (void) userTappedDeletionCancelView
-{
-    self.deletionModeActive = FALSE;
-}
-
-
 #pragma mark - Deletion wobble layout delegate
 
 - (BOOL) isDeletionModeActiveForCollectionView: (UICollectionView *) collectionView
                                         layout: (UICollectionViewLayout *) collectionViewLayout
 {
-    if (collectionView == self.channelThumbnailCollectionView)
-    {
-        return self.isDeletionModeActive;
-    }
-    else
-    {
-        return NO;
-    }
+    return NO;
 }
 
 

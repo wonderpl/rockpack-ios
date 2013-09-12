@@ -298,7 +298,7 @@
     
     
     //iOS 7 Blur
-    if (IS_IOS_7_OR_GREATER)
+    if (PLATFORM_CAN_HANDLE_LIVE_BLUR)
     {
         // Do iOS7 Tingz
         self.blurView = [AMBlurView new];
