@@ -14,14 +14,20 @@
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFiles</key>
 	<array>
-		<string>Icon.png</string>
-		<string>Icon@2x.png</string>
-		<string>Icon-72.png</string>
-		<string>Icon-72@2x.png</string>
-		<string>Icon-Small.png</string>
-		<string>Icon-Small@2x.png</string>
-		<string>Icon-Small-50.png</string>
-		<string>Icon-Small-50@2x.png</string>
+		<string>AppIcon29x29.png</string>
+		<string>AppIcon29x29@2x.png</string>
+		<string>AppIcon40x40.png</string>
+		<string>AppIcon40x40@2x.png</string>
+        <string>AppIcon50x50.png</string>
+		<string>AppIcon50x50@2x.png</string>
+		<string>AppIcon57x57.png</string>
+		<string>AppIcon57x57@2x.png</string>
+        <string>AppIcon60x60.png</string>
+		<string>AppIcon60x60@2x.png</string>
+        <string>AppIcon72x72.png</string>
+		<string>AppIcon72x72@2x.png</string>
+        <string>AppIcon76x76.png</string>
+		<string>AppIcon76x76@2x.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
 	<string>com.rockpack.${PRODUCT_NAME:rfc1034identifier}</string>
