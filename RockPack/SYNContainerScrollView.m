@@ -66,15 +66,7 @@
          animated: NO];
 }
 
--(void)setContentOffset:(CGPoint)contentOffset
-{
-    if(contentOffset.y < -1.0f)
-        NSLog(@"offset y: %f", contentOffset.y);
-//
-    //contentOffset.y = 0.0f;
-    [super setContentOffset:contentOffset];
-    
-}
+
 - (NSInteger) page
 {
     CGFloat currentScrollerOffset = self.contentOffset.x;
