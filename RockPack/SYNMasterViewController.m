@@ -32,7 +32,6 @@
 #import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
 #import "VideoInstance.h"
-#import "AMBlurView.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define kMovableViewOffX -58
@@ -998,10 +997,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.accountSettingsPopover.popoverContentSize = CGSizeMake(380, 576);
         self.accountSettingsPopover.delegate = self;
         
-        if (!IS_IOS_7_OR_GREATER)
-        {
-            self.accountSettingsPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
-        }
+        self.accountSettingsPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
         
         CGRect rect = CGRectMake([SYNDeviceManager.sharedInstance currentScreenWidth] * 0.5,
                                  [SYNDeviceManager.sharedInstance currentScreenHeight] * 0.5, 1, 1);

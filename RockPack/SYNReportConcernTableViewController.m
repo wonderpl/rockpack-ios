@@ -6,7 +6,6 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
-#import "AMBlurView.h"
 #import "SYNAppDelegate.h"
 #import "SYNDeviceManager.h"
 #import "SYNMasterViewController.h"
@@ -99,20 +98,6 @@
     UIBarButtonItem *customCancelButtonItem = [[UIBarButtonItem alloc] initWithCustomView: customCancelButton];
     self.navigationItem.leftBarButtonItem = customCancelButtonItem;
      */
-
-    if (PLATFORM_CAN_HANDLE_LIVE_BLUR_OPTIONALLY)
-    {
-        self.tableView.backgroundColor = [UIColor clearColor];
-        
-        if (IS_IPHONE)
-        {
-            AMBlurView * blurredBackgroundView = [AMBlurView new];
-            
-            blurredBackgroundView.frame = CGRectMake(0, 88, self.tableView.frame.size.width, [[SYNDeviceManager sharedInstance] currentScreenHeight] - 86);
-            
-            [self.view insertSubview:blurredBackgroundView atIndex:0];
-        }
-    }
         
     UIButton *customUseButton = [UIButton buttonWithType: UIButtonTypeCustom];
     UIImage* customUseButtonImage = [UIImage imageNamed: @"ButtonPopoverReport"];
@@ -185,29 +170,19 @@
                                                    green: 114.0f/255.0f
                                                     blue: 122.0f/255.0f
                                                    alpha: 1.0f];
-    if (!IS_IOS_7_OR_GREATER)
-    {
-        oldCell.titleLabel.shadowColor = [UIColor colorWithWhite: 1.0f
-                                                           alpha: 0.75f];
-    }
-
+    
+    oldCell.titleLabel.shadowColor = [UIColor colorWithWhite: 1.0f
+                                                       alpha: 0.75f];
+    
     // Highlight new cell
     SYNReportConcernTableCell *newCell = (SYNReportConcernTableCell *)[self.tableView cellForRowAtIndexPath: indexPath];
 
     newCell.checkmarkImage.hidden = FALSE;
     newCell.titleLabel.textColor = [UIColor whiteColor];
     
-    if (IS_IOS_7_OR_GREATER)
-    {
-        newCell.highlightedViewiOS7.hidden = FALSE;
-    }
-    
-    else
-    {
-        newCell.backgroundImage.image = [UIImage imageNamed: @"CategorySlideSelected"];
-        newCell.titleLabel.shadowColor = [UIColor colorWithWhite: 1.0f
+    newCell.backgroundImage.image = [UIImage imageNamed: @"CategorySlideSelected"];
+    newCell.titleLabel.shadowColor = [UIColor colorWithWhite: 1.0f
                                                            alpha:  0.15f];
-    }
     
     return indexPath;
 }
@@ -288,7 +263,7 @@ didSelectRowAtIndexPath: (NSIndexPath *) indexPath
         label.font = [UIFont rockpackFontOfSize: 20.0];
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = [UIColor blackColor];
-        label.shadowColor = IS_IOS_7_OR_GREATER ? [UIColor clearColor] : [UIColor whiteColor];
+        label.shadowColor = [UIColor whiteColor];
         label.shadowOffset = CGSizeMake(0.0, 1.0);
         label.text = NSLocalizedString(@"Report", nil);
         [containerView addSubview: label];
@@ -299,9 +274,7 @@ didSelectRowAtIndexPath: (NSIndexPath *) indexPath
         self.reportConcernPopoverController.popoverContentSize = CGSizeMake(240, 351);
         self.reportConcernPopoverController.delegate = self;
         
-        if (!IS_IOS_7_OR_GREATER) {
-            self.reportConcernPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
-        }
+        self.reportConcernPopoverController.popoverBackgroundViewClass = [SYNPopoverBackgroundView class];
         
         CGRect popoverFrame = [viewController.view convertRect:presentingButton.frame fromView:presentingButton.superview];
         

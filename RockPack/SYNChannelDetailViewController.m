@@ -567,10 +567,7 @@
         
         self.subscribersPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
         
-        if (!IS_IOS_7_OR_GREATER)
-        {
-            self.subscribersPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
-        }
+        self.subscribersPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
         
         self.subscribersPopover.popoverContentSize = CGSizeMake(514, 626);
         self.subscribersPopover.delegate = self;
