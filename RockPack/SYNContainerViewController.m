@@ -49,6 +49,7 @@ UITextViewDelegate>
 
 - (void) loadView
 {
+    self.automaticallyAdjustsScrollViewInsets = NO;
     
     SYNContainerScrollView *scrollView = [[SYNContainerScrollView alloc] initFullScreenWithDelegate:self];
     
@@ -97,7 +98,11 @@ UITextViewDelegate>
     self.didNotSwipeShareMenu = YES;
     
     // == Populate Scroller == //
-    CGRect scrollerFrame = CGRectMake(0.0, 0.0, 1024.0, 748.0);
+    CGRect scrollerFrame = CGRectMake(0.0f,
+                                      0.0f,
+                                      [[SYNDeviceManager sharedInstance] currentScreenWidth],
+                                      [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar]);
+    
     self.scrollView.frame = scrollerFrame;
     
     [self addChildViewController: feedRootViewController];
@@ -192,13 +197,12 @@ UITextViewDelegate>
         CGSize screenSize = CGSizeMake([SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight]);
         newFrame = CGRectMake(0, 0, MIN(screenSize.width, screenSize.height), MAX(screenSize.width, screenSize.height) - 20.0f);
     }
-    else if (UIDeviceOrientationIsLandscape(orientation))
+    else // IS_IPAD
     {
-        newFrame = CGRectMake(0.0f, 0.0f, 1024.0f, 748.0f);
-    }
-    else
-    {
-        newFrame = CGRectMake(0.0, 0.0f, 768.0f, 1004.0f);
+        newFrame = CGRectMake(0.0f,
+                              0.0f,
+                              [[SYNDeviceManager sharedInstance] currentScreenWidth],
+                              [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar]);
     }
     
     self.scrollView.frame = CGRectMake(0.0f, 0.0f,

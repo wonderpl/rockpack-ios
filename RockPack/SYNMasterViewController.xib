@@ -10,6 +10,7 @@
                 <outlet property="closeSearchButton" destination="118" id="127"/>
                 <outlet property="errorContainerView" destination="128" id="129"/>
                 <outlet property="headerButton" destination="138" id="141"/>
+                <outlet property="headerContainerView" destination="146" id="kgz-AQ-Sao"/>
                 <outlet property="navigationContainerView" destination="67" id="137"/>
                 <outlet property="overlayView" destination="89" id="91"/>
                 <outlet property="pagePositionIndicatorView" destination="97" id="140"/>
