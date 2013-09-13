@@ -100,7 +100,7 @@
 {
     controller.view.alpha = 0.0f;
     
-    
+    [self.masterController headerButtonIsActive:controller.needsHeaderButton];
     
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
@@ -125,37 +125,41 @@
     NSInteger viewControllersCount = self.navigationController.viewControllers.count;
     
     if (viewControllersCount < 2) // we must have at least two to pop one
-    {
         return;
-    }
     
     
+    UIViewController* controllerToPopTo = ((UIViewController *) self.navigationController.viewControllers[viewControllersCount - 2]);
+    
+    __weak SYNViewStackManager* wself = self;
+    
+    if([controllerToPopTo isKindOfClass:[SYNAbstractViewController class]])
+        [self.masterController headerButtonIsActive:((SYNAbstractViewController *) controllerToPopTo).needsHeaderButton];
+    else
+        [self.masterController headerButtonIsActive:YES];
     
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
-                         self.navigationController.topViewController.view.alpha = 0.0f;
-                         // pick the previous view controller
-                         ((UIViewController *) self.navigationController.viewControllers[viewControllersCount - 2]).view.alpha = 1.0f;
+                         
+                         wself.navigationController.topViewController.view.alpha = 0.0f;
+                         
+                         controllerToPopTo.view.alpha = 1.0f;
                      }
                      completion:^(BOOL finished) {
                          
-                         if(self.returnBlock)
-                             self.returnBlock();
+                         if(wself.returnBlock)
+                             wself.returnBlock();
                          
-                         self.returnBlock = nil;
+                         wself.returnBlock = nil;
+                         
+                         
                          
                      }];
     
     [self.navigationController popViewControllerAnimated: NO];
     
-//    if(!self.searchBarOriginSideNavigation)
-//    {
-//        [self hideSideNavigator];
-//        self.searchBarOriginSideNavigation = NO;
-//    }
-    
+
     
         
 }

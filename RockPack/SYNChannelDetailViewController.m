@@ -3392,5 +3392,8 @@ shouldChangeTextInRange: (NSRange) range
     return NavigationButtonsAppearanceWhite;
 }
 
-
+- (BOOL) needsHeaderButton
+{
+    return NO;
+}
 @end

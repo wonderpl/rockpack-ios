@@ -127,5 +127,5 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (void) arcMenuSelectedCell: (UICollectionViewCell *) selectedCell
            andComponentIndex: (NSInteger) componentIndex;
 
-
+- (BOOL) needsHeaderButton ;
 @end

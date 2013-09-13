@@ -693,7 +693,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         }
         
         sboxFrame.size.width = self.closeSearchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
-        sboxFrame.origin.y = 10.0;
+        sboxFrame.origin.y = IS_IOS_7_OR_GREATER ? 20.0f : 10.0f;
         self.searchBoxController.view.frame = sboxFrame;
         
         [self.view insertSubview:self.searchBoxController.view belowSubview:self.navigationContainerView];
@@ -1393,6 +1393,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (BOOL) searchIsInProgress
 {
     return [self.mainNavigationController.viewControllers containsObject:self.searchViewController];
+}
+
+-(void)headerButtonIsActive:(BOOL)isActive
+{
+    self.headerButton.userInteractionEnabled = isActive;
 }
 
 @end

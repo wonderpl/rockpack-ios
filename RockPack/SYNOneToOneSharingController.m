@@ -834,7 +834,7 @@
                          self.closeButton.alpha = 1.0f;
                          
                          CGRect sfFrame = self.searchFieldFrameImageView.frame;
-                         sfFrame.size.width -= 38.0f;
+                         sfFrame.size.width = 362.0f;
                          self.searchFieldFrameImageView.frame = sfFrame;
                      }
                      completion: nil];
@@ -858,7 +858,7 @@
                          self.closeButton.alpha = 0.0f;
                          
                          CGRect sfFrame = self.searchFieldFrameImageView.frame;
-                         sfFrame.size.width += 30.0f;
+                         sfFrame.size.width = 400.0f;
                          self.searchFieldFrameImageView.frame = sfFrame;
                      }
                      completion:^(BOOL finished) {
@@ -996,8 +996,10 @@
     
     if(self.mutableShareDictionary[@"url"] == [NSNull null])
     {
+        
         // not ready
         DebugLog(@"Getting the Share link did not seem to finishe, registering for completion");
+        
         self.friendHeldInQueue = friend;
         
         [[NSNotificationCenter defaultCenter] addObserver:self
