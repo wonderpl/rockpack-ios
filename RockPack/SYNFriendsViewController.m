@@ -40,6 +40,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
 @property (nonatomic, strong) IBOutlet UIView* searchContainer;
 @property (weak, nonatomic) IBOutlet UIImageView *searchFieldBackground;
 @property (weak, nonatomic) IBOutlet UIView *searchSlider;
+@property (weak, nonatomic) IBOutlet UIButton * buttonShowSearch;
 
 @end
 
@@ -360,7 +361,6 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     
     userThumbnailCell.nameLabel.text = friend.displayName;
     
-    
     [userThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: friend.thumbnailLargeUrl]
                                 placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarChannel"]
                                          options: SDWebImageRetryFailed];
@@ -551,10 +551,26 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
         CGRect newFrame = self.searchSlider.frame;
         newFrame.origin.x = newFrame.size.width;
         self.searchSlider.frame = newFrame;
-    } completion:nil];
+    } completion:^(BOOL finished) {
+        
+        if (finished)
+        {
+            self.buttonShowSearch.hidden = NO;
+            
+            [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionCurveEaseOut animations:^{
+                self.buttonShowSearch.alpha = 1.0f;
+            } completion:nil];
+        }
+    }];
 }
 
 - (IBAction)revealSearchBox:(id)sender {
+    
+    self.buttonShowSearch.hidden = YES;
+    self.buttonShowSearch.alpha = 0.0f;
+    
+    SYNSideNavigatorViewController *obj;
+    
     [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationCurveEaseIn animations:^{
         CGRect newFrame = self.searchSlider.frame;
         newFrame.origin.x = 0.0f;

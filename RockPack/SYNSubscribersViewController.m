@@ -101,7 +101,7 @@
     }
     else
     {
-        self.usersThumbnailCollectionView.backgroundColor = [UIColor whiteColor];
+        self.usersThumbnailCollectionView.backgroundColor = IS_IOS_7_OR_GREATER ? [UIColor colorWithWhite:255.0f/255.0f alpha:0.2f] : [UIColor whiteColor];
     }
     
     

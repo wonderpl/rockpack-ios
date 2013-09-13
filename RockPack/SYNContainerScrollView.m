@@ -34,7 +34,7 @@
         self.showsHorizontalScrollIndicator = NO;
         self.showsVerticalScrollIndicator = NO;
         self.scrollsToTop = NO;
-        //self.backgroundColor = [UIColor redColor];
+        self.backgroundColor = [UIColor greenColor];
     }
     
     return self;
@@ -71,7 +71,7 @@
     if(contentOffset.y < -1.0f)
         NSLog(@"offset y: %f", contentOffset.y);
 //
-    contentOffset.y = 0.0f;
+    //contentOffset.y = 0.0f;
     [super setContentOffset:contentOffset];
     
 }

@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="activityIndicator" destination="14" id="15"/>
                 <outlet property="allFriendsButton" destination="28" id="31"/>
+                <outlet property="buttonShowSearch" destination="36" id="JyN-vj-T7i"/>
                 <outlet property="facebookLoginButton" destination="4" id="9"/>
                 <outlet property="friendsCollectionView" destination="7" id="11"/>
                 <outlet property="onRockpackButton" destination="29" id="30"/>
@@ -26,11 +27,12 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="none" id="7">
-                    <rect key="frame" x="0.0" y="43" width="321" height="525"/>
+                    <rect key="frame" x="0.0" y="43" width="320" height="525"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" red="0.50980395079999996" green="0.55294120309999995" blue="0.56862747670000002" alpha="0.0" colorSpace="calibratedRGB"/>
-                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="8">
-                        <size key="itemSize" width="107" height="107"/>
+                    <inset key="contentInset" minX="6" minY="6" maxX="6" maxY="6"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="4" id="8">
+                        <size key="itemSize" width="100" height="100"/>
                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
                         <size key="footerReferenceSize" width="0.0" height="0.0"/>
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -147,6 +149,11 @@
                                 <action selector="closeSearchBox:" destination="-1" eventType="touchUpInside" id="43"/>
                             </connections>
                         </button>
+                        <view contentMode="scaleToFill" id="QI4-st-Apk" userLabel="White Behind Field">
+                            <rect key="frame" x="0.0" y="2" width="228" height="43"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        </view>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="21" userLabel="SearchFieldBackground">
                             <rect key="frame" x="0.0" y="2" width="228" height="45"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
@@ -165,7 +172,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
                     </subviews>
-                    <color key="backgroundColor" red="0.97254901959999995" green="0.97254901959999995" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
