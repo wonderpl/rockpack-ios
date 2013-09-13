@@ -65,6 +65,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) UIPopoverController* accountSettingsPopover;
 @property (nonatomic, strong) UIView* accountSettingsCoverView;
 
+@property (nonatomic, strong) IBOutlet UIView* headerContainerView;
+
 @end
 
 
@@ -138,6 +140,21 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    
+    // == Compensate for iOS7 == //
+    CGFloat offsetFromTop = IS_IOS_7_OR_GREATER ? 10.0f : 0.0f;
+    CGRect frameToAdjust;
+    frameToAdjust = self.headerContainerView.frame;
+    frameToAdjust.origin.y += offsetFromTop;
+    self.headerContainerView.frame = frameToAdjust;
+    
+    frameToAdjust = self.sideNavigationButton.frame;
+    frameToAdjust.origin.y += offsetFromTop;
+    self.sideNavigationButton.frame = frameToAdjust;
+    
+    // ======================= //
+    
     
     // Setup the dependency between nav controller and button
     // Not super-elegant, but as the nav controller is controlled from multiple places

@@ -236,15 +236,7 @@
         self.userProfileController.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
         self.userProfileController.view.frame = userProfileFrame;
         
-        if (PLATFORM_CAN_HANDLE_LIVE_BLUR_OPTIONALLY)
-        {
-            // Do iOS7 Tingz
-            AMBlurView *blurView = [AMBlurView new];
-            
-            [blurView setFrame:self.userProfileController.view.frame];
-            
-            [self.view insertSubview:blurView belowSubview:self.userProfileController.view];
-        }
+        
     }
     
     [self.view addSubview: self.channelThumbnailCollectionView];

@@ -75,6 +75,8 @@ typedef void(^FeedDataErrorBlock)(void);
 {
     [super viewDidLoad];
     
+    self.wantsFullScreenLayout = YES;
+    
     self.feedItemsData = @[];
     
     self.videosInOrderArray = @[];
@@ -114,7 +116,6 @@ typedef void(^FeedDataErrorBlock)(void);
         videoCollectionViewFrame.origin.y += kStandardCollectionViewOffsetY;
         videoCollectionViewFrame.size.height -= kStandardCollectionViewOffsetY;
         
-        NSLog(@"%@", NSStringFromCGRect(videoCollectionViewFrame));
         
         // Collection view parameters
         contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -217,10 +218,7 @@ typedef void(^FeedDataErrorBlock)(void);
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
-    
-    self.view.backgroundColor = [UIColor redColor];
-    self.feedCollectionView.backgroundColor = [UIColor blueColor];
-    
+
     // Google analytics support
     [self updateAnalytics];
 }
@@ -229,6 +227,11 @@ typedef void(^FeedDataErrorBlock)(void);
 - (void) viewDidAppear: (BOOL) animated
 {
     [super viewDidAppear: animated];
+    // 668 needed
+    
+    // Compensate for iOS7
+    
+    
     
     [self displayEmptyGenreMessage: NSLocalizedString(@"feed_screen_loading_message", nil)
                          andLoader: YES];
