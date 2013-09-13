@@ -34,7 +34,6 @@
         self.showsHorizontalScrollIndicator = NO;
         self.showsVerticalScrollIndicator = NO;
         self.scrollsToTop = NO;
-        self.backgroundColor = [UIColor greenColor];
     }
     
     return self;
