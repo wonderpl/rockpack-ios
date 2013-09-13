@@ -161,10 +161,11 @@
     [self.headerChannelsView setTitle: [self getHeaderTitleForChannels]
                             andNumber: 0];
     
-    CGRect collectionViewFrame = CGRectMake(0.0,
-                                            self.headerChannelsView.frame.origin.y + self.headerChannelsView.currentHeight,
-                                            correctWidth,
-                                            [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] - kYouCollectionViewOffsetY);
+    CGRect collectionViewFrame = CGRectZero;
+    collectionViewFrame.origin.x = 0.0f;
+    collectionViewFrame.origin.y = self.headerChannelsView.frame.origin.y + self.headerChannelsView.currentHeight;
+    collectionViewFrame.size.width = correctWidth;
+    collectionViewFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] - collectionViewFrame.origin.y;
     
     self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: collectionViewFrame
                                                              collectionViewLayout: self.channelsLandscapeLayout];
@@ -195,18 +196,17 @@
         self.headerSubscriptionsView.frame = newFrame;
         [self.headerSubscriptionsView setFontSize: 12.0f];
         
-        //        [self.headerSubscriptionsView setTitle: NSLocalizedString(@"MY SUBSCRIPTIONS",nil)
-        //                                     andNumber: 0];
+        
         
         
         self.headerSubscriptionsView.userInteractionEnabled = NO;
     }
     else
     {
-        //        [self.headerSubscriptionsView setTitle: NSLocalizedString(@"MY SUBSCRIPTIONS", nil)
-        //                                     andNumber: 0];
         
-        [self.headerSubscriptionsView setBackgroundImage: ([SYNDeviceManager.sharedInstance isLandscape] ? [UIImage imageNamed: @"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
+        [self.headerSubscriptionsView setBackgroundImage: ([SYNDeviceManager.sharedInstance isLandscape] ?
+                                                           [UIImage imageNamed: @"HeaderProfileSubscriptionsLandscape"] :
+                                                           [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
     }
     
     CGRect headerSubFrame = self.headerSubscriptionsView.frame;
@@ -325,6 +325,7 @@
 - (void) viewWillAppear: (BOOL) animated
 {
     [super viewWillAppear: animated];
+    
     
     if (self.user == appDelegate.currentUser)
     {
@@ -561,7 +562,6 @@
             newFrame.size.width = 385.0f;
             self.headerSubscriptionsView.frame = newFrame;
             
-            viewHeight = 1004;
             
             channelsLayout = self.channelsPortraitLayout;
             subscriptionsLayout = self.subscriptionsPortraitLayout;
@@ -577,16 +577,20 @@
             newFrame.size.width = 412.0f;
             self.headerSubscriptionsView.frame = newFrame;
             
-            viewHeight = 748;
-            
             channelsLayout = self.channelsLandscapeLayout;
             subscriptionsLayout = self.subscriptionsLandscapeLayout;
         }
         
-        //Apply correct backgorund images
-        [self.headerSubscriptionsView setBackgroundImage: ([SYNDeviceManager.sharedInstance isLandscape] ? [UIImage imageNamed: @"HeaderProfileSubscriptionsLandscape"] : [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
+        viewHeight = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar];
         
-        [self.headerChannelsView setBackgroundImage: [SYNDeviceManager.sharedInstance isLandscape] ? [UIImage imageNamed: @"HeaderProfileChannelsLandscape"]: [UIImage imageNamed: @"HeaderProfilePortraitBoth"]];
+        //Apply correct backgorund images
+        [self.headerSubscriptionsView setBackgroundImage: ([SYNDeviceManager.sharedInstance isLandscape] ?
+                                                           [UIImage imageNamed: @"HeaderProfileSubscriptionsLandscape"] :
+                                                           [UIImage imageNamed: @"HeaderProfilePortraitBoth"])];
+        
+        [self.headerChannelsView setBackgroundImage: [SYNDeviceManager.sharedInstance isLandscape] ?
+                                                        [UIImage imageNamed: @"HeaderProfileChannelsLandscape"]:
+                                                        [UIImage imageNamed: @"HeaderProfilePortraitBoth"]];
     }
     
     // Setup Channel feed collection view
