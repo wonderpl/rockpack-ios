@@ -1602,8 +1602,6 @@
         }
         else
         {
-            
-            
             [appDelegate.viewStackManager popController];
         }
     }
@@ -2057,7 +2055,7 @@
 - (void) deleteChannel
 {
     // return to previous screen as if the back button tapped
-    [self backButtonTapped: nil];
+    [appDelegate.viewStackManager popController];
     
     [appDelegate.oAuthNetworkEngine deleteChannelForUserId: appDelegate.currentUser.uniqueId
                                                  channelId: self.channel.uniqueId
