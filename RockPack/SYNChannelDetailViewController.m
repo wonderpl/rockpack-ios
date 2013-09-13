@@ -2020,6 +2020,53 @@
 }
 
 
+#pragma mark - Deleting Channels
+
+- (IBAction) deleteChannelPressed: (UIButton *) sender
+{
+    NSString *message = [NSString stringWithFormat: NSLocalizedString(@"profile_screen_channel_delete_dialog_description", nil), self.channel.title];
+    NSString *title = [NSString stringWithFormat: NSLocalizedString(@"profile_screen_channel_delete_dialog_title", nil), self.channel.title];
+    
+    [[[UIAlertView alloc] initWithTitle: title
+                                message: message
+                               delegate: self
+                      cancelButtonTitle: NSLocalizedString(@"Cancel", nil)
+                      otherButtonTitles: NSLocalizedString(@"Delete", nil), nil] show];
+}
+
+
+- (void)	 alertView: (UIAlertView *) alertView
+         willDismissWithButtonIndex: (NSInteger) buttonIndex
+{
+    if (buttonIndex == 1)
+    {
+        [self deleteChannel];
+    }
+    else
+    {
+        // Cancel Clicked, do nothing
+    }
+}
+
+
+- (void) deleteChannel
+{
+    // return to previous screen as if the back button tapped
+    [self backButtonTapped: nil];
+    
+    [appDelegate.oAuthNetworkEngine deleteChannelForUserId: appDelegate.currentUser.uniqueId
+                                                 channelId: self.channel.uniqueId
+                                         completionHandler: ^(id response) {
+                                             [appDelegate.currentUser.channelsSet removeObject: self.channel];
+                                             [self.channel.managedObjectContext deleteObject: self.channel];
+                                             [appDelegate saveContext: YES];
+                                         }
+                                              errorHandler: ^(id error) {
+                                                  DebugLog(@"Delete channel failed");
+                                              }];
+}
+
+
 #pragma mark - Channel Creation (3 steps)
 
 - (IBAction) createChannelPressed: (id) sender

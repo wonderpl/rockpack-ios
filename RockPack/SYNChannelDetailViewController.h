@@ -38,4 +38,6 @@ typedef enum : NSInteger
 - (BOOL) isFavouritesChannel;
 - (void) refreshFavouritesChannel;
 
+- (IBAction) deleteChannelPressed: (UIButton *) sender;
+
 @end
