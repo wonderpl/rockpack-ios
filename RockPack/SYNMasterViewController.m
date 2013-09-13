@@ -1399,4 +1399,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     return [self.mainNavigationController.viewControllers containsObject:self.searchViewController];
 }
 
+-(void)headerButtonIsActive:(BOOL)isActive
+{
+    self.headerButton.userInteractionEnabled = isActive;
+}
+
 @end

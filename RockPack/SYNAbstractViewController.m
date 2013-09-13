@@ -1016,5 +1016,9 @@
     return appDelegate.masterViewController.view;
 }
 
+- (BOOL) needsHeaderButton
+{
+    return YES;
+}
 
 @end
