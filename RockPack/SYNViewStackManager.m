@@ -18,6 +18,8 @@
 #import "SYNNetworkErrorView.h"
 
 #define STACK_LIMIT 6
+#define BG_ALPHA_DEFAULT 0.7f
+
 
 @implementation SYNViewStackManager
 
@@ -397,7 +399,12 @@
 }
 #pragma mark - Popover Managment
 
-- (void) presentPopoverView:(UIView*)view
+-(void)presentPopoverView:(UIView *)view
+{
+    [self presentPopoverView:view withBackgroundAlpha:BG_ALPHA_DEFAULT];
+}
+
+- (void) presentPopoverView:(UIView*)view withBackgroundAlpha:(CGFloat)bgAlpha
 {
     if(!view)
         return;
@@ -415,7 +422,7 @@
                           delay: 0.0
                         options: UIViewAnimationOptionCurveEaseOut
                      animations: ^{
-                         backgroundView.alpha = 0.7f;
+                         backgroundView.alpha = bgAlpha;
                      }
                      completion:^(BOOL finished) {
                          UITapGestureRecognizer* tapToCloseGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -543,7 +550,7 @@
 }
 
 
-
+// present without a BG
 - (void) presentModallyController: (UIViewController *) controller
 {
     modalViewController = controller;

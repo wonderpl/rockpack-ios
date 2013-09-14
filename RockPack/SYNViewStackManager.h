@@ -40,6 +40,7 @@ typedef void(^ViewStackReturnBlock)(void);
 
 - (void) presentModallyController: (UIViewController *) controller;
 - (void) presentPopoverView: (UIView*) view;
+- (void) presentPopoverView:(UIView*)view withBackgroundAlpha:(CGFloat)bgAlpha;
 - (void) removePopoverView;
 
 - (void) presentSuccessNotificationWithMessage : (NSString*) message;
