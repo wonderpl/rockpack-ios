@@ -51,7 +51,7 @@ typedef enum InstructionsShareState {
     [self.backgroundView removeGestureRecognizer:self.backgroundView.gestureRecognizers[0]]; // remove the tap gesture for house keeping
     
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-    [appDelegate.viewStackManager hideModalController]; // hide self
+    [appDelegate.viewStackManager removeCoverPopoverViewController]; // hide self
     
 }
 

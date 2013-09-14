@@ -15,7 +15,7 @@
 @class SYNMasterViewController;
 
 @interface SYNViewStackManager : NSObject {
-    UIViewController *modalViewController;
+    UIViewController *currentOverViewController;
     UIView* popoverView;
     UIView* backgroundView;
 }
@@ -37,6 +37,9 @@ typedef void(^ViewStackReturnBlock)(void);
 - (void) popToController: (UIViewController *) controller;
 - (void) popController;
 - (void) pushController: (SYNAbstractViewController *) controller;
+
+-(void)presentCoverViewController:(UIViewController*)viewController;
+-(void)removeCoverPopoverViewController;
 
 - (void) presentModallyController: (UIViewController *) controller;
 - (void) presentPopoverView: (UIView*) view;

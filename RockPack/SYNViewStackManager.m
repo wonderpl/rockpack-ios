@@ -399,6 +399,42 @@
 }
 #pragma mark - Popover Managment
 
+-(void)presentCoverViewController:(UIViewController*)viewController
+{
+    currentOverViewController = viewController;
+    
+    [self.masterController addChildViewController: viewController];
+    
+    currentOverViewController.view.alpha = 0.0f;
+    
+    [self.masterController.view addSubview: viewController.view];
+    
+    [UIView animateWithDuration: 0.3
+                          delay: 0.0
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations: ^{
+                         currentOverViewController.view.alpha = 1.0f;
+                     }
+                     completion: ^(BOOL finished) {
+                         
+                     }];
+    
+}
+-(void)removeCoverPopoverViewController
+{
+    [UIView animateWithDuration: 0.3
+                          delay: 0.0
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations: ^{
+                         currentOverViewController.view.alpha = 0.0f;
+                     }
+                     completion: ^(BOOL finished) {
+                         [currentOverViewController removeFromParentViewController];
+                         [currentOverViewController.view removeFromSuperview];
+                         currentOverViewController = nil;
+                     }];
+}
+
 -(void)presentPopoverView:(UIView *)view
 {
     [self presentPopoverView:view withBackgroundAlpha:BG_ALPHA_DEFAULT];
@@ -467,37 +503,7 @@
     
 }
 
-- (void) presentSuccessNotificationWithMessage : (NSString*) message
-{
-    __block SYNNetworkErrorView* successNotification = [[SYNNetworkErrorView alloc] init];
-    successNotification.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"BarSucess"]];
-    [successNotification setText: message];
-    
-    [self.masterController.view addSubview: successNotification];
-    
-    [UIView animateWithDuration: 0.3f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseOut
-                     animations: ^{
-                         CGRect newFrame = successNotification.frame;
-                         newFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] - newFrame.size.height;
-                         successNotification.frame = newFrame;
-                     }
-                     completion: ^(BOOL finished) {
-                         
-                         [UIView animateWithDuration: 0.3f
-                                               delay: 4.0f
-                                             options: UIViewAnimationOptionCurveEaseIn
-                                          animations: ^{
-                                              CGRect newFrame = successNotification.frame;
-                                              newFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] + newFrame.size.height;
-                                              successNotification.frame = newFrame;
-                                          }
-                                          completion: ^(BOOL finished) {
-                                              [successNotification removeFromSuperview];
-                                          }];
-                     }];
-}
+
 
 -(void)removePopoverView
 {
@@ -550,10 +556,10 @@
 }
 
 
-// present without a BG, hold the controller so it does not get released and make it so that the hideModalController needs to be called
+// for iPhone
 - (void) presentModallyController: (UIViewController *) controller
 {
-    modalViewController = controller;
+    currentOverViewController = controller;
     
     [self.masterController addChildViewController: controller];
     [self.masterController.view addSubview: controller.view];
@@ -582,7 +588,7 @@
 
 - (void) hideModalController
 {
-    CGRect controllerFrame = modalViewController.view.frame;
+    CGRect controllerFrame = currentOverViewController.view.frame;
     
     controllerFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
     
@@ -590,17 +596,48 @@
                           delay: 0.0
                         options: UIViewAnimationOptionCurveEaseIn
                      animations: ^{
-                         modalViewController.view.frame = controllerFrame;
+                         currentOverViewController.view.frame = controllerFrame;
                          
                          self.masterController.view.userInteractionEnabled = NO;
                      }
                      completion: ^(BOOL finished) {
                          self.masterController.view.userInteractionEnabled = YES;
-                         [modalViewController.view removeFromSuperview];
-                         [modalViewController removeFromParentViewController];
+                         [currentOverViewController.view removeFromSuperview];
+                         [currentOverViewController removeFromParentViewController];
                      }];
 }
 
+- (void) presentSuccessNotificationWithMessage : (NSString*) message
+{
+    __block SYNNetworkErrorView* successNotification = [[SYNNetworkErrorView alloc] init];
+    successNotification.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"BarSucess"]];
+    [successNotification setText: message];
+    
+    [self.masterController.view addSubview: successNotification];
+    
+    [UIView animateWithDuration: 0.3f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations: ^{
+                         CGRect newFrame = successNotification.frame;
+                         newFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] - newFrame.size.height;
+                         successNotification.frame = newFrame;
+                     }
+                     completion: ^(BOOL finished) {
+                         
+                         [UIView animateWithDuration: 0.3f
+                                               delay: 4.0f
+                                             options: UIViewAnimationOptionCurveEaseIn
+                                          animations: ^{
+                                              CGRect newFrame = successNotification.frame;
+                                              newFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] + newFrame.size.height;
+                                              successNotification.frame = newFrame;
+                                          }
+                                          completion: ^(BOOL finished) {
+                                              [successNotification removeFromSuperview];
+                                          }];
+                     }];
+}
 
 #pragma mark - Helper
 

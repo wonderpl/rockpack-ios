@@ -279,13 +279,13 @@ typedef void(^FeedDataErrorBlock)(void);
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     BOOL onBoarding1State = [defaults boolForKey:kInstruction1OnBoardingState];
-    if(onBoarding1State) // 1rst card
+    if(!onBoarding1State) // 1rst card
     {
         SYNInstructionsToShareControllerViewController* itsVC = [[SYNInstructionsToShareControllerViewController alloc] init];
         
-        [appDelegate.viewStackManager presentModallyController:itsVC];
+        [appDelegate.viewStackManager presentCoverViewController:itsVC];
         
-        [defaults setBool:YES forKey:kInstruction1OnBoardingState];
+        //[defaults setBool:YES forKey:kInstruction1OnBoardingState];
         
     }
     
