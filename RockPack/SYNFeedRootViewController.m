@@ -275,20 +275,29 @@ typedef void(^FeedDataErrorBlock)(void);
 -(void)checkForOnBoarding
 {
     
-    if(self.feedItemsData.count > 0)
-        return;
+    
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL hasShownFeedOnBoarding = [defaults boolForKey:kUserDefaultsFeed];
-    if(!hasShownFeedOnBoarding)
+    BOOL onBoarding1State = [defaults boolForKey:kInstruction1OnBoardingState];
+    if(onBoarding1State) // 1rst card
     {
         SYNInstructionsToShareControllerViewController* itsVC = [[SYNInstructionsToShareControllerViewController alloc] init];
         
         [appDelegate.viewStackManager presentModallyController:itsVC];
         
+        [defaults setBool:YES forKey:kInstruction1OnBoardingState];
         
     }
     
+    // display 2 times, one here and one on the Packs screen
+    NSInteger onBoarding2State = [defaults integerForKey:kInstruction2OnBoardingState];
+    if(onBoarding2State < 2 && self.feedItemsData.count > 0) // 2nd card
+    {
+        
+        
+        
+        [defaults setInteger:(onBoarding2State+1) forKey:kInstruction2OnBoardingState]; // inc by one
+    }
     
 }
 
