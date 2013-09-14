@@ -127,5 +127,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (void) arcMenuSelectedCell: (UICollectionViewCell *) selectedCell
            andComponentIndex: (NSInteger) componentIndex;
 
+- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer;
+
 - (BOOL) needsHeaderButton ;
 @end

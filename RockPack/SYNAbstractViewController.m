@@ -785,6 +785,8 @@
     return  nil;
 }
 
+#pragma mark - Arc Menu
+
 - (void) arcMenuSelectedCell: (UICollectionViewCell *) selectedCell
            andComponentIndex: (NSInteger) componentIndex
 {
