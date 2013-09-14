@@ -77,7 +77,7 @@
 }
 
 
-
+// this circumvents the view_stack_manager
 -(void)present
 {
     if(queue.count == 0)

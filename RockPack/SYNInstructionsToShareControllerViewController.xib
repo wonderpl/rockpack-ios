@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SYNInstructionsToShareControllerViewController">
             <connections>
+                <outlet property="backgroundView" destination="ea1-WH-sSY" id="AoU-Qt-pCl"/>
                 <outlet property="instructionsLabel" destination="BLd-8k-6EL" id="0bd-fB-r0p"/>
                 <outlet property="okButton" destination="fdO-GG-9t5" id="fE4-JH-Ked"/>
                 <outlet property="subLabel" destination="N1j-JV-7eV" id="OlO-Nl-UoJ"/>
@@ -19,6 +20,12 @@
             <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" id="ea1-WH-sSY" userLabel="BG View">
+                    <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.15686275064945221" green="0.17647059261798859" blue="0.20000000298023224" alpha="0.46000000000000002" colorSpace="calibratedRGB"/>
+                    <color key="tintColor" red="0.50980395078659058" green="0.55294120311737061" blue="0.56862747669219971" alpha="0.0" colorSpace="calibratedRGB"/>
+                </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="fdO-GG-9t5">
                     <rect key="frame" x="458" y="635" width="108" height="45"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

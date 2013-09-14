@@ -8,6 +8,7 @@
 
 #import "SYNInstructionsToShareControllerViewController.h"
 #import "UIFont+SYNFont.h"
+#import "SYNAppDelegate.h"
 
 typedef enum InstructionsShareState {
 
@@ -24,6 +25,7 @@ typedef enum InstructionsShareState {
 @property (strong, nonatomic) IBOutlet UILabel *subLabel;
 @property (strong, nonatomic) IBOutlet UIButton *okButton;
 @property (strong, nonatomic) IBOutlet UIImageView *videoImageView;
+@property (strong, nonatomic) IBOutlet UIView* backgroundView;
 
 @property (nonatomic) InstructionsShareState state;
 @end
@@ -40,6 +42,16 @@ typedef enum InstructionsShareState {
     self.subLabel.font = [UIFont rockpackFontOfSize:self.subLabel.font.pointSize];
     self.instructionsLabel.font = [UIFont rockpackFontOfSize:self.instructionsLabel.font.pointSize];
     
+    UITapGestureRecognizer* tapToCloseGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToClose:)];
+    [self.backgroundView addGestureRecognizer:tapToCloseGesture];
+}
+
+-(void)tapToClose:(UIGestureRecognizer*)recogniser
+{
+    [self.backgroundView removeGestureRecognizer:self.backgroundView.gestureRecognizers[0]]; // remove the tap gesture for house keeping
+    
+    SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    [appDelegate.viewStackManager hideModalController]; // hide self
     
 }
 

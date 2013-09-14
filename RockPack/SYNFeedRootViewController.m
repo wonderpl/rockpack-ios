@@ -30,6 +30,7 @@
 #import "SYNMasterViewController.h"
 #import "VideoInstance.h"
 #import "Appirater.h"
+#import "SYNInstructionsToShareControllerViewController.h"
 
 typedef void(^FeedDataErrorBlock)(void);
 
@@ -281,22 +282,11 @@ typedef void(^FeedDataErrorBlock)(void);
     BOOL hasShownFeedOnBoarding = [defaults boolForKey:kUserDefaultsFeed];
     if(!hasShownFeedOnBoarding)
     {
-        NSString* message = IS_IPAD ? NSLocalizedString(@"onboarding_feed", nil) : NSLocalizedString(@"onboarding_feed_iphone", nil);
+        SYNInstructionsToShareControllerViewController* itsVC = [[SYNInstructionsToShareControllerViewController alloc] init];
         
-        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0 ;
-        CGSize size = IS_IPAD ? CGSizeMake(340.0, 84.0) : CGSizeMake(260.0, 80.0);
-        SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
-                                                                                  withSize:size
-                                                                               andFontSize:fontSize
-                                                                                pointingTo:CGRectZero
-                                                                             withDirection:PointingDirectionNone];
+        [appDelegate.viewStackManager presentModallyController:itsVC];
         
         
-        [appDelegate.onBoardingQueue addPopover:subscribePopover];
-        
-        [defaults setBool:YES forKey:kUserDefaultsFeed];
-        
-        [appDelegate.onBoardingQueue present];
     }
     
     

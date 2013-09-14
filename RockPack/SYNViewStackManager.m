@@ -550,7 +550,7 @@
 }
 
 
-// present without a BG
+// present without a BG, hold the controller so it does not get released and make it so that the hideModalController needs to be called
 - (void) presentModallyController: (UIViewController *) controller
 {
     modalViewController = controller;
