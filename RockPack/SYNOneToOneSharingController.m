@@ -37,6 +37,9 @@
                                             UITableViewDataSource,
                                             UITableViewDelegate,
                                             UIScrollViewDelegate>
+{
+    BOOL displayEmailCell;
+}
 
 @property (nonatomic, assign) CGRect originalFrame;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *loader;
@@ -248,14 +251,19 @@
     if ([[SYNFacebookManager sharedFBManager] hasActiveSession])
     {
         DebugLog(@"The user is FB connected, trying to pull friends from server");
+        displayEmailCell = NO;
         [self fetchAndDisplayFriends];
     }
     else
     {
+        displayEmailCell = YES;
         if(!canReadAddressBook)
         {
             self.searchTextField.placeholder = @"Type an email address";
         }
+        
+        hasAttemptedToLoadData = YES;
+        [self.recentFriendsCollectionView reloadData]; // to display the add email cell
     }
     
     // always present the buttons at the bottom
@@ -422,14 +430,13 @@
                                          inManagedObjectContext: appDelegate.searchManagedObjectContext]];
     
     
-    
     existingFriendsArray = [appDelegate.searchManagedObjectContext executeFetchRequest: fetchRequest
                                                                                  error: &error];
     
     
     if(!error)
     {
-        //NSLog(@"Friends Found %@:", hasAttemptedToLoadData ? @"AFTER loading data from server" : @"BEFORE laoding data from server");
+        
         
         [self.friends removeAllObjects];
         
@@ -535,9 +542,8 @@
 
 - (NSInteger) collectionView: (UICollectionView *) view numberOfItemsInSection: (NSInteger) section
 {
-    // prevent the display of the "empty" recent cells before the friends have loaded
-    // then allow for 5 extra slots to display the "empty" cells
-    return (!hasAttemptedToLoadData ? 0 : 1 + self.recentFriends.count + kNumberOfEmptyRecentSlots);
+    // if we have not yet loaded, present nothing, otherwise if we have a FB connection do NOT present email cell
+    return (!hasAttemptedToLoadData ? 0 : (displayEmailCell ? 1 : 0) + self.recentFriends.count + kNumberOfEmptyRecentSlots);
 }
 
 
@@ -549,7 +555,11 @@
     SYNFriendThumbnailCell *userThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNFriendThumbnailCell"
                                                                                           forIndexPath: indexPath];
     
-    if(indexPath.item == 0)
+    NSInteger realIndex = indexPath.item;
+    
+    
+    
+    if(realIndex == 0 && displayEmailCell)
     {
         userThumbnailCell.imageView.image = [UIImage imageNamed:@"ShareAddEntry.jpg"];
         [userThumbnailCell setDisplayName: @"Add new Email"];
@@ -557,10 +567,16 @@
         userThumbnailCell.imageView.alpha = 1.0f;
         
         userThumbnailCell.shadowImageView.alpha = 1.0f;
+        
+        return userThumbnailCell;
     }
-    else if (indexPath.item - 1 < self.recentFriends.count)
+    
+    if(displayEmailCell)
+        realIndex -= 1;
+    
+    if (realIndex < self.recentFriends.count) // real recent friends cell
     {
-        Friend *friend = self.recentFriends[indexPath.item - 1];
+        Friend *friend = self.recentFriends[realIndex];
         
         NSString* nameToDisplay;
         if(friend.displayName && ![friend.displayName isEqualToString:@""])
@@ -607,7 +623,7 @@
         userThumbnailCell.nameLabel.text = @"Recent";
         // userThumbnailCell.backgroundColor = [UIColor redColor];
         
-        CGFloat factor = 1.0f - ((float) ((indexPath.row - 1) - self.recentFriends.count) / (float) kNumberOfEmptyRecentSlots);
+        CGFloat factor = 1.0f - ((float) (realIndex - self.recentFriends.count) / (float) kNumberOfEmptyRecentSlots);
         // fade slots
         userThumbnailCell.imageView.alpha = factor;
         userThumbnailCell.shadowImageView.alpha = factor;
@@ -621,8 +637,7 @@
          shouldSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     // "Recent" stub cells are not clickable...
-    
-    return (indexPath.item <= self.recentFriends.count);
+    return (indexPath.item + (displayEmailCell ? 0 : 1) <= self.recentFriends.count);
 }
 
 
@@ -630,13 +645,13 @@
 {
     // it will (should) only be called for indexPath.item - 1 < self.recentFriends.count so it will exclude stub cells
     
-    if(indexPath.item == 0) // first cell
+    if(indexPath.item == 0 && displayEmailCell) // first cell
     {
         [self presentAlertToFillEmailForFriend:nil];
         return;
     }
     
-    Friend *friend = self.recentFriends[indexPath.row - 1];
+    Friend *friend = self.recentFriends[indexPath.row - (displayEmailCell ? 1 : 0)];
     
     [self sendEmailToFriend: friend];
 }
