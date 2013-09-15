@@ -11,17 +11,9 @@
 #import "SYNAppDelegate.h"
 #import "SYNAbstractViewController.h"
 
-typedef enum InstructionsShareState {
 
-    InstructionsShareStateInit = 0,
-    InstructionsShareStatePressAndHold,
-    InstructionsShareStateChooseAction,
-    InstructionsShareStateGoodJob,
-    InstructionsShareStateShared
-
-} InstructionsShareState;
 @interface SYNInstructionsToShareControllerViewController () {
-    
+    InstructionsShareState initialState;
 }
 
 #define STD_FADE_TEXT 0.2f
@@ -34,15 +26,17 @@ typedef enum InstructionsShareState {
 @property (weak, nonatomic) SYNAbstractViewController* delegate;
 @property (nonatomic) InstructionsShareState state;
 
+
 @end
 
 @implementation SYNInstructionsToShareControllerViewController
 
--(id)initWithDelegate:(SYNAbstractViewController*)delegate
+-(id)initWithDelegate:(SYNAbstractViewController*)delegate andState:(InstructionsShareState)iState
 {
     if (self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil])
     {
         self.delegate = delegate;
+        initialState = iState;
     }
     return self;
 }
@@ -51,7 +45,7 @@ typedef enum InstructionsShareState {
 {
     [super viewDidLoad];
     
-    self.state = 0; // init state, should already be set so will ignored
+    self.state = initialState; // init state, should already be set so will ignored
     
     
     

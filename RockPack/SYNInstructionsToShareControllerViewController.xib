@@ -27,7 +27,7 @@
                     <color key="tintColor" red="0.50980395078659058" green="0.55294120311737061" blue="0.56862747669219971" alpha="0.0" colorSpace="calibratedRGB"/>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="fdO-GG-9t5">
-                    <rect key="frame" x="480" y="634" width="65" height="46"/>
+                    <rect key="frame" x="480" y="513" width="65" height="46"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <state key="normal" image="InstructionsCardOkayButton.png">
@@ -38,21 +38,21 @@
                     </connections>
                 </button>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BLd-8k-6EL" userLabel="Instructions Text">
-                    <rect key="frame" x="365" y="182" width="294" height="73"/>
+                    <rect key="frame" x="365" y="120" width="294" height="73"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="N1j-JV-7eV" userLabel="Sub Text">
-                    <rect key="frame" x="365" y="295" width="294" height="73"/>
+                    <rect key="frame" x="365" y="196" width="294" height="59"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <color key="textColor" red="0.043137254901960784" green="0.65098039215686276" blue="0.6705882352941176" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="InstructionCard2fakeVideoCell.png" id="0hR-7n-JXu" userLabel="Video Image">
-                    <rect key="frame" x="376" y="369" width="272" height="153"/>
+                    <rect key="frame" x="376" y="280" width="272" height="153"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.12941177189350128" green="0.71764707565307617" blue="0.83137255907058716" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="tintColor" red="0.50980395078659058" green="0.55294120311737061" blue="0.56862747669219971" alpha="0.0" colorSpace="calibratedRGB"/>

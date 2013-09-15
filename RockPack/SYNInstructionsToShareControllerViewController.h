@@ -9,9 +9,19 @@
 #import <UIKit/UIKit.h>
 @class SYNAbstractViewController;
 
+typedef enum InstructionsShareState {
+    
+    InstructionsShareStateInit = 0,
+    InstructionsShareStatePressAndHold,
+    InstructionsShareStateChooseAction,
+    InstructionsShareStateGoodJob,
+    InstructionsShareStateShared,
+    InstructionsShareStatePacks
+    
+} InstructionsShareState;
 
 @interface SYNInstructionsToShareControllerViewController : UIViewController
 
--(id)initWithDelegate:(SYNAbstractViewController*)delegate;
+-(id)initWithDelegate:(SYNAbstractViewController*)delegate andState:(InstructionsShareState)iState;
 
 @end

@@ -281,7 +281,7 @@ typedef void(^FeedDataErrorBlock)(void);
     BOOL onBoarding1State = [defaults boolForKey:kInstruction1OnBoardingState];
     if(!onBoarding1State) // 1rst card
     {
-        SYNInstructionsToShareControllerViewController* itsVC = [[SYNInstructionsToShareControllerViewController alloc] initWithDelegate:self];
+        SYNInstructionsToShareControllerViewController* itsVC = [[SYNInstructionsToShareControllerViewController alloc] initWithDelegate:self andState:InstructionsShareStateInit];
         
         [appDelegate.viewStackManager presentCoverViewController:itsVC];
         
