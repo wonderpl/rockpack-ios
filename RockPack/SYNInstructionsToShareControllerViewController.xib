@@ -26,10 +26,11 @@
                     <color key="backgroundColor" red="0.15686275064945221" green="0.17647059261798859" blue="0.20000000298023224" alpha="0.46000000000000002" colorSpace="calibratedRGB"/>
                     <color key="tintColor" red="0.50980395078659058" green="0.55294120311737061" blue="0.56862747669219971" alpha="0.0" colorSpace="calibratedRGB"/>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="fdO-GG-9t5">
-                    <rect key="frame" x="458" y="635" width="108" height="45"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="fdO-GG-9t5">
+                    <rect key="frame" x="480" y="634" width="65" height="46"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="Button">
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <state key="normal" image="InstructionsCardOkayButton.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
@@ -63,4 +64,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
+    <resources>
+        <image name="InstructionsCardOkayButton.png" width="65" height="46"/>
+    </resources>
 </document>
