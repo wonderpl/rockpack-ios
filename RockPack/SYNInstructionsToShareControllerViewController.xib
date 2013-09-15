@@ -51,8 +51,8 @@
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="0hR-7n-JXu" userLabel="Video Image">
-                    <rect key="frame" x="330" y="369" width="364" height="223"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="InstructionCard2fakeVideoCell.png" id="0hR-7n-JXu" userLabel="Video Image">
+                    <rect key="frame" x="376" y="369" width="272" height="153"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.12941177189350128" green="0.71764707565307617" blue="0.83137255907058716" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="tintColor" red="0.50980395078659058" green="0.55294120311737061" blue="0.56862747669219971" alpha="0.0" colorSpace="calibratedRGB"/>
@@ -65,6 +65,7 @@
         </view>
     </objects>
     <resources>
+        <image name="InstructionCard2fakeVideoCell.png" width="272" height="153"/>
         <image name="InstructionsCardOkayButton.png" width="65" height="46"/>
     </resources>
 </document>
