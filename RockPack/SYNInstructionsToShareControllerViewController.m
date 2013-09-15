@@ -100,8 +100,9 @@
 {
     self.okButton.enabled = NO;
     
-    if(self.state == InstructionsShareStateShared) // if reached the end
+    if(self.state == InstructionsShareStateShared || self.state == InstructionsShareStatePressAndHold)
     {
+        // close the panel
         [self tapToClose:nil];
         return;
     }
@@ -121,9 +122,6 @@
         
         case InstructionsShareStatePressAndHold:
         {
-            
-            
-            
             
             self.instructionsLabel.text = NSLocalizedString(@"instruction_press_hold", nil);
             

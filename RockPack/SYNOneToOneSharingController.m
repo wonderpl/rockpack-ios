@@ -51,6 +51,9 @@
 @property (nonatomic, strong) IBOutlet UILabel * facebookLabel;
 @property (nonatomic, strong) IBOutlet UIView *activitiesContainerView;
 @property (nonatomic, strong) Friend* friendHeldInQueue;
+@property (nonatomic) BOOL typingMode;
+
+@property (nonatomic) BOOL keyboardIsOnScreen;
 
 @property (nonatomic, strong) NSMutableArray *friends;
 @property (nonatomic, strong) NSArray *recentFriends;
@@ -85,10 +88,89 @@
         
         hasAttemptedToLoadData = NO;
         
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardNotification:)
+                                                     name:UIKeyboardWillShowNotification
+         
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardNotification:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
+        
         
     }
     
     return self;
+}
+
+-(void)keyboardNotification:(NSNotification*)notification
+{
+    
+    
+    if([[notification name] isEqualToString:UIKeyboardWillShowNotification])
+    {
+        
+        self.keyboardIsOnScreen = YES;
+        
+    }
+    else if([[notification name] isEqualToString:UIKeyboardWillHideNotification])
+    {
+        
+        self.keyboardIsOnScreen = NO;
+    }
+    
+    [UIView animateWithDuration: 0.3
+                          delay: 0.0
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         // push popup up
+                         CGRect vFrame = self.view.frame;
+                         
+                         if(_keyboardIsOnScreen)
+                             vFrame.origin.y -= 160.0f;
+                         else
+                             vFrame.origin.y += 160.0f;
+                         
+                         self.view.frame = vFrame;
+                         
+                         self.typingMode = _keyboardIsOnScreen; // try and set it to no when the k/bord comes down, the method will check for text
+                         
+                     }
+                     completion:nil];
+    
+    
+}
+
+-(void)setTypingMode:(BOOL)typingMode
+{
+    if(typingMode == _typingMode)
+        return;
+    
+    // if there is still text, do not remove the close button
+    if(!typingMode && self.searchTextField.text.length > 0)
+        return;
+    
+    _typingMode = typingMode;
+    
+    
+    [UIView animateWithDuration: 0.2
+                          delay: 0.0
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         self.closeButton.alpha = _typingMode ? 1.0f : 0.0f;
+                         
+                         CGRect sfFrame = self.searchFieldFrameImageView.frame;
+                         sfFrame.size.width = _typingMode ? 362.0f : 400.0f;
+                         self.searchFieldFrameImageView.frame = sfFrame;
+                     }
+                     completion:^(BOOL finished) {
+                         
+                         self.closeButton.hidden = !_typingMode; // hide when not in typing mode
+                         
+                     }];
 }
 
 - (void) viewDidLoad
@@ -823,22 +905,7 @@
     self.closeButton.hidden = NO;
     self.closeButton.alpha = 0.0f;
     
-    [UIView animateWithDuration: 0.3
-                          delay: 0.0
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         CGRect vFrame = self.view.frame;
-                         vFrame.origin.y -= 160.0f;
-                         self.view.frame = vFrame;
-                         
-                         self.closeButton.alpha = 1.0f;
-                         
-                         CGRect sfFrame = self.searchFieldFrameImageView.frame;
-                         sfFrame.size.width = 362.0f;
-                         self.searchFieldFrameImageView.frame = sfFrame;
-                     }
-                     completion: nil];
-    
+    self.typingMode = YES;
     
     return YES;
 }
@@ -846,29 +913,7 @@
 
 - (void) textFieldDidEndEditing: (UITextField *) textField
 {
-    [UIView animateWithDuration: 0.2
-                          delay: 0.0
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         CGRect vFrame = self.view.frame;
-                         vFrame.origin.y += 160.0f;
-                         self.view.frame = vFrame;
-                         
-                         
-                         self.closeButton.alpha = 0.0f;
-                         
-                         CGRect sfFrame = self.searchFieldFrameImageView.frame;
-                         sfFrame.size.width = 400.0f;
-                         self.searchFieldFrameImageView.frame = sfFrame;
-                     }
-                     completion:^(BOOL finished) {
-                         
-                         self.closeButton.hidden = YES;
-                         
-                         
-                         
-                         
-                     }];
+    
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -883,10 +928,8 @@
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-//    if(scrollView == self.searchResultsTableView)
-//    {
-//        [self.searchTextField resignFirstResponder];
-//    }
+
+    
 }
 
 #pragma mark - Button Delegates
@@ -897,6 +940,7 @@
     [self.searchResultsTableView removeFromSuperview];
     [self.searchTextField resignFirstResponder];
     self.closeButton.hidden = YES;
+    self.typingMode = NO; // this should animate the search box back to full length
 }
 
 
