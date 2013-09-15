@@ -55,10 +55,8 @@
     UITapGestureRecognizer* tapToCloseGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToClose:)];
     [self.backgroundView addGestureRecognizer:tapToCloseGesture];
     
-    self.videoImageView.alpha = 0.0f;
-    self.videoImageView.userInteractionEnabled = NO;
-    UILongPressGestureRecognizer* videoLongPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressOverVideoImagePerformed:)];
-    [self.videoImageView addGestureRecognizer:videoLongPress];
+    
+    
     
     self.videoImageView.backgroundColor = [UIColor redColor];
     
@@ -66,11 +64,31 @@
 
 -(void)longPressOverVideoImagePerformed:(UILongPressGestureRecognizer*)recogniser
 {
+    
+    switch (recogniser.state)
+    {
+        case UIGestureRecognizerStateBegan:
+            self.state = InstructionsShareStateChooseAction;
+            break;
+            
+        case UIGestureRecognizerStateEnded:
+            self.state = InstructionsShareStatePressAndHold;
+            break;
+            
+        default:
+            break;
+    }
+    
+    
     [self setupArcMenuWithRecogniser:recogniser];
 }
 
 -(void)tapToClose:(UIGestureRecognizer*)recogniser
 {
+    
+    
+    
+    
     [self.backgroundView removeGestureRecognizer:self.backgroundView.gestureRecognizers[0]]; // remove the tap gesture for house keeping
     
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -99,35 +117,22 @@
     
     switch (_state)
     {
-        case InstructionsShareStateInit:
-            self.instructionsLabel.text = NSLocalizedString(@"instruction_initial", nil);
-            self.subLabel.text = NSLocalizedString(@"instruction_initial_subtext", nil);
-            self.subLabel.hidden = NO;
-            break;
-            
+        
+        
         case InstructionsShareStatePressAndHold:
         {
-            [UIView animateWithDuration:STD_FADE_TEXT animations:^{
-                
-                self.instructionsLabel.alpha = 0.0f;
-                self.subLabel.alpha = 0.0f;
-                
-            } completion:^(BOOL finished) {
-                
-                self.instructionsLabel.text = NSLocalizedString(@"instruction_press_hold", nil);
-                self.subLabel.text = @"";
-                
-                self.videoImageView.userInteractionEnabled = YES;
-                
-                [UIView animateWithDuration:STD_FADE_TEXT animations:^{
-                    self.videoImageView.alpha = 1.0;
-                    self.instructionsLabel.alpha = 1.0f;
-                } completion:^(BOOL finished) {
-                    
-                    self.okButton.enabled = YES;
-                    
-                }];
-            }];
+            
+            
+            
+            
+            self.instructionsLabel.text = NSLocalizedString(@"instruction_press_hold", nil);
+            
+            self.okButton.enabled = YES;
+            self.videoImageView.userInteractionEnabled = YES;
+            self.videoImageView.hidden = NO;
+            
+            UILongPressGestureRecognizer* videoLongPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressOverVideoImagePerformed:)];
+            [self.videoImageView addGestureRecognizer:videoLongPress];
             
             self.subLabel.hidden = YES;
         }
@@ -195,11 +200,15 @@
             
         case InstructionsShareStatePacks:
         {
-            
+            self.instructionsLabel.text = NSLocalizedString(@"instruction_packs_for_you", nil);
+            self.subLabel.text = NSLocalizedString(@"instruction_packs_choose_one", nil);
+            self.subLabel.hidden = NO;
         }
             break;
             
-            
+        default:
+            // could be the none state
+            break;
     }
     
 }

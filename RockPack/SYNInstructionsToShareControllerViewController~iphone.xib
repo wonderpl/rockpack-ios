@@ -40,6 +40,8 @@
                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
+                    <color key="shadowColor" red="0.15686275064945221" green="0.17647059261798859" blue="0.20000000298023224" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
+                    <size key="shadowOffset" width="0.0" height="2"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yyq-FT-hTg" userLabel="Sub Text">
                     <rect key="frame" x="13" y="156" width="294" height="73"/>
@@ -47,6 +49,8 @@
                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                     <color key="textColor" red="0.043137254901960784" green="0.65098039215686276" blue="0.6705882352941176" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
+                    <color key="shadowColor" red="0.15686275064945221" green="0.17647059261798859" blue="0.20000000298023224" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
+                    <size key="shadowOffset" width="0.0" height="2"/>
                 </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="InstructionCard2fakeVideoCell.png" translatesAutoresizingMaskIntoConstraints="NO" id="1Wg-1h-sMX" userLabel="Video Image">
                     <rect key="frame" x="43" y="226" width="235" height="135"/>

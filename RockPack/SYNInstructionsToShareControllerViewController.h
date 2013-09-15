@@ -10,8 +10,7 @@
 @class SYNAbstractViewController;
 
 typedef enum InstructionsShareState {
-    
-    InstructionsShareStateInit = 0,
+    InstructionsShareStateNone = 0,
     InstructionsShareStatePressAndHold,
     InstructionsShareStateChooseAction,
     InstructionsShareStateGoodJob,
