@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class SYNAbstractViewController;
 
 
 @interface SYNInstructionsToShareControllerViewController : UIViewController
 
+-(id)initWithDelegate:(SYNAbstractViewController*)delegate;
 
 @end

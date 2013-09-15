@@ -43,6 +43,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 @property (nonatomic) BOOL isAnimating;
 @property (nonatomic) BOOL isLocked;
 @property (nonatomic) BOOL arcMenuIsChannelCell;
+@property (nonatomic) BOOL arcMenuIsFakeCell;
 @property (nonatomic) NSInteger dataItemsAvailable;
 @property (nonatomic) NSRange dataRequestRange;
 @property (nonatomic, assign) BOOL inDrag;

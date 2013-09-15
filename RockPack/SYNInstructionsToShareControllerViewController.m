@@ -66,6 +66,8 @@ typedef enum InstructionsShareState {
     UILongPressGestureRecognizer* videoLongPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressOverVideoImagePerformed:)];
     [self.videoImageView addGestureRecognizer:videoLongPress];
     
+    self.videoImageView.backgroundColor = [UIColor redColor];
+    
 }
 
 -(void)longPressOverVideoImagePerformed:(UILongPressGestureRecognizer*)recogniser
