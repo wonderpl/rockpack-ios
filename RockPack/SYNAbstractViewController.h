@@ -130,5 +130,12 @@ typedef void (^SYNShareCompletionBlock)(void);
 
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer;
 
+- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
+         forCellAtIndexPath: (NSIndexPath *) cellIndexPath
+         withComponentIndex: (NSInteger) componentIndex
+                  menuItems: (NSArray *) menuItems
+                    menuArc: (float) menuArc
+             menuStartAngle: (float) menuStartAngle;
+
 - (BOOL) needsHeaderButton ;
 @end

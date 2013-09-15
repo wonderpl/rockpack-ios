@@ -66,7 +66,7 @@
 
 -(void)longPressOverVideoImagePerformed:(UILongPressGestureRecognizer*)recogniser
 {
-    [self.delegate arcMenuUpdateState:recogniser];
+    [self setupArcMenuWithRecogniser:recogniser];
 }
 
 -(void)tapToClose:(UIGestureRecognizer*)recogniser
@@ -81,6 +81,12 @@
 -(IBAction)okayButtonPressed:(id)sender
 {
     self.okButton.enabled = NO;
+    
+    if(self.state == InstructionsShareStateShared) // if reached the end
+    {
+        [self tapToClose:nil];
+        return;
+    }
     self.state += 1;
 }
 
@@ -187,9 +193,49 @@
             break;
             
             
+        case InstructionsShareStatePacks:
+        {
+            
+        }
+            break;
+            
+            
     }
     
 }
 
+
+#pragma mark - Arc Menu
+
+-(void)setupArcMenuWithRecogniser:(UILongPressGestureRecognizer*)recogniser
+{
+    
+    
+    
+    SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionLike"]
+                                                        highlightedImage: [UIImage imageNamed: @"ActionLikeHighlighted"]
+                                                                    name: kActionLike
+                                                               labelText: @"Like it"];
+    
+    SYNArcMenuItem *arcMenuItem2 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionAdd"]
+                                                        highlightedImage: [UIImage imageNamed: @"ActionAddHighlighted"]
+                                                                    name: kActionAdd
+                                                               labelText: @"Pack it"];
+    
+    SYNArcMenuItem *arcMenuItem3 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionShare"]
+                                                        highlightedImage: [UIImage imageNamed: @"ActionShareHighlighted"]
+                                                                    name: kActionShareVideo
+                                                               labelText: @"Share it"];
+    
+    NSArray* menuItems = @[arcMenuItem1, arcMenuItem2, arcMenuItem3];
+    
+    
+    [self.delegate arcMenuUpdateState: recogniser
+                   forCellAtIndexPath: nil
+                   withComponentIndex: nil
+                            menuItems: menuItems
+                              menuArc: (M_PI / 2)
+                       menuStartAngle: (-M_PI / 4)];
+}
 
 @end
