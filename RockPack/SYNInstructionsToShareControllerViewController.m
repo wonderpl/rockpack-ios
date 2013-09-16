@@ -6,26 +6,29 @@
 //  Copyright (c) 2013 Nick Banks. All rights reserved.
 //
 
+#import "AppConstants.h"
+#import "SYNAbstractViewController.h"
+#import "SYNAppDelegate.h"
+#import "SYNDeviceManager.h"
 #import "SYNInstructionsToShareControllerViewController.h"
 #import "UIFont+SYNFont.h"
-#import "SYNAppDelegate.h"
-#import "SYNAbstractViewController.h"
-#import "SYNDeviceManager.h"
 
 
-@interface SYNInstructionsToShareControllerViewController () {
+@interface SYNInstructionsToShareControllerViewController () <SYNArcMenuViewDelegate>
+{
     InstructionsShareState initialState;
 }
 
 #define STD_FADE_TEXT 0.2f
 
-@property (strong, nonatomic) IBOutlet UILabel *instructionsLabel;
-@property (strong, nonatomic) IBOutlet UILabel *subLabel;
+@property (nonatomic) InstructionsShareState state;
+@property (nonatomic, strong) SYNArcMenuView *arcMenu;
 @property (strong, nonatomic) IBOutlet UIButton *okButton;
 @property (strong, nonatomic) IBOutlet UIImageView *videoImageView;
 @property (strong, nonatomic) IBOutlet UIImageView* backgroundImageView;
+@property (strong, nonatomic) IBOutlet UILabel *instructionsLabel;
+@property (strong, nonatomic) IBOutlet UILabel *subLabel;
 @property (weak, nonatomic) SYNAbstractViewController* delegate;
-@property (nonatomic) InstructionsShareState state;
 
 
 @end
@@ -234,11 +237,8 @@
 
 #pragma mark - Arc Menu
 
--(void)setupArcMenuWithRecogniser:(UILongPressGestureRecognizer*)recogniser
+- (void) setupArcMenuWithRecogniser: (UILongPressGestureRecognizer*) recogniser
 {
-    
-    
-    
     SYNArcMenuItem *arcMenuItem1 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionLike"]
                                                         highlightedImage: [UIImage imageNamed: @"ActionLikeHighlighted"]
                                                                     name: kActionLike
@@ -257,13 +257,102 @@
     NSArray* menuItems = @[arcMenuItem1, arcMenuItem2, arcMenuItem3];
     
     
-    [self.delegate arcMenuUpdateState: recogniser
-                   forCellAtIndexPath: nil
-                   withComponentIndex: nil
-                            menuItems: menuItems
-                              menuArc: (M_PI / 2)
-                       menuStartAngle: (-M_PI / 4)];
+    [self arcMenuUpdateState: recogniser
+          forCellAtIndexPath: nil
+          withComponentIndex: nil
+                   menuItems: menuItems
+                     menuArc: (M_PI / 2)
+              menuStartAngle: (-M_PI / 4)];
 }
+
+
+- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
+         forCellAtIndexPath: (NSIndexPath *) cellIndexPath
+         withComponentIndex: (NSInteger) componentIndex
+                  menuItems: (NSArray *) menuItems
+                    menuArc: (float) menuArc
+             menuStartAngle: (float) menuStartAngle
+{
+//    UIView *referenceView = appDelegate.masterViewController.view;
+    UIView *referenceView = self.view;
+    CGPoint tapPoint = [recognizer locationInView: referenceView];
+    
+    if (recognizer.state == UIGestureRecognizerStateBegan)
+    {
+        SYNArcMenuItem *mainMenuItem = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionRingNoTouch"]
+                                                            highlightedImage: [UIImage imageNamed: @"ActionRingTouch"]
+                                                                        name: kActionNone
+                                                                   labelText: nil];
+        
+        self.arcMenu = [[SYNArcMenuView alloc] initWithFrame: referenceView.bounds
+                                                   startItem: mainMenuItem
+                                                 optionMenus: menuItems
+                                               cellIndexPath: cellIndexPath
+                                              componentIndex: componentIndex];
+        self.arcMenu.delegate = self;
+        self.arcMenu.startPoint = tapPoint;
+        self.arcMenu.menuWholeAngle = menuArc;
+        self.arcMenu.rotateAngle = menuStartAngle;
+        
+        CGFloat screenWidth = referenceView.bounds.size.width;
+        
+        if (tapPoint.x < kRotateThresholdX)
+        {
+            float proportion = 1 - MAX(tapPoint.x - kRotateBorderX, 0) / kRotateThresholdX;
+            
+            // The touch is near the left hand size, so rotate the menu angle clockwise proportionally
+            if (tapPoint.y > kRotateThresholdY)
+            {
+                self.arcMenu.rotateAngle += menuArc * proportion;
+            }
+            else
+            {
+                self.arcMenu.rotateAngle += M_PI - menuArc * proportion;
+            }
+        }
+        else if (tapPoint.x > (screenWidth - kRotateThresholdX))
+        {
+            float proportion = 1 - MAX((screenWidth - tapPoint.x - kRotateBorderX), 0) / kRotateThresholdX;
+            
+            // The touch is near the left hand size, so rotate the menu angle anti-clockwise proportionally
+            if (tapPoint.y > kRotateThresholdY)
+            {
+                self.arcMenu.rotateAngle -= menuArc * proportion;
+            }
+            else
+            {
+                self.arcMenu.rotateAngle -= M_PI - menuArc * proportion;
+            }
+        }
+        else if (tapPoint.y < kRotateThresholdY)
+        {
+            self.arcMenu.rotateAngle += M_PI;
+        }
+        
+        [referenceView addSubview: self.arcMenu];
+        
+        [self.arcMenu show: YES];
+    }
+    else if (recognizer.state == UIGestureRecognizerStateEnded)
+    {
+        [self.arcMenu show: NO];
+        self.arcMenu = nil;
+    }
+    else if (recognizer.state == UIGestureRecognizerStateChanged)
+    {
+        [self.arcMenu positionUpdate: tapPoint];
+    }
+}
+
+
+- (void) arcMenu: (SYNArcMenuView *) menu
+         didSelectMenuName: (NSString *) menuName
+         forCellAtIndex: (NSIndexPath *) cellIndexPath
+         andComponentIndex: (NSInteger) componentIndex
+{
+    DebugLog(@"Invalid Arc Menu index selected");
+}
+
 
 
 -(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
