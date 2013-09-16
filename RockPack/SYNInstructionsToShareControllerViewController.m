@@ -97,7 +97,8 @@
             break;
             
         case UIGestureRecognizerStateEnded:
-            self.state = InstructionsShareStatePressAndHold;
+            if(self.state == InstructionsShareStateChooseAction)
+                self.state = InstructionsShareStatePressAndHold;
             break;
             
         default:
@@ -347,7 +348,12 @@
          forCellAtIndex: (NSIndexPath *) cellIndexPath
          andComponentIndex: (NSInteger) componentIndex
 {
-    DebugLog(@"Invalid Arc Menu index selected");
+    
+    for (UIGestureRecognizer* rec in self.videoImageView.gestureRecognizers)
+    {
+        [self.videoImageView removeGestureRecognizer:rec];
+    }
+    self.state = InstructionsShareStateGoodJob;
 }
 
 
