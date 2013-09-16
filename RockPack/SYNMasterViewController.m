@@ -1404,6 +1404,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(void)headerButtonIsActive:(BOOL)isActive
 {
     self.headerButton.userInteractionEnabled = isActive;
+    self.headerButton.hidden = !isActive;
 }
 
 @end

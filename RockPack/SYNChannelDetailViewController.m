@@ -391,7 +391,6 @@
     self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
     
     // iOS 7 header shift
-    
     if (IS_IOS_7_OR_GREATER)
     {
         self.createChannelButton.center = CGPointMake(self.createChannelButton.center.x, self.createChannelButton.center.y + kiOS7PlusHeaderYOffset);
@@ -399,6 +398,7 @@
         self.saveChannelButton.center = CGPointMake(self.saveChannelButton.center.x, self.saveChannelButton.center.y + kiOS7PlusHeaderYOffset);
         self.cancelEditButton.center = CGPointMake(self.cancelEditButton.center.x, self.cancelEditButton.center.y + kiOS7PlusHeaderYOffset);
         self.logoImageView.center = CGPointMake(self.logoImageView.center.x, self.logoImageView.center.y + kiOS7PlusHeaderYOffset);
+        self.activityIndicator.center = CGPointMake(self.activityIndicator.center.x, self.activityIndicator.center.y + kiOS7PlusHeaderYOffset);
     }
 }
 
