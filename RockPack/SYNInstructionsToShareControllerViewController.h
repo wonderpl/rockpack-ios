@@ -14,7 +14,6 @@ typedef enum InstructionsShareState {
     InstructionsShareStatePressAndHold,
     InstructionsShareStateChooseAction,
     InstructionsShareStateGoodJob,
-    InstructionsShareStateShared,
     InstructionsShareStatePacks
     
 } InstructionsShareState;

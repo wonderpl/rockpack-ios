@@ -54,6 +54,7 @@
     
     [self packForInterfaceOrientation:[SYNDeviceManager sharedInstance].orientation];
     
+    // initial setup
     if(self.state == InstructionsShareStatePacks)
     {
         self.backgroundImageView.image = [UIImage imageNamed:@"InstructionBackgroundPacks"];
@@ -62,6 +63,14 @@
     {
         self.backgroundImageView.image = [UIImage imageNamed:@"InstructionBackgroundPressAndHold"];
         
+        self.videoImageView.userInteractionEnabled = YES;
+        self.videoImageView.hidden = NO;
+        
+        self.subLabel.hidden = YES;
+        
+        UILongPressGestureRecognizer* videoLongPress =
+        [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressOverVideoImagePerformed:)];
+        [self.videoImageView addGestureRecognizer:videoLongPress];
     }
     
     self.subLabel.font = [UIFont rockpackFontOfSize:self.subLabel.font.pointSize];
@@ -113,7 +122,7 @@
 {
     self.okButton.enabled = NO;
     
-    if(self.state == InstructionsShareStateShared ||
+    if(self.state == InstructionsShareStateGoodJob ||
        self.state == InstructionsShareStatePressAndHold ||
        self.state == InstructionsShareStatePacks)
     {
@@ -138,44 +147,24 @@
         case InstructionsShareStatePressAndHold:
         {
             
-            self.instructionsLabel.text = NSLocalizedString(@"instruction_press_hold", nil);
+            
+            [self changeMainTextForString:NSLocalizedString(@"instruction_press_hold", nil) onCompletion:^{
+                
+                self.okButton.enabled = YES;
+            }];
             
             
-            self.videoImageView.userInteractionEnabled = YES;
-            self.videoImageView.hidden = NO;
             
-            UILongPressGestureRecognizer* videoLongPress =
-            [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressOverVideoImagePerformed:)];
-            [self.videoImageView addGestureRecognizer:videoLongPress];
             
-            self.subLabel.hidden = YES;
-            
-            self.okButton.enabled = YES;
         }
             break;
             
         case InstructionsShareStateChooseAction:
         {
-            
-            [UIView animateWithDuration:STD_FADE_TEXT animations:^{
-                
-                self.instructionsLabel.alpha = 0.0f;
-                
-            } completion:^(BOOL finished) {
-                
-                self.instructionsLabel.text = NSLocalizedString(@"instruction_choose_action", nil);
-                
-                [UIView animateWithDuration:STD_FADE_TEXT animations:^{
-                    
-                    self.instructionsLabel.alpha = 1.0f;
-                    
-                } completion:^(BOOL finished) {
-                    
-                    self.okButton.enabled = YES;
-                    
-                }];
-                
+            [self changeMainTextForString:NSLocalizedString(@"instruction_choose_action", nil) onCompletion:^{
+                self.okButton.enabled = YES;
             }];
+            
             
         }
             
@@ -183,40 +172,20 @@
             
         case InstructionsShareStateGoodJob:
         {
-            [UIView animateWithDuration:STD_FADE_TEXT animations:^{
-                
-                self.instructionsLabel.alpha = 0.0f;
-                
-            } completion:^(BOOL finished) {
-                
-                self.instructionsLabel.text = NSLocalizedString(@"instruction_good_job", nil);
-                
-                [UIView animateWithDuration:STD_FADE_TEXT animations:^{
-                    
-                    self.instructionsLabel.alpha = 1.0f;
-                    
-                } completion:^(BOOL finished) {
-                    
-                    self.okButton.enabled = YES;
-                    
-                }];
-                
+            
+            [self changeMainTextForString:NSLocalizedString(@"instruction_good_job", nil) onCompletion:^{
+                self.okButton.enabled = YES;
             }];
         }
             
             break;
             
-        case InstructionsShareStateShared:
-        {
-            self.instructionsLabel.text = NSLocalizedString(@"channels_screen_loading_categories", nil);
-            self.okButton.enabled = YES;
-        }
-            
-            break;
+        
             
             
         case InstructionsShareStatePacks:
         {
+            // no fading in this case, just present
             self.instructionsLabel.text = NSLocalizedString(@"instruction_packs_for_you", nil);
             self.subLabel.text = NSLocalizedString(@"instruction_packs_choose_one", nil);
             self.subLabel.hidden = NO;
@@ -229,6 +198,34 @@
             break;
     }
     
+}
+
+-(void)changeMainTextForString:(NSString*)newText onCompletion:(void(^)(void))completion
+{
+    
+    [UIView animateWithDuration:STD_FADE_TEXT animations:^{
+        
+        self.instructionsLabel.alpha = 0.0f;
+        
+    } completion:^(BOOL finished) {
+        
+        self.instructionsLabel.text = newText;
+        
+        [self resizeMainLabel];
+        
+        [UIView animateWithDuration:STD_FADE_TEXT animations:^{
+            
+            self.instructionsLabel.alpha = 1.0f;
+            
+        } completion:^(BOOL finished) {
+            
+            
+            if(completion)
+                completion();
+            
+        }];
+        
+    }];
 }
 
 
@@ -273,23 +270,26 @@
     
     //[self packForInterfaceOrientation:toInterfaceOrientation];
 }
-
--(void)packForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+-(void)resizeMainLabel
 {
-    
     [self.instructionsLabel sizeToFit];
-    
-    self.instructionsLabel.center = CGPointMake(self.view.center.x, self.instructionsLabel.center.y);
     
     // instructions label
     CGRect ilFrame = self.instructionsLabel.frame;
     ilFrame.origin.y = self.state == InstructionsShareStatePacks ? 280.0f : 120.0f;
+    ilFrame.origin.x = 0.0f;
+    ilFrame.size.width = self.view.frame.size.width;
     self.instructionsLabel.frame = CGRectIntegral(ilFrame);
+}
+-(void)packForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
     
+    
+    [self resizeMainLabel];
     
     // secondary component (either label or video)
     CGRect secondFrame;
-    secondFrame.origin.y = ilFrame.origin.y + ilFrame.size.height; // start it with offset
+    secondFrame.origin.y = self.instructionsLabel.frame.origin.y + self.instructionsLabel.frame.size.height; // start it with offset
     
     CGRect btnFrame = self.okButton.frame;
     if(self.state == InstructionsShareStatePacks)
@@ -307,7 +307,7 @@
         
         self.subLabel.frame = CGRectIntegral(secondFrame);
         
-        btnFrame.origin.y = secondFrame.origin.y + secondFrame.size.height + 180.0f;
+        btnFrame.origin.y = secondFrame.origin.y + secondFrame.size.height + (IS_IPAD ? 180.0f : 130.0f);
     }
     else
     {
@@ -316,12 +316,12 @@
         self.videoImageView.center = CGPointMake(self.view.center.x, self.videoImageView.center.y);
         
         secondFrame.size = self.videoImageView.frame.size;
-        secondFrame.origin.y += 160.0f;
+        secondFrame.origin.y += (IS_IPAD ? 160.0f : 60.0f);
         secondFrame.origin.x = self.videoImageView.frame.origin.x;
         
         self.videoImageView.frame = CGRectIntegral(secondFrame);
         
-        btnFrame.origin.y = secondFrame.origin.y + secondFrame.size.height + 80.0f;
+        btnFrame.origin.y = secondFrame.origin.y + secondFrame.size.height + (IS_IPAD ? 80.0f : 50.0f);
     }
     
     
