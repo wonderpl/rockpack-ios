@@ -312,7 +312,7 @@ CATEGORY</string>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="NRg-LY-edT" userLabel="Button - Delete Channel">
                                     <rect key="frame" x="139" y="8" width="44" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <state key="normal" title="Button" image="DeletePackButton.png">
+                                    <state key="normal" image="DeletePackButton.png">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
@@ -426,6 +426,7 @@ CATEGORY</string>
         <image name="ButtonCoverCategory.png" width="155" height="65"/>
         <image name="ButtonCoverCategoryHighlighted.png" width="155" height="65"/>
         <image name="ButtonCreate.png" width="130" height="45"/>
+        <image name="ButtonCreateDisabled.png" width="130" height="45"/>
         <image name="ButtonCreateDisabled.png" width="130" height="45"/>
         <image name="ButtonCreateHighlighted.png" width="130" height="45"/>
         <image name="ButtonEdit.png" width="120" height="45"/>
