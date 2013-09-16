@@ -502,14 +502,30 @@
     
     if (IS_IPAD)
     {
+        
+        CGRect closeButtonFrame = self.closeButton.frame;
+        CGRect confirmButtonFrame = self.confirmButtom.frame;
+        
         if (UIInterfaceOrientationIsPortrait(interfaceOrientation))
         {
             collectionFrame.size.width = 580.0;
+            
+            //Portrait position of Close & Confirm buttons
+            closeButtonFrame.origin.x = 78.0f;
+            confirmButtonFrame.origin.x = 627.0f;
         }
         else
         {
             collectionFrame.size.width = 780.0;
+            
+            //Landscape position of Close & Confirm buttons
+            closeButtonFrame.origin.x = 106.0f;
+            confirmButtonFrame.origin.x = 855.0f;
         }
+        
+        self.closeButton.frame = closeButtonFrame;
+        self.confirmButtom.frame = confirmButtonFrame;
+        
     }
     else
     {

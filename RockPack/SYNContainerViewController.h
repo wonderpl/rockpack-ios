@@ -24,8 +24,6 @@
 - (void) navigateToPageByName: (NSString *) pageName;
 -(SYNAbstractViewController*)viewControllerByPageName: (NSString *) pageName;
 
--(void) firstFadedInto;
-
 /**
  Method to re-layout view to maintain orientation. Specifically intended for when orientation may have changed during popover views.
  */

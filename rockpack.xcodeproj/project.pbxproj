@@ -588,6 +588,14 @@
 		1F5FAEC117E7244F00205F3F /* ButtonCancelAddToPack~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F5FAEBD17E7244F00205F3F /* ButtonCancelAddToPack~iphone.png */; };
 		1F5FAEC217E7244F00205F3F /* ButtonCancelAddToPackHighlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F5FAEBE17E7244F00205F3F /* ButtonCancelAddToPackHighlighted@2x~iphone.png */; };
 		1F5FAEC317E7244F00205F3F /* ButtonCancelAddToPackHighlighted~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F5FAEBF17E7244F00205F3F /* ButtonCancelAddToPackHighlighted~iphone.png */; };
+		1F5FAECD17E73F8700205F3F /* ButtonCancelAddToPack.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F5FAEC517E73F8600205F3F /* ButtonCancelAddToPack.png */; };
+		1F5FAECE17E73F8700205F3F /* ButtonCancelAddToPack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F5FAEC617E73F8700205F3F /* ButtonCancelAddToPack@2x.png */; };
+		1F5FAECF17E73F8700205F3F /* ButtonCancelAddToPackHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F5FAEC717E73F8700205F3F /* ButtonCancelAddToPackHighlighted.png */; };
+		1F5FAED017E73F8700205F3F /* ButtonCancelAddToPackHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F5FAEC817E73F8700205F3F /* ButtonCancelAddToPackHighlighted@2x.png */; };
+		1F5FAED117E73F8700205F3F /* ButtonConfirmAddToPack.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F5FAEC917E73F8700205F3F /* ButtonConfirmAddToPack.png */; };
+		1F5FAED217E73F8700205F3F /* ButtonConfirmAddToPack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F5FAECA17E73F8700205F3F /* ButtonConfirmAddToPack@2x.png */; };
+		1F5FAED317E73F8700205F3F /* ButtonConfirmAddToPackHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F5FAECB17E73F8700205F3F /* ButtonConfirmAddToPackHighlighted.png */; };
+		1F5FAED417E73F8700205F3F /* ButtonConfirmAddToPackHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F5FAECC17E73F8700205F3F /* ButtonConfirmAddToPackHighlighted@2x.png */; };
 		1F827809174BB7070012F9F5 /* ButtonNavSelected@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F827807174BB7070012F9F5 /* ButtonNavSelected@2x~iphone.png */; };
 		1F82780A174BB7070012F9F5 /* ButtonNavSelected~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F827808174BB7070012F9F5 /* ButtonNavSelected~iphone.png */; };
 		1F82780D174BB7310012F9F5 /* ButtonNavSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F82780B174BB7310012F9F5 /* ButtonNavSelected.png */; };
@@ -2089,6 +2097,14 @@
 		1F5FAEBD17E7244F00205F3F /* ButtonCancelAddToPack~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCancelAddToPack~iphone.png"; path = "addToPack/ButtonCancelAddToPack~iphone.png"; sourceTree = "<group>"; };
 		1F5FAEBE17E7244F00205F3F /* ButtonCancelAddToPackHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCancelAddToPackHighlighted@2x~iphone.png"; path = "addToPack/ButtonCancelAddToPackHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
 		1F5FAEBF17E7244F00205F3F /* ButtonCancelAddToPackHighlighted~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCancelAddToPackHighlighted~iphone.png"; path = "addToPack/ButtonCancelAddToPackHighlighted~iphone.png"; sourceTree = "<group>"; };
+		1F5FAEC517E73F8600205F3F /* ButtonCancelAddToPack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCancelAddToPack.png; path = Assets/Images/ButtonCancelAddToPack.png; sourceTree = "<group>"; };
+		1F5FAEC617E73F8700205F3F /* ButtonCancelAddToPack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCancelAddToPack@2x.png"; path = "Assets/Images/ButtonCancelAddToPack@2x.png"; sourceTree = "<group>"; };
+		1F5FAEC717E73F8700205F3F /* ButtonCancelAddToPackHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonCancelAddToPackHighlighted.png; path = Assets/Images/ButtonCancelAddToPackHighlighted.png; sourceTree = "<group>"; };
+		1F5FAEC817E73F8700205F3F /* ButtonCancelAddToPackHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCancelAddToPackHighlighted@2x.png"; path = "Assets/Images/ButtonCancelAddToPackHighlighted@2x.png"; sourceTree = "<group>"; };
+		1F5FAEC917E73F8700205F3F /* ButtonConfirmAddToPack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonConfirmAddToPack.png; path = Assets/Images/ButtonConfirmAddToPack.png; sourceTree = "<group>"; };
+		1F5FAECA17E73F8700205F3F /* ButtonConfirmAddToPack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonConfirmAddToPack@2x.png"; path = "Assets/Images/ButtonConfirmAddToPack@2x.png"; sourceTree = "<group>"; };
+		1F5FAECB17E73F8700205F3F /* ButtonConfirmAddToPackHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonConfirmAddToPackHighlighted.png; path = Assets/Images/ButtonConfirmAddToPackHighlighted.png; sourceTree = "<group>"; };
+		1F5FAECC17E73F8700205F3F /* ButtonConfirmAddToPackHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonConfirmAddToPackHighlighted@2x.png"; path = "Assets/Images/ButtonConfirmAddToPackHighlighted@2x.png"; sourceTree = "<group>"; };
 		1F827807174BB7070012F9F5 /* ButtonNavSelected@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonNavSelected@2x~iphone.png"; sourceTree = "<group>"; };
 		1F827808174BB7070012F9F5 /* ButtonNavSelected~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonNavSelected~iphone.png"; sourceTree = "<group>"; };
 		1F82780B174BB7310012F9F5 /* ButtonNavSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonNavSelected.png; path = Assets/Images/ButtonNavSelected.png; sourceTree = "<group>"; };
@@ -3669,6 +3685,7 @@
 		019824DE1629CA5900216900 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				1F5FAED517E73F8C00205F3F /* Add to Pack */,
 				01F24AC117B8F27900FC8820 /* Arc menu */,
 				1FD2856417BBA1640094F488 /* Share Panel */,
 				BE8F938F17B3CF9700E7035F /* Sharing */,
@@ -4607,6 +4624,21 @@
 				1F5FAEB617E720A200205F3F /* ButtonConfirmAddToPackHighlighted~iphone.png */,
 			);
 			name = addToPack;
+			sourceTree = "<group>";
+		};
+		1F5FAED517E73F8C00205F3F /* Add to Pack */ = {
+			isa = PBXGroup;
+			children = (
+				1F5FAEC517E73F8600205F3F /* ButtonCancelAddToPack.png */,
+				1F5FAEC617E73F8700205F3F /* ButtonCancelAddToPack@2x.png */,
+				1F5FAEC717E73F8700205F3F /* ButtonCancelAddToPackHighlighted.png */,
+				1F5FAEC817E73F8700205F3F /* ButtonCancelAddToPackHighlighted@2x.png */,
+				1F5FAEC917E73F8700205F3F /* ButtonConfirmAddToPack.png */,
+				1F5FAECA17E73F8700205F3F /* ButtonConfirmAddToPack@2x.png */,
+				1F5FAECB17E73F8700205F3F /* ButtonConfirmAddToPackHighlighted.png */,
+				1F5FAECC17E73F8700205F3F /* ButtonConfirmAddToPackHighlighted@2x.png */,
+			);
+			name = "Add to Pack";
 			sourceTree = "<group>";
 		};
 		1FBF54EC17BD71B300B4074E /* Onboarding Images */ = {
@@ -5991,6 +6023,7 @@
 				01677F1716554D2700B1B1D8 /* DINNextLTPro-Regular.otf in Resources */,
 				01B0A968166CE22300CAA235 /* SYNVideoThumbnailRegularCell.xib in Resources */,
 				01B0A96C166CEC4D00CAA235 /* BackgroundVideoThumbnailRegular@2x.png in Resources */,
+				1F5FAED417E73F8700205F3F /* ButtonConfirmAddToPackHighlighted@2x.png in Resources */,
 				01B0A96D166CEC4D00CAA235 /* BackgroundVideoThumbnailRegular.png in Resources */,
 				01B0A970166CEE0700CAA235 /* GlossVideoThumbnailRegular.png in Resources */,
 				01B0A971166CEE0700CAA235 /* GlossVideoThumbnailRegular@2x.png in Resources */,
@@ -6526,6 +6559,7 @@
 				38A200B61731607F00FB9F57 /* ButtonMenuBack@2x~iphone.png in Resources */,
 				38A200B71731607F00FB9F57 /* ButtonMenuBackHighlighted@2x~iphone.png in Resources */,
 				38A200B81731607F00FB9F57 /* ButtonMenuBackHighlighted~iphone.png in Resources */,
+				1F5FAECD17E73F8700205F3F /* ButtonCancelAddToPack.png in Resources */,
 				38A200B91731607F00FB9F57 /* ButtonMenuBack~iphone.png in Resources */,
 				38A200BA1731607F00FB9F57 /* ButtonSettings@2x~iphone.png in Resources */,
 				38A200BB1731607F00FB9F57 /* ButtonSettingsHighlighted@2x~iphone.png in Resources */,
@@ -6636,6 +6670,7 @@
 				38BACE44173415DF00406597 /* ButtonCoverCategoryHighlighted@2x~iphone.png in Resources */,
 				38BACE45173415DF00406597 /* ButtonCoverCategoryHighlighted~iphone.png in Resources */,
 				38BACE46173415DF00406597 /* ButtonCoverCategory~iphone.png in Resources */,
+				1F5FAED217E73F8700205F3F /* ButtonConfirmAddToPack@2x.png in Resources */,
 				38BACE47173415DF00406597 /* ButtonCreate@2x~iphone.png in Resources */,
 				38BACE48173415DF00406597 /* ButtonCreateHighlighted@2x~iphone.png in Resources */,
 				38BACE49173415DF00406597 /* ButtonCreateHighlighted~iphone.png in Resources */,
@@ -6657,6 +6692,7 @@
 				38BACE56173415DF00406597 /* PanelChannelCreateNew~iphone.png in Resources */,
 				38BACE57173415DF00406597 /* PanelChannelSelected@2x~iphone.png in Resources */,
 				38BACE58173415DF00406597 /* PanelChannelSelected~iphone.png in Resources */,
+				1F5FAED317E73F8700205F3F /* ButtonConfirmAddToPackHighlighted.png in Resources */,
 				1F59ED161738F68800430C24 /* ButtonBackHighlighted@2x~iphone.png in Resources */,
 				1F59ED171738F68800430C24 /* ButtonBackHighlighted~iphone.png in Resources */,
 				012B4CA617393CA10019DA4C /* ButtonChooseExistingDefault.png in Resources */,
@@ -6680,6 +6716,7 @@
 				012B4CCB173A7B5A0019DA4C /* ButtonMoveAndScaleUse@2x.png in Resources */,
 				012B4CCC173A7B5A0019DA4C /* ButtonMoveAndScaleUseHighlighted.png in Resources */,
 				012B4CCD173A7B5A0019DA4C /* ButtonMoveAndScaleUseHighlighted@2x.png in Resources */,
+				1F5FAECE17E73F8700205F3F /* ButtonCancelAddToPack@2x.png in Resources */,
 				1F4CF616173A98F100988034 /* AvatarChannel.png in Resources */,
 				1F4CF617173A98F100988034 /* AvatarChannel@2x.png in Resources */,
 				BEECE424173AAFC20042941B /* NavDivider.png in Resources */,
@@ -6740,6 +6777,7 @@
 				1F51A6931742A93B009907CA /* PlaceholderAvatarChannel@2x.png in Resources */,
 				1F51A6941742A93B009907CA /* PlaceholderAvatarFeed.png in Resources */,
 				1F51A6951742A93B009907CA /* PlaceholderAvatarFeed@2x.png in Resources */,
+				1F5FAECF17E73F8700205F3F /* ButtonCancelAddToPackHighlighted.png in Resources */,
 				1F51A6961742A93B009907CA /* PlaceholderAvatarProfile.png in Resources */,
 				1F51A6971742A93B009907CA /* PlaceholderAvatarProfile@2x.png in Resources */,
 				1F51A6981742A93B009907CA /* PlaceholderChannel.png in Resources */,
@@ -6876,6 +6914,7 @@
 				BE4180F1176B35D800FCF994 /* onboarding_button_ok_highlighted~iphone.png in Resources */,
 				BEA2AEDC176E03370099DB74 /* ButtonNavCD.png in Resources */,
 				BEA2AEDD176E03370099DB74 /* ButtonNavCD@2x.png in Resources */,
+				1F5FAED117E73F8700205F3F /* ButtonConfirmAddToPack.png in Resources */,
 				BEA2AEDE176E03370099DB74 /* ButtonNavHighlightedCD.png in Resources */,
 				BEA2AEDF176E03370099DB74 /* ButtonNavHighlightedCD@2x.png in Resources */,
 				BEA2AEE0176E03370099DB74 /* ButtonNavSelectedCD.png in Resources */,
@@ -6941,6 +6980,7 @@
 				BE7D032A179E87D4008053DC /* TabFriendsDefault.png in Resources */,
 				BE7D032B179E87D4008053DC /* TabFriendsDefault@2x.png in Resources */,
 				BE7D032C179E87D4008053DC /* TabFriendsHighlighted.png in Resources */,
+				1F5FAED017E73F8700205F3F /* ButtonCancelAddToPackHighlighted@2x.png in Resources */,
 				BE7D032D179E87D4008053DC /* TabFriendsHighlighted@2x.png in Resources */,
 				BE7D032E179E87D4008053DC /* TabFriendsSelected.png in Resources */,
 				BE7D032F179E87D4008053DC /* TabFriendsSelected@2x.png in Resources */,
