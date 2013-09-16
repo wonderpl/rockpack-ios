@@ -26,6 +26,7 @@
 #import "SubGenre.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
+#import "SYNInstructionsToShareControllerViewController.h"
 #import "Video.h"
 #import "VideoInstance.h"
 
@@ -204,34 +205,11 @@
 {
     [self updateAnalytics];
     
-    // On Boarding
-    
     self.channelThumbnailCollectionView.scrollsToTop = YES;
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL hasShownSubscribeOnBoarding = [defaults boolForKey: kUserDefaultsChannels];
+    // On Boarding
+    [self checkForOnBoarding];
     
-    if (!hasShownSubscribeOnBoarding)
-    {
-        NSString *message = NSLocalizedString(@"onboarding_channels", nil);
-        
-        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0;
-        CGSize size = IS_IPAD ? CGSizeMake(310.0, 64.0) : CGSizeMake(240.0, 60.0);
-        SYNOnBoardingPopoverView *subscribePopover = [SYNOnBoardingPopoverView withMessage: message
-                                                                                  withSize: size
-                                                                               andFontSize: fontSize
-                                                                                pointingTo: CGRectZero
-                                                                             withDirection: PointingDirectionNone];
-        
-        
-        [appDelegate.onBoardingQueue
-         addPopover: subscribePopover];
-        
-        [defaults setBool: YES
-                   forKey: kUserDefaultsChannels];
-        
-        [appDelegate.onBoardingQueue present];
-    }
     
     // if the user has requested 'Load More' channels then dont refresh the page cause he is in the middle of a search
     if (self.dataRequestRange.location == 0)
@@ -240,6 +218,25 @@
     }
 }
 
+-(void)checkForOnBoarding
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL onBoarding1State = [defaults boolForKey:kInstruction1OnBoardingState];
+    if(!onBoarding1State) // 1rst card
+    {
+        SYNInstructionsToShareControllerViewController* itsVC = [[SYNInstructionsToShareControllerViewController alloc] initWithDelegate:self andState:InstructionsShareStatePacks];
+        
+        [appDelegate.viewStackManager presentCoverViewController:itsVC];
+        
+        //[defaults setBool:YES forKey:kInstruction1OnBoardingState];
+        
+    }
+}
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self checkForOnBoarding];
+}
 
 - (void) viewDidScrollToBack
 {

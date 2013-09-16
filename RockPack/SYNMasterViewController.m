@@ -190,7 +190,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          splashView.alpha = 0.0f;
                      } completion: ^(BOOL finished) {
                          
-                         [self.containerViewController firstFadedInto];
                          
                          [splashView removeFromSuperview];
                      }];

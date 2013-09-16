@@ -244,7 +244,7 @@
 
 // == Instructions == //
 
-"instruction_packs_for_you" = "Here are some popular video packs for you";
+"instruction_packs_for_you" = "Here are some popular\nvideo packs for you";
 "instruction_packs_choose_one" = "Choose one to get started";
 
 "instruction_press_hold" = "Press and hold the video. Go on, try it!";

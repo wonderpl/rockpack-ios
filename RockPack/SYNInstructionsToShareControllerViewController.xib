@@ -7,7 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SYNInstructionsToShareControllerViewController">
             <connections>
-                <outlet property="backgroundView" destination="ea1-WH-sSY" id="AoU-Qt-pCl"/>
+                <outlet property="backgroundImageView" destination="EA5-qw-73c" id="6DA-Q4-CBl"/>
                 <outlet property="instructionsLabel" destination="BLd-8k-6EL" id="0bd-fB-r0p"/>
                 <outlet property="okButton" destination="fdO-GG-9t5" id="fE4-JH-Ked"/>
                 <outlet property="subLabel" destination="N1j-JV-7eV" id="OlO-Nl-UoJ"/>
@@ -20,12 +20,10 @@
             <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" id="ea1-WH-sSY" userLabel="BG View">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="EA5-qw-73c" userLabel="BG Image View">
                     <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <color key="backgroundColor" red="0.15686275064945221" green="0.17647059261798859" blue="0.20000000298023224" alpha="0.46000000000000002" colorSpace="calibratedRGB"/>
-                    <color key="tintColor" red="0.50980395078659058" green="0.55294120311737061" blue="0.56862747669219971" alpha="0.0" colorSpace="calibratedRGB"/>
-                </view>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="fdO-GG-9t5">
                     <rect key="frame" x="480" y="513" width="65" height="46"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -37,7 +35,7 @@
                         <action selector="okayButtonPressed:" destination="-1" eventType="touchUpInside" id="NQf-h6-uC8"/>
                     </connections>
                 </button>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BLd-8k-6EL" userLabel="Instructions Text">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BLd-8k-6EL" userLabel="Instructions Text">
                     <rect key="frame" x="365" y="120" width="294" height="73"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -58,7 +56,7 @@
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="InstructionCard2fakeVideoCell.png" id="0hR-7n-JXu" userLabel="Video Image">
                     <rect key="frame" x="376" y="280" width="272" height="153"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.12941177189350128" green="0.71764707565307617" blue="0.83137255907058716" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.50980395078659058" green="0.55294120311737061" blue="0.56862747669219971" alpha="0.0" colorSpace="calibratedRGB"/>
                     <color key="tintColor" red="0.50980395078659058" green="0.55294120311737061" blue="0.56862747669219971" alpha="0.0" colorSpace="calibratedRGB"/>
                 </imageView>
             </subviews>
