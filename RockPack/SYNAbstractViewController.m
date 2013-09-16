@@ -289,6 +289,13 @@
         [appDelegate.viewStackManager viewChannelDetails:videoInstance.channel];
     }
 }
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if(IS_IOS_7_OR_GREATER)
+        [self setNeedsStatusBarAppearanceUpdate];
+}
 
 - (void) videoOverlayDidDissapear
 {
@@ -1029,4 +1036,8 @@
     // to be implemented in subclass
 }
 
+-(UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
 @end

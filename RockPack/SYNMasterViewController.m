@@ -1340,6 +1340,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         [self changeControlButtonsTo:NavigationButtonsAppearanceBlack];
         [self cancelButtonPressed:nil];
+        
+        if(IS_IOS_7_OR_GREATER)
+        {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+        }
     }
     else
     {
@@ -1347,6 +1352,15 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         SYNAbstractViewController* abstractController = (SYNAbstractViewController*)viewController;
         [self changeControlButtonsTo:abstractController.navigationAppearance];
+        
+        if(IS_IOS_7_OR_GREATER)
+        {
+            if(abstractController.navigationAppearance == NavigationButtonsAppearanceWhite)
+                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+            else
+                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+        }
+        
         
         if (abstractController.alwaysDisplaysSearchBox)
         {
