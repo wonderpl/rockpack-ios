@@ -29,6 +29,7 @@
 #import "SYNModalSubscribersController.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNOnBoardingPopoverQueueController.h"
+#import "SYNProfileRootViewController.h"
 #import "SYNReportConcernTableViewController.h"
 #import "SYNSubscribersViewController.h"
 #import "SYNVideoThumbnailRegularCell.h"
@@ -2051,23 +2052,24 @@
 
 - (void) deleteChannel
 {
-    NSLog (@"%@", self.presentingViewController);
-    
     // return to previous screen as if the back button tapped
-    [appDelegate.viewStackManager popController];
+    appDelegate.viewStackManager.returnBlock = ^{
+        [appDelegate.oAuthNetworkEngine deleteChannelForUserId: appDelegate.currentUser.uniqueId
+                                                     channelId: self.channel.uniqueId
+                                             completionHandler: ^(id response) {
+                                                 
+                                                 [appDelegate.currentUser.channelsSet removeObject: self.channel];
+                                                 [self.channel.managedObjectContext deleteObject: self.channel];
+                                                 [self.originalChannel.managedObjectContext deleteObject:self.originalChannel];
+                                                 
+                                                 [appDelegate saveContext: YES];
+                                             }
+                                                  errorHandler: ^(id error) {
+                                                      DebugLog(@"Delete channel failed");
+                                                  }];
+    };
     
-//    ((UIViewController *) self.navigationController.viewControllers[viewControllersCount - 2])
-    
-//    [appDelegate.oAuthNetworkEngine deleteChannelForUserId: appDelegate.currentUser.uniqueId
-//                                                 channelId: self.channel.uniqueId
-//                                         completionHandler: ^(id response) {
-//                                             [appDelegate.currentUser.channelsSet removeObject: self.channel];
-//                                             [self.channel.managedObjectContext deleteObject: self.channel];
-//                                             [appDelegate saveContext: YES];
-//                                         }
-//                                              errorHandler: ^(id error) {
-//                                                  DebugLog(@"Delete channel failed");
-//                                              }];
+    [appDelegate.viewStackManager popController];   
 }
 
 

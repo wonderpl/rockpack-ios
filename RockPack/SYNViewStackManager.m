@@ -161,10 +161,8 @@
     
     [self.navigationController popViewControllerAnimated: NO];
     
-
-    
-        
 }
+
 
 
 - (void) popToRootController
