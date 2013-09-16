@@ -10,6 +10,7 @@
 #import "UIFont+SYNFont.h"
 #import "SYNAppDelegate.h"
 #import "SYNAbstractViewController.h"
+#import "SYNDeviceManager.h"
 
 
 @interface SYNInstructionsToShareControllerViewController () {
@@ -48,6 +49,10 @@
     self.state = initialState; // init state, should already be set so will ignored
     
     // set the background
+    
+    self.view.frame = [[SYNDeviceManager sharedInstance] currentScreenRect];
+    
+    [self packForInterfaceOrientation:[SYNDeviceManager sharedInstance].orientation];
     
     if(self.state == InstructionsShareStatePacks)
     {
@@ -258,6 +263,70 @@
                             menuItems: menuItems
                               menuArc: (M_PI / 2)
                        menuStartAngle: (-M_PI / 4)];
+}
+
+
+-(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
+    //[self packForInterfaceOrientation:toInterfaceOrientation];
+}
+
+-(void)packForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    
+    [self.instructionsLabel sizeToFit];
+    
+    self.instructionsLabel.center = CGPointMake(self.view.center.x, self.instructionsLabel.center.y);
+    
+    // instructions label
+    CGRect ilFrame = self.instructionsLabel.frame;
+    ilFrame.origin.y = self.state == InstructionsShareStatePacks ? 280.0f : 120.0f;
+    self.instructionsLabel.frame = CGRectIntegral(ilFrame);
+    
+    
+    // secondary component (either label or video)
+    CGRect secondFrame;
+    secondFrame.origin.y = ilFrame.origin.y + ilFrame.size.height; // start it with offset
+    
+    CGRect btnFrame = self.okButton.frame;
+    if(self.state == InstructionsShareStatePacks)
+    {
+        // label
+        [self.subLabel sizeToFit];
+        
+        
+        
+        self.subLabel.center = CGPointMake(self.view.center.x, self.subLabel.center.y);
+        
+        secondFrame.size = self.subLabel.frame.size;
+        secondFrame.origin.x = self.subLabel.frame.origin.x;
+        secondFrame.origin.y += 30.0f;
+        
+        self.subLabel.frame = CGRectIntegral(secondFrame);
+        
+        btnFrame.origin.y = secondFrame.origin.y + secondFrame.size.height + 180.0f;
+    }
+    else
+    {
+        // video
+        
+        self.videoImageView.center = CGPointMake(self.view.center.x, self.videoImageView.center.y);
+        
+        secondFrame.size = self.videoImageView.frame.size;
+        secondFrame.origin.y += 160.0f;
+        secondFrame.origin.x = self.videoImageView.frame.origin.x;
+        
+        self.videoImageView.frame = CGRectIntegral(secondFrame);
+        
+        btnFrame.origin.y = secondFrame.origin.y + secondFrame.size.height + 80.0f;
+    }
+    
+    
+    
+    self.okButton.frame = btnFrame;
 }
 
 
