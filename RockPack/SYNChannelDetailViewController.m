@@ -972,7 +972,7 @@
 }
 
 
-#pragma mark - Collection Delegate Methods
+#pragma mark - Collection Delegate/Data Source Methods
 
 - (NSInteger) collectionView: (UICollectionView *) collectionView numberOfItemsInSection: (NSInteger) section
 {

@@ -745,11 +745,6 @@
      ];
 }
 
-#define kRotateThresholdX 100
-#define kRotateThresholdY 180
-#define kRotateBorderX 25
-#define kRotateBorderY 25
-
 
 - (VideoInstance *) videoInstanceForIndexPath: (NSIndexPath *) indexPath
 {
