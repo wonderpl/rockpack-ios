@@ -140,6 +140,24 @@ typedef enum {
                                          blue: (51.0/255.0)
                                         alpha: (1.0)];
     
+    if(IS_IOS_7_OR_GREATER)
+    {
+        CGRect frameToMove;
+        frameToMove = self.backgroundImageView.frame;
+        frameToMove.size.height += 10.0f;
+        self.backgroundImageView.frame = frameToMove;
+        
+        // move elements down so that the title does not hit the new transparent status bar
+        for (UIView* viewToMove in @[self.tableView, self.containerView,
+                                     self.avatarButton, self.userNameLabel,
+                                     self.activityIndicator, self.profilePictureImageView])
+        {
+            frameToMove = viewToMove.frame;
+            frameToMove.origin.y += 10.0f;
+            viewToMove.frame = frameToMove;
+        }
+    }
+    
     self.cellByPageName = [NSMutableDictionary dictionaryWithCapacity:3];
     
     CGRect newFrame = self.view.frame;
