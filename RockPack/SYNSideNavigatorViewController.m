@@ -140,6 +140,24 @@ typedef enum {
                                          blue: (51.0/255.0)
                                         alpha: (1.0)];
     
+    if(IS_IOS_7_OR_GREATER)
+    {
+        CGRect frameToMove;
+        frameToMove = self.backgroundImageView.frame;
+        frameToMove.size.height += 10.0f;
+        self.backgroundImageView.frame = frameToMove;
+        
+        // move elements down so that the title does not hit the new transparent status bar
+        for (UIView* viewToMove in @[self.tableView, self.containerView,
+                                     self.avatarButton, self.userNameLabel,
+                                     self.activityIndicator, self.profilePictureImageView])
+        {
+            frameToMove = viewToMove.frame;
+            frameToMove.origin.y += 10.0f;
+            viewToMove.frame = frameToMove;
+        }
+    }
+    
     self.cellByPageName = [NSMutableDictionary dictionaryWithCapacity:3];
     
     CGRect newFrame = self.view.frame;
@@ -763,45 +781,7 @@ typedef enum {
 
 - (void) checkAndDisplayOnBoarding
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL hasShownFriendsTabOnBoarding = [defaults boolForKey: kUserDefaultsFriendsTab];
     
-    if (!hasShownFriendsTabOnBoarding)
-    {
-        SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
-        NSString *message = NSLocalizedString(@"onboarding_friends", nil);
-        
-        // FIXME: Surely these iPad checks are not required (see above)
-        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0;
-        CGSize size = IS_IPAD ? CGSizeMake(240.0, 86.0) : CGSizeMake(200.0, 82.0);
-        
-        UITableViewCell* friendsCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:kFriendsRowIndex inSection:0]];
-        
-        CGRect rectToPointTo = [appDelegate.masterViewController.view convertRect: friendsCell.frame
-                                                                         fromView: self.tableView];
-        
-        
-        //randomCell.addItButton.hidden = YES;
-        
-        SYNOnBoardingPopoverView *addToChannelPopover = [SYNOnBoardingPopoverView withMessage: message
-                                                                                     withSize: size
-                                                                                  andFontSize: fontSize
-                                                                                   pointingTo: rectToPointTo
-                                                                                withDirection: PointingDirectionDown];
-        
-        //__weak SYNChannelDetailViewController *wself = self;
-        addToChannelPopover.action = ^(id obj){
-            //[wself addItToChannelPresssed: nil];
-        };
-        
-        [appDelegate.onBoardingQueue addPopover: addToChannelPopover];
-        
-        [defaults setBool: YES
-                   forKey: kUserDefaultsFriendsTab];
-        
-        
-        [appDelegate.onBoardingQueue present];
-    }
     
 }
 
@@ -823,10 +803,8 @@ typedef enum {
                              
                              self.userNameLabel.alpha = 1.0;
                          }
-                         completion: ^(BOOL finished) {
-                         }];
+                         completion: nil];
     }
-    
     else
     {
         CGRect startFrame = self.navigationContainerView.frame;
@@ -844,8 +822,7 @@ typedef enum {
                              selfBounds.origin.y = self.navigationContainerView.frame.origin.y;
                              self.navigationContainerView.frame = selfBounds;
                          }
-                         completion: ^(BOOL finished) {
-                         }];
+                         completion: nil];
     }
 }
 

@@ -72,7 +72,7 @@
     
     self.detailTextLabel.frame = CGRectMake(50.0f, 28.0f, self.detailTextLabel.frame.size.width, self.detailTextLabel.frame.size.height);
     
-    self.customSeparatorView.frame = CGRectMake(10.0f, self.frame.size.height - 2.0f, self.frame.size.width - 20.0f, 2.0f);
+    self.customSeparatorView.frame = CGRectMake(0.0f, self.frame.size.height - 2.0f, self.frame.size.width, 2.0f);
     
     float posY = 0.0f;
     

@@ -56,6 +56,7 @@ typedef enum : NSInteger {
 @property (nonatomic, strong) UIImage *highlightedContentImage;
 @property (nonatomic, strong) UIImage *highlightedImage;
 @property (nonatomic, strong) UIImage *image;
+@property (nonatomic, copy) NSArray *menusArray;
 @property (nonatomic, weak) id<SYNArcMenuViewDelegate> delegate;
 
 - (id) initWithFrame: (CGRect) frame

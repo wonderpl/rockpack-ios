@@ -138,6 +138,34 @@
     [self enqueueOperation: networkOperation];
 }
 
+- (void) channelDataForUserId: (NSString *) userId
+                    channelId: (NSString *) channelId
+                      inRange: (NSRange) range
+            completionHandler: (MKNKUserSuccessBlock) completionBlock
+                 errorHandler: (MKNKUserErrorBlock) errorBlock
+{
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
+                                                @"CHANNELID" : channelId};
+    
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    
+    parameters[@"start"] = @(range.location);
+    
+    parameters[@"size"] = @(range.length);
+    
+    NSString *apiString = [kAPIGetChannelDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
+                                                                                                       params: [self getLocaleParamWithParams: parameters]
+                                                                                                   httpMethod: @"GET"
+                                                                                                          ssl: FALSE];
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    [self enqueueOperation: networkOperation];
+}
+
 
 - (void) videosForChannelForUserId: (NSString *) userId
                          channelId: (NSString *) channelId
@@ -145,7 +173,8 @@
                  completionHandler: (MKNKUserSuccessBlock) completionBlock
                       errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    NSDictionary *apiSubstitutionDictionary = @{@"USERID": userId, @"CHANNELID": channelId};
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID": userId,
+                                                @"CHANNELID": channelId};
     
     NSString *apiString = [kAPIGetVideosForChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
@@ -352,7 +381,6 @@
         }
     }];
     
-    
     [self enqueueOperation: networkOperation];
     
     return networkOperation;
@@ -374,7 +402,6 @@
     tempParameters[@"start"] = [NSString stringWithFormat: @"%i", range.location];
     tempParameters[@"size"] = [NSString stringWithFormat: @"%i", range.length];
     [tempParameters addEntriesFromDictionary: [self getLocaleParam]];
-    
     
     NSDictionary *parameters = [NSDictionary dictionaryWithDictionary: tempParameters];
     
@@ -414,7 +441,6 @@
             [self showErrorPopUpForError: error];
         }
     }];
-    
     
     [self enqueueOperation: networkOperation];
     
@@ -465,7 +491,6 @@
     [self enqueueOperation: networkOperation];
     
     // Go back to the original operation class
-    
     [self registerOperationSubclass: [SYNNetworkOperationJsonObject class]];
     
     return networkOperation;

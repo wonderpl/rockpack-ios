@@ -400,6 +400,33 @@
         self.logoImageView.center = CGPointMake(self.logoImageView.center.x, self.logoImageView.center.y + kiOS7PlusHeaderYOffset);
         self.activityIndicator.center = CGPointMake(self.activityIndicator.center.x, self.activityIndicator.center.y + kiOS7PlusHeaderYOffset);
     }
+
+//
+//    if ([self.channel.resourceURL hasPrefix: @"https"])                          // https does not cache so it is fresh
+//    {
+//        [appDelegate.oAuthNetworkEngine channelDataForUserId: appDelegate.currentUser.uniqueId
+//                                                   channelId: self.channel.uniqueId
+//                                                     inRange: self.dataRequestRange
+//                                           completionHandler: ^(NSDictionary *dictionary) {
+//                                              NSLog (@"Failure"); NSLog (@"Success");
+//                                           }
+//                                                errorHandler: ^(NSDictionary *errorDictionary) {
+//                                                    NSLog (@"Failure");
+//                                                }];
+//    }
+//    else
+//    {
+//        [appDelegate.networkEngine channelDataForUserId: appDelegate.currentUser.uniqueId
+//                                              channelId: self.channel.uniqueId
+//                                                inRange: self.dataRequestRange
+//                                      completionHandler: ^(NSDictionary *dictionary) {
+//                                          NSLog (@"Success");
+//                                      }
+//         
+//                                           errorHandler: ^(NSDictionary *errorDictionary) {
+//                                               NSLog (@"Failure");
+//                                           }];
+//    }
 }
 
 
@@ -713,8 +740,6 @@
 
 - (void) handleDataModelChange: (NSNotification *) notification
 {
-//    [self displayChannelDetails];
-    
     NSArray *updatedObjects = [notification userInfo][NSUpdatedObjectsKey];
     
     NSArray *deletedObjects = [notification userInfo][NSDeletedObjectsKey]; // our channel has been deleted
@@ -760,6 +785,17 @@
             [self updateChannelOwnerWithUser];
         }
     }];
+    
+    // Check to see if we have a background URL and we are not already loading one
+    if ((self.channel.channelCover.imageBackgroundUrl != nil) && (self.currentWebImageOperation == nil))
+    {
+        self.currentWebImageOperation = [self loadBackgroundImage];
+    }
+    
+    if ((self.channel.channelOwner.displayName !=  nil) && (self.channelOwnerLabel.text == nil))
+    {
+        [self displayChannelDetails];
+    }
 }
 
 
@@ -2630,86 +2666,7 @@ shouldChangeTextInRange: (NSRange) range
 
 - (void) checkOnBoarding
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL hasShownSubscribeOnBoarding = [defaults boolForKey: kUserDefaultsSubscribe];
     
-    BOOL hasShownAddVideoOnBoarding = [defaults boolForKey: kUserDefaultsAddVideo];
-    
-    if (hasShownAddVideoOnBoarding && hasShownSubscribeOnBoarding)
-    {
-        return;
-    }
-    
-    // do not show onboarding related to subscriptions in user's own channels and channels already subscribed
-    if (![self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId] &&
-        !self.channel.subscribedByUserValue && !hasShownSubscribeOnBoarding)
-    {
-        NSString *message = NSLocalizedString(@"onboarding_subscription", nil);
-        PointingDirection direction = IS_IPAD ? PointingDirectionLeft : PointingDirectionUp;
-        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0;
-        CGSize size = IS_IPAD ? CGSizeMake(290.0, 68.0) : CGSizeMake(250.0, 60.0);
-        CGRect rectToPointTo = self.subscribeButton.frame;
-        
-        if (!IS_IPAD)
-        {
-            rectToPointTo = CGRectInset(rectToPointTo, 0.0, 6.0);
-        }
-        
-        SYNOnBoardingPopoverView *subscribePopover = [SYNOnBoardingPopoverView withMessage: message
-                                                                                  withSize: size
-                                                                               andFontSize: fontSize
-                                                                                pointingTo: rectToPointTo
-                                                                             withDirection: direction];
-        
-        __weak SYNChannelDetailViewController *wself = self;
-        subscribePopover.action = ^(id obj){
-            [wself subscribeButtonTapped: self.subscribeButton]; // simulate press
-        };
-        
-        [appDelegate.onBoardingQueue addPopover: subscribePopover];
-        
-        [defaults setBool: YES
-                   forKey: kUserDefaultsSubscribe];
-    }
-    
-    NSInteger cellNumber = IS_IPAD ? 1 : 0;
-    SYNVideoThumbnailRegularCell *randomCell =
-    (SYNVideoThumbnailRegularCell *) [self.videoThumbnailCollectionView cellForItemAtIndexPath: [NSIndexPath indexPathForItem: cellNumber
-                                                                                                                    inSection: 0]];
-    
-    if (!hasShownAddVideoOnBoarding && randomCell)
-    {
-        NSString *message = NSLocalizedString(@"onboarding_video", nil);
-        
-        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0;
-        CGSize size = IS_IPAD ? CGSizeMake(240.0, 86.0) : CGSizeMake(200.0, 82.0);
-        
-        
-        CGRect rectToPointTo = [self.view convertRect: randomCell.frame
-                                             fromView: randomCell];
-        
-        rectToPointTo = CGRectOffset(rectToPointTo, -5, 0);
-        SYNOnBoardingPopoverView *addToChannelPopover = [SYNOnBoardingPopoverView withMessage: message
-                                                                                     withSize: size
-                                                                                  andFontSize: fontSize
-                                                                                   pointingTo: rectToPointTo
-                                                                                withDirection: PointingDirectionDown];
-      
-        //__weak SYNChannelDetailViewController *wself = self;
-        addToChannelPopover.action = ^(id obj){
-            if ([obj isKindOfClass:[UILongPressGestureRecognizer class]])
-            {
-                [self arcMenuUpdateState: obj];
-            }
-        };
-        
-        [appDelegate.onBoardingQueue addPopover: addToChannelPopover];
-        
-        [defaults setBool: YES
-                   forKey: kUserDefaultsAddVideo];
-    }
-    
-    [appDelegate.onBoardingQueue present];
 }
 
 
@@ -3211,33 +3168,41 @@ shouldChangeTextInRange: (NSRange) range
     __weak SDWebImageManager *shareImageManager = SDWebImageManager.sharedManager;
     __weak SYNChannelDetailViewController *wself = self;
     
-    return [shareImageManager downloadWithURL: [NSURL URLWithString: self.channel.channelCover.imageBackgroundUrl]
-                                      options: SDWebImageRetryFailed
-                                     progress: nil
-                                    completed: ^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
-                                        if (!wself || !image)
-                                        {
-                                            return;
-                                        }
-                                        
-                                        wself.originalBackgroundImage = image;
-                                        
-                                        UIImage *croppedImage = [wself croppedImageForCurrentOrientation];
-                                        
-                                        
-                                        [UIView transitionWithView: wself.view
-                                                          duration: 0.35f
-                                                           options: UIViewAnimationOptionTransitionCrossDissolve
-                                                        animations: ^{
-                                                            
-                                                                 wself.channelCoverImageView.image = croppedImage;
-                                                            
-                                                      } completion: ^(BOOL finished) {
-                                                            
-                                                       }];
-                                        
-                                        [wself.channelCoverImageView setNeedsLayout];
-                                    }];
+    // Make sure we have a valid background URL
+    if (self.channel.channelCover.imageBackgroundUrl)
+    {
+        return [shareImageManager downloadWithURL: [NSURL URLWithString: self.channel.channelCover.imageBackgroundUrl]
+                                          options: SDWebImageRetryFailed
+                                         progress: nil
+                                        completed: ^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
+                                            if (!wself || !image)
+                                            {
+                                                return;
+                                            }
+                                            
+                                            wself.originalBackgroundImage = image;
+                                            
+                                            UIImage *croppedImage = [wself croppedImageForCurrentOrientation];
+                                            
+                                            
+                                            [UIView transitionWithView: wself.view
+                                                              duration: 0.35f
+                                                               options: UIViewAnimationOptionTransitionCrossDissolve
+                                                            animations: ^{
+                                                                
+                                                                wself.channelCoverImageView.image = croppedImage;
+                                                                
+                                                            } completion: ^(BOOL finished) {
+                                                                
+                                                            }];
+                                            
+                                            [wself.channelCoverImageView setNeedsLayout];
+                                        }];
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 

@@ -13,6 +13,7 @@
 #import "SYNInstructionsToShareControllerViewController.h"
 #import "UIFont+SYNFont.h"
 
+#define OBSERVE_HIGHLIGHTED_KEY @"highlighted"
 
 @interface SYNInstructionsToShareControllerViewController () <SYNArcMenuViewDelegate>
 {
@@ -97,8 +98,19 @@
             break;
             
         case UIGestureRecognizerStateEnded:
-            if(self.state == InstructionsShareStateChooseAction)
-                self.state = InstructionsShareStatePressAndHold;
+            
+            [self listeningToMenuItemsUpdates:NO];
+            
+            if(self.state == InstructionsShareStateGoodJob)
+            {
+                [self tapToClose:recogniser];
+                return;
+            }
+            
+            self.state = InstructionsShareStatePressAndHold;
+            
+            
+            
             break;
             
         default:
@@ -111,9 +123,6 @@
 
 -(void)tapToClose:(UIGestureRecognizer*)recogniser
 {
-    
-    
-    
     
     [self.backgroundImageView removeGestureRecognizer:self.backgroundImageView.gestureRecognizers[0]]; // remove the tap gesture for house keeping
     
@@ -147,18 +156,13 @@
     switch (_state)
     {
         
-        
         case InstructionsShareStatePressAndHold:
         {
-            
             
             [self changeMainTextForString:NSLocalizedString(@"instruction_press_hold", nil) onCompletion:^{
                 
                 self.okButton.enabled = YES;
             }];
-            
-            
-            
             
         }
             break;
@@ -168,7 +172,6 @@
             [self changeMainTextForString:NSLocalizedString(@"instruction_choose_action", nil) onCompletion:^{
                 self.okButton.enabled = YES;
             }];
-            
             
         }
             
@@ -242,6 +245,7 @@
                                                                     name: kActionLike
                                                                labelText: @"Like it"];
     
+    
     SYNArcMenuItem *arcMenuItem2 = [[SYNArcMenuItem alloc] initWithImage: [UIImage imageNamed: @"ActionAdd"]
                                                         highlightedImage: [UIImage imageNamed: @"ActionAddHighlighted"]
                                                                     name: kActionAdd
@@ -262,6 +266,7 @@
                      menuArc: (M_PI / 2)
               menuStartAngle: (-M_PI / 4)];
 }
+
 
 
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
@@ -287,6 +292,10 @@
                                                  optionMenus: menuItems
                                                cellIndexPath: cellIndexPath
                                               componentIndex: componentIndex];
+        
+        
+        [self listeningToMenuItemsUpdates:YES];
+        
         self.arcMenu.delegate = self;
         self.arcMenu.startPoint = tapPoint;
         self.arcMenu.menuWholeAngle = menuArc;
@@ -422,6 +431,39 @@
     
     
     self.okButton.frame = btnFrame;
+}
+
+#pragma mark - Observer
+-(void)listeningToMenuItemsUpdates:(BOOL)listening
+{
+    for (SYNArcMenuItem* item in self.arcMenu.menusArray)
+    {
+        if(listening)
+            [item.imageView addObserver:self forKeyPath:OBSERVE_HIGHLIGHTED_KEY options:NSKeyValueObservingOptionNew context:nil];
+        else
+            [item.imageView removeObserver:self forKeyPath:OBSERVE_HIGHLIGHTED_KEY];
+    }
+}
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
+{
+    
+    if ([keyPath isEqual:OBSERVE_HIGHLIGHTED_KEY])
+    {
+        NSNumber* newValue = [change objectForKey:NSKeyValueChangeNewKey];
+        if(![newValue isKindOfClass:[NSNumber class]])
+            return;
+        
+        BOOL newBoolValue = [newValue boolValue];
+        if (newBoolValue) {
+            self.state = InstructionsShareStateGoodJob;
+        }
+        else {
+            
+        }
+    }
 }
 
 
