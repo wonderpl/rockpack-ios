@@ -13,6 +13,8 @@
 #import "AppConstants.h"
 #import <QuartzCore/QuartzCore.h>
 
+#define kNextPrevVideoCellAlpha 0.8f
+#define kCurrentVideoCellAlpha 1.0f
 
 @interface SYNVideoThumbnailSmallCell ()
 
@@ -36,7 +38,7 @@
     
     self.colourImageView.image = nil;
     self.monochromeImageView.image = nil;
-    self.mainView.alpha = 0.6f;
+    self.mainView.alpha = kNextPrevVideoCellAlpha;
     self.colour = FALSE;
 }
 
@@ -65,15 +67,15 @@
                                                                   delay: 0.0f
                                                                 options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction
                                                              animations: ^{
-                                                                 weakSelf.colourImageView.alpha = 1.0f;
-                                                                 weakSelf.monochromeImageView.alpha = 1.0f;
+                                                                 weakSelf.colourImageView.alpha = kCurrentVideoCellAlpha;
+                                                                 weakSelf.monochromeImageView.alpha = kCurrentVideoCellAlpha;
                                                              }
                                                              completion: nil];
                                         }
                                         else
                                         {
-                                            weakSelf.colourImageView.alpha = 1.0f;
-                                            weakSelf.monochromeImageView.alpha = 1.0f;
+                                            weakSelf.colourImageView.alpha = kCurrentVideoCellAlpha;
+                                            weakSelf.monochromeImageView.alpha = kCurrentVideoCellAlpha;
                                         }
                                     }
                                     else
@@ -93,12 +95,13 @@
         self.monochromeImageView.hidden = TRUE;
         self.selectedGlossImageView.hidden = FALSE;
         self.defaultGlossImageView.hidden = TRUE;
+        self.mainView.alpha = kCurrentVideoCellAlpha;
     }
     else
     {
         self.colourImageView.hidden =  TRUE;
         self.monochromeImageView.hidden = FALSE;
-        self.mainView.alpha = 0.6f;
+        self.mainView.alpha = kNextPrevVideoCellAlpha;
         self.selectedGlossImageView.hidden = TRUE;
         self.defaultGlossImageView.hidden = FALSE;
     }
@@ -127,7 +130,7 @@
     self.colourImageView.image = nil;
     self.monochromeImageView.image = nil;
     
-    self.mainView.alpha = 0.6f;
+    self.mainView.alpha = kNextPrevVideoCellAlpha;
     self.colour = FALSE;
 }
 

@@ -16,7 +16,7 @@
                 <outlet property="heartActivityIndicator" destination="155" id="156"/>
                 <outlet property="likesCountLabel" destination="160" id="161"/>
                 <outlet property="nextVideoButton" destination="17" id="73"/>
-                <outlet property="panelImageView" destination="19" id="86"/>
+                <outlet property="panelView" destination="gqX-es-9WE" id="Q3J-dE-CgQ"/>
                 <outlet property="passthroughView" destination="139" id="143"/>
                 <outlet property="previousVideoButton" destination="18" id="76"/>
                 <outlet property="reportConcernButton" destination="144" id="146"/>
@@ -129,11 +129,11 @@
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <collectionView autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="none" id="81">
-                            <rect key="frame" x="0.0" y="631" width="1024" height="106"/>
+                            <rect key="frame" x="0.0" y="634" width="1024" height="106"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="82">
-                                <size key="itemSize" width="147" height="106"/>
+                                <size key="itemSize" width="204" height="106"/>
                                 <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                 <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                 <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -161,12 +161,12 @@
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" id="150" userLabel="Cycling Label - Channel title" customClass="BBCyclingLabel">
-                            <rect key="frame" x="200" y="17" width="226" height="23"/>
+                            <rect key="frame" x="190" y="17" width="226" height="23"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
                         <view contentMode="scaleToFill" id="148" userLabel="Cycling Label - Channel creator" customClass="BBCyclingLabel">
-                            <rect key="frame" x="200" y="33" width="226" height="23"/>
+                            <rect key="frame" x="190" y="33" width="226" height="23"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
@@ -185,10 +185,11 @@
                                 <action selector="userTouchedProfileButton:" destination="-1" eventType="touchUpInside" id="103"/>
                             </connections>
                         </button>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="PanelVideoScreenVideoMainOverlay.png" id="19">
-                            <rect key="frame" x="0.0" y="0.0" width="1024" height="748"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        </imageView>
+                        <view contentMode="scaleToFill" id="gqX-es-9WE" userLabel="Video Container">
+                            <rect key="frame" x="142" y="71" width="739" height="543"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        </view>
                         <view autoresizesSubviews="NO" contentMode="top" id="111" customClass="SYNPassthroughView">
                             <rect key="frame" x="143" y="37" width="744" height="568"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
@@ -198,7 +199,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 </imageView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" id="15" userLabel="Button - Heart">
-                                    <rect key="frame" x="237" y="494" width="70" height="69"/>
+                                    <rect key="frame" x="262" y="450" width="70" height="69"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                     <state key="normal" image="ButtonVideoOverlayLike.png">
@@ -214,11 +215,19 @@
                                     </connections>
                                 </button>
                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="white" id="155" userLabel="Activity Indicator - Heart">
-                                    <rect key="frame" x="209" y="516" width="20" height="20"/>
+                                    <rect key="frame" x="234" y="472" width="20" height="20"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 </activityIndicatorView>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="160" userLabel="Like Count Label">
+                                    <rect key="frame" x="243" y="497" width="109" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" red="0.50980395079999996" green="0.55294120309999995" blue="0.56862747670000002" alpha="0.0" colorSpace="calibratedRGB"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" id="13" userLabel="Button - Add">
-                                    <rect key="frame" x="335" y="494" width="70" height="69"/>
+                                    <rect key="frame" x="335" y="450" width="70" height="69"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                     <state key="normal" image="ButtonVideoOverlayAdd.png">
@@ -234,17 +243,18 @@
                                     </connections>
                                 </button>
                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="white" id="157" userLabel="Activity Indicator - Share">
-                                    <rect key="frame" x="511" y="516" width="20" height="20"/>
+                                    <rect key="frame" x="486" y="472" width="20" height="20"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 </activityIndicatorView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" id="14" userLabel="Button - Share">
-                                    <rect key="frame" x="433" y="494" width="70" height="69"/>
+                                    <rect key="frame" x="408" y="450" width="70" height="69"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                     <state key="normal" title="Button" image="ButtonVideoOverlayShare.png">
                                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
+                                    <state key="selected" image="ButtonVideoOverlayShareSelected.png"/>
                                     <state key="highlighted" image="ButtonVideoOverlayShareHighlighted.png">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
@@ -253,7 +263,7 @@
                                     </connections>
                                 </button>
                                 <view contentMode="scaleToFill" id="152" userLabel="Cycling Label - Video title" customClass="BBCyclingLabel">
-                                    <rect key="frame" x="13" y="463" width="714" height="28"/>
+                                    <rect key="frame" x="18" y="534" width="662" height="28"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
@@ -273,7 +283,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="144" userLabel="Button - Report Concern">
-                                    <rect key="frame" x="644" y="527" width="83" height="44"/>
+                                    <rect key="frame" x="694" y="533" width="44" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                     <state key="normal" image="ButtonReport.png">
@@ -288,14 +298,6 @@
                                         <action selector="userTouchedReportConcernButton:" destination="-1" eventType="touchUpInside" id="145"/>
                                     </connections>
                                 </button>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="160" userLabel="Like Count Label">
-                                    <rect key="frame" x="218" y="541" width="109" height="21"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="backgroundColor" red="0.50980395079999996" green="0.55294120309999995" blue="0.56862747670000002" alpha="0.0" colorSpace="calibratedRGB"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <gestureRecognizers/>
@@ -310,15 +312,15 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.10980392160000001" green="0.1215686275" blue="0.12941176469999999" alpha="0.94999999999999996" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.95000000000000007" colorSpace="calibratedRGB"/>
             <gestureRecognizers/>
         </view>
     </objects>
     <resources>
         <image name="ButtonClose.png" width="44" height="45"/>
-        <image name="ButtonReport.png" width="83" height="29"/>
-        <image name="ButtonReportHighlighted.png" width="83" height="29"/>
-        <image name="ButtonReportSelected.png" width="83" height="29"/>
+        <image name="ButtonReport.png" width="44" height="44"/>
+        <image name="ButtonReportHighlighted.png" width="44" height="44"/>
+        <image name="ButtonReportSelected.png" width="44" height="44"/>
         <image name="ButtonVideoOverlayAdd.png" width="70" height="69"/>
         <image name="ButtonVideoOverlayAddHighlighted.png" width="70" height="69"/>
         <image name="ButtonVideoOverlayAddSelected.png" width="70" height="69"/>
@@ -331,6 +333,6 @@
         <image name="ButtonVideoOverlayPreviousHighlighted.png" width="53" height="96"/>
         <image name="ButtonVideoOverlayShare.png" width="70" height="69"/>
         <image name="ButtonVideoOverlayShareHighlighted.png" width="70" height="69"/>
-        <image name="PanelVideoScreenVideoMainOverlay.png" width="1024" height="748"/>
+        <image name="ButtonVideoOverlayShareSelected.png" width="70" height="69"/>
     </resources>
 </document>

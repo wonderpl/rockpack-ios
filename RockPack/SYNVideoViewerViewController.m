@@ -60,7 +60,7 @@
 @property (nonatomic, strong) IBOutlet UIButton* reportConcernButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelThumbnailImageView;
-@property (nonatomic, strong) IBOutlet UIImageView *panelImageView;
+@property (nonatomic, strong) IBOutlet UIView *panelView;
 @property (nonatomic, strong) IBOutlet UILabel* likesCountLabel;
 @property (nonatomic, strong) IBOutlet UIView *swipeView;
 @property (nonatomic, strong) SYNReportConcernTableViewController *reportConcernTableViewController;
@@ -130,37 +130,33 @@
         // Set custom fonts
         self.channelTitleLabel.font = [UIFont rockpackFontOfSize: 12.0f];
         self.channelCreatorLabel.font = [UIFont rockpackFontOfSize: 10.0f];
-        self.videoTitleLabel.font = [UIFont boldRockpackFontOfSize: 13.0f];
+        self.videoTitleLabel.font = [UIFont rockpackFontOfSize: 13.0f];
         
         // Cross-face transitions
         self.channelTitleLabel.transitionDuration = kTextCrossfadeDuration;
         self.channelCreatorLabel.transitionDuration = kTextCrossfadeDuration;
         self.videoTitleLabel.transitionDuration = kTextCrossfadeDuration;
-        
-        self.channelTitleLabel.textColor = [UIColor colorWithRed: 234.0f/ 255.0f green: 234.0f/ 255.0f blue: 234.0f/ 255.0f alpha: 1.0f];
-        self.channelCreatorLabel.textColor  = [UIColor colorWithRed: 234.0f/ 255.0f green: 234.0f/ 255.0f blue: 234.0f/ 255.0f alpha: 1.0f];
-        self.videoTitleLabel.textColor = [UIColor colorWithRed: 204.0f/ 255.0f green: 204.0f/ 255.0f blue: 204.0f/ 255.0f alpha: 1.0f];
     }
     else
     {
         // Set custom fonts
         self.channelTitleLabel.font = [UIFont rockpackFontOfSize: 15.0f];
         self.channelCreatorLabel.font = [UIFont rockpackFontOfSize: 12.0f];
-        self.videoTitleLabel.font = [UIFont boldRockpackFontOfSize: 18.0f];
+        self.videoTitleLabel.font = [UIFont rockpackFontOfSize: 18.0f];
         
         // Cross-face transitions
         self.channelTitleLabel.transitionDuration = kTextCrossfadeDuration;
         self.channelCreatorLabel.transitionDuration = kTextCrossfadeDuration;
         self.videoTitleLabel.transitionDuration = kTextCrossfadeDuration;
         
-        self.channelTitleLabel.textColor = [UIColor colorWithRed: 185.0f/ 255.0f green: 207.0f/ 255.0f blue: 216.0f/ 255.0f alpha: 1.0f];
-        self.channelCreatorLabel.textColor = [UIColor colorWithRed: 108.0f/ 255.0f green: 117.0f/ 255.0f blue: 121.0f/ 255.0f alpha: 1.0f];
         self.channelCreatorLabel.textColor = [UIColor whiteColor];
         self.channelCreatorLabel.text = @"";
         [self.videoPlaybackViewController updateChannelCreator: @""];
-        self.videoTitleLabel.textColor = [UIColor colorWithRed: 204.0f/ 255.0f green: 204.0f/ 255.0f blue: 204.0f/ 255.0f alpha: 1.0f];
     }
-
+    
+    self.channelTitleLabel.textColor = [UIColor colorWithRed: 40.0f/ 255.0f green: 45.0f/ 255.0f blue: 51.0f/ 255.0f alpha: 1.0f];
+    self.channelCreatorLabel.textColor  = [UIColor colorWithRed: 120.0f/ 255.0f green: 120.0f/ 255.0f blue: 120.0f/ 255.0f alpha: 1.0f];
+    self.videoTitleLabel.textColor = [UIColor colorWithRed: 40.0f/ 255.0f green: 45.0f/ 255.0f blue: 51.0f/ 255.0f alpha: 1.0f];
 
     // Regster video thumbnail cell
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailSmallCell"
@@ -171,7 +167,7 @@
     
     // Set custom flow layout to handle the chroma highlighting
     self.layout = [[SYNVideoViewerThumbnailLayout alloc] init];
-    self.layout.itemSize = IS_IPHONE ? CGSizeMake(162.0f , 114.0f):CGSizeMake(147.0f , 106.0f);
+    self.layout.itemSize = IS_IPHONE ? CGSizeMake(162.0f , 114.0f):CGSizeMake(204.0f , 106.0f);
     self.layout.minimumInteritemSpacing = 2.0f;
     self.layout.minimumLineSpacing = 0.0f;
     self.layout.scrollDirection =  UICollectionViewScrollDirectionHorizontal;
@@ -220,7 +216,7 @@
     self.blackPanelView.autoresizingMask = UIViewAutoresizingNone;
     
     [videoView insertSubview: self.blackPanelView
-                aboveSubview: self.panelImageView];
+                aboveSubview: self.panelView];
     
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
@@ -305,12 +301,8 @@
 //        self.blurView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         [self.blurView setFrame: CGRectMake(0.0f, 0.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight] + 2.0f)];
         
-        [self.blurView setBlurTintColor: [UIColor colorWithRed: 21.0f / 255.0
-                                                         green: 24.0f / 255.0
-                                                          blue: 28.0f / 255.0
-                                                         alpha: 1.0f]];
         
-        self.view.backgroundColor = [UIColor clearColor];
+        self.view.backgroundColor = [UIColor colorWithWhite:255.0f/255.0f alpha:0.2];
         
         [self.view insertSubview: self.blurView
                          atIndex: 0];
@@ -496,14 +488,14 @@
 {
     VideoInstance *videoInstance = self.videoInstanceArray [index];
     
-    // In video overlay feed display BY followed by username, in video overlay search if no user name display nothing -Kish
-    if ([videoInstance.channel.channelOwner.displayName length] == 0) {
+    // In video overlay feed display BY followed by username, in video overlay search if no user name display nothing
+    if ([videoInstance.channel.channelOwner.displayName length] <= 0) {
         self.channelCreatorLabel.text = @"";
         [self.videoPlaybackViewController updateChannelCreator: videoInstance.video.sourceUsername];
     }
     else
     {
-        self.channelCreatorLabel.text = videoInstance.channel.channelOwner.displayName;
+        self.channelCreatorLabel.text = [NSString stringWithFormat:@"By %@", videoInstance.channel.channelOwner.displayName];
         [self.videoPlaybackViewController updateChannelCreator: videoInstance.video.sourceUsername];
     }
     
