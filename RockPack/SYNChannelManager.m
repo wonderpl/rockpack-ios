@@ -326,7 +326,7 @@
         NSNumber *savedPosition = channel.position;
         
         [channel setAttributesFromDictionary: channelDictionary
-                         ignoringObjectTypes: kIgnoreChannelOwnerObject];
+                         ignoringObjectTypes: kIgnoreNothing];
         
         // the channel that got updated was a copy inside the ChannelDetails, so we must find the original and update it.
         for (Channel *userChannel in appDelegate.currentUser.channels)

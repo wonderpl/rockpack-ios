@@ -791,6 +791,11 @@
     {
         self.currentWebImageOperation = [self loadBackgroundImage];
     }
+    
+    if ((self.channel.channelOwner.displayName !=  nil) && (self.channelOwnerLabel.text == nil))
+    {
+        [self displayChannelDetails];
+    }
 }
 
 
