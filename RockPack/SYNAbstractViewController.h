@@ -43,6 +43,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 @property (nonatomic) BOOL isAnimating;
 @property (nonatomic) BOOL isLocked;
 @property (nonatomic) BOOL arcMenuIsChannelCell;
+@property (nonatomic) BOOL arcMenuIsFakeCell;
 @property (nonatomic) NSInteger dataItemsAvailable;
 @property (nonatomic) NSRange dataRequestRange;
 @property (nonatomic, assign) BOOL inDrag;
@@ -127,5 +128,14 @@ typedef void (^SYNShareCompletionBlock)(void);
 - (void) arcMenuSelectedCell: (UICollectionViewCell *) selectedCell
            andComponentIndex: (NSInteger) componentIndex;
 
+- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer;
 
+- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
+         forCellAtIndexPath: (NSIndexPath *) cellIndexPath
+         withComponentIndex: (NSInteger) componentIndex
+                  menuItems: (NSArray *) menuItems
+                    menuArc: (float) menuArc
+             menuStartAngle: (float) menuStartAngle;
+
+- (BOOL) needsHeaderButton ;
 @end

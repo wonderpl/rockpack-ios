@@ -30,6 +30,7 @@
 #import "SYNMasterViewController.h"
 #import "VideoInstance.h"
 #import "Appirater.h"
+#import "SYNInstructionsToShareControllerViewController.h"
 
 typedef void(^FeedDataErrorBlock)(void);
 
@@ -274,31 +275,29 @@ typedef void(^FeedDataErrorBlock)(void);
 -(void)checkForOnBoarding
 {
     
-    if(self.feedItemsData.count > 0)
-        return;
+    
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL hasShownFeedOnBoarding = [defaults boolForKey:kUserDefaultsFeed];
-    if(!hasShownFeedOnBoarding)
+    BOOL onBoarding1State = [defaults boolForKey:kInstruction1OnBoardingState];
+    if(!onBoarding1State) // 1rst card
     {
-        NSString* message = IS_IPAD ? NSLocalizedString(@"onboarding_feed", nil) : NSLocalizedString(@"onboarding_feed_iphone", nil);
+        SYNInstructionsToShareControllerViewController* itsVC = [[SYNInstructionsToShareControllerViewController alloc] initWithDelegate:self andState:InstructionsShareStatePressAndHold];
         
-        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0 ;
-        CGSize size = IS_IPAD ? CGSizeMake(340.0, 84.0) : CGSizeMake(260.0, 80.0);
-        SYNOnBoardingPopoverView* subscribePopover = [SYNOnBoardingPopoverView withMessage:message
-                                                                                  withSize:size
-                                                                               andFontSize:fontSize
-                                                                                pointingTo:CGRectZero
-                                                                             withDirection:PointingDirectionNone];
+        [appDelegate.viewStackManager presentCoverViewController:itsVC];
         
+        //[defaults setBool:YES forKey:kInstruction1OnBoardingState];
         
-        [appDelegate.onBoardingQueue addPopover:subscribePopover];
-        
-        [defaults setBool:YES forKey:kUserDefaultsFeed];
-        
-        [appDelegate.onBoardingQueue present];
     }
     
+    // display 2 times, one here and one on the Packs screen
+    NSInteger onBoarding2State = [defaults integerForKey:kInstruction2OnBoardingState];
+    if(onBoarding2State < 2 && self.feedItemsData.count > 0) // 2nd card
+    {
+        
+        
+        
+        [defaults setInteger:(onBoarding2State+1) forKey:kInstruction2OnBoardingState]; // inc by one
+    }
     
 }
 

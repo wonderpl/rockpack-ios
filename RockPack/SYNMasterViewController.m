@@ -32,7 +32,6 @@
 #import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
 #import "VideoInstance.h"
-#import "AMBlurView.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define kMovableViewOffX -58
@@ -694,7 +693,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         }
         
         sboxFrame.size.width = self.closeSearchButton.frame.origin.x - sboxFrame.origin.x - 8.0;
-        sboxFrame.origin.y = 10.0;
+        sboxFrame.origin.y = IS_IOS_7_OR_GREATER ? 20.0f : 10.0f;
         self.searchBoxController.view.frame = sboxFrame;
         
         [self.view insertSubview:self.searchBoxController.view belowSubview:self.navigationContainerView];
@@ -998,10 +997,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         self.accountSettingsPopover.popoverContentSize = CGSizeMake(380, 576);
         self.accountSettingsPopover.delegate = self;
         
-        if (!IS_IOS_7_OR_GREATER)
-        {
-            self.accountSettingsPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
-        }
+        self.accountSettingsPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
         
         CGRect rect = CGRectMake([SYNDeviceManager.sharedInstance currentScreenWidth] * 0.5,
                                  [SYNDeviceManager.sharedInstance currentScreenHeight] * 0.5, 1, 1);
@@ -1397,6 +1393,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (BOOL) searchIsInProgress
 {
     return [self.mainNavigationController.viewControllers containsObject:self.searchViewController];
+}
+
+-(void)headerButtonIsActive:(BOOL)isActive
+{
+    self.headerButton.userInteractionEnabled = isActive;
 }
 
 @end

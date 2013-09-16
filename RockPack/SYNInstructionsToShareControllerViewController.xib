@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SYNInstructionsToShareControllerViewController">
             <connections>
+                <outlet property="backgroundView" destination="ea1-WH-sSY" id="AoU-Qt-pCl"/>
                 <outlet property="instructionsLabel" destination="BLd-8k-6EL" id="0bd-fB-r0p"/>
                 <outlet property="okButton" destination="fdO-GG-9t5" id="fE4-JH-Ked"/>
                 <outlet property="subLabel" destination="N1j-JV-7eV" id="OlO-Nl-UoJ"/>
@@ -17,12 +18,19 @@
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="2">
             <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="fdO-GG-9t5">
-                    <rect key="frame" x="458" y="635" width="108" height="45"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="Button">
+                <view contentMode="scaleToFill" id="ea1-WH-sSY" userLabel="BG View">
+                    <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" red="0.15686275064945221" green="0.17647059261798859" blue="0.20000000298023224" alpha="0.46000000000000002" colorSpace="calibratedRGB"/>
+                    <color key="tintColor" red="0.50980395078659058" green="0.55294120311737061" blue="0.56862747669219971" alpha="0.0" colorSpace="calibratedRGB"/>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="fdO-GG-9t5">
+                    <rect key="frame" x="480" y="513" width="65" height="46"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <state key="normal" image="InstructionsCardOkayButton.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
@@ -30,27 +38,38 @@
                     </connections>
                 </button>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BLd-8k-6EL" userLabel="Instructions Text">
-                    <rect key="frame" x="365" y="182" width="294" height="73"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <rect key="frame" x="365" y="120" width="294" height="73"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
+                    <color key="shadowColor" red="0.15686275064945221" green="0.17647059261798859" blue="0.20000000298023224" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
+                    <size key="shadowOffset" width="0.0" height="2"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="N1j-JV-7eV" userLabel="Sub Text">
-                    <rect key="frame" x="365" y="295" width="294" height="73"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <rect key="frame" x="365" y="196" width="294" height="59"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <color key="textColor" red="0.043137254901960784" green="0.65098039215686276" blue="0.6705882352941176" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
+                    <color key="shadowColor" red="0.15686275064945221" green="0.17647059261798859" blue="0.20000000298023224" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
+                    <size key="shadowOffset" width="0.0" height="2"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="0hR-7n-JXu" userLabel="Video Image">
-                    <rect key="frame" x="330" y="369" width="364" height="223"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="InstructionCard2fakeVideoCell.png" id="0hR-7n-JXu" userLabel="Video Image">
+                    <rect key="frame" x="376" y="280" width="272" height="153"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.12941177189350128" green="0.71764707565307617" blue="0.83137255907058716" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="tintColor" red="0.50980395078659058" green="0.55294120311737061" blue="0.56862747669219971" alpha="0.0" colorSpace="calibratedRGB"/>
                 </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
             <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
+    <resources>
+        <image name="InstructionCard2fakeVideoCell.png" width="272" height="153"/>
+        <image name="InstructionsCardOkayButton.png" width="65" height="46"/>
+    </resources>
 </document>

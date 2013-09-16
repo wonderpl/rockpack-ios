@@ -6,7 +6,6 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
-#import "AMBlurView.h"
 #import "AppConstants.h"
 #import "GAI.h"
 #import "SYNAccountSettingsMainTableViewController.h"
@@ -161,63 +160,6 @@ typedef enum {
         self.navigationContainerTitleLabel.font = [UIFont rockpackFontOfSize:self.navigationContainerTitleLabel.font.pointSize];
         
         self.navigationContainerBackgroundImage.image = [[UIImage imageNamed:@"PanelMenuSecondLevel"] resizableImageWithCapInsets:UIEdgeInsetsMake(65, 0, 1, 0)];
-        
-        if (PLATFORM_CAN_HANDLE_LIVE_BLUR_OPTIONALLY)
-        {
-            self.backgroundImageView.hidden = YES;
-            self.tableView.backgroundColor = [UIColor clearColor];
-            
-            AMBlurView *blurView = [AMBlurView new];
-            [blurView setFrame:CGRectMake(0.0f, 0.0f, [SYNDeviceManager.sharedInstance currentScreenWidth], newFrame.size.height)];
-            [self.view insertSubview:blurView atIndex:0];
-            
-            //Grey Bottom Box
-            //Box
-            UIView *bottomBackgroundView = [[UIView alloc]initWithFrame:CGRectMake(0.0f, self.view.frame.size.height - 63.0f, self.view.frame.size.width, 63.0f)];
-            bottomBackgroundView.backgroundColor = [UIColor colorWithWhite:255.0f/255.0f alpha:0.4f];
-            
-            //Borders
-            UIView *bottomViewBorderDark = [[UIView alloc]initWithFrame:CGRectMake(0.0f, self.view.frame.size.height - 65.0f, self.view.frame.size.width, 1.0f)];
-            bottomViewBorderDark.backgroundColor = [UIColor colorWithWhite:180.0f/255.0f alpha:0.1];
-            UIView *bottomViewBorderLight = [[UIView alloc]initWithFrame:CGRectMake(0.0f, self.view.frame.size.height - 64.0f, self.view.frame.size.width, 1.0f)];
-            bottomViewBorderLight.backgroundColor = [UIColor colorWithWhite:255.0f/255.0f alpha:0.5];
-            
-            [self.view insertSubview:bottomBackgroundView aboveSubview:blurView];
-            [self.view insertSubview:bottomViewBorderLight aboveSubview:bottomBackgroundView];
-            [self.view insertSubview:bottomViewBorderDark aboveSubview:bottomBackgroundView];
-            
-            //Search Header Box
-            //Box
-            self.searchBackgroundView = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 63.0f)];
-            self.searchBackgroundView.backgroundColor = [UIColor colorWithWhite:255.0f/255.0f alpha:0.4f];
-            
-            //Borders
-            self.searchViewBorderDark = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 63.0f, self.view.frame.size.width, 1.0f)];
-            self.searchViewBorderDark.backgroundColor = [UIColor colorWithWhite:180.0f/255.0f alpha:0.1];
-            
-            [self.view insertSubview:self.searchBackgroundView aboveSubview:blurView];
-            [self.view insertSubview:self.searchViewBorderDark aboveSubview:self.searchBackgroundView];
-            
-            
-            // Secondary Container - notifications/friends
-            self.navigationContainerBackgroundImage.image = nil;
-            self.navigationContainerBackgroundImage.backgroundColor = [UIColor clearColor];
-            self.containerView.backgroundColor = [UIColor clearColor];
-            
-            AMBlurView *secondBlurView = [AMBlurView new];
-            [secondBlurView setFrame:CGRectMake(0.0f, 0.0f, [SYNDeviceManager.sharedInstance currentScreenWidth], newFrame.size.height)];
-            [self.navigationContainerView insertSubview:secondBlurView atIndex:0];
-            
-            //Border
-            UIView *secondaryBorder = [[UIView alloc]initWithFrame:CGRectMake(0.0f, 65.0f, self.view.frame.size.width, 1.0f)];
-            secondaryBorder.backgroundColor = [UIColor colorWithWhite:180.0f/255.0f alpha:0.1];
-            [self.navigationContainerView insertSubview:secondaryBorder aboveSubview:secondBlurView];
-        }
-        
-        else
-        {
-            
-        }
     }
     
     else // isIPad == TRUE
@@ -228,41 +170,7 @@ typedef enum {
                                                                         self.backgroundImageView.frame.size.width,
                                                                         [SYNDeviceManager.sharedInstance currentScreenHeight] - bgHeight)];
         
-        //iOS 7 Blur
-        if (PLATFORM_CAN_HANDLE_LIVE_BLUR_OPTIONALLY)
-        {
-            //Blurred Background
-            AMBlurView *blurView = [AMBlurView new];
-            [blurView setFrame:CGRectMake(5.0f, 0.0f, self.view.frame.size.width, 1025.0f)];
-            self.backgroundImageView.hidden = YES;
-            [self.view insertSubview:blurView atIndex:0];
-            
-            //Grey Header Box
-            //Box
-            UIView *headerBackgroundView = [[UIView alloc]initWithFrame:CGRectMake(5.0f, 0.0f, self.view.frame.size.width, 82.0f)];
-            headerBackgroundView.backgroundColor = [UIColor colorWithWhite:220.0f/255.0f alpha:0.2f];
-            
-            //Borders
-            UIView *headerViewBorderDark = [[UIView alloc]initWithFrame:CGRectMake(5.0f, 80.0f, self.view.frame.size.width, 1.0f)];
-            headerViewBorderDark.backgroundColor = [UIColor colorWithWhite:180.0f/255.0f alpha:0.1];
-            UIView *headerViewBorderLight = [[UIView alloc]initWithFrame:CGRectMake(5.0f, 81.0f, self.view.frame.size.width, 1.0f)];
-            headerViewBorderLight.backgroundColor = [UIColor colorWithWhite:255.0f/255.0f alpha:0.5];
-            
-            //Add Subviews
-            [self.view insertSubview:headerBackgroundView aboveSubview:blurView];
-            [self.view insertSubview:headerViewBorderLight aboveSubview:headerBackgroundView];
-            [self.view insertSubview:headerViewBorderDark aboveSubview:headerBackgroundView];
-            
-            //TableView Box
-            UIView *tableBackgroundView = [[UIView alloc]initWithFrame:CGRectMake(5.0f, 82.0f, 189.0f, 1024.0f)];
-            tableBackgroundView.backgroundColor = [UIColor colorWithWhite:220.0f/255.0f alpha:0.2f];
-            [self.view insertSubview:tableBackgroundView aboveSubview:blurView];
-        }
-        
-        else
-        {
-            self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];
-        }
+        self.bottomExtraView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"PanelMenuBottom"]];
         
         [self.view insertSubview:self.bottomExtraView belowSubview:self.backgroundImageView];
         

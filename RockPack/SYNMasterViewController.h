@@ -53,7 +53,8 @@ typedef void (^VideoOverlayDismissBlock)(void);
 
 - (void) removeVideoOverlayController;
 - (void) showSideNavigation;
--(void)clearSearchBoxController;
+-(void) clearSearchBoxController;
 
+-(void) headerButtonIsActive: (BOOL)isActive;
 
 @end

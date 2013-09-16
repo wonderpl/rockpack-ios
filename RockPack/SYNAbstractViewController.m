@@ -785,6 +785,14 @@
     return  nil;
 }
 
+#pragma mark - Arc Menu
+
+-(void)arcMenuShowFake:(UILongPressGestureRecognizer*)longPressRecogniser
+{
+    self.arcMenuIsFakeCell = YES;
+    [self arcMenuUpdateState:longPressRecogniser];
+}
+
 - (void) arcMenuSelectedCell: (UICollectionViewCell *) selectedCell
            andComponentIndex: (NSInteger) componentIndex
 {
@@ -1016,5 +1024,9 @@
     return appDelegate.masterViewController.view;
 }
 
+- (BOOL) needsHeaderButton
+{
+    return YES;
+}
 
 @end

@@ -224,6 +224,8 @@ typedef enum _FeedItemResourceType {
 #define kCategoriesUpdated @"kCategoriesUpdated"
 
 #define kLoginOnBoardingMessagesNum 5
+#define kInstruction1OnBoardingState @"kInstruction1OnBoardingState"
+#define kInstruction2OnBoardingState @"kInstruction2OnBoardingState"
 
 // Observers
 #define kCollectionViewContentOffsetKey @"contentOffset"

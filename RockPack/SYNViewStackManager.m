@@ -18,6 +18,8 @@
 #import "SYNNetworkErrorView.h"
 
 #define STACK_LIMIT 6
+#define BG_ALPHA_DEFAULT 0.7f
+
 
 @implementation SYNViewStackManager
 
@@ -100,7 +102,7 @@
 {
     controller.view.alpha = 0.0f;
     
-    
+    [self.masterController headerButtonIsActive:controller.needsHeaderButton];
     
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
@@ -125,37 +127,41 @@
     NSInteger viewControllersCount = self.navigationController.viewControllers.count;
     
     if (viewControllersCount < 2) // we must have at least two to pop one
-    {
         return;
-    }
     
     
+    UIViewController* controllerToPopTo = ((UIViewController *) self.navigationController.viewControllers[viewControllersCount - 2]);
+    
+    __weak SYNViewStackManager* wself = self;
+    
+    if([controllerToPopTo isKindOfClass:[SYNAbstractViewController class]])
+        [self.masterController headerButtonIsActive:((SYNAbstractViewController *) controllerToPopTo).needsHeaderButton];
+    else
+        [self.masterController headerButtonIsActive:YES];
     
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
-                         self.navigationController.topViewController.view.alpha = 0.0f;
-                         // pick the previous view controller
-                         ((UIViewController *) self.navigationController.viewControllers[viewControllersCount - 2]).view.alpha = 1.0f;
+                         
+                         wself.navigationController.topViewController.view.alpha = 0.0f;
+                         
+                         controllerToPopTo.view.alpha = 1.0f;
                      }
                      completion:^(BOOL finished) {
                          
-                         if(self.returnBlock)
-                             self.returnBlock();
+                         if(wself.returnBlock)
+                             wself.returnBlock();
                          
-                         self.returnBlock = nil;
+                         wself.returnBlock = nil;
+                         
+                         
                          
                      }];
     
     [self.navigationController popViewControllerAnimated: NO];
     
-//    if(!self.searchBarOriginSideNavigation)
-//    {
-//        [self hideSideNavigator];
-//        self.searchBarOriginSideNavigation = NO;
-//    }
-    
+
     
         
 }
@@ -393,7 +399,48 @@
 }
 #pragma mark - Popover Managment
 
-- (void) presentPopoverView:(UIView*)view
+-(void)presentCoverViewController:(UIViewController*)viewController
+{
+    currentOverViewController = viewController;
+    
+    [self.masterController addChildViewController: viewController];
+    
+    currentOverViewController.view.alpha = 0.0f;
+    
+    [self.masterController.view addSubview: viewController.view];
+    
+    [UIView animateWithDuration: 0.3
+                          delay: 0.0
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations: ^{
+                         currentOverViewController.view.alpha = 1.0f;
+                     }
+                     completion: ^(BOOL finished) {
+                         
+                     }];
+    
+}
+-(void)removeCoverPopoverViewController
+{
+    [UIView animateWithDuration: 0.3
+                          delay: 0.0
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations: ^{
+                         currentOverViewController.view.alpha = 0.0f;
+                     }
+                     completion: ^(BOOL finished) {
+                         [currentOverViewController removeFromParentViewController];
+                         [currentOverViewController.view removeFromSuperview];
+                         currentOverViewController = nil;
+                     }];
+}
+
+-(void)presentPopoverView:(UIView *)view
+{
+    [self presentPopoverView:view withBackgroundAlpha:BG_ALPHA_DEFAULT];
+}
+
+- (void) presentPopoverView:(UIView*)view withBackgroundAlpha:(CGFloat)bgAlpha
 {
     if(!view)
         return;
@@ -411,7 +458,7 @@
                           delay: 0.0
                         options: UIViewAnimationOptionCurveEaseOut
                      animations: ^{
-                         backgroundView.alpha = 0.7f;
+                         backgroundView.alpha = bgAlpha;
                      }
                      completion:^(BOOL finished) {
                          UITapGestureRecognizer* tapToCloseGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -456,37 +503,7 @@
     
 }
 
-- (void) presentSuccessNotificationWithMessage : (NSString*) message
-{
-    __block SYNNetworkErrorView* successNotification = [[SYNNetworkErrorView alloc] init];
-    successNotification.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"BarSucess"]];
-    [successNotification setText: message];
-    
-    [self.masterController.view addSubview: successNotification];
-    
-    [UIView animateWithDuration: 0.3f
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseOut
-                     animations: ^{
-                         CGRect newFrame = successNotification.frame;
-                         newFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] - newFrame.size.height;
-                         successNotification.frame = newFrame;
-                     }
-                     completion: ^(BOOL finished) {
-                         
-                         [UIView animateWithDuration: 0.3f
-                                               delay: 4.0f
-                                             options: UIViewAnimationOptionCurveEaseIn
-                                          animations: ^{
-                                              CGRect newFrame = successNotification.frame;
-                                              newFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] + newFrame.size.height;
-                                              successNotification.frame = newFrame;
-                                          }
-                                          completion: ^(BOOL finished) {
-                                              [successNotification removeFromSuperview];
-                                          }];
-                     }];
-}
+
 
 -(void)removePopoverView
 {
@@ -539,10 +556,10 @@
 }
 
 
-
+// for iPhone
 - (void) presentModallyController: (UIViewController *) controller
 {
-    modalViewController = controller;
+    currentOverViewController = controller;
     
     [self.masterController addChildViewController: controller];
     [self.masterController.view addSubview: controller.view];
@@ -571,7 +588,7 @@
 
 - (void) hideModalController
 {
-    CGRect controllerFrame = modalViewController.view.frame;
+    CGRect controllerFrame = currentOverViewController.view.frame;
     
     controllerFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight];
     
@@ -579,17 +596,48 @@
                           delay: 0.0
                         options: UIViewAnimationOptionCurveEaseIn
                      animations: ^{
-                         modalViewController.view.frame = controllerFrame;
+                         currentOverViewController.view.frame = controllerFrame;
                          
                          self.masterController.view.userInteractionEnabled = NO;
                      }
                      completion: ^(BOOL finished) {
                          self.masterController.view.userInteractionEnabled = YES;
-                         [modalViewController.view removeFromSuperview];
-                         [modalViewController removeFromParentViewController];
+                         [currentOverViewController.view removeFromSuperview];
+                         [currentOverViewController removeFromParentViewController];
                      }];
 }
 
+- (void) presentSuccessNotificationWithMessage : (NSString*) message
+{
+    __block SYNNetworkErrorView* successNotification = [[SYNNetworkErrorView alloc] init];
+    successNotification.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"BarSucess"]];
+    [successNotification setText: message];
+    
+    [self.masterController.view addSubview: successNotification];
+    
+    [UIView animateWithDuration: 0.3f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseOut
+                     animations: ^{
+                         CGRect newFrame = successNotification.frame;
+                         newFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] - newFrame.size.height;
+                         successNotification.frame = newFrame;
+                     }
+                     completion: ^(BOOL finished) {
+                         
+                         [UIView animateWithDuration: 0.3f
+                                               delay: 4.0f
+                                             options: UIViewAnimationOptionCurveEaseIn
+                                          animations: ^{
+                                              CGRect newFrame = successNotification.frame;
+                                              newFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] + newFrame.size.height;
+                                              successNotification.frame = newFrame;
+                                          }
+                                          completion: ^(BOOL finished) {
+                                              [successNotification removeFromSuperview];
+                                          }];
+                     }];
+}
 
 #pragma mark - Helper
 
