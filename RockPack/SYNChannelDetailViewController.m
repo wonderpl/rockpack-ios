@@ -2054,19 +2054,23 @@
 
 - (void) deleteChannel
 {
+    NSLog (@"%@", self.presentingViewController);
+    
     // return to previous screen as if the back button tapped
     [appDelegate.viewStackManager popController];
     
-    [appDelegate.oAuthNetworkEngine deleteChannelForUserId: appDelegate.currentUser.uniqueId
-                                                 channelId: self.channel.uniqueId
-                                         completionHandler: ^(id response) {
-                                             [appDelegate.currentUser.channelsSet removeObject: self.channel];
-                                             [self.channel.managedObjectContext deleteObject: self.channel];
-                                             [appDelegate saveContext: YES];
-                                         }
-                                              errorHandler: ^(id error) {
-                                                  DebugLog(@"Delete channel failed");
-                                              }];
+//    ((UIViewController *) self.navigationController.viewControllers[viewControllersCount - 2])
+    
+//    [appDelegate.oAuthNetworkEngine deleteChannelForUserId: appDelegate.currentUser.uniqueId
+//                                                 channelId: self.channel.uniqueId
+//                                         completionHandler: ^(id response) {
+//                                             [appDelegate.currentUser.channelsSet removeObject: self.channel];
+//                                             [self.channel.managedObjectContext deleteObject: self.channel];
+//                                             [appDelegate saveContext: YES];
+//                                         }
+//                                              errorHandler: ^(id error) {
+//                                                  DebugLog(@"Delete channel failed");
+//                                              }];
 }
 
 

@@ -1,4 +1,4 @@
-//
+    //
 //  SYNProfileRootViewController.m
 //  rockpack
 //
@@ -715,7 +715,7 @@
 
 
 - (void)	  collectionView: (UICollectionView *) collectionView
- didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
     if (self.isDeletionModeActive)
     {
@@ -1272,6 +1272,7 @@
     }
     else
     {
+        self.indexPathToDelete = indexPath;
         channel = self.user.channels[indexPath.row - (self.isUserProfile ? 1 : 0)];
     }
 
