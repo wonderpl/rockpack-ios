@@ -1028,7 +1028,7 @@
 {
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
-    videoShareButton.enabled = FALSE;
+    //videoShareButton.enabled = NO;
     
     [self shareVideoInstance: videoInstance];
 }

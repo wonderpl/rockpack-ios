@@ -785,10 +785,8 @@ typedef enum {
                              
                              self.userNameLabel.alpha = 1.0;
                          }
-                         completion: ^(BOOL finished) {
-                         }];
+                         completion: nil];
     }
-    
     else
     {
         CGRect startFrame = self.navigationContainerView.frame;
@@ -806,8 +804,7 @@ typedef enum {
                              selfBounds.origin.y = self.navigationContainerView.frame.origin.y;
                              self.navigationContainerView.frame = selfBounds;
                          }
-                         completion: ^(BOOL finished) {
-                         }];
+                         completion: nil];
     }
 }
 
