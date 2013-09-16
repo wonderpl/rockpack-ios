@@ -22,7 +22,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *subLabel;
 @property (strong, nonatomic) IBOutlet UIButton *okButton;
 @property (strong, nonatomic) IBOutlet UIImageView *videoImageView;
-@property (strong, nonatomic) IBOutlet UIView* backgroundView;
+@property (strong, nonatomic) IBOutlet UIImageView* backgroundImageView;
 @property (weak, nonatomic) SYNAbstractViewController* delegate;
 @property (nonatomic) InstructionsShareState state;
 
@@ -47,18 +47,26 @@
     
     self.state = initialState; // init state, should already be set so will ignored
     
+    // set the background
     
+    if(self.state == InstructionsShareStatePacks)
+    {
+        self.backgroundImageView.image = [UIImage imageNamed:@"InstructionBackgroundPacks"];
+    }
+    else
+    {
+        self.backgroundImageView.image = [UIImage imageNamed:@"InstructionBackgroundPressAndHold"];
+        
+    }
     
     self.subLabel.font = [UIFont rockpackFontOfSize:self.subLabel.font.pointSize];
     self.instructionsLabel.font = [UIFont rockpackFontOfSize:self.instructionsLabel.font.pointSize];
     
     UITapGestureRecognizer* tapToCloseGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToClose:)];
-    [self.backgroundView addGestureRecognizer:tapToCloseGesture];
+    [self.backgroundImageView addGestureRecognizer:tapToCloseGesture];
     
     
     
-    
-    self.videoImageView.backgroundColor = [UIColor redColor];
     
 }
 
@@ -89,7 +97,7 @@
     
     
     
-    [self.backgroundView removeGestureRecognizer:self.backgroundView.gestureRecognizers[0]]; // remove the tap gesture for house keeping
+    [self.backgroundImageView removeGestureRecognizer:self.backgroundImageView.gestureRecognizers[0]]; // remove the tap gesture for house keeping
     
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate.viewStackManager removeCoverPopoverViewController]; // hide self
@@ -100,7 +108,9 @@
 {
     self.okButton.enabled = NO;
     
-    if(self.state == InstructionsShareStateShared || self.state == InstructionsShareStatePressAndHold)
+    if(self.state == InstructionsShareStateShared ||
+       self.state == InstructionsShareStatePressAndHold ||
+       self.state == InstructionsShareStatePacks)
     {
         // close the panel
         [self tapToClose:nil];
@@ -205,6 +215,7 @@
             self.instructionsLabel.text = NSLocalizedString(@"instruction_packs_for_you", nil);
             self.subLabel.text = NSLocalizedString(@"instruction_packs_choose_one", nil);
             self.subLabel.hidden = NO;
+            self.videoImageView.hidden = YES;
         }
             break;
             
