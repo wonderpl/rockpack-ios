@@ -773,6 +773,7 @@
         [wself updateVideoDetailsForIndex: self.currentSelectedIndex];
         
         [wself.heartActivityIndicator stopAnimating];
+        
         button.enabled = YES;
     };
     
@@ -787,13 +788,13 @@
                                               if (previousStarringState)
                                               {
                                                   // Currently highlighted, so decrement
-                                                  videoInstance.video.starredByUserValue = FALSE;
+                                                  videoInstance.starredByUserValue = FALSE;
                                                   videoInstance.video.starCountValue -= 1;
                                               }
                                               else
                                               {
                                                   // Currently highlighted, so increment
-                                                  videoInstance.video.starredByUserValue = TRUE;
+                                                  videoInstance.starredByUserValue = TRUE;
                                                   videoInstance.video.starCountValue += 1;
                                                   [Appirater userDidSignificantEvent: FALSE];
                                               }
@@ -806,8 +807,6 @@
                                                   videoInstance.video.starCount = previousStarCount;
                                                   button.selected = !button.selected;
                                               }
-                                              
-                                              
                                               
                                               
                                               finishBlock(response);
