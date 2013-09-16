@@ -157,7 +157,9 @@
     self.channelTitleLabel.textColor = [UIColor colorWithRed: 40.0f/ 255.0f green: 45.0f/ 255.0f blue: 51.0f/ 255.0f alpha: 1.0f];
     self.channelCreatorLabel.textColor  = [UIColor colorWithRed: 120.0f/ 255.0f green: 120.0f/ 255.0f blue: 120.0f/ 255.0f alpha: 1.0f];
     self.videoTitleLabel.textColor = [UIColor colorWithRed: 40.0f/ 255.0f green: 45.0f/ 255.0f blue: 51.0f/ 255.0f alpha: 1.0f];
-
+    
+    self.videoTitleLabel.numberOfLines = 2;
+    
     // Regster video thumbnail cell
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailSmallCell"
                                                   bundle: nil];
@@ -167,7 +169,7 @@
     
     // Set custom flow layout to handle the chroma highlighting
     self.layout = [[SYNVideoViewerThumbnailLayout alloc] init];
-    self.layout.itemSize = IS_IPHONE ? CGSizeMake(162.0f , 114.0f):CGSizeMake(204.0f , 106.0f);
+    self.layout.itemSize = IS_IPHONE ? CGSizeMake(202.0f , 114.0f):CGSizeMake(204.0f , 106.0f);
     self.layout.minimumInteritemSpacing = 2.0f;
     self.layout.minimumLineSpacing = 0.0f;
     self.layout.scrollDirection =  UICollectionViewScrollDirectionHorizontal;

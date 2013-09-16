@@ -263,7 +263,7 @@
                                     </connections>
                                 </button>
                                 <view contentMode="scaleToFill" id="152" userLabel="Cycling Label - Video title" customClass="BBCyclingLabel">
-                                    <rect key="frame" x="18" y="534" width="662" height="28"/>
+                                    <rect key="frame" x="18" y="516" width="662" height="56"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>

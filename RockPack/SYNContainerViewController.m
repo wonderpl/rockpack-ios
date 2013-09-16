@@ -49,7 +49,10 @@ UITextViewDelegate>
 
 - (void) loadView
 {
-    self.automaticallyAdjustsScrollViewInsets = NO;
+    if (IS_IOS_7_OR_GREATER) {
+        self.automaticallyAdjustsScrollViewInsets = NO;
+
+    }
     
     SYNContainerScrollView *scrollView = [[SYNContainerScrollView alloc] initFullScreenWithDelegate:self];
     

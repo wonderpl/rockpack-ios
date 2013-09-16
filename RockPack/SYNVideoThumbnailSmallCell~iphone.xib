@@ -8,40 +8,35 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="72" customClass="SYNVideoThumbnailSmallCell">
-            <rect key="frame" x="0.0" y="0.0" width="162" height="114"/>
+            <rect key="frame" x="0.0" y="0.0" width="202" height="114"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="94">
-                    <rect key="frame" x="0.0" y="0.0" width="162" height="114"/>
+                    <rect key="frame" x="7" y="0.0" width="188" height="106"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <imageView autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="top" image="BackgroundVideoThumbnailSmall.png" id="91">
-                            <rect key="frame" x="0.0" y="0.0" width="162" height="114"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        </imageView>
                         <imageView autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleToFill" id="99" userLabel="Image View - Colour">
-                            <rect key="frame" x="5" y="3" width="152" height="86"/>
+                            <rect key="frame" x="0.0" y="0.0" width="188" height="106"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </imageView>
                         <imageView autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleToFill" id="100" userLabel="Image View - Monchrome">
-                            <rect key="frame" x="5" y="3" width="152" height="86"/>
+                            <rect key="frame" x="0.0" y="0.0" width="188" height="106"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </imageView>
                         <imageView autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="top" image="GlossVideoThumbnailSmall.png" id="75" userLabel="Image View - Default gloss">
-                            <rect key="frame" x="0.0" y="0.0" width="162" height="114"/>
+                            <rect key="frame" x="0.0" y="0.0" width="188" height="106"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </imageView>
                         <imageView hidden="YES" autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="top" image="GlossVideoThumbnailSmallPlaying.png" id="96" userLabel="Image View - Selected gloss">
-                            <rect key="frame" x="0.0" y="0.0" width="162" height="114"/>
+                            <rect key="frame" x="0.0" y="0.0" width="188" height="106"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </imageView>
                         <label autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="left" text="testing" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="74" userLabel="Label - Title">
-                            <rect key="frame" x="9" y="91" width="144" height="18"/>
+                            <rect key="frame" x="6" y="88" width="178" height="18"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="10"/>
@@ -49,7 +44,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -65,8 +60,7 @@
         </view>
     </objects>
     <resources>
-        <image name="BackgroundVideoThumbnailSmall.png" width="147" height="106"/>
-        <image name="GlossVideoThumbnailSmall.png" width="147" height="106"/>
-        <image name="GlossVideoThumbnailSmallPlaying.png" width="147" height="106"/>
+        <image name="GlossVideoThumbnailSmall.png" width="188" height="106"/>
+        <image name="GlossVideoThumbnailSmallPlaying.png" width="188" height="106"/>
     </resources>
 </document>
