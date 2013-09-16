@@ -427,7 +427,6 @@ CATEGORY</string>
         <image name="ButtonCoverCategoryHighlighted.png" width="155" height="65"/>
         <image name="ButtonCreate.png" width="130" height="45"/>
         <image name="ButtonCreateDisabled.png" width="130" height="45"/>
-        <image name="ButtonCreateDisabled.png" width="130" height="45"/>
         <image name="ButtonCreateHighlighted.png" width="130" height="45"/>
         <image name="ButtonEdit.png" width="120" height="45"/>
         <image name="ButtonEditHighlighted.png" width="120" height="45"/>

@@ -332,6 +332,11 @@ typedef enum : NSInteger {
 
 #define kiOS7PlusHeaderYOffset 10.0f
 
+#define kRotateThresholdX 100
+#define kRotateThresholdY 180
+#define kRotateBorderX 25
+#define kRotateBorderY 25
+
 #define kLoadMoreFooterViewHeight   50.0f
 
 #define kMinorDimension 768.0f

@@ -418,8 +418,13 @@ enum ChannelCoverSelectorState {
                    referenceSizeForFooterInSection: (NSInteger) section
 {
     CGSize footerSize = CGSizeZero;
+
+    if (section == 0 || section < self.fetchedResultsController.sections.count - 1)
+    {
+        return footerSize;
+    }
     
-    if  (self.fetchedResultsController.sections.count  != 0 && // only the last section can have a loader
+    if  (self.fetchedResultsController.fetchedObjects.count  != 0 && // only the last section can have a loader
          (self.dataRequestRange.location + self.dataRequestRange.length < self.dataItemsAvailable))
     {
         
