@@ -190,7 +190,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                          splashView.alpha = 0.0f;
                      } completion: ^(BOOL finished) {
                          
-                         [self.containerViewController firstFadedInto];
                          
                          [splashView removeFromSuperview];
                      }];
@@ -212,6 +211,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     CGRect backButtonFrame = self.backButtonControl.frame;
     backButtonFrame.origin.y = IS_IPAD ? 10.0f : 5.0f;
     self.backButtonControl.frame = backButtonFrame;
+    
+    if (IS_IOS_7_OR_GREATER)
+    {
+        self.self.backButtonControl.center = CGPointMake(self.self.backButtonControl.center.x, self.self.backButtonControl.center.y + kiOS7PlusHeaderYOffset);
+    }
+    
     [self.view insertSubview:self.backButtonControl belowSubview:self.sideNavigationButton];
     self.backButtonControl.alpha = 0.0;
     
@@ -1398,6 +1403,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 -(void)headerButtonIsActive:(BOOL)isActive
 {
     self.headerButton.userInteractionEnabled = isActive;
+    self.headerButton.hidden = !isActive;
 }
 
 @end

@@ -1,4 +1,4 @@
-//
+    //
 //  SYNProfileRootViewController.m
 //  rockpack
 //
@@ -433,6 +433,7 @@
 {
     NSArray *updatedObjects = [notification userInfo][NSUpdatedObjectsKey];
     
+    
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop)
      {
          if (obj == self.user)
@@ -446,6 +447,7 @@
              return;
          }
      }];
+    
 }
 
 
@@ -716,14 +718,8 @@
 
 
 - (void)	  collectionView: (UICollectionView *) collectionView
- didSelectItemAtIndexPath: (NSIndexPath *) indexPath
+          didSelectItemAtIndexPath: (NSIndexPath *) indexPath
 {
-    if (self.isDeletionModeActive)
-    {
-        self.deletionModeActive = NO;
-        return;
-    }
-    
     Channel *channel;
     
     if (collectionView == self.channelThumbnailCollectionView)
@@ -1273,6 +1269,7 @@
     }
     else
     {
+        self.indexPathToDelete = indexPath;
         channel = self.user.channels[indexPath.row - (self.isUserProfile ? 1 : 0)];
     }
 

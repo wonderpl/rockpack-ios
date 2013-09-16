@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="4510" systemVersion="12E55" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
@@ -20,6 +20,7 @@
                 <outlet property="channelTitleTextBackgroundView" destination="59" id="117"/>
                 <outlet property="channelTitleTextView" destination="62" id="79"/>
                 <outlet property="createChannelButton" destination="100" id="101"/>
+                <outlet property="deleteChannelButton" destination="NRg-LY-edT" id="2jb-dV-CSu"/>
                 <outlet property="displayControlsView" destination="54" id="78"/>
                 <outlet property="editButton" destination="129" id="132"/>
                 <outlet property="editControlsView" destination="7" id="77"/>
@@ -308,6 +309,16 @@ CATEGORY</string>
                                         <action selector="createChannelPressed:" destination="-1" eventType="touchUpInside" id="102"/>
                                     </connections>
                                 </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="NRg-LY-edT" userLabel="Button - Delete Channel">
+                                    <rect key="frame" x="139" y="8" width="44" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <state key="normal" title="Button" image="DeletePackButton.png">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="deleteChannelPressed:" destination="-1" eventType="touchUpInside" id="xXS-Vc-0Kz"/>
+                                    </connections>
+                                </button>
                                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="108" userLabel="Button - doneTyping">
                                     <rect key="frame" x="267" y="5" width="48" height="49"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -432,6 +443,7 @@ CATEGORY</string>
         <image name="ButtonSubscribeHighlighted.png" width="120" height="45"/>
         <image name="ButtonSubscribeSelected.png" width="120" height="45"/>
         <image name="ChannelDetailOverlayBackground.png" width="1024" height="748"/>
+        <image name="DeletePackButton.png" width="33" height="33"/>
         <image name="LogoRockpack.png" width="148" height="27"/>
     </resources>
 </document>

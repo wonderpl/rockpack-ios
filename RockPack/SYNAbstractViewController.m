@@ -1029,4 +1029,9 @@
     return YES;
 }
 
+-(void)checkForOnBoarding
+{
+    // to be implemented in subclass
+}
+
 @end

@@ -138,4 +138,6 @@ typedef void (^SYNShareCompletionBlock)(void);
              menuStartAngle: (float) menuStartAngle;
 
 - (BOOL) needsHeaderButton ;
+
+-(void)checkForOnBoarding ;
 @end

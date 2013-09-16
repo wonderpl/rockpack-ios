@@ -330,6 +330,8 @@ typedef enum : NSInteger {
 // Dimensions
 //
 
+#define kiOS7PlusHeaderYOffset 10.0f
+
 #define kLoadMoreFooterViewHeight   50.0f
 
 #define kMinorDimension 768.0f
