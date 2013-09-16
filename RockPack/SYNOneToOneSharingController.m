@@ -620,8 +620,7 @@
     else // on the fake slots (stubs)
     {
         userThumbnailCell.imageView.image = [UIImage imageNamed: @"RecentContactPlaceholder"];
-        userThumbnailCell.nameLabel.text = @"Recent";
-        // userThumbnailCell.backgroundColor = [UIColor redColor];
+        [userThumbnailCell setDisplayName: @"Recent"];
         
         CGFloat factor = 1.0f - ((float) (realIndex - self.recentFriends.count) / (float) kNumberOfEmptyRecentSlots);
         // fade slots

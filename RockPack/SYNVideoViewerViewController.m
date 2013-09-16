@@ -1042,8 +1042,7 @@
         if (!self.reportConcernTableViewController)
         {
             // Create out concerns table view controller
-            self.reportConcernTableViewController = [[SYNReportConcernTableViewController alloc]
-                                                     init];
+            self.reportConcernTableViewController = [[SYNReportConcernTableViewController alloc] init];
             
             VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
             
