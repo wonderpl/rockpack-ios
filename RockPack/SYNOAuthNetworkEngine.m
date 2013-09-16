@@ -783,30 +783,32 @@
     
     [self channelDataForUserId:userId
                      channelId:channelId
-                         start:0 size:1000
+                       inRange: NSMakeRange(0, 1000)
              completionHandler:completionBlock
                   errorHandler:errorBlock];
 
 }
 
+
 - (void) channelDataForUserId: (NSString *) userId
                     channelId: (NSString *) channelId
-                        start: (unsigned int) start
-                         size: (unsigned int) size
+                      inRange: (NSRange) range
             completionHandler: (MKNKUserSuccessBlock) completionBlock
                  errorHandler: (MKNKUserErrorBlock) errorBlock
 {
     NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
                                                 @"CHANNELID" : channelId};
     
-    // If size is 0, then don't include start and size in the call (i.e. just use default params), otherwise assume both params are valid
-    NSDictionary *params = [self paramsAndLocaleForStart: start
-                                                    size: size];
+    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    
+    parameters[@"start"] = @(range.location);
+    
+    parameters[@"size"] = @(range.length);
     
     NSString *apiString = [kAPIGetChannelDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: params
+                                                                                                       params: [self getLocaleParamWithParams: parameters]
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: TRUE];
     [self addCommonHandlerToNetworkOperation: networkOperation
@@ -984,9 +986,7 @@
     NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
     
     parameters[@"start"] = @(range.location);
-    
     parameters[@"size"] = @(range.length);
-    
     
     SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
                                                                                                        params: [self getLocaleParamWithParams:parameters]
