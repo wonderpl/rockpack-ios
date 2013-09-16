@@ -336,8 +336,8 @@
                         <action selector="saveChannelTapped:" destination="-1" eventType="touchUpInside" id="133"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="HXM-wg-pZf" userLabel="Button - Delete Channel">
-                    <rect key="frame" x="780" y="97" width="44" height="44"/>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="HXM-wg-pZf" userLabel="Button - Delete Channel">
+                    <rect key="frame" x="790" y="17" width="44" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <state key="normal" image="DeletePackButton.png">

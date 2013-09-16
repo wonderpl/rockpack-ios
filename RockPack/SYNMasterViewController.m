@@ -212,6 +212,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     CGRect backButtonFrame = self.backButtonControl.frame;
     backButtonFrame.origin.y = IS_IPAD ? 10.0f : 5.0f;
     self.backButtonControl.frame = backButtonFrame;
+    
+    if (IS_IOS_7_OR_GREATER)
+    {
+        self.self.backButtonControl.center = CGPointMake(self.self.backButtonControl.center.x, self.self.backButtonControl.center.y + kiOS7PlusHeaderYOffset);
+    }
+    
     [self.view insertSubview:self.backButtonControl belowSubview:self.sideNavigationButton];
     self.backButtonControl.alpha = 0.0;
     

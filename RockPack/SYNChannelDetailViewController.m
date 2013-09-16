@@ -389,6 +389,17 @@
     }
     
     self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
+    
+    // iOS 7 header shift
+    
+    if (IS_IOS_7_OR_GREATER)
+    {
+        self.createChannelButton.center = CGPointMake(self.createChannelButton.center.x, self.createChannelButton.center.y + kiOS7PlusHeaderYOffset);
+        self.deleteChannelButton.center = CGPointMake(self.deleteChannelButton.center.x, self.deleteChannelButton.center.y + kiOS7PlusHeaderYOffset);
+        self.saveChannelButton.center = CGPointMake(self.saveChannelButton.center.x, self.saveChannelButton.center.y + kiOS7PlusHeaderYOffset);
+        self.cancelEditButton.center = CGPointMake(self.cancelEditButton.center.x, self.cancelEditButton.center.y + kiOS7PlusHeaderYOffset);
+        self.logoImageView.center = CGPointMake(self.logoImageView.center.x, self.logoImageView.center.y + kiOS7PlusHeaderYOffset);
+    }
 }
 
 
@@ -1512,6 +1523,7 @@
     self.saveChannelButton.frame = newFrame;
     self.saveChannelButton.hidden = NO;
     self.cancelEditButton.hidden = NO;
+    self.deleteChannelButton.hidden = NO;
     self.backButton.hidden = YES;
     self.addButton.hidden = YES;
     
@@ -1618,6 +1630,7 @@
         self.categoryTableViewController = nil;
         self.saveChannelButton.hidden = YES;
         self.cancelEditButton.hidden = YES;
+        self.deleteChannelButton.hidden = YES;
         self.addButton.hidden = NO;
         self.backButton.hidden = NO;
         
@@ -1644,6 +1657,7 @@
                          withValue: nil];
     
     self.saveChannelButton.enabled = NO;
+    self.deleteChannelButton.enabled = YES;
     [self.activityIndicator startAnimating];
     
     [self hideCategoryChooser];
@@ -1674,8 +1688,10 @@
                                              
                                              [self setEditControlsVisibility: NO];
                                              self.saveChannelButton.enabled = YES;
+                                             self.deleteChannelButton.enabled = YES;
                                              [self.activityIndicator stopAnimating];
                                              self.saveChannelButton.hidden = YES;
+                                             self.deleteChannelButton.hidden = YES;
                                              self.cancelEditButton.hidden = YES;
                                              self.addButton.hidden = NO;
                                              
@@ -1724,6 +1740,8 @@
                                                   
                                                   self.saveChannelButton.hidden = NO;
                                                   self.saveChannelButton.enabled = YES;
+                                                  self.deleteChannelButton.hidden = NO;
+                                                  self.deleteChannelButton.enabled = YES;
                                                   [self.activityIndicator stopAnimating];
                                                   [self.activityIndicator stopAnimating];
                                               }];
@@ -2588,6 +2606,7 @@ shouldChangeTextInRange: (NSRange) range
     {
         self.createChannelButton.hidden = YES;
         self.saveChannelButton.hidden = YES;
+        self.deleteChannelButton.hidden = YES;
         self.cancelTextInputButton.hidden = NO;
     }
 }
@@ -2711,6 +2730,7 @@ shouldChangeTextInRange: (NSRange) range
     {
         self.createChannelButton.hidden = NO;
         self.saveChannelButton.hidden = NO;
+        self.deleteChannelButton.hidden = NO;
         self.cancelTextInputButton.hidden = YES;
     }
 }
