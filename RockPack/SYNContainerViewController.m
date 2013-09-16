@@ -166,11 +166,7 @@ UITextViewDelegate>
                     animated: YES];
 }
 
--(void)firstFadedInto
-{
-    [self.showingViewController viewDidScrollToFront];
-    
-}
+
 
 #pragma mark - maintaion orientation
 

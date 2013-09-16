@@ -125,14 +125,17 @@
             
             self.instructionsLabel.text = NSLocalizedString(@"instruction_press_hold", nil);
             
-            self.okButton.enabled = YES;
+            
             self.videoImageView.userInteractionEnabled = YES;
             self.videoImageView.hidden = NO;
             
-            UILongPressGestureRecognizer* videoLongPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressOverVideoImagePerformed:)];
+            UILongPressGestureRecognizer* videoLongPress =
+            [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressOverVideoImagePerformed:)];
             [self.videoImageView addGestureRecognizer:videoLongPress];
             
             self.subLabel.hidden = YES;
+            
+            self.okButton.enabled = YES;
         }
             break;
             
@@ -191,6 +194,7 @@
         case InstructionsShareStateShared:
         {
             self.instructionsLabel.text = NSLocalizedString(@"channels_screen_loading_categories", nil);
+            self.okButton.enabled = YES;
         }
             
             break;

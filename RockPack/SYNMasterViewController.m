@@ -183,17 +183,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
 	[self.view addSubview: splashView];
     
-    [UIView animateWithDuration: kSplashAnimationDuration
-                          delay: kSplashViewDuration
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         splashView.alpha = 0.0f;
-                     } completion: ^(BOOL finished) {
-                         
-                         [self.containerViewController firstFadedInto];
-                         
-                         [splashView removeFromSuperview];
-                     }];
+    
     
     self.navigationContainerView.userInteractionEnabled = YES;
     
