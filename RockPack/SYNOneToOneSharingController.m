@@ -1102,6 +1102,7 @@
                                                NSString* notificationText =
                                                [NSString stringWithFormat:NSLocalizedString(@"sharing_object_sent", nil), NSLocalizedString(@"notification_liked_action", nil), typeName];
                                                [appDelegate.viewStackManager presentSuccessNotificationWithMessage:notificationText];
+                                               [appDelegate.viewStackManager removePopoverView];
                                                
                                            } errorHandler: ^(NSDictionary *error) {
                                                
