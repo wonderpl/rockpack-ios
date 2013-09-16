@@ -576,12 +576,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         self.videoViewerViewController.shownFromChannelScreen = YES;
         
-        //FIXME: FAVOURITES Part of workaround for missing favourites functionality. Remove once resolved.
-        SYNChannelDetailViewController* channelDetailViewController = (SYNChannelDetailViewController*)originViewController;
-        if ([channelDetailViewController isFavouritesChannel])
-        {
-            [self.videoViewerViewController markAsFavourites];
-        }
     }
     
     [self addChildViewController: self.videoViewerViewController];

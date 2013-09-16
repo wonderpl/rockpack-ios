@@ -52,7 +52,7 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 
 @interface SYNArcMenuView ()
 
-@property (nonatomic, copy) NSArray *menusArray;
+
 @property (nonatomic, strong) SYNArcMenuItem *startButton;
 @property (nonatomic, strong) NSIndexPath *cellIndexPath;
 
@@ -168,7 +168,7 @@ static CGPoint RotateAndScaleCGPointAroundCenter(CGPoint point, CGPoint center, 
 //            item.transform = CGAffineTransformMakeScale(0.5 + zoomFactor, 0.5 + zoomFactor);
             item.imageView.transform = CGAffineTransformMakeScale(1 + zoomFactor, 1 + zoomFactor);
         }
-        else if (item.imageView.highlighted == TRUE)
+        else if (item.imageView.highlighted)
         {
             item.imageView.highlighted = FALSE;
             

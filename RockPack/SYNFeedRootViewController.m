@@ -686,7 +686,7 @@ typedef void(^FeedDataErrorBlock)(void);
 
 - (void) videoOverlayDidDissapear
 {
-    
+    [self.feedCollectionView reloadData];
 }
 
 
@@ -1324,11 +1324,12 @@ typedef void(^FeedDataErrorBlock)(void);
                                             videoInstanceId: videoInstance.uniqueId
                                           completionHandler: ^(id response) {
                                               self.togglingInProgress = NO;
-                                              
+                                              BOOL previousStarringState = videoInstance.starredByUserValue;
+                                              NSInteger previousStarCount = videoInstance.video.starCountValue;
                                               if (didStar)
                                               {
                                                   // Currently highlighted, so increment
-                                                  videoInstance.video.starredByUserValue = YES;
+                                                  videoInstance.starredByUserValue = YES;
                                                   videoInstance.video.starCountValue += 1;
                                                   
                                                   button.selected = YES;
@@ -1338,34 +1339,20 @@ typedef void(^FeedDataErrorBlock)(void);
                                               else
                                               {
                                                   // Currently highlighted, so decrement
-                                                  videoInstance.video.starredByUserValue = NO;
+                                                  videoInstance.starredByUserValue = NO;
                                                   videoInstance.video.starCountValue -= 1;
                                                   
                                                   button.selected = NO;
-                                                  [videoInstance removeStarrersObject: appDelegate.currentUser];
                                               }
                                               
-                                              [appDelegate saveContext: YES];
+                                              NSError* error;
+                                              if(![videoInstance.managedObjectContext save:&error])
+                                              {
+                                                  videoInstance.starredByUserValue = previousStarringState;
+                                                  videoInstance.video.starCountValue = previousStarCount;
+                                              }
                                               
-                                              if (videoInstance.starrers.count == 0)
-                                              {
-                                                  DebugLog(@"No Starrers");
-                                              }
-                                              else
-                                              {
-                                                  for (ChannelOwner * co in videoInstance.starrers)
-                                                  {
-                                                      if ([co.uniqueId
-                                                           isEqualToString: appDelegate.currentUser.uniqueId])
-                                                      {
-                                                          DebugLog(@"Starrer: User*");
-                                                      }
-                                                      else
-                                                      {
-                                                          DebugLog(@"Starrer: %@", co.displayName);
-                                                      }
-                                                  }
-                                              }
+                                              
                                               
                                               [self.feedCollectionView reloadData];
                                               

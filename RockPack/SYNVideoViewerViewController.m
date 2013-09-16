@@ -74,7 +74,6 @@
 //iPhone specific
 
 @property (nonatomic, assign) UIDeviceOrientation currentOrientation;
-@property (nonatomic, strong) NSMutableArray* favouritesStatusArray;
 
 @end
 
@@ -91,13 +90,6 @@
 		self.videoInstanceArray = videoInstanceArray;
         self.currentSelectedIndex = selectedIndex;
         
-        //FIXME: FAVOURITES Temporary workaround for missing favourites status. remove when proper fix in place.
-        NSMutableArray* favouritesArray = [NSMutableArray arrayWithCapacity:[self.videoInstanceArray count]];
-        for(int i=0; i < [self.videoInstanceArray count]; i++)
-        {
-            [favouritesArray addObject:@(NO)];
-        }
-        _favouritesStatusArray = favouritesArray;
 	}
     
 	return self;
@@ -509,7 +501,7 @@
     
     self.channelTitleLabel.text = videoInstance.channel.title;
     self.videoTitleLabel.text = videoInstance.title;
-    self.starButton.selected = [self.favouritesStatusArray[index] boolValue];
+    self.starButton.selected = videoInstance.starredByUserValue;
     self.likesCountLabel.text = [videoInstance.video.starCount stringValue];
     [self refreshAddbuttonStatus:nil];
 }
@@ -775,42 +767,54 @@
     [self.heartActivityIndicator startAnimating];
     
     __weak VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
-    int starredIndex = self.currentSelectedIndex;
+    __weak SYNVideoViewerViewController* wself = self;
+    MKNKUserErrorBlock finishBlock = ^(id obj) {
+        
+        [wself updateVideoDetailsForIndex: self.currentSelectedIndex];
+        
+        [wself.heartActivityIndicator stopAnimating];
+        
+        button.enabled = YES;
+    };
+    
     [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
                                                      action: starAction
                                             videoInstanceId: videoInstance.uniqueId
                                           completionHandler: ^(id response) {
-                                              [self.heartActivityIndicator stopAnimating];
                                               
-                                              if (videoInstance.video.starredByUserValue == TRUE)
+                                              
+                                              BOOL previousStarringState = videoInstance.starredByUserValue;
+                                              NSNumber* previousStarCount = videoInstance.video.starCount;
+                                              if (previousStarringState)
                                               {
                                                   // Currently highlighted, so decrement
-                                                  videoInstance.video.starredByUserValue = FALSE;
+                                                  videoInstance.starredByUserValue = FALSE;
                                                   videoInstance.video.starCountValue -= 1;
                                               }
                                               else
                                               {
                                                   // Currently highlighted, so increment
-                                                  videoInstance.video.starredByUserValue = TRUE;
+                                                  videoInstance.starredByUserValue = TRUE;
                                                   videoInstance.video.starCountValue += 1;
                                                   [Appirater userDidSignificantEvent: FALSE];
                                               }
                                               
-                                              (self.favouritesStatusArray)[starredIndex] = @(button.selected);
+                                              NSError* error;
+                                              if(![videoInstance.managedObjectContext save:&error]) // something went wrong
+                                              {
+                                                  // revert to previous state
+                                                  videoInstance.starredByUserValue = previousStarringState;
+                                                  videoInstance.video.starCount = previousStarCount;
+                                                  button.selected = !button.selected;
+                                              }
                                               
-                                              [self updateVideoDetailsForIndex: self.currentSelectedIndex];
                                               
-                                              [appDelegate saveContext: YES];
+                                              finishBlock(response);
                                               
-                                              button.enabled = YES;
-                                              
-                                          }
-                                               errorHandler: ^(id error) {
-                                                   [self.heartActivityIndicator stopAnimating];
+                                          } errorHandler: ^(id error) {
                                                    DebugLog(@"Could not star video");
-                                                   button.selected = ! button.selected;
-                                                   button.enabled = YES;
-                                                   [self updateVideoDetailsForIndex: self.currentSelectedIndex];
+                                                   button.selected = !button.selected;
+                                                   finishBlock(error);
                                                }];
     
     
@@ -1024,7 +1028,7 @@
 {
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
-    videoShareButton.enabled = FALSE;
+    //videoShareButton.enabled = NO;
     
     [self shareVideoInstance: videoInstance];
 }
@@ -1038,8 +1042,7 @@
         if (!self.reportConcernTableViewController)
         {
             // Create out concerns table view controller
-            self.reportConcernTableViewController = [[SYNReportConcernTableViewController alloc]
-                                                     init];
+            self.reportConcernTableViewController = [[SYNReportConcernTableViewController alloc] init];
             
             VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
             
@@ -1228,14 +1231,7 @@
     self.addButton.hidden = !self.addVideoButton.selected;
 }
 
-#pragma mark - FIXME: FAVOURITES favourites workaround. Delete when feature has been developed.
--(void)markAsFavourites
-{
-    for(int i=0; i < [self.videoInstanceArray count]; i++)
-    {
-        (self.favouritesStatusArray)[i] = @(YES);
-    }
-}
+
 
 #pragma mark - Appear animation
 

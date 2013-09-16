@@ -427,14 +427,7 @@
     videoThumbnailCell.addItButton.highlighted = NO;
     videoThumbnailCell.addItButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel: videoInstance];
     
-    if ((!self.isIPhone && indexPath.item == 2) ||
-        (self.isIPhone && indexPath.item == 0))
-    {
-        //perform after 0.0f delay to make sure the call is queued after the cell has been added to the view
-        [self performSelector: @selector(showVideoOnboardingForCell:)
-                   withObject: videoThumbnailCell
-                   afterDelay: 0.0f];
-    }
+    
     
     return videoThumbnailCell;
 }
@@ -560,58 +553,7 @@
 }
 
 
-#pragma mark - onboarding
 
-- (void) showVideoOnboardingForCell: (SYNVideoThumbnailWideCell *) cell
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL hasShownVideoOnBoarding = [defaults boolForKey: kUserDefaultsAddVideo];
-    
-    if (!hasShownVideoOnBoarding)
-    {
-        NSString *message = NSLocalizedString(@"onboarding_video", nil);
-        
-        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0;
-        CGSize size = IS_IPAD ? CGSizeMake(240.0, 86.0) : CGSizeMake(200.0, 82.0);
-        CGRect rectToPointTo = CGRectZero;
-        PointingDirection directionToPointTo = PointingDirectionDown;
-        
-        
-        if (cell)
-        {
-            rectToPointTo = [self.view convertRect: cell.frame
-                                          fromView: cell];
-            
-            rectToPointTo.origin.x -= 10.0f;
-            
-            
-            if (rectToPointTo.origin.y < [[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5)
-            {
-                directionToPointTo = PointingDirectionUp;
-            }
-            
-        }
-        
-        SYNOnBoardingPopoverView *addToChannelPopover = [SYNOnBoardingPopoverView withMessage: message
-                                                                                     withSize: size
-                                                                                  andFontSize: fontSize
-                                                                                   pointingTo: rectToPointTo
-                                                                                withDirection: directionToPointTo];
-        
-        
-        //__weak SYNSearchVideosViewController *wself = self;
-        
-        addToChannelPopover.action = ^(id obj){
-           // [wself videoAddButtonTapped: cell.addItButton];
-        };
-        [appDelegate.onBoardingQueue addPopover: addToChannelPopover];
-        
-        [defaults setBool: YES
-                   forKey: kUserDefaultsAddVideo];
-        
-        [appDelegate.onBoardingQueue present];
-    }
-}
 
 
 - (void) videoButtonPressed: (UIView *) surfacePressed

@@ -1003,7 +1003,7 @@
 }
 
 
-#pragma mark - Collection Delegate Methods
+#pragma mark - Collection Delegate/Data Source Methods
 
 - (NSInteger) collectionView: (UICollectionView *) collectionView numberOfItemsInSection: (NSInteger) section
 {
@@ -2661,86 +2661,7 @@ shouldChangeTextInRange: (NSRange) range
 
 - (void) checkOnBoarding
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL hasShownSubscribeOnBoarding = [defaults boolForKey: kUserDefaultsSubscribe];
     
-    BOOL hasShownAddVideoOnBoarding = [defaults boolForKey: kUserDefaultsAddVideo];
-    
-    if (hasShownAddVideoOnBoarding && hasShownSubscribeOnBoarding)
-    {
-        return;
-    }
-    
-    // do not show onboarding related to subscriptions in user's own channels and channels already subscribed
-    if (![self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId] &&
-        !self.channel.subscribedByUserValue && !hasShownSubscribeOnBoarding)
-    {
-        NSString *message = NSLocalizedString(@"onboarding_subscription", nil);
-        PointingDirection direction = IS_IPAD ? PointingDirectionLeft : PointingDirectionUp;
-        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0;
-        CGSize size = IS_IPAD ? CGSizeMake(290.0, 68.0) : CGSizeMake(250.0, 60.0);
-        CGRect rectToPointTo = self.subscribeButton.frame;
-        
-        if (!IS_IPAD)
-        {
-            rectToPointTo = CGRectInset(rectToPointTo, 0.0, 6.0);
-        }
-        
-        SYNOnBoardingPopoverView *subscribePopover = [SYNOnBoardingPopoverView withMessage: message
-                                                                                  withSize: size
-                                                                               andFontSize: fontSize
-                                                                                pointingTo: rectToPointTo
-                                                                             withDirection: direction];
-        
-        __weak SYNChannelDetailViewController *wself = self;
-        subscribePopover.action = ^(id obj){
-            [wself subscribeButtonTapped: self.subscribeButton]; // simulate press
-        };
-        
-        [appDelegate.onBoardingQueue addPopover: subscribePopover];
-        
-        [defaults setBool: YES
-                   forKey: kUserDefaultsSubscribe];
-    }
-    
-    NSInteger cellNumber = IS_IPAD ? 1 : 0;
-    SYNVideoThumbnailRegularCell *randomCell =
-    (SYNVideoThumbnailRegularCell *) [self.videoThumbnailCollectionView cellForItemAtIndexPath: [NSIndexPath indexPathForItem: cellNumber
-                                                                                                                    inSection: 0]];
-    
-    if (!hasShownAddVideoOnBoarding && randomCell)
-    {
-        NSString *message = NSLocalizedString(@"onboarding_video", nil);
-        
-        CGFloat fontSize = IS_IPAD ? 16.0 : 14.0;
-        CGSize size = IS_IPAD ? CGSizeMake(240.0, 86.0) : CGSizeMake(200.0, 82.0);
-        
-        
-        CGRect rectToPointTo = [self.view convertRect: randomCell.frame
-                                             fromView: randomCell];
-        
-        rectToPointTo = CGRectOffset(rectToPointTo, -5, 0);
-        SYNOnBoardingPopoverView *addToChannelPopover = [SYNOnBoardingPopoverView withMessage: message
-                                                                                     withSize: size
-                                                                                  andFontSize: fontSize
-                                                                                   pointingTo: rectToPointTo
-                                                                                withDirection: PointingDirectionDown];
-      
-        //__weak SYNChannelDetailViewController *wself = self;
-        addToChannelPopover.action = ^(id obj){
-            if ([obj isKindOfClass:[UILongPressGestureRecognizer class]])
-            {
-                [self arcMenuUpdateState: obj];
-            }
-        };
-        
-        [appDelegate.onBoardingQueue addPopover: addToChannelPopover];
-        
-        [defaults setBool: YES
-                   forKey: kUserDefaultsAddVideo];
-    }
-    
-    [appDelegate.onBoardingQueue present];
 }
 
 

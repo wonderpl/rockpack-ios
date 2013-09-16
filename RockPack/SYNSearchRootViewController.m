@@ -79,7 +79,7 @@
     
     NSArray *tabsArray = @[self.videoSearchTabView, self.channelsSearchTabView, self.usersSearchTabView];
     
-    self.tabsContainer = [[UIView alloc] initWithFrame: CGRectMake(0.0, 0.0,
+    self.tabsContainer = [[UIView alloc] initWithFrame: CGRectMake(0.0, 0.0f, // set below
                                                                    self.channelsSearchTabView.frame.size.width * tabsArray.count,
                                                                    self.channelsSearchTabView.frame.size.height)];
     
@@ -107,6 +107,8 @@
     }
     
     CGFloat correctTabsY = IS_IPAD ? 104.0 : self.channelsSearchTabView.frame.size.height / 2 + 65.0f;
+    if(IS_IOS_7_OR_GREATER)
+        correctTabsY += 10.0f;
     self.tabsContainer.center = CGPointMake(self.view.center.x, correctTabsY);
     self.tabsContainer.frame = CGRectIntegral(self.tabsContainer.frame);
     
