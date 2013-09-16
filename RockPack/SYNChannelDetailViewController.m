@@ -29,6 +29,7 @@
 #import "SYNModalSubscribersController.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNOnBoardingPopoverQueueController.h"
+#import "SYNProfileRootViewController.h"
 #import "SYNReportConcernTableViewController.h"
 #import "SYNSubscribersViewController.h"
 #import "SYNVideoThumbnailRegularCell.h"
@@ -65,6 +66,7 @@
 @property (nonatomic, strong) IBOutlet UIButton *buyButton;
 @property (nonatomic, strong) IBOutlet UIButton *cameraButton;
 @property (nonatomic, strong) IBOutlet UIButton *createChannelButton;
+@property (nonatomic, strong) IBOutlet UIButton *deleteChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *playChannelButton;
 @property (nonatomic, strong) IBOutlet UIButton *profileImageButton;
 @property (nonatomic, strong) IBOutlet UIButton *reportConcernButton;
@@ -387,6 +389,17 @@
     }
     
     self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
+    
+    // iOS 7 header shift
+    if (IS_IOS_7_OR_GREATER)
+    {
+        self.createChannelButton.center = CGPointMake(self.createChannelButton.center.x, self.createChannelButton.center.y + kiOS7PlusHeaderYOffset);
+        self.deleteChannelButton.center = CGPointMake(self.deleteChannelButton.center.x, self.deleteChannelButton.center.y + kiOS7PlusHeaderYOffset);
+        self.saveChannelButton.center = CGPointMake(self.saveChannelButton.center.x, self.saveChannelButton.center.y + kiOS7PlusHeaderYOffset);
+        self.cancelEditButton.center = CGPointMake(self.cancelEditButton.center.x, self.cancelEditButton.center.y + kiOS7PlusHeaderYOffset);
+        self.logoImageView.center = CGPointMake(self.logoImageView.center.x, self.logoImageView.center.y + kiOS7PlusHeaderYOffset);
+        self.activityIndicator.center = CGPointMake(self.activityIndicator.center.x, self.activityIndicator.center.y + kiOS7PlusHeaderYOffset);
+    }
 }
 
 
@@ -1510,6 +1523,7 @@
     self.saveChannelButton.frame = newFrame;
     self.saveChannelButton.hidden = NO;
     self.cancelEditButton.hidden = NO;
+    self.deleteChannelButton.hidden = NO;
     self.backButton.hidden = YES;
     self.addButton.hidden = YES;
     
@@ -1598,8 +1612,6 @@
         }
         else
         {
-            
-            
             [appDelegate.viewStackManager popController];
         }
     }
@@ -1618,6 +1630,7 @@
         self.categoryTableViewController = nil;
         self.saveChannelButton.hidden = YES;
         self.cancelEditButton.hidden = YES;
+        self.deleteChannelButton.hidden = YES;
         self.addButton.hidden = NO;
         self.backButton.hidden = NO;
         
@@ -1644,6 +1657,7 @@
                          withValue: nil];
     
     self.saveChannelButton.enabled = NO;
+    self.deleteChannelButton.enabled = YES;
     [self.activityIndicator startAnimating];
     
     [self hideCategoryChooser];
@@ -1674,8 +1688,10 @@
                                              
                                              [self setEditControlsVisibility: NO];
                                              self.saveChannelButton.enabled = YES;
+                                             self.deleteChannelButton.enabled = YES;
                                              [self.activityIndicator stopAnimating];
                                              self.saveChannelButton.hidden = YES;
+                                             self.deleteChannelButton.hidden = YES;
                                              self.cancelEditButton.hidden = YES;
                                              self.addButton.hidden = NO;
                                              
@@ -1724,6 +1740,8 @@
                                                   
                                                   self.saveChannelButton.hidden = NO;
                                                   self.saveChannelButton.enabled = YES;
+                                                  self.deleteChannelButton.hidden = NO;
+                                                  self.deleteChannelButton.enabled = YES;
                                                   [self.activityIndicator stopAnimating];
                                                   [self.activityIndicator stopAnimating];
                                               }];
@@ -2018,6 +2036,58 @@
             [self updateCategoryButtonText: genre.name];
         }
     }
+}
+
+
+#pragma mark - Deleting Channels
+
+- (IBAction) deleteChannelPressed: (UIButton *) sender
+{
+    NSString *message = [NSString stringWithFormat: NSLocalizedString(@"profile_screen_channel_delete_dialog_description", nil), self.channel.title];
+    NSString *title = [NSString stringWithFormat: NSLocalizedString(@"profile_screen_channel_delete_dialog_title", nil), self.channel.title];
+    
+    [[[UIAlertView alloc] initWithTitle: title
+                                message: message
+                               delegate: self
+                      cancelButtonTitle: NSLocalizedString(@"Cancel", nil)
+                      otherButtonTitles: NSLocalizedString(@"Delete", nil), nil] show];
+}
+
+
+- (void)	 alertView: (UIAlertView *) alertView
+         willDismissWithButtonIndex: (NSInteger) buttonIndex
+{
+    if (buttonIndex == 1)
+    {
+        [self deleteChannel];
+    }
+    else
+    {
+        // Cancel Clicked, do nothing
+    }
+}
+
+
+- (void) deleteChannel
+{
+    // return to previous screen as if the back button tapped
+    appDelegate.viewStackManager.returnBlock = ^{
+        [appDelegate.oAuthNetworkEngine deleteChannelForUserId: appDelegate.currentUser.uniqueId
+                                                     channelId: self.channel.uniqueId
+                                             completionHandler: ^(id response) {
+                                                 
+                                                 [appDelegate.currentUser.channelsSet removeObject: self.channel];
+                                                 [self.channel.managedObjectContext deleteObject: self.channel];
+                                                 [self.originalChannel.managedObjectContext deleteObject:self.originalChannel];
+                                                 
+                                                 [appDelegate saveContext: YES];
+                                             }
+                                                  errorHandler: ^(id error) {
+                                                      DebugLog(@"Delete channel failed");
+                                                  }];
+    };
+    
+    [appDelegate.viewStackManager popController];   
 }
 
 
@@ -2536,6 +2606,7 @@ shouldChangeTextInRange: (NSRange) range
     {
         self.createChannelButton.hidden = YES;
         self.saveChannelButton.hidden = YES;
+        self.deleteChannelButton.hidden = YES;
         self.cancelTextInputButton.hidden = NO;
     }
 }
@@ -2659,6 +2730,7 @@ shouldChangeTextInRange: (NSRange) range
     {
         self.createChannelButton.hidden = NO;
         self.saveChannelButton.hidden = NO;
+        self.deleteChannelButton.hidden = NO;
         self.cancelTextInputButton.hidden = YES;
     }
 }

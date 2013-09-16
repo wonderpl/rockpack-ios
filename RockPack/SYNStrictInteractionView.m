@@ -12,9 +12,6 @@
 
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
 {
-    
-    
-    
     for (UIView *subview in self.subviews)
     {
         if(subview.hidden)
