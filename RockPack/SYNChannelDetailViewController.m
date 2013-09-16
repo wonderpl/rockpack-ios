@@ -400,6 +400,33 @@
         self.logoImageView.center = CGPointMake(self.logoImageView.center.x, self.logoImageView.center.y + kiOS7PlusHeaderYOffset);
         self.activityIndicator.center = CGPointMake(self.activityIndicator.center.x, self.activityIndicator.center.y + kiOS7PlusHeaderYOffset);
     }
+
+//
+//    if ([self.channel.resourceURL hasPrefix: @"https"])                          // https does not cache so it is fresh
+//    {
+//        [appDelegate.oAuthNetworkEngine channelDataForUserId: appDelegate.currentUser.uniqueId
+//                                                   channelId: self.channel.uniqueId
+//                                                     inRange: self.dataRequestRange
+//                                           completionHandler: ^(NSDictionary *dictionary) {
+//                                              NSLog (@"Failure"); NSLog (@"Success");
+//                                           }
+//                                                errorHandler: ^(NSDictionary *errorDictionary) {
+//                                                    NSLog (@"Failure");
+//                                                }];
+//    }
+//    else
+//    {
+//        [appDelegate.networkEngine channelDataForUserId: appDelegate.currentUser.uniqueId
+//                                              channelId: self.channel.uniqueId
+//                                                inRange: self.dataRequestRange
+//                                      completionHandler: ^(NSDictionary *dictionary) {
+//                                          NSLog (@"Success");
+//                                      }
+//         
+//                                           errorHandler: ^(NSDictionary *errorDictionary) {
+//                                               NSLog (@"Failure");
+//                                           }];
+//    }
 }
 
 
@@ -713,8 +740,6 @@
 
 - (void) handleDataModelChange: (NSNotification *) notification
 {
-//    [self displayChannelDetails];
-    
     NSArray *updatedObjects = [notification userInfo][NSUpdatedObjectsKey];
     
     NSArray *deletedObjects = [notification userInfo][NSDeletedObjectsKey]; // our channel has been deleted
@@ -760,6 +785,12 @@
             [self updateChannelOwnerWithUser];
         }
     }];
+    
+    // Check to see if we have a background URL and we are not already loading one
+    if ((self.channel.channelCover.imageBackgroundUrl != nil) && (self.currentWebImageOperation == nil))
+    {
+        self.currentWebImageOperation = [self loadBackgroundImage];
+    }
 }
 
 
@@ -3211,33 +3242,41 @@ shouldChangeTextInRange: (NSRange) range
     __weak SDWebImageManager *shareImageManager = SDWebImageManager.sharedManager;
     __weak SYNChannelDetailViewController *wself = self;
     
-    return [shareImageManager downloadWithURL: [NSURL URLWithString: self.channel.channelCover.imageBackgroundUrl]
-                                      options: SDWebImageRetryFailed
-                                     progress: nil
-                                    completed: ^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
-                                        if (!wself || !image)
-                                        {
-                                            return;
-                                        }
-                                        
-                                        wself.originalBackgroundImage = image;
-                                        
-                                        UIImage *croppedImage = [wself croppedImageForCurrentOrientation];
-                                        
-                                        
-                                        [UIView transitionWithView: wself.view
-                                                          duration: 0.35f
-                                                           options: UIViewAnimationOptionTransitionCrossDissolve
-                                                        animations: ^{
-                                                            
-                                                                 wself.channelCoverImageView.image = croppedImage;
-                                                            
-                                                      } completion: ^(BOOL finished) {
-                                                            
-                                                       }];
-                                        
-                                        [wself.channelCoverImageView setNeedsLayout];
-                                    }];
+    // Make sure we have a valid background URL
+    if (self.channel.channelCover.imageBackgroundUrl)
+    {
+        return [shareImageManager downloadWithURL: [NSURL URLWithString: self.channel.channelCover.imageBackgroundUrl]
+                                          options: SDWebImageRetryFailed
+                                         progress: nil
+                                        completed: ^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished) {
+                                            if (!wself || !image)
+                                            {
+                                                return;
+                                            }
+                                            
+                                            wself.originalBackgroundImage = image;
+                                            
+                                            UIImage *croppedImage = [wself croppedImageForCurrentOrientation];
+                                            
+                                            
+                                            [UIView transitionWithView: wself.view
+                                                              duration: 0.35f
+                                                               options: UIViewAnimationOptionTransitionCrossDissolve
+                                                            animations: ^{
+                                                                
+                                                                wself.channelCoverImageView.image = croppedImage;
+                                                                
+                                                            } completion: ^(BOOL finished) {
+                                                                
+                                                            }];
+                                            
+                                            [wself.channelCoverImageView setNeedsLayout];
+                                        }];
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 
