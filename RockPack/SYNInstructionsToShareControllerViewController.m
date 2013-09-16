@@ -124,9 +124,6 @@
 -(void)tapToClose:(UIGestureRecognizer*)recogniser
 {
     
-    
-    
-    
     [self.backgroundImageView removeGestureRecognizer:self.backgroundImageView.gestureRecognizers[0]]; // remove the tap gesture for house keeping
     
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -159,18 +156,13 @@
     switch (_state)
     {
         
-        
         case InstructionsShareStatePressAndHold:
         {
-            
             
             [self changeMainTextForString:NSLocalizedString(@"instruction_press_hold", nil) onCompletion:^{
                 
                 self.okButton.enabled = YES;
             }];
-            
-            
-            
             
         }
             break;
@@ -180,7 +172,6 @@
             [self changeMainTextForString:NSLocalizedString(@"instruction_choose_action", nil) onCompletion:^{
                 self.okButton.enabled = YES;
             }];
-            
             
         }
             
