@@ -149,8 +149,8 @@
     
     else
     {
-        self.accessoryNumberLabel.center = CGPointMake(230.0f - self.accessoryNumberLabel.frame.size.width/2 , IS_IOS_7_OR_GREATER ? 25.0f : 30.0f );
-        self.accessoryNumberBackground.center = CGPointMake(230.0f - self.accessoryNumberLabel.frame.size.width/2 , 27.0f );
+        self.accessoryNumberLabel.center = CGPointMake(230.0f - self.accessoryNumberLabel.frame.size.width/2 , IS_IOS_7_OR_GREATER ? 29.0f : 30.0f );
+        self.accessoryNumberBackground.center = CGPointMake(230.0f - self.accessoryNumberLabel.frame.size.width/2 , IS_IOS_7_OR_GREATER ? 29.0f : 27.0f );
     }
     
     CGRect newFrame = self.accessoryNumberBackground.frame;

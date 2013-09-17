@@ -470,6 +470,8 @@ typedef enum {
         else if (IS_IPHONE)
         {
             CGRect frameThatFits = self.currentlyLoadedViewController.view.frame;
+            if(IS_IOS_7_OR_GREATER)
+                frameThatFits.origin.y = -10.0f;
             frameThatFits.size.width = self.containerView.frame.size.width;
             frameThatFits.size.height = self.containerView.frame.size.height - 6.0;
             self.currentlyLoadedViewController.view.frame = frameThatFits;
