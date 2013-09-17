@@ -581,8 +581,8 @@
     
     CGRect controllerFrame = controller.view.frame;
     
-    controllerFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 20;
-    controllerFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeight] - 20;
+    controllerFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar];
+    controllerFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar];
     
     controller.view.frame = controllerFrame;
     
