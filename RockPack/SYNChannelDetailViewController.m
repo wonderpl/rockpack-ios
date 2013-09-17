@@ -833,6 +833,31 @@
     {
         [self displayChannelDetails];
     }
+    
+    BOOL visible = (self.mode == kChannelDetailsModeDisplay);
+    
+    self.subscribeButton.hidden = (visible && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
+    self.editButton.hidden = (visible && ![self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]);
+    
+    if (self.channel.favouritesValue && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId])
+    {
+        self.editButton.hidden = TRUE;
+        
+//        CGFloat offset = 125;
+//        
+//        if (!self.isIPhone)
+//        {
+//            offset = 130;
+//        }
+//        
+//        CGRect frame = self.originalSubscribersLabelRect;
+//        frame.origin.x -= offset;
+//        self.subscribersLabel.frame = frame;
+////        ///
+////        self.originalSubscribersLabelRect = frame;
+////        ///
+////        self.subscribersButton.center = self.subscribersLabel.center;
+    }
 }
 
 
