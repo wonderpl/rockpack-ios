@@ -228,14 +228,11 @@ typedef void(^FeedDataErrorBlock)(void);
 - (void) viewDidAppear: (BOOL) animated
 {
     [super viewDidAppear: animated];
-    // 668 needed
-    
-    // Compensate for iOS7
-    
-    
+ 
     
     [self displayEmptyGenreMessage: NSLocalizedString(@"feed_screen_loading_message", nil)
                          andLoader: YES];
+    
     if([self class] == [SYNFeedRootViewController class])
     {
         [self loadAndUpdateFeedData];

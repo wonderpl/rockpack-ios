@@ -142,11 +142,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     
     // == Compensate for iOS7 == //
-    CGFloat offsetFromTop = IS_IOS_7_OR_GREATER ? 10.0f : 0.0f;
+    CGFloat offsetFromTop = IS_IOS_7_OR_GREATER ? (IS_IPAD ? 10.0f : 4.0f) : 0.0f;
     CGRect frameToAdjust;
     frameToAdjust = self.headerContainerView.frame;
     frameToAdjust.origin.y += offsetFromTop;
     self.headerContainerView.frame = frameToAdjust;
+    
+    
     
     frameToAdjust = self.sideNavigationButton.frame;
     frameToAdjust.origin.y += offsetFromTop;

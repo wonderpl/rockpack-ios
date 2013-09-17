@@ -1100,7 +1100,8 @@
                                                NSString* typeName = [self.mutableShareDictionary[@"type"] isEqualToString:@"channel"] ? @"Pack" : @"Video";
                                                
                                                NSString* notificationText =
-                                               [NSString stringWithFormat:NSLocalizedString(@"sharing_object_sent", nil), NSLocalizedString(@"notification_liked_action", nil), typeName];
+                                               [NSString stringWithFormat:NSLocalizedString(@"sharing_object_sent", nil), typeName];
+                                               
                                                [appDelegate.viewStackManager presentSuccessNotificationWithMessage:notificationText];
                                                [appDelegate.viewStackManager removePopoverView];
                                                
