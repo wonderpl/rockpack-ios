@@ -2702,7 +2702,8 @@ shouldChangeTextInRange: (NSRange) range
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSInteger onBoarding1State = [defaults integerForKey:kInstruction1OnBoardingState];
-    if(!onBoarding1State) // has shown on channel details and can show here IF videos are present
+    
+    if(!onBoarding1State || onBoarding1State == 1) // has shown on channel details and can show here IF videos are present
     {
         SYNInstructionsToShareControllerViewController* itsVC = [[SYNInstructionsToShareControllerViewController alloc] initWithDelegate:self andState:InstructionsShareStatePressAndHold];
         
