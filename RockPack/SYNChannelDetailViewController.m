@@ -1397,8 +1397,6 @@
 
 - (IBAction) shareChannelButtonTapped: (UIButton *) shareButton
 {
-    // Prevent multiple clicks
-    shareButton.enabled = FALSE;
     
     [self shareChannel: self.channel
                isOwner: ([self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]) ? @(TRUE): @(FALSE)
