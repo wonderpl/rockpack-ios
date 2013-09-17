@@ -401,7 +401,7 @@
         
         secondFrame.size = self.subLabel.frame.size;
         secondFrame.origin.x = self.subLabel.frame.origin.x;
-        secondFrame.origin.y += 30.0f;
+        secondFrame.origin.y += 20.0f;
         
         self.subLabel.frame = CGRectIntegral(secondFrame);
         
