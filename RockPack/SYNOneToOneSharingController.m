@@ -23,6 +23,7 @@
 #import "UIImageView+WebCache.h"
 #import "VideoInstance.h"
 #import "SYNAppDelegate.h"
+#import "SYNOneToOneSharingFriendCell.h"
 #import <AddressBook/AddressBook.h>
 #import <QuartzCore/QuartzCore.h>
 #import <objc/runtime.h>
@@ -196,8 +197,8 @@
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
     self.shareLabel.font = [UIFont rockpackFontOfSize: self.titleLabel.font.pointSize];
     
-    [self.recentFriendsCollectionView registerNib: [UINib nibWithNibName: @"SYNFriendThumbnailCell" bundle: nil]
-                       forCellWithReuseIdentifier: @"SYNFriendThumbnailCell"];
+    [self.recentFriendsCollectionView registerNib: [UINib nibWithNibName: @"SYNOneToOneSharingFriendCell" bundle: nil]
+                       forCellWithReuseIdentifier: @"SYNOneToOneSharingFriendCell"];
     
     self.searchFieldFrameImageView.image = [[UIImage imageNamed: @"FieldSearch"]
                                             resizableImageWithCapInsets: UIEdgeInsetsMake(2.0f, 20.0f, 2.0f, 20.0f)];
@@ -552,8 +553,8 @@
 {
     
     
-    SYNFriendThumbnailCell *userThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNFriendThumbnailCell"
-                                                                                          forIndexPath: indexPath];
+    SYNOneToOneSharingFriendCell *userThumbnailCell = [collectionView dequeueReusableCellWithReuseIdentifier: @"SYNOneToOneSharingFriendCell"
+                                                                                                forIndexPath: indexPath];
     
     NSInteger realIndex = indexPath.item;
     
@@ -566,7 +567,6 @@
         
         userThumbnailCell.imageView.alpha = 1.0f;
         
-        userThumbnailCell.shadowImageView.alpha = 1.0f;
         
         return userThumbnailCell;
     }
@@ -614,7 +614,6 @@
         
         userThumbnailCell.imageView.alpha = 1.0f;
         
-        userThumbnailCell.shadowImageView.alpha = 1.0f;
         
     }
     else // on the fake slots (stubs)
@@ -625,7 +624,6 @@
         CGFloat factor = 1.0f - ((float) (realIndex - self.recentFriends.count) / (float) kNumberOfEmptyRecentSlots);
         // fade slots
         userThumbnailCell.imageView.alpha = factor;
-        userThumbnailCell.shadowImageView.alpha = factor;
     }
     
     return userThumbnailCell;

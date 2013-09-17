@@ -112,6 +112,22 @@
     {
         self.autopostView.hidden = YES;
     }
+    
+    if(IS_IPHONE && IS_IOS_7_OR_GREATER)
+    {
+        CGRect vFrame;
+        for (UIView* viewToMove in @[self.closeButton, self.titleLabel, self.confirmButtom])
+        {
+            vFrame = viewToMove.frame;
+            vFrame.origin.y += 10.0f;
+            if(viewToMove == self.closeButton)
+                vFrame.origin.x += 14.0f;
+            viewToMove.frame = vFrame;
+            
+        }
+        
+        
+    }
 }
 
 
@@ -498,6 +514,9 @@
     CGRect autopostViewFrame = self.autopostView.frame;
     
     autopostViewFrame.origin.y = self.view.frame.size.height - autopostViewFrame.size.height - 15;
+    if(IS_IPHONE_5 && IS_IOS_7_OR_GREATER)
+        autopostViewFrame.origin.y += 15.0;
+    
     self.autopostView.frame = autopostViewFrame;
     
     if (IS_IPAD)

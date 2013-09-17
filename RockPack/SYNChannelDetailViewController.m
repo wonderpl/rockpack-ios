@@ -313,7 +313,7 @@
     //Remove the save button. It is added back again if the edit button is tapped.
     [self.saveChannelButton removeFromSuperview];
     
-    if (!self.isIPhone)
+    if (IS_IPAD)
     {
         // Set text on add cover and select category buttons
         NSString *coverString = NSLocalizedString(@"channel_creation_screen_button_selectcover_label", nil);
@@ -346,6 +346,10 @@
         self.coverChooserController = [[SYNCoverChooserController alloc] initWithSelectedImageURL: self.channel.channelCover.imageUrl];
         [self addChildViewController: self.coverChooserController];
         self.coverChooserMasterView = self.coverChooserController.view;
+        
+        
+        
+        
     }
     else
     {
@@ -365,6 +369,29 @@
         {
             self.view.backgroundColor = [UIColor colorWithWhite: 0.92f
                                                           alpha: 1.0f];
+        }
+        
+        // button text alignement iOS7
+        
+        if(IS_IOS_7_OR_GREATER)
+        {
+            UIEdgeInsets eInsets;
+            
+            eInsets = self.addCoverButton.contentEdgeInsets;
+            eInsets.top = 4.0f;
+            self.addCoverButton.contentEdgeInsets = eInsets;
+            
+            
+            eInsets = self.selectCategoryButton.contentEdgeInsets;
+            eInsets.top = 4.0f;
+            self.selectCategoryButton.contentEdgeInsets = eInsets;
+            
+            CGRect vFrame;
+            for (UIView* viewToMove in @[self.saveChannelButton, self.createChannelButton, self.cancelEditButton, self.deleteChannelButton]) {
+                vFrame = viewToMove.frame;
+                vFrame.origin.y += 6.0f;
+                viewToMove.frame = vFrame;
+            }
         }
     }
     
@@ -397,7 +424,7 @@
         self.deleteChannelButton.center = CGPointMake(self.deleteChannelButton.center.x, self.deleteChannelButton.center.y + kiOS7PlusHeaderYOffset);
         self.saveChannelButton.center = CGPointMake(self.saveChannelButton.center.x, self.saveChannelButton.center.y + kiOS7PlusHeaderYOffset);
         self.cancelEditButton.center = CGPointMake(self.cancelEditButton.center.x, self.cancelEditButton.center.y + kiOS7PlusHeaderYOffset);
-        self.logoImageView.center = CGPointMake(self.logoImageView.center.x, self.logoImageView.center.y + kiOS7PlusHeaderYOffset);
+        self.logoImageView.center = CGPointMake(self.logoImageView.center.x, self.logoImageView.center.y + kiOS7PlusHeaderYOffset - 2.0f);
         self.activityIndicator.center = CGPointMake(self.activityIndicator.center.x, self.activityIndicator.center.y + kiOS7PlusHeaderYOffset);
     }
 
@@ -481,6 +508,15 @@
         AssertOrLog(@"Detail View controller had viewWillAppear called twice!!!!");
     }
     
+    if (self.mode == kChannelDetailsModeDisplay && !self.hasAppeared)
+    {
+        [self clearBackground];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName: kChannelUpdateRequest
+                                                            object: self
+                                                          userInfo: @{kChannel: self.channel}];
+    }
+    
     self.hasAppeared = YES;
 }
 
@@ -542,6 +578,7 @@
     {
         AssertOrLog(@"Detail View controller had viewWillDisappear called twice!!!!");
     }
+    
     
     self.hasAppeared = NO;
 }
@@ -1360,8 +1397,6 @@
 
 - (IBAction) shareChannelButtonTapped: (UIButton *) shareButton
 {
-    // Prevent multiple clicks
-    shareButton.enabled = FALSE;
     
     [self shareChannel: self.channel
                isOwner: ([self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]) ? @(TRUE): @(FALSE)
@@ -3309,7 +3344,7 @@ shouldChangeTextInRange: (NSRange) range
                                                      name: NSManagedObjectContextDidSaveNotification
                                                    object: self.channel.managedObjectContext];
         
-        if (self.mode == kChannelDetailsModeDisplay)
+        if (self.mode == kChannelDetailsModeDisplay && self.hasAppeared)
         {
             [self clearBackground];
             
