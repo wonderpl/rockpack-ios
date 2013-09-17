@@ -63,7 +63,7 @@
     
     self.navigationItem.titleView = labelContentView;
     
-    self.errorLabel.text = @"Your username can only be changed one time";
+    self.errorLabel.text = @"Your username can only be changed once.";
     
 }
 -(void)saveButtonPressed:(UIButton*)button

@@ -525,6 +525,11 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) showSideNavigation
 {
+    if (IS_IPHONE)
+    {
+        self.sideNavigatorViewController.searchViewController.searchTextField.placeholder = @"Find videos, packs and people";
+    }
+    
     NSString* controllerTitle = self.containerViewController.showingViewController.title;
     
     [self.sideNavigatorViewController setSelectedCellByPageName: controllerTitle];
@@ -537,8 +542,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                      } completion:^(BOOL finished) {
                          
                      }];
-    self.sideNavigatorViewController.state = SideNavigationStateHalf;
     
+    self.sideNavigatorViewController.state = SideNavigationStateHalf;
 }
 
 - (IBAction) hideNavigation: (UIButton*) sender
