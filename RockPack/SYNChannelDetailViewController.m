@@ -104,6 +104,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *byLabel;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *shareActivityIndicator;
+@property (nonatomic, strong) UIAlertView *deleteChannelAlertView;
 
 //iPhone specific
 
@@ -842,21 +843,6 @@
     if (self.channel.favouritesValue && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId])
     {
         self.editButton.hidden = TRUE;
-        
-//        CGFloat offset = 125;
-//        
-//        if (!self.isIPhone)
-//        {
-//            offset = 130;
-//        }
-//        
-//        CGRect frame = self.originalSubscribersLabelRect;
-//        frame.origin.x -= offset;
-//        self.subscribersLabel.frame = frame;
-////        ///
-////        self.originalSubscribersLabelRect = frame;
-////        ///
-////        self.subscribersButton.center = self.subscribersLabel.center;
     }
 }
 
@@ -1530,22 +1516,6 @@
 }
 
 
-// Alert view delegarte for
-- (void)	 alertView: (UIAlertView *) alertView
-         clickedButtonAtIndex: (NSInteger) buttonIndex
-{
-    if (buttonIndex == 0)
-    {
-        // cancel, do nothing
-        DebugLog(@"Delete cancelled");
-    }
-    else
-    {
-        [self deleteVideoInstance];
-    }
-}
-
-
 - (void) deleteVideoInstance
 {
     VideoInstance *videoInstanceToDelete = (VideoInstance *) self.channel.videoInstances[self.indexPathToDelete.item];
@@ -2142,24 +2112,52 @@
     NSString *message = [NSString stringWithFormat: NSLocalizedString(@"profile_screen_channel_delete_dialog_description", nil), self.channel.title];
     NSString *title = [NSString stringWithFormat: NSLocalizedString(@"profile_screen_channel_delete_dialog_title", nil), self.channel.title];
     
-    [[[UIAlertView alloc] initWithTitle: title
-                                message: message
-                               delegate: self
-                      cancelButtonTitle: NSLocalizedString(@"Cancel", nil)
-                      otherButtonTitles: NSLocalizedString(@"Delete", nil), nil] show];
+    self.deleteChannelAlertView = [[UIAlertView alloc] initWithTitle: title
+                                                              message: message
+                                                             delegate: self
+                                                    cancelButtonTitle: NSLocalizedString(@"Cancel", nil)
+                                                    otherButtonTitles: NSLocalizedString(@"Delete", nil), nil];
+    [self.deleteChannelAlertView show];
 }
 
+
+
+// Alert view delegarte for
+//- (void)	 alertView: (UIAlertView *) alertView
+//         clickedButtonAtIndex: (NSInteger) buttonIndex
+//{
+//    if (buttonIndex == 0)
+//    {
+//        // cancel, do nothing
+//        DebugLog(@"Delete cancelled");
+//    }
+//    else
+//    {
+//        [self deleteVideoInstance];
+//    }
+//}
 
 - (void)	 alertView: (UIAlertView *) alertView
          willDismissWithButtonIndex: (NSInteger) buttonIndex
 {
+    if (alertView == self.deleteChannelAlertView)
+    {
     if (buttonIndex == 1)
     {
         [self deleteChannel];
     }
+    }
     else
     {
-        // Cancel Clicked, do nothing
+        if (buttonIndex == 0)
+        {
+            // cancel, do nothing
+            DebugLog(@"Delete cancelled");
+        }
+        else
+        {
+            [self deleteVideoInstance];
+        }
     }
 }
 
