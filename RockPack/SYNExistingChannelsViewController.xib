@@ -88,19 +88,17 @@
                                     <rect key="frame" x="342" y="1" width="197" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="textColor" red="0.15686274510000001" green="0.1764705882" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
-                                    <color key="shadowColor" red="0.15686275059999999" green="0.1764705926" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
-                                    <size key="shadowOffset" width="0.0" height="1"/>
+                                    <size key="shadowOffset" width="0.0" height="0.0"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="21">
                                     <rect key="frame" x="639" y="1" width="44" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                    <size key="titleShadowOffset" width="0.0" height="1"/>
                                     <state key="normal" title="NO">
-                                        <color key="titleColor" red="0.8980392814" green="0.8980392814" blue="0.8980392814" alpha="1" colorSpace="deviceRGB"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleColor" red="0.15686274510000001" green="0.1764705882" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </state>
                                     <state key="selected">
                                         <color key="titleColor" red="0.1098039299" green="0.69411766529999996" blue="0.70980393890000004" alpha="1" colorSpace="deviceRGB"/>
@@ -117,10 +115,9 @@
                                     <rect key="frame" x="587" y="1" width="44" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                    <size key="titleShadowOffset" width="0.0" height="1"/>
                                     <state key="normal" title="YES">
-                                        <color key="titleColor" red="0.8980392814" green="0.8980392814" blue="0.8980392814" alpha="1" colorSpace="deviceRGB"/>
-                                        <color key="titleShadowColor" red="0.15686275059999999" green="0.1764705926" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleColor" red="0.15686274510000001" green="0.1764705882" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </state>
                                     <state key="selected">
                                         <color key="titleColor" red="0.1098039299" green="0.69411766529999996" blue="0.70980393890000004" alpha="1" colorSpace="deviceRGB"/>
@@ -133,7 +130,7 @@
                                     </connections>
                                 </button>
                             </subviews>
-                            <color key="backgroundColor" red="0.15686275059999999" green="0.1764705926" blue="0.20000000300000001" alpha="0.41999999999999998" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.95000000000000007" colorSpace="calibratedRGB"/>
                         </view>
                     </subviews>
                     <color key="backgroundColor" red="0.50980395079999996" green="0.55294120309999995" blue="0.56862747670000002" alpha="0.0" colorSpace="calibratedRGB"/>

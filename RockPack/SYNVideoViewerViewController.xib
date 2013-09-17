@@ -128,7 +128,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="1024" height="748"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <collectionView autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="none" id="81">
+                        <collectionView autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="none" id="81">
                             <rect key="frame" x="0.0" y="634" width="1024" height="106"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -161,7 +161,7 @@
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" id="150" userLabel="Cycling Label - Channel title" customClass="BBCyclingLabel">
-                            <rect key="frame" x="190" y="17" width="226" height="23"/>
+                            <rect key="frame" x="190" y="18" width="322" height="23"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
@@ -185,7 +185,7 @@
                                 <action selector="userTouchedProfileButton:" destination="-1" eventType="touchUpInside" id="103"/>
                             </connections>
                         </button>
-                        <view contentMode="scaleToFill" id="gqX-es-9WE" userLabel="Video Container">
+                        <view hidden="YES" contentMode="scaleToFill" id="gqX-es-9WE" userLabel="Video Container">
                             <rect key="frame" x="142" y="71" width="739" height="543"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -199,7 +199,7 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 </imageView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" id="15" userLabel="Button - Heart">
-                                    <rect key="frame" x="262" y="450" width="70" height="69"/>
+                                    <rect key="frame" x="262" y="451" width="70" height="69"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                     <state key="normal" image="ButtonVideoOverlayLike.png">
@@ -215,15 +215,15 @@
                                     </connections>
                                 </button>
                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="white" id="155" userLabel="Activity Indicator - Heart">
-                                    <rect key="frame" x="234" y="472" width="20" height="20"/>
+                                    <rect key="frame" x="234" y="473" width="20" height="20"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 </activityIndicatorView>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="160" userLabel="Like Count Label">
-                                    <rect key="frame" x="243" y="497" width="109" height="21"/>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="160" userLabel="Like Count Label">
+                                    <rect key="frame" x="165" y="476" width="109" height="21"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" red="0.50980395079999996" green="0.55294120309999995" blue="0.56862747670000002" alpha="0.0" colorSpace="calibratedRGB"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="textColor" red="0.15686274510000001" green="0.1764705882" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" id="13" userLabel="Button - Add">
@@ -263,7 +263,7 @@
                                     </connections>
                                 </button>
                                 <view contentMode="scaleToFill" id="152" userLabel="Cycling Label - Video title" customClass="BBCyclingLabel">
-                                    <rect key="frame" x="18" y="516" width="662" height="56"/>
+                                    <rect key="frame" x="-1" y="511" width="700" height="56"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
@@ -283,7 +283,7 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="144" userLabel="Button - Report Concern">
-                                    <rect key="frame" x="694" y="533" width="44" height="44"/>
+                                    <rect key="frame" x="707" y="511" width="44" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                     <state key="normal" image="ButtonReport.png">
@@ -312,7 +312,7 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.95000000000000007" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="0.74520985401459849" alpha="0.96999999999999997" colorSpace="calibratedWhite"/>
             <gestureRecognizers/>
         </view>
     </objects>
