@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="4510" systemVersion="12E55" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
@@ -263,7 +263,7 @@
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                     <inset key="contentEdgeInsets" minX="0.0" minY="9" maxX="0.0" maxY="0.0"/>
                                     <state key="normal" backgroundImage="ButtonCoverCategory.png">
-                                        <string key="title">SELECT A
+                                        <string key="title">CHOOSE A
 COVER</string>
                                         <color key="titleColor" red="0.15686274510000001" green="0.1764705882" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -281,7 +281,7 @@ COVER</string>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                     <inset key="contentEdgeInsets" minX="0.0" minY="9" maxX="0.0" maxY="0.0"/>
                                     <state key="normal" backgroundImage="ButtonCoverCategory.png">
-                                        <string key="title">SELECT A
+                                        <string key="title">CHOOSE A
 CATEGORY</string>
                                         <color key="titleColor" red="0.15686274510000001" green="0.1764705882" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -432,9 +432,9 @@ CATEGORY</string>
         <image name="ButtonEditHighlighted.png" width="120" height="45"/>
         <image name="ButtonPlayChannel.png" width="44" height="45"/>
         <image name="ButtonPlayChannelHighlighted.png" width="44" height="45"/>
-        <image name="ButtonReport.png" width="83" height="29"/>
-        <image name="ButtonReportHighlighted.png" width="83" height="29"/>
-        <image name="ButtonReportSelected.png" width="83" height="29"/>
+        <image name="ButtonReport.png" width="44" height="44"/>
+        <image name="ButtonReportHighlighted.png" width="44" height="44"/>
+        <image name="ButtonReportSelected.png" width="44" height="44"/>
         <image name="ButtonSave.png" width="140" height="45"/>
         <image name="ButtonSaveHighlighted.png" width="140" height="45"/>
         <image name="ButtonShare.png" width="61" height="61"/>

@@ -32,7 +32,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="left" text="NAME" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" id="5" userLabel="Name UILabel">
-                                <rect key="frame" x="6" y="70" width="84" height="21"/>
+                                <rect key="frame" x="6" y="70" width="80" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -63,6 +63,6 @@
     </objects>
     <resources>
         <image name="OverlayFriends.png" width="114" height="114"/>
-        <image name="ShadowPanelFriends.png" width="342" height="44"/>
+        <image name="ShadowPanelFriends.png" width="110" height="110"/>
     </resources>
 </document>

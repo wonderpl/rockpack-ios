@@ -46,7 +46,7 @@
     CGRect nameLabelFrame = self.nameLabel.frame;
     
     CGSize correctSize = [name sizeWithFont:self.nameLabel.font
-                          constrainedToSize:CGSizeMake(self.frame.size.width - 8.0, 200.0)
+                          constrainedToSize:CGSizeMake(self.frame.size.width - 10.0, 200.0)
                               lineBreakMode:NSLineBreakByWordWrapping];
     
     

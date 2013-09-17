@@ -112,7 +112,7 @@
 "facebook_login_error_description" = "We couldn't log you in with Facebook.";
 
 //Placeholder for forgot password textfield
-"forgot_password_screen_form_field_username_placeholder" = "USERNAME OR EMAIL";
+"forgot_password_screen_form_field_username_placeholder" = "EMAIL OR USERNAME";
 "forgot_password_screen_form_field_request_failed_error" = "Something went wrong. Please try again.";
 
 // Errors - Forgot password
@@ -121,7 +121,7 @@
 
 // Password Reset - Email sent AlertView
 "forgot_password_screen_complete_title" = "Password Reset";
-"forgot_password_screen_complete_message" = "Check your email and follow the instructions.";
+"forgot_password_screen_complete_message" = "Check your inbox. We've just sent you a password reset email";
 
 
 // == Core Navigation == //
@@ -130,7 +130,7 @@
 "core_nav_section_channels" = "PACKS";
 "core_nav_section_profile" = "ME";
 "core_nav_section_notifications" = "NOTIFICATIONS";
-"core_nav_section_friends" = "FIND FRIENDS";
+"core_nav_section_friends" = "MY FRIENDS";
 
 
 // == One to One Sharing == //
@@ -169,14 +169,14 @@
 // == Messages for creating a private channel == //
 
 "full_name" = "(full name)";
-"select_category" = "SELECT A CATEGORY";
+"select_category" = "CHOOSE A CATEGORY";
 "enter_title" = "ENTER A TITLE";
-"select_cover" = "SELECT A COVER.";
-"channel_created_succesfully" = "PACK CREATED SUCCESSFULLY";
+"select_cover" = "CHOOSE A COVER.";
+"channel_created_succesfully" = "PACK CREATED";
 "channel_will_remain_private_until" = "HOWEVER IT WILL REMAIN PRIVATE UNTIL YOU ";
-"private_condition_category" = "SELECT A RELEVANT CATEGORY";
+"private_condition_category" = "CHOOSE A RELEVANT CATEGORY";
 "private_condition_title" = "ENTER A TITLE";
-"private_condition_cover" = "SELECT A COVER";
+"private_condition_cover" = "CHOOSE A COVER";
 
 // == Channel Creation/Editing == //
 
@@ -184,8 +184,8 @@
 "channel_creation_screen_field_channeltitle_placeholder" = "PACK NAME";
 
 // Select Cover / Category
-"channel_creation_screen_button_selectcover_label" = "SELECT A COVER";
-"channel_creation_screen_button_selectcat_label" = "SELECT A CATEGORY";
+"channel_creation_screen_button_selectcover_label" = "CHOOSE A COVER";
+"channel_creation_screen_button_selectcat_label" = "CHOOSE A CATEGORY";
 
 // Delete Video AlertView
 "channel_creation_screen_channel_delete_dialog_title" = "Delete Video";
@@ -247,7 +247,7 @@
 "instruction_packs_for_you" = "Here are some popular\nvideo packs for you";
 "instruction_packs_choose_one" = "Choose one to get started";
 
-"instruction_press_hold" = "Press and hold the video.\nGo on, try it!";
+"instruction_press_hold" = "Press and hold the video.\n(Go on, try it!)";
 "instruction_choose_action" = "Choose an action";
 "instruction_good_job" = "Good job!";
 

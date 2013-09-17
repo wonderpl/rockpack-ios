@@ -426,8 +426,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         return;
     }
     
-    NSString* message = IS_IPHONE ? NSLocalizedString(@"VIDEO SUCCESSFULLY ADDED",nil)
-                                  : NSLocalizedString(@"YOUR VIDEOS HAVE BEEN SUCCESSFULLY ADDED INTO YOUR CHANNEL",nil);
+    NSString* message = IS_IPHONE ? NSLocalizedString(@"VIDEO ADDED",nil)
+                                  : NSLocalizedString(@"YOUR VIDEOS HAVE BEEN ADDED INTO YOUR CHANNEL",nil);
     
     Channel* currentlyCreating = appDelegate.videoQueue.currentlyCreatingChannel;
 
@@ -931,7 +931,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) channelSuccessfullySaved: (NSNotification*) note
 {
-    NSString* message = IS_IPHONE ? NSLocalizedString(@"PACK SAVED", nil) : NSLocalizedString(@"YOUR PACK HAS BEEN SAVED SUCCESSFULLY", nil);
+    NSString* message = IS_IPHONE ? NSLocalizedString(@"PACK SAVED", nil) : NSLocalizedString(@"YOUR PACK HAS BEEN SAVED", nil);
     
     [self presentSuccessNotificationWithMessage: message];
 }

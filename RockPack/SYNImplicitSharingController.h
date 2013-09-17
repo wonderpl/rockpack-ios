@@ -14,7 +14,6 @@ typedef void (^ImplicitSharingCompletionBlock) (BOOL);
 
 @property (strong, nonatomic) IBOutlet UIButton *notNowButton;
 @property (strong, nonatomic) IBOutlet UIButton *yesButton;
-@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UILabel *textLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
 @property (copy, readwrite) ImplicitSharingCompletionBlock completionBlock;

@@ -702,7 +702,7 @@
     else if([self isValidEmail:friend.email])
         cell.detailTextLabel.text = friend.email;
     else
-        cell.detailTextLabel.text = @"Pick and email address";
+        cell.detailTextLabel.text = @"Pick an email address";
     
     // image
     

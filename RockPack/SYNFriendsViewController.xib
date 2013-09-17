@@ -26,7 +26,7 @@
                     <rect key="frame" x="10" y="10" width="342" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search Friends" adjustsFontSizeToFit="NO" minimumFontSize="18" clearButtonMode="whileEditing" id="20" customClass="SYNTextFieldSearchIPhone">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Friend's name" adjustsFontSizeToFit="NO" minimumFontSize="18" clearButtonMode="whileEditing" id="20" customClass="SYNTextFieldSearchIPhone">
                     <rect key="frame" x="52" y="17" width="289" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
