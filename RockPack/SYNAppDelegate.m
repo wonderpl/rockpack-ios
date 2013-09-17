@@ -1394,6 +1394,9 @@
             
             if (channel)
             {
+                // We need to remove any video overlay first
+                [self.masterViewController removeVideoOverlayController];
+                
                 [self.viewStackManager viewChannelDetails: channel
                                            withAutoplayId: videoId];
                 success = TRUE;
