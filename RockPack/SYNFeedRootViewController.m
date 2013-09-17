@@ -271,27 +271,24 @@ typedef void(^FeedDataErrorBlock)(void);
 
 -(void)checkForOnBoarding
 {
+    
+    if(![appDelegate.viewStackManager controllerViewIsVisible:self])
+        return;
+    
+    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL onBoarding1State = [defaults boolForKey:kInstruction1OnBoardingState];
-    if(!onBoarding1State) // 1rst card
+    NSInteger onBoarding1State = [defaults integerForKey:kInstruction1OnBoardingState];
+    if(onBoarding1State == 2) // has shown on channel details and can show here IF videos are present
     {
         SYNInstructionsToShareControllerViewController* itsVC = [[SYNInstructionsToShareControllerViewController alloc] initWithDelegate:self andState:InstructionsShareStatePressAndHold];
         
         [appDelegate.viewStackManager presentCoverViewController:itsVC];
         
-        //[defaults setBool:YES forKey:kInstruction1OnBoardingState];
+        [defaults setInteger:3 forKey:kInstruction1OnBoardingState]; // inc by one
         
     }
     
-    // display 2 times, one here and one on the Packs screen
-    NSInteger onBoarding2State = [defaults integerForKey:kInstruction2OnBoardingState];
-    if(onBoarding2State < 2 && self.feedItemsData.count > 0) // 2nd card
-    {
-        
-        
-        
-        [defaults setInteger:(onBoarding2State+1) forKey:kInstruction2OnBoardingState]; // inc by one
-    }
+    
     
 }
 

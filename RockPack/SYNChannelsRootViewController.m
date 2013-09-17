@@ -222,6 +222,8 @@
 
 -(void)checkForOnBoarding
 {
+    if(![appDelegate.viewStackManager controllerViewIsVisible:self])
+        return;
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     BOOL onBoarding1State = [defaults boolForKey:kInstruction1OnBoardingState];
@@ -231,7 +233,7 @@
         
         [appDelegate.viewStackManager presentCoverViewController:itsVC];
         
-        //[defaults setBool:YES forKey:kInstruction1OnBoardingState];
+        [defaults setBool:YES forKey:kInstruction1OnBoardingState];
         
     }
 }
@@ -336,7 +338,7 @@
                                             // show on boarding when we have channels after a delay to allow them to display
                                             [self performSelector: @selector(checkForOnBoarding)
                                                        withObject: nil
-                                                       afterDelay: 1.0f];
+                                                       afterDelay: 0.5f];
                                         }
                                     }
                                     

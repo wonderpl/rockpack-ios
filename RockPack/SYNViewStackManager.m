@@ -679,5 +679,12 @@
     return lastControllerOfClass;
 }
 
+-(BOOL) controllerViewIsVisible:(SYNAbstractViewController*)controllerToTest
+{
+    if(self.masterController.showingViewController == controllerToTest)
+        return YES;
+    
+    return NO;
+}
 
 @end

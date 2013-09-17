@@ -2695,15 +2695,20 @@ shouldChangeTextInRange: (NSRange) range
 
 - (void) checkForOnBoarding
 {
+    
+    if(![appDelegate.viewStackManager controllerViewIsVisible:self])
+        return;
+    
+    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL onBoarding1State = [defaults boolForKey:kInstruction1OnBoardingState];
-    if(!onBoarding1State) // 1rst card
+    NSInteger onBoarding1State = [defaults integerForKey:kInstruction1OnBoardingState];
+    if(!onBoarding1State) // has shown on channel details and can show here IF videos are present
     {
         SYNInstructionsToShareControllerViewController* itsVC = [[SYNInstructionsToShareControllerViewController alloc] initWithDelegate:self andState:InstructionsShareStatePressAndHold];
         
         [appDelegate.viewStackManager presentCoverViewController:itsVC];
         
-        //[defaults setBool:YES forKey:kInstruction1OnBoardingState];
+        [defaults setInteger:2 forKey:kInstruction1OnBoardingState]; // inc by one
         
     }
 }

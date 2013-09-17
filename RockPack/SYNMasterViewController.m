@@ -187,18 +187,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"Default"]];
     }
     
-	[self.view addSubview: splashView];
-    
-    [UIView animateWithDuration: kSplashAnimationDuration
-                          delay: kSplashViewDuration
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         splashView.alpha = 0.0f;
-                     } completion: ^(BOOL finished) {
-                         
-                         
-                         [splashView removeFromSuperview];
-                     }];
+//	[self.view addSubview: splashView];
+//    
+//    [UIView animateWithDuration: kSplashAnimationDuration
+//                          delay: kSplashViewDuration
+//                        options: UIViewAnimationOptionCurveEaseInOut
+//                     animations: ^{
+//                         splashView.alpha = 0.0f;
+//                     } completion: ^(BOOL finished) {
+//                         
+//                         
+//                         [splashView removeFromSuperview];
+//                     }];
     
     self.navigationContainerView.userInteractionEnabled = YES;
     
