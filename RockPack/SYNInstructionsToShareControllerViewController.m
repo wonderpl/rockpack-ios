@@ -367,20 +367,14 @@
 
 
 
--(void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    
-    //[self packForInterfaceOrientation:toInterfaceOrientation];
-}
+
 -(void)resizeMainLabel
 {
     [self.instructionsLabel sizeToFit];
     
     // instructions label
     CGRect ilFrame = self.instructionsLabel.frame;
-    ilFrame.origin.y = self.state == InstructionsShareStatePacks ? 280.0f : 120.0f;
+    ilFrame.origin.y = self.state == InstructionsShareStatePacks ? 280.0f : (IS_IPAD ? 150.0f : 120.0f);
     ilFrame.origin.x = 0.0f;
     ilFrame.size.width = self.view.frame.size.width;
     self.instructionsLabel.frame = CGRectIntegral(ilFrame);
@@ -420,7 +414,7 @@
         self.videoImageView.center = CGPointMake(self.view.center.x, self.videoImageView.center.y);
         
         secondFrame.size = self.videoImageView.frame.size;
-        secondFrame.origin.y += (IS_IPAD ? 160.0f : 60.0f);
+        secondFrame.origin.y += (IS_IPAD ? 130.0f : 60.0f);
         secondFrame.origin.x = self.videoImageView.frame.origin.x;
         
         self.videoImageView.frame = CGRectIntegral(secondFrame);
