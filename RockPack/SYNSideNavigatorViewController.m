@@ -66,8 +66,6 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UILabel *navigationContainerTitleLabel;
 
 @property (weak, nonatomic) IBOutlet UIView *navigationContainerView;
-@property (strong, nonatomic) UIView * searchViewBorderDark;
-@property (strong, nonatomic) UIView * searchBackgroundView;
 
 
 @end
@@ -140,6 +138,12 @@ typedef enum {
                                          blue: (51.0/255.0)
                                         alpha: (1.0)];
     
+    //Need to init this higher up
+    if (IS_IPHONE)
+    {
+        self.searchViewController = [[SYNSearchBoxViewController alloc] init];
+    }
+    
     if(IS_IOS_7_OR_GREATER)
     {
         CGRect frameToMove;
@@ -148,9 +152,17 @@ typedef enum {
         self.backgroundImageView.frame = frameToMove;
         
         // move elements down so that the title does not hit the new transparent status bar
-        for (UIView* viewToMove in @[self.tableView, self.containerView,
-                                     self.avatarButton, self.userNameLabel,
-                                     self.activityIndicator, self.profilePictureImageView])
+        
+        NSMutableArray * viewArray = [[NSMutableArray alloc] initWithArray: @[self.tableView, self.containerView,
+                                   self.avatarButton, self.userNameLabel,
+                                    self.activityIndicator, self.profilePictureImageView]];
+        
+        if (IS_IPHONE)
+        {
+            [viewArray addObjectsFromArray: @[self.settingsButton, self.searchViewController.searchBoxView]];
+        }
+        
+        for (UIView* viewToMove in viewArray)
         {
             frameToMove = viewToMove.frame;
             frameToMove.origin.y += 10.0f;
@@ -164,12 +176,15 @@ typedef enum {
     
     if (IS_IPHONE)
     {
-        newFrame.size.height = IS_IOS_7_OR_GREATER ? [SYNDeviceManager.sharedInstance currentScreenHeight] - 57.0f : [SYNDeviceManager.sharedInstance currentScreenHeight] - 78.0f;
+        newFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeight] - 78.0f;
         self.view.frame = newFrame;
-        self.mainContentView.frame = self.view.bounds;
+        
+        CGRect screenBounds = self.view.bounds;
+        screenBounds.origin.y += IS_IOS_7_OR_GREATER ? 10.0f : 0.0f;
+        
+        self.mainContentView.frame = screenBounds;
         self.backgroundImageView.image = [[UIImage imageNamed:@"PanelMenu"] resizableImageWithCapInsets:UIEdgeInsetsMake( 68.0f, 0.0f, 65.0f ,0.0f)];
         
-        self.searchViewController = [[SYNSearchBoxViewController alloc] init];
         [self addChildViewController:self.searchViewController];
         [self.view insertSubview:self.searchViewController.view belowSubview:self.navigationContainerView];
         self.searchViewController.searchBoxView.searchTextField.delegate = self;
@@ -684,11 +699,6 @@ typedef enum {
 {
     
     [self.appDelegate.viewStackManager dismissSearchBar];
-    
-    if (PLATFORM_CAN_HANDLE_LIVE_BLUR_OPTIONALLY)
-    {
-        [self.searchViewController.searchBoxView hideBackgroundPanel];
-    }
 }
 
 
@@ -740,11 +750,6 @@ typedef enum {
         self.searchViewController.searchBoxView.searchTextField.delegate = self;
         [self.searchViewController.searchBoxView resignFirstResponder];
         [self.searchViewController.searchBoxView hideCloseButton];
-        
-        if (PLATFORM_CAN_HANDLE_LIVE_BLUR_OPTIONALLY)
-        {
-            [self.searchViewController.searchBoxView hideBackgroundPanel];
-        }
     }
     
     SideNavigationMotionBlock motionBlock = ^{
