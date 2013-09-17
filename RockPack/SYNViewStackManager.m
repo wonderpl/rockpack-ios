@@ -337,14 +337,19 @@
     
     [self.masterController.view addSubview:searchBoxVC.searchBoxView];
     
-    
-    
     CGRect newFrame = searchBoxVC.searchBoxView.frame;
     
     if(self.searchBarOriginSideNavigation)
+    {
         newFrame.origin = CGPointMake(0.0f, 58.0f);
+        searchBoxVC.searchTextField.placeholder = @"Find videos, packs and people";
+    }
+
     else
+    {
         newFrame.origin = CGPointMake(0.0f, -58.0f);
+        searchBoxVC.searchTextField.placeholder = @"What are you into?";
+    }
     
     searchBoxVC.searchBoxView.frame = newFrame;
     

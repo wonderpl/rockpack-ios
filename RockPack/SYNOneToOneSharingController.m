@@ -601,13 +601,14 @@
         }
         else if([friend.thumbnailURL hasPrefix:@"http"]) // includes https of course
         {
-            [userThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: friend.thumbnailLargeUrl]
+            NSLog(@"%@", friend.thumbnailURL);
+            [userThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: friend.thumbnailURL]
                                         placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarChannel"]
                                                  options: SDWebImageRetryFailed];
         }
         else
         {
-            userThumbnailCell.imageView.image = [UIImage imageNamed:@"PlaceholderAvatarChannel"];
+            userThumbnailCell.imageView.image = [UIImage imageNamed:@"ABContactPlaceholder"];
         }
         
         [userThumbnailCell setDisplayName: nameToDisplay];

@@ -143,14 +143,14 @@
     
     if (IS_IPAD)
     {
-        self.accessoryNumberLabel.center = CGPointMake(144.0f - self.accessoryNumberLabel.frame.size.width/2 , 25.0f );
-        self.accessoryNumberBackground.center = CGPointMake(144.0f - self.accessoryNumberLabel.frame.size.width/2 , 22.0f );
+        self.accessoryNumberLabel.center = CGPointMake(144.0f - self.accessoryNumberLabel.frame.size.width/2 ,IS_IOS_7_OR_GREATER ? 24.0f : 25.0f );
+        self.accessoryNumberBackground.center = CGPointMake(144.0f - self.accessoryNumberLabel.frame.size.width/2 , IS_IOS_7_OR_GREATER ? 24.0f : 22.0f );
     }
     
     else
     {
-        self.accessoryNumberLabel.center = CGPointMake(230.0f - self.accessoryNumberLabel.frame.size.width/2 , IS_IOS_7_OR_GREATER ? 28.0f : 30.0f );
-        self.accessoryNumberBackground.center = CGPointMake(230.0f - self.accessoryNumberLabel.frame.size.width/2 , 27.0f );
+        self.accessoryNumberLabel.center = CGPointMake(230.0f - self.accessoryNumberLabel.frame.size.width/2 , IS_IOS_7_OR_GREATER ? 29.0f : 30.0f );
+        self.accessoryNumberBackground.center = CGPointMake(230.0f - self.accessoryNumberLabel.frame.size.width/2 , IS_IOS_7_OR_GREATER ? 29.0f : 27.0f );
     }
     
     CGRect newFrame = self.accessoryNumberBackground.frame;

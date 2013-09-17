@@ -67,7 +67,7 @@
                         <action selector="facebookLoginPressed:" destination="-1" eventType="touchUpInside" id="16"/>
                     </connections>
                 </button>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Find friends on Rockpack &amp; invite Facebook friends to join." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6" userLabel="We ll send...">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Rockpack is better with friends." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6" userLabel="We ll send...">
                     <rect key="frame" x="61" y="159" width="241" height="82"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -127,7 +127,10 @@
         <image name="ButtonFacebookFriendsHighlighted.png" width="280" height="45"/>
         <image name="FieldSearchFriends.png" width="342" height="44"/>
         <image name="TabFriendsDefault.png" width="172" height="44"/>
+        <image name="TabFriendsDefault.png" width="172" height="44"/>
         <image name="TabFriendsHighlighted.png" width="172" height="44"/>
+        <image name="TabFriendsHighlighted.png" width="172" height="44"/>
+        <image name="TabFriendsSelected.png" width="171" height="44"/>
         <image name="TabFriendsSelected.png" width="171" height="44"/>
     </resources>
 </document>
