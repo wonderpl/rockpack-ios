@@ -1135,6 +1135,13 @@
                                                [appDelegate.viewStackManager presentSuccessNotificationWithMessage:notificationText];
                                                [appDelegate.viewStackManager removePopoverView];
                                                
+                                               id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+                                               NSString* actionType = [self.mutableShareDictionary[@"type"] isEqualToString:@"channel"] ? @"channelShared" : @"videoShared";
+                                               [tracker sendEventWithCategory: actionType
+                                                                   withAction: @"1to1"
+                                                                    withLabel: nil
+                                                                    withValue: nil];
+                                               
                                            } errorHandler: ^(NSDictionary *error) {
                                                
                                                NSString *title = @"Email Couldn't be Sent";
