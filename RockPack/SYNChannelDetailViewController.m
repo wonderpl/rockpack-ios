@@ -508,6 +508,15 @@
         AssertOrLog(@"Detail View controller had viewWillAppear called twice!!!!");
     }
     
+    if (self.mode == kChannelDetailsModeDisplay && !self.hasAppeared)
+    {
+        [self clearBackground];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName: kChannelUpdateRequest
+                                                            object: self
+                                                          userInfo: @{kChannel: self.channel}];
+    }
+    
     self.hasAppeared = YES;
 }
 
@@ -569,6 +578,7 @@
     {
         AssertOrLog(@"Detail View controller had viewWillDisappear called twice!!!!");
     }
+    
     
     self.hasAppeared = NO;
 }
@@ -3336,7 +3346,7 @@ shouldChangeTextInRange: (NSRange) range
                                                      name: NSManagedObjectContextDidSaveNotification
                                                    object: self.channel.managedObjectContext];
         
-        if (self.mode == kChannelDetailsModeDisplay)
+        if (self.mode == kChannelDetailsModeDisplay && self.hasAppeared)
         {
             [self clearBackground];
             
