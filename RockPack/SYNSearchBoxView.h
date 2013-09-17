@@ -40,9 +40,4 @@
  */
 - (void) hideCloseButton;
 
-
-- (void) revealBackgroundPanel;
-- (void) hideBackgroundPanel;
-
-
 @end

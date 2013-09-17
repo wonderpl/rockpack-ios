@@ -284,7 +284,7 @@
                                               CGRect newFrame = searchBoxVC.searchBoxView.frame;
                                               
                                               if(self.searchBarOriginSideNavigation && !total)
-                                                  newFrame.origin = CGPointMake(0.0f, 58.0f);
+                                                  newFrame.origin = CGPointMake(0.0f, IS_IOS_7_OR_GREATER? 68.0f : 58.0f);
                                               else
                                                   newFrame.origin = CGPointMake(0.0f, -58.0f);
                                               
@@ -293,7 +293,7 @@
                                           } completion:^(BOOL finished) {
                                               
                                               CGRect newFrame = searchBoxVC.searchBoxView.frame;
-                                              newFrame.origin = CGPointMake(0.0f, 0.0f);
+                                              newFrame.origin = CGPointMake(0.0f, IS_IOS_7_OR_GREATER ? 10.0f : 0.0f);
                                               searchBoxVC.searchBoxView.frame = newFrame;
                                               
                                               [searchBoxVC.searchBoxView removeFromSuperview];
@@ -371,11 +371,6 @@
                                           }];
                          
                      }];
-    
-    if (IS_IPHONE && IS_IOS_7_OR_GREATER)
-    {
-        [searchBoxVC.searchBoxView revealBackgroundPanel];
-    }
     
     searchBoxVC.searchBoxView.searchTextField.delegate = searchBoxVC;
 }
