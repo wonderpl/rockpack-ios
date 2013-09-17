@@ -27,6 +27,7 @@
 #import <AddressBook/AddressBook.h>
 #import <QuartzCore/QuartzCore.h>
 #import <objc/runtime.h>
+#import "GAI.h"
 
 #define kOneToOneSharingViewId	  @"kOneToOneSharingViewId"
 #define kNumberOfEmptyRecentSlots 5
@@ -401,6 +402,13 @@
                                }
                            }
             
+                        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+            
+                        [tracker sendEventWithCategory: @"AddressBookPerm"
+                                            withAction: granted ? @"accepted" : @"rejected"
+                                             withLabel: nil
+                                             withValue: nil];
+            
                         if(addressBookRef)
                            CFRelease(addressBookRef);
 
@@ -742,7 +750,7 @@
 {
     Friend *friend;
     
-    
+    BOOL lastCellPressed = NO;
     if (indexPath.row < self.searchedFriends.count)
     {
         friend = self.searchedFriends[indexPath.row];
@@ -756,10 +764,16 @@
     }
     else // last cell pressed
     {
+        lastCellPressed = YES;
         [self presentAlertToFillEmailForFriend:nil];
     }
      
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
+    [tracker sendEventWithCategory: @"SearchFriendtoShare"
+                        withAction: (lastCellPressed ? @"New" : ([friend.externalSystem isEqualToString:kFacebook] ? @"fromFB" : @"fromAB"))
+                         withLabel: nil
+                         withValue: nil];
     
     [tableView removeFromSuperview];
 }
@@ -831,7 +845,7 @@
         {
             self.friendToAddEmail = nil;
             
-            [self sendEmailToFriend:loadedFriend];
+            
             
             return;
         }
@@ -846,6 +860,14 @@
         self.friendToAddEmail.externalUID = self.friendToAddEmail.email; // workaround the fact that we do not have a UID for this new user
     }
     
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    NSString* whereFrom = [self.friendToAddEmail.externalSystem isEqualToString:kFacebook] ? @"fromFB" : @"New";
+    
+    [tracker sendEventWithCategory: @"ProvideEmailtoShare"
+                        withAction: whereFrom
+                         withLabel: nil
+                         withValue: nil];
     
     [self sendEmailToFriend: self.friendToAddEmail];
 }
@@ -919,6 +941,13 @@
     self.closeButton.alpha = 0.0f;
     
     self.typingMode = YES;
+    
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"SearchFriendtoShare"
+                        withAction: nil
+                         withLabel: nil
+                         withValue: nil];
     
     return YES;
 }
@@ -1050,6 +1079,8 @@
     [self showLoader:YES];
     
     self.view.userInteractionEnabled = NO;
+    
+    
     
     if(self.mutableShareDictionary[@"url"] == [NSNull null])
     {
