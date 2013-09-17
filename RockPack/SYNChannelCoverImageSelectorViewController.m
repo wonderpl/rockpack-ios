@@ -561,7 +561,7 @@ enum ChannelCoverSelectorState {
             self.closeButton.hidden = NO;
             self.backButton.hidden = YES;
             self.currentState = kChannelCoverDefault;
-            self.titleLabel.text = NSLocalizedString(@"SELECT A COVER", nil);
+            self.titleLabel.text = NSLocalizedString(@"CHOOSE A COVER", nil);
             break;
             
         case kChannelCoverLocalAlbum:

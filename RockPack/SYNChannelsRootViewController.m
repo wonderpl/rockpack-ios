@@ -502,7 +502,7 @@
      placeholderImage: [UIImage imageNamed: @"PlaceholderChannel.png"]
      options: SDWebImageRetryFailed];
     
-    channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat: @"%@", channel.channelOwner.displayName];
+    channelThumbnailCell.displayNameLabel.text = [NSString stringWithFormat: @"By %@", channel.channelOwner.displayName];
     channelThumbnailCell.viewControllerDelegate =  self;
     
     

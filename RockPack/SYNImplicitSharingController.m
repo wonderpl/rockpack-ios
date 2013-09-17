@@ -32,18 +32,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.titleLabel.font = [UIFont boldRockpackFontOfSize:self.titleLabel.font.pointSize];
-    
-    [self.titleLabel sizeToFit];
-    
-    CGRect titleLabelFrame = self.titleLabel.frame;
-    
-    titleLabelFrame.origin.y = 20.0f;
-    titleLabelFrame.origin.x = self.view.frame.size.width * 0.5f - titleLabelFrame.size.width * 0.5f;
-    
-    self.titleLabel.frame = CGRectIntegral(titleLabelFrame);
-    
+
     
     // ====
     
@@ -52,7 +41,6 @@
     [self.textLabel sizeToFit];
     
     CGRect textLabelFrame = self.textLabel.frame;
-    textLabelFrame.origin.y = titleLabelFrame.origin.y + titleLabelFrame.size.height + 8.0f;
     textLabelFrame.origin.x = self.view.frame.size.width * 0.5f - textLabelFrame.size.width * 0.5f;
     
     self.textLabel.frame = CGRectIntegral(textLabelFrame);

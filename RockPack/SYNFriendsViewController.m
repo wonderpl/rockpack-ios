@@ -133,8 +133,6 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
         searchSliderFrame.origin.x = searchSliderFrame.size.width;
         self.searchSlider.frame= searchSliderFrame;
     }
-    
-    
 }
 
 
@@ -373,11 +371,11 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     
     return userThumbnailCell;
 }
+
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [self.searchField resignFirstResponder];
 }
-
 
 
 #pragma mark - UITextViewDelegate

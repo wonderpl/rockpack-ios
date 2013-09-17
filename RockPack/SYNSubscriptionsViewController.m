@@ -13,7 +13,7 @@
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNSubscriptionsViewController.h"
 #import "UIImageView+WebCache.h"
-
+#import "SYNDeviceManager.h"
 
 @implementation SYNSubscriptionsViewController
 
@@ -66,6 +66,46 @@
     self.channelThumbnailCollectionView.scrollsToTop = NO;
 }
 
+#pragma mark - Add UIView if there are no channels
+
+- (void) isCurrentUserProfile
+{
+    if (self.user.subscriptions.count <= 0)
+    {
+        [self displayNoSubscriptionsMessage];
+    }
+    
+    else
+    {
+        [self hideNoSubscriptionsMessage];
+    }
+}
+
+- (void) displayNoSubscriptionsMessage
+{
+    if (self.noChannelsMessage)
+    {
+        [self.noChannelsMessage removeFromSuperview];
+        self.noChannelsMessage = nil;
+    }
+    
+    self.noChannelsMessage = [SYNNoChannelsMessageView withMessage:@"Need a little inspiration?\nTry browsing our popular packs."];
+    
+    CGRect messageFrame = self.noChannelsMessage.frame;
+    messageFrame.origin.x = (self.view.bounds.size.width * 0.5) - (messageFrame.size.width * 0.5);
+    messageFrame.origin.y = IS_IPAD ? 60.0f : (self.view.frame.size.height * 0.5) - (messageFrame.size.height * 0.5) - 20.0f;
+    messageFrame = CGRectIntegral(messageFrame);
+    self.noChannelsMessage.frame = messageFrame;
+    self.noChannelsMessage.autoresizingMask =
+    UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+    
+    [self.collectionView addSubview: self.noChannelsMessage];
+}
+
+- (void) hideNoSubscriptionsMessage
+{
+    [self.noChannelsMessage removeFromSuperview];
+}
 
 #pragma mark - UICollectionView Delegate Methods
 
@@ -126,11 +166,13 @@
         {
             [self.headerView setTitle: NSLocalizedString(@"profile_screen_section_owner_subscription_title", nil)
                             andNumber: totalChannels];
+            [self isCurrentUserProfile];
         }
         else
         {
             [self.headerView setTitle: NSLocalizedString(@"profile_screen_section_user_subscription_title", nil)
                             andNumber: totalChannels];
+            [self.noChannelsMessage removeFromSuperview];
         }
     }
     

@@ -192,6 +192,13 @@ typedef enum {
         
         self.navigationContainerTitleLabel.font = [UIFont rockpackFontOfSize:self.navigationContainerTitleLabel.font.pointSize];
         
+        //Correct Notif / friends screen layouts
+        CGRect screenBoundsNavCont = self.view.bounds;
+        screenBoundsNavCont.origin.y += IS_IOS_7_OR_GREATER ? 10.0f : 0.0f;
+        screenBoundsNavCont.size.height += IS_IOS_7_OR_GREATER ? 10.0f : 0.0f;
+        
+        self.navigationContainerView.frame = screenBounds;
+        
         self.navigationContainerBackgroundImage.image = [[UIImage imageNamed:@"PanelMenuSecondLevel"] resizableImageWithCapInsets:UIEdgeInsetsMake(65, 0, 1, 0)];
     }
     
