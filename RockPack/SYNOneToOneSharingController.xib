@@ -25,11 +25,11 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="none" id="10">
-                    <rect key="frame" x="10" y="108" width="401" height="90"/>
+                    <rect key="frame" x="10" y="108" width="401" height="85"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.50980395079999996" green="0.55294120309999995" blue="0.56862747670000002" alpha="0.0" colorSpace="calibratedRGB"/>
                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="11">
-                        <size key="itemSize" width="90" height="90"/>
+                        <size key="itemSize" width="70" height="85"/>
                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
                         <size key="footerReferenceSize" width="0.0" height="0.0"/>
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -112,7 +112,7 @@
         </tableView>
     </objects>
     <resources>
-        <image name="ButtonCloseSearch~iphone.png" width="320" height="354"/>
+        <image name="ButtonCloseSearch~iphone.png" width="110" height="110"/>
         <image name="IconSearch~iphone.png" width="320" height="354"/>
     </resources>
 </document>
