@@ -93,11 +93,13 @@ typedef void(^FeedDataErrorBlock)(void);
     if (IS_IPHONE)
     {
         // Calculate frame size
-        screenSize = CGSizeMake([SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight]);
+        screenSize = [SYNDeviceManager.sharedInstance currentScreenSize];
         
         calculatedViewFrame = CGRectMake(0.0, 0.0, screenSize.width, screenSize.height - 20.0f);
         
-        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetYiPhone, screenSize.width, screenSize.height - 20.0f - kStandardCollectionViewOffsetYiPhone);
+        videoCollectionViewFrame = CGRectMake(0.0,
+                                              kStandardCollectionViewOffsetYiPhone,
+                                              screenSize.width, screenSize.height - 20.0f - kStandardCollectionViewOffsetYiPhone);
         
         // Collection view parameters
         contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -228,6 +230,8 @@ typedef void(^FeedDataErrorBlock)(void);
 - (void) viewDidAppear: (BOOL) animated
 {
     [super viewDidAppear: animated];
+    
+    
  
     
     [self displayEmptyGenreMessage: NSLocalizedString(@"feed_screen_loading_message", nil)
@@ -680,10 +684,27 @@ typedef void(^FeedDataErrorBlock)(void);
 
 - (void) videoOverlayDidDissapear
 {
+    
+    
+    // FIXME hack , very very dirty
+    if(IS_IPHONE && IS_IOS_7_OR_GREATER)
+    {
+        [self performSelector:@selector(fixHeight) withObject:nil afterDelay:0.0];
+        
+        
+    }
+    
+    
+    
     [self.feedCollectionView reloadData];
 }
 
-
+-(void)fixHeight
+{
+    CGRect vFrame = self.view.frame;
+    vFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar];
+    self.view.frame = vFrame;
+}
 - (FeedItem*) feedItemAtIndexPath: (NSIndexPath*) indexPath
 {
     NSArray* sectionArray = self.feedItemsData[indexPath.section];
