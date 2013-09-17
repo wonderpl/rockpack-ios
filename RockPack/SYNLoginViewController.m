@@ -233,6 +233,10 @@
                          self.pageViewController.view.hidden = TRUE;
                      }];
     self.backgroundImageView.hidden = YES;
+    self.lowerParallaxImageView.alpha = 0.0f;
+    self.lowerParallaxImageView.hidden = YES;
+    self.upperParallaxImageView.alpha = 0.0f;
+    self.upperParallaxImageView.hidden = YES;
 }
 
 - (void) showOnboarding
@@ -247,6 +251,10 @@
                      } completion: nil];
     
     self.backgroundImageView.hidden = NO;
+    self.lowerParallaxImageView.alpha = 1.0f;
+    self.lowerParallaxImageView.hidden = NO;
+    self.upperParallaxImageView.alpha = 1.0f;
+    self.upperParallaxImageView.hidden = NO;
 }
 
 
