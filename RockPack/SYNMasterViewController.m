@@ -142,11 +142,17 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     
     // == Compensate for iOS7 == //
-    CGFloat offsetFromTop = IS_IOS_7_OR_GREATER ? 10.0f : 0.0f;
+    CGFloat offsetFromTop = IS_IOS_7_OR_GREATER ? (IS_IPAD ? 10.0f : 4.0f) : 0.0f;
     CGRect frameToAdjust;
     frameToAdjust = self.headerContainerView.frame;
     frameToAdjust.origin.y += offsetFromTop;
     self.headerContainerView.frame = frameToAdjust;
+    
+    CGRect snFrame = self.sideNavigationButton.frame;
+    snFrame.origin.y += (IS_IOS_7_OR_GREATER && !IS_IPAD) ? 4.0f : 0.0f;
+    self.sideNavigationButton.frame = snFrame;
+    
+    
     
     frameToAdjust = self.sideNavigationButton.frame;
     frameToAdjust.origin.y += offsetFromTop;
@@ -209,7 +215,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     self.backButtonControl = [SYNBackButtonControl backButton];
     CGRect backButtonFrame = self.backButtonControl.frame;
-    backButtonFrame.origin.y = IS_IPAD ? 10.0f : 5.0f;
+    backButtonFrame.origin.y = IS_IPAD ? 10.0f : (IS_IOS_7_OR_GREATER ? 3.0f : 5.0f);
     self.backButtonControl.frame = backButtonFrame;
     
     if (IS_IOS_7_OR_GREATER)
@@ -375,6 +381,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
+                         
                          CGRect newFrame = self.existingChannelsController.view.frame;
                          newFrame.origin.y = 0.0f;
                          self.existingChannelsController.view.frame = newFrame;

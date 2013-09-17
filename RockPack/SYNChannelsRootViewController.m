@@ -198,6 +198,9 @@
     [self displayChannelsForGenre: self.currentGenre];
     
     [self loadChannelsForGenre: self.currentGenre];
+    
+    
+    
 }
 
 
@@ -236,6 +239,11 @@
 {
     [super viewDidAppear:animated];
     [self checkForOnBoarding];
+    
+    CGRect vFrame = self.view.frame;
+    vFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar];
+    self.view.frame = vFrame;
+    
 }
 
 - (void) viewDidScrollToBack
@@ -778,7 +786,7 @@ referenceSizeForFooterInSection: (NSInteger) section
     self.categoryTableViewController.categoryTableControllerDelegate = self;
     self.categoryTableViewController.view.hidden = YES;
     
-    
+    // the top bar that you click to bring the table view for iPhone's categories
     newFrame.origin.y -= 44.0f;
     newFrame.size.height = 44.0f;
     newFrame.size.width = 320.0f;
@@ -797,7 +805,7 @@ referenceSizeForFooterInSection: (NSInteger) section
     [self.view addSubview: self.categorySelectButton];
     
     newFrame.origin.x = 42.0f;
-    newFrame.origin.y += 4.0f;
+    newFrame.origin.y += 2.0f;
     newFrame.size.width = 280.0f;
     
     UILabel *newLabel = [[UILabel alloc] initWithFrame: newFrame];

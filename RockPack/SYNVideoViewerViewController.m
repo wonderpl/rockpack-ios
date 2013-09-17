@@ -44,6 +44,7 @@
 @property (nonatomic, copy) NSArray *videoInstanceArray;
 @property (nonatomic, getter = isVideoExpanded) BOOL videoExpanded;
 @property (nonatomic, strong) AMBlurView *blurView;
+@property (nonatomic, strong) UIView *blurColourView;
 @property (nonatomic, strong) IBOutlet BBCyclingLabel *channelCreatorLabel;
 @property (nonatomic, strong) IBOutlet BBCyclingLabel *channelTitleLabel;
 @property (nonatomic, strong) IBOutlet BBCyclingLabel *videoTitleLabel;
@@ -147,7 +148,7 @@
     }
     
     self.channelTitleLabel.textColor = [UIColor colorWithRed: 40.0f/ 255.0f green: 45.0f/ 255.0f blue: 51.0f/ 255.0f alpha: 1.0f];
-    self.channelCreatorLabel.textColor  = [UIColor colorWithRed: 120.0f/ 255.0f green: 120.0f/ 255.0f blue: 120.0f/ 255.0f alpha: 1.0f];
+    self.channelCreatorLabel.textColor  = [UIColor colorWithRed: 80.0f/ 255.0f green: 90.0f/ 255.0f blue: 102.0f/ 255.0f alpha: 1.0f];
     self.videoTitleLabel.textColor = [UIColor colorWithRed: 40.0f/ 255.0f green: 45.0f/ 255.0f blue: 51.0f/ 255.0f alpha: 1.0f];
     
     self.videoTitleLabel.numberOfLines = 2;
@@ -183,6 +184,13 @@
         videoFrame = self.placeholderView.frame;
         videoFrame.size.height = 180.0f;
         blackPanelFrame = CGRectMake(0, 0, 1024, 768);
+        
+        CGRect panelViewFrame = self.panelView.frame;
+        CGFloat iOS7Correction = IS_IOS_7_OR_GREATER ? 20.0f : 0.0f;
+        
+        panelViewFrame.origin.y = [[SYNDeviceManager sharedInstance] currentScreenHeight] - panelViewFrame.size.height - self.videoThumbnailCollectionView.frame.size.height- 30 + iOS7Correction;
+        
+        self.panelView.frame = panelViewFrame;
     }
     else
     {
@@ -282,24 +290,32 @@
     
     
     // likes count
-    self.likesCountLabel.font = [UIFont boldRockpackFontOfSize:self.likesCountLabel.font.pointSize];
+    self.likesCountLabel.font = [UIFont rockpackFontOfSize:self.likesCountLabel.font.pointSize];
     self.likesCountLabel.text = @"0";
     
     
     
     //iOS 7 Blur
-    if (PLATFORM_CAN_HANDLE_LIVE_BLUR)
+    if (IS_IOS_7_OR_GREATER)
     {
         // Do iOS7 Tingz
         self.blurView = [AMBlurView new];
 //        self.blurView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        [self.blurView setFrame: CGRectMake(0.0f, 0.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight] + 2.0f)];
         
+        CGRect blurFrame = CGRectMake(0.0f, 0.0f, [[SYNDeviceManager sharedInstance] currentScreenWidth], [[SYNDeviceManager sharedInstance] currentScreenHeight] + 2.0f);
         
-        self.view.backgroundColor = [UIColor colorWithWhite:255.0f/255.0f alpha:0.2];
+        [self.blurView setFrame: blurFrame];
+        
+        self.blurColourView = [[UIView alloc]initWithFrame: blurFrame];
+        self.blurColourView.backgroundColor = [UIColor colorWithWhite:0.0f/255.0f alpha:0.2f];
+        
+        self.view.backgroundColor = [UIColor clearColor];
         
         [self.view insertSubview: self.blurView
                          atIndex: 0];
+        
+        [self.view insertSubview:self.blurColourView
+                         atIndex:1];
     }
 }
 
@@ -412,6 +428,7 @@
     
     self.blackPanelView.frame = blackPanelFrame;
     self.blurView.frame = blurViewFrame;
+    self.blurColourView.frame = blurViewFrame;
 }
 
 
@@ -1241,7 +1258,7 @@
     self.starButton.transform = CGAffineTransformMakeTranslation(-self.shareButton.frame.size.width, 0.0f);
     
     self.likesCountLabel.alpha = 0.0f;
-    self.likesCountLabel.transform = CGAffineTransformMakeTranslation(0.0f, 10.0f);
+    self.likesCountLabel.transform = CGAffineTransformMakeTranslation(-80.0f, 0.0f);
     
     if(self.currentSelectedIndex>1 || [self.videoInstanceArray count] < 4)
     {

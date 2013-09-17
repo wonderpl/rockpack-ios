@@ -15,7 +15,7 @@
 @interface SYNSearchBoxView ()
 
 //iPhone specific
-@property (nonatomic, strong)IBOutlet UIImageView* searchFieldFrameImageView;
+@property (nonatomic, strong) IBOutlet UIImageView* searchFieldFrameImageView;
 
 @end
 
@@ -97,6 +97,43 @@
     return self;
 }
 
+-(void)enlargeForiOS7
+{
+    CGRect endFrame = self.frame;
+    CGRect elFrame;
+    endFrame.size.height +=  10.0f;
+    
+    
+    for (UIView* element in self.subviews)
+    {
+        elFrame = element.frame;
+        if(element == self.backgroundSearchPanel)
+            elFrame.size.height += 10.0f;
+        else
+            elFrame.origin.y += 10.0f;
+        element.frame = elFrame;
+        
+    }
+    self.frame = endFrame;
+}
+
+-(void)shrinkForiOS7
+{
+    CGRect endFrame = self.frame;
+    CGRect elFrame;
+    endFrame.size.height -=  10.0f;
+    for (UIView* element in self.subviews)
+    {
+        elFrame = element.frame;
+        if(element == self.backgroundSearchPanel)
+            elFrame.size.height -= 10.0f;
+        else
+            elFrame.origin.y -= 10.0f;
+        element.frame = elFrame;
+        
+    }
+    self.frame = endFrame;
+}
 
 - (void) awakeFromNib
 {

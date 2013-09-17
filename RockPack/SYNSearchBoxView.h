@@ -40,4 +40,7 @@
  */
 - (void) hideCloseButton;
 
+-(void)enlargeForiOS7;
+-(void)shrinkForiOS7;
+
 @end
