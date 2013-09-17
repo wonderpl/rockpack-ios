@@ -84,25 +84,23 @@
                         <view userInteractionEnabled="NO" contentMode="scaleToFill" id="26" userLabel="BG View">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="0.15686275059999999" green="0.1764705926" blue="0.20000000300000001" alpha="0.90000000000000002" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.95000000000000007" colorSpace="calibratedRGB"/>
                         </view>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Share Video on Facebook" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="27" userLabel="Share Label">
-                            <rect key="frame" x="5" y="8" width="201" height="30"/>
+                            <rect key="frame" x="5" y="11" width="201" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="textColor" red="0.15686274510000001" green="0.1764705882" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
-                            <color key="shadowColor" red="0.15686275059999999" green="0.1764705926" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
                             <size key="shadowOffset" width="0.0" height="1"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="22">
-                            <rect key="frame" x="266" y="1" width="54" height="44"/>
+                            <rect key="frame" x="266" y="5" width="54" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                            <size key="titleShadowOffset" width="0.0" height="1"/>
                             <state key="normal" title="NO">
-                                <color key="titleColor" red="0.8980392814" green="0.8980392814" blue="0.8980392814" alpha="1" colorSpace="deviceRGB"/>
-                                <color key="titleShadowColor" red="0.15686275059999999" green="0.1764705926" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleColor" red="0.15686274510000001" green="0.1764705882" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </state>
                             <state key="selected">
                                 <color key="titleColor" red="0.1098039299" green="0.69411766529999996" blue="0.70980393890000004" alpha="1" colorSpace="deviceRGB"/>
@@ -116,13 +114,12 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="21">
-                            <rect key="frame" x="204" y="1" width="55" height="44"/>
+                            <rect key="frame" x="204" y="5" width="55" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                            <size key="titleShadowOffset" width="0.0" height="1"/>
                             <state key="normal" title="YES">
-                                <color key="titleColor" red="0.8980392814" green="0.8980392814" blue="0.8980392814" alpha="1" colorSpace="deviceRGB"/>
-                                <color key="titleShadowColor" red="0.15686275059999999" green="0.1764705926" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleColor" red="0.15686274510000001" green="0.1764705882" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </state>
                             <state key="selected">
                                 <color key="titleColor" red="0.1098039299" green="0.69411766529999996" blue="0.70980393890000004" alpha="1" colorSpace="deviceRGB"/>
@@ -145,9 +142,9 @@
         </view>
     </objects>
     <resources>
-        <image name="ButtonCancelAddToPack.png" width="48" height="49"/>
-        <image name="ButtonCancelAddToPackHighlighted.png" width="48" height="49"/>
-        <image name="ButtonConfirmAddToPack.png" width="48" height="49"/>
-        <image name="ButtonConfirmAddToPackHighlighted.png" width="48" height="49"/>
+        <image name="ButtonCancelAddToPack.png" width="30" height="30"/>
+        <image name="ButtonCancelAddToPackHighlighted.png" width="30" height="30"/>
+        <image name="ButtonConfirmAddToPack.png" width="30" height="30"/>
+        <image name="ButtonConfirmAddToPackHighlighted.png" width="30" height="30"/>
     </resources>
 </document>
