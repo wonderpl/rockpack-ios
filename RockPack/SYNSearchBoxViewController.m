@@ -113,13 +113,7 @@
     else
     {
         tableViewFrame.origin.y = self.searchBoxView.frame.size.height;
-        self.searchTextField.placeholder = @"What are you into?";
-        
-        
         self.searchCategoriesController = [[SYNSearchCategoriesTableViewController alloc] initWithStyle:UITableViewStylePlain];
-        
-        
-        
     }
     
     self.autoSuggestionController.tableView.frame = tableViewFrame;

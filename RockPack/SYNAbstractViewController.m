@@ -513,7 +513,7 @@
     
     if (userName != nil)
     {
-        NSString *what = @"pack";
+        NSString *what = @"pack of videos";
         
         if (isVideo.boolValue == TRUE)
         {

@@ -84,7 +84,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="1024" height="76"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <subviews>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Share Video on Facebook" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="30" userLabel="Share Label">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Share video on Facebook" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="30" userLabel="Share Label">
                                     <rect key="frame" x="342" y="1" width="197" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
