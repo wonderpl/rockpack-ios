@@ -608,7 +608,7 @@
         }
         else
         {
-            userThumbnailCell.imageView.image = [UIImage imageNamed:@"PlaceholderAvatarChannel"];
+            userThumbnailCell.imageView.image = [UIImage imageNamed:@"ABContactPlaceholder"];
         }
         
         [userThumbnailCell setDisplayName: nameToDisplay];
