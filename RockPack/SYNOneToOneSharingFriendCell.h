@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) IBOutlet UILabel* nameLabel;
-@property (nonatomic, strong) IBOutlet UIImageView* shadowImage;
+
 -(void)setDisplayName:(NSString*)name;
+
 @end
