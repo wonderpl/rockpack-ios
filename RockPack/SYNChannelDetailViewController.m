@@ -313,7 +313,7 @@
     //Remove the save button. It is added back again if the edit button is tapped.
     [self.saveChannelButton removeFromSuperview];
     
-    if (!self.isIPhone)
+    if (IS_IPAD)
     {
         // Set text on add cover and select category buttons
         NSString *coverString = NSLocalizedString(@"channel_creation_screen_button_selectcover_label", nil);
@@ -346,6 +346,10 @@
         self.coverChooserController = [[SYNCoverChooserController alloc] initWithSelectedImageURL: self.channel.channelCover.imageUrl];
         [self addChildViewController: self.coverChooserController];
         self.coverChooserMasterView = self.coverChooserController.view;
+        
+        
+        
+        
     }
     else
     {
@@ -365,6 +369,29 @@
         {
             self.view.backgroundColor = [UIColor colorWithWhite: 0.92f
                                                           alpha: 1.0f];
+        }
+        
+        // button text alignement iOS7
+        
+        if(IS_IOS_7_OR_GREATER)
+        {
+            UIEdgeInsets eInsets;
+            
+            eInsets = self.addCoverButton.contentEdgeInsets;
+            eInsets.top = 4.0f;
+            self.addCoverButton.contentEdgeInsets = eInsets;
+            
+            
+            eInsets = self.selectCategoryButton.contentEdgeInsets;
+            eInsets.top = 4.0f;
+            self.selectCategoryButton.contentEdgeInsets = eInsets;
+            
+            CGRect vFrame;
+            for (UIView* viewToMove in @[self.saveChannelButton, self.createChannelButton, self.cancelEditButton, self.deleteChannelButton]) {
+                vFrame = viewToMove.frame;
+                vFrame.origin.y += 6.0f;
+                viewToMove.frame = vFrame;
+            }
         }
     }
     
