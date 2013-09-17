@@ -278,13 +278,13 @@ typedef void(^FeedDataErrorBlock)(void);
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSInteger onBoarding1State = [defaults integerForKey:kInstruction1OnBoardingState];
-    if(onBoarding1State == 2) // has shown on channel details and can show here IF videos are present
+    if(onBoarding1State == 3) // has shown on channel details and can show here IF videos are present
     {
         SYNInstructionsToShareControllerViewController* itsVC = [[SYNInstructionsToShareControllerViewController alloc] initWithDelegate:self andState:InstructionsShareStatePressAndHold];
         
         [appDelegate.viewStackManager presentCoverViewController:itsVC];
         
-        [defaults setInteger:3 forKey:kInstruction1OnBoardingState]; // inc by one
+        [defaults setInteger:4 forKey:kInstruction1OnBoardingState]; // inc by one
         
     }
     
