@@ -210,8 +210,7 @@
     
     self.channelThumbnailCollectionView.scrollsToTop = YES;
     
-    // On Boarding
-    [self checkForOnBoarding];
+    
     
     
     // if the user has requested 'Load More' channels then dont refresh the page cause he is in the middle of a search
@@ -223,6 +222,7 @@
 
 -(void)checkForOnBoarding
 {
+    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     BOOL onBoarding1State = [defaults boolForKey:kInstruction1OnBoardingState];
     if(!onBoarding1State) // 1rst card
@@ -238,7 +238,7 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self checkForOnBoarding];
+    
     
     CGRect vFrame = self.view.frame;
     vFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar];
@@ -330,6 +330,13 @@
                                         if (self.channels.count == 0)
                                         {
                                             [self displayEmptyGenreMessage: @"No Channels Found"];
+                                        }
+                                        else
+                                        {
+                                            // show on boarding when we have channels after a delay to allow them to display
+                                            [self performSelector: @selector(checkForOnBoarding)
+                                                       withObject: nil
+                                                       afterDelay: 1.0f];
                                         }
                                     }
                                     
@@ -424,8 +431,10 @@
     
     self.channels = [NSMutableArray arrayWithArray: resultsArray];
     
-    // We shouldn't wait until the animation is over, as this will result in crashes if the user is scrolling
+    
     [self.channelThumbnailCollectionView reloadData];
+    
+    
 }
 
 

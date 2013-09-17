@@ -127,19 +127,29 @@
     
     [self.backgroundImageView removeGestureRecognizer:self.backgroundImageView.gestureRecognizers[0]]; // remove the tap gesture for house keeping
     
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
     if(self.state == InstructionsShareStatePacks)
     {
-        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-        
         
         [tracker sendEventWithCategory: @"PassedCard1"
                             withAction: nil
                              withLabel: nil
                              withValue: nil];
     }
+    else if (self.state == InstructionsShareStatePressAndHold || self.state == InstructionsShareStateChooseAction)
+    {
+        [tracker sendEventWithCategory: @"PassedCard2"
+                            withAction: nil
+                             withLabel: nil
+                             withValue: nil];
+    }
     else if (self.state == InstructionsShareStateGoodJob)
     {
-        
+        [tracker sendEventWithCategory: @"GestureDoneCard2"
+                            withAction: nil
+                             withLabel: nil
+                             withValue: nil];
     }
     
     
