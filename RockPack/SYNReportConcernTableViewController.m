@@ -78,26 +78,7 @@
     
     self.reportTableTitleLabel.font = [UIFont rockpackFontOfSize: self.reportTableTitleLabel.font.pointSize];
     
-    //No more X button on report popover
-    /*
-    UIButton *customCancelButton = [UIButton buttonWithType: UIButtonTypeCustom];
-    UIImage* customCancelButtonImage = [UIImage imageNamed: @"ButtonPopoverCancel"];
-    UIImage* customCancelButtonHighlightedImage = [UIImage imageNamed: @"ButtonPopoverCancelHighlighted"];
     
-    [customCancelButton setImage: customCancelButtonImage
-                        forState: UIControlStateNormal];
-    
-    [customCancelButton setImage: customCancelButtonHighlightedImage
-                        forState: UIControlStateHighlighted];
-    
-    [customCancelButton addTarget: self
-                           action: @selector(actionCancel)
-                 forControlEvents: UIControlEventTouchUpInside];
-    
-    customCancelButton.frame = CGRectMake(0.0, 0.0, customCancelButtonImage.size.width, customCancelButtonImage.size.height);
-    UIBarButtonItem *customCancelButtonItem = [[UIBarButtonItem alloc] initWithCustomView: customCancelButton];
-    self.navigationItem.leftBarButtonItem = customCancelButtonItem;
-     */
         
     UIButton *customUseButton = [UIButton buttonWithType: UIButtonTypeCustom];
     UIImage* customUseButtonImage = [UIImage imageNamed: @"ButtonPopoverReport"];
@@ -122,6 +103,11 @@
     
     self.navigationItem.rightBarButtonItem = customUseButtonItem;
     self.navigationItem.rightBarButtonItem.enabled = FALSE;
+    
+    CGRect currentFrame = self.view.frame;
+    currentFrame.size = [[SYNDeviceManager sharedInstance] currentScreenSize];
+    self.view.frame = currentFrame;
+    
     
 }
 
@@ -228,12 +214,16 @@ didSelectRowAtIndexPath: (NSIndexPath *) indexPath
  @param objectType the name of the type of object to report
  @param objectId the id of the object to report
  */
--(void)reportConcernFromView:(UIButton*)presentingButton inViewController:(UIViewController*) viewController popOverArrowDirection:(UIPopoverArrowDirection)direction objectType:(NSString*)objectType objectId:(NSString*)objectId completedBlock:(SYNReportCompletedBlock)completedBlock
+-(void)reportConcernFromView:(UIButton*)presentingButton
+            inViewController:(UIViewController*) viewController
+       popOverArrowDirection:(UIPopoverArrowDirection)direction
+                  objectType:(NSString*)objectType objectId:(NSString*)objectId
+              completedBlock:(SYNReportCompletedBlock)completedBlock
 {
     self.objectType = objectType;
     self.objectId = objectId;
     __weak SYNReportConcernTableViewController* weakSelf = self;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    if (IS_IPAD)
     {
         // Create out concerns table view controller
         self.sendReportBlock = ^ (NSString *reportString){
