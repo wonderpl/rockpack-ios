@@ -168,7 +168,10 @@
                          self.closeButton.alpha = _typingMode ? 1.0f : 0.0f;
                          
                          CGRect sfFrame = self.searchFieldFrameImageView.frame;
-                         sfFrame.size.width = _typingMode ? 362.0f : 400.0f;
+                         if(IS_IPAD)
+                             sfFrame.size.width = _typingMode ? 362.0f : 400.0f;
+                         else
+                             sfFrame.size.width = _typingMode ? 272.0f : 300.0f;
                          self.searchFieldFrameImageView.frame = sfFrame;
                      }
                      completion:^(BOOL finished) {
