@@ -141,9 +141,7 @@
 - (IBAction) autopostButtonPressed: (UIButton *) sender
 {
     if (sender.selected) // button is pressed twice
-    {
         return;
-    }
     
     ExternalAccount *facebookAccount = appDelegate.currentUser.facebookAccount;
     __weak SYNExistingChannelsViewController *wself = self;
@@ -191,33 +189,39 @@
         // if the SDK has already the 'publish' options on, it will just call the return function()
         [[SYNFacebookManager sharedFBManager] openSessionWithPermissionType: kFacebookPermissionTypePublish
                                                                   onSuccess: ^{
-                                                                      // connect to external account so as to register the new access token with extended priviledges
-                                                                      [wAppDelegate.oAuthNetworkEngine
-                                                                       connectFacebookAccountForUserId: wAppDelegate.currentUser.uniqueId
-                                                                       andAccessTokenData: [[FBSession activeSession] accessTokenData]
-                                                                       completionHandler: ^(id no_responce) {
-                                                                           if (facebookAccount.flagsValue & ExternalAccountFlagAutopostAdd)
-                                                                           {
-                                                                               CompletionBlock(no_responce);
-                                                                           }
-                                                                           else
-                                                                           {
+                                                                      
+                        // connect to external account so as to register the new access token with extended priviledges
+                       [wAppDelegate.oAuthNetworkEngine connectFacebookAccountForUserId: wAppDelegate.currentUser.uniqueId
+                                                                     andAccessTokenData: [[FBSession activeSession] accessTokenData]
+                                                                      completionHandler: ^(id no_responce) {
+                                                                          
+                                                    if (facebookAccount.flagsValue & ExternalAccountFlagAutopostAdd)
+                                                    {
+                                                        CompletionBlock(no_responce);
+                                                    }
+                                                    else
+                                                    {
                                                                                // set the flag on the server...
-                                                                               [wAppDelegate.oAuthNetworkEngine
-                                                                                setFlag: @"facebook_autopost_add"
-                                                                                withValue: isYesButton
-                                                                                forUseId: appDelegate.currentUser.uniqueId
-                                                                                completionHandler: CompletionBlock
-                                                                                errorHandler: ErrorBlock];
-                                                                           }
-                                                                       }
-                                                                       
-                                                                       
-                                                                       errorHandler: ErrorBlock];
-                                                                  }
+                                                      [wAppDelegate.oAuthNetworkEngine setFlag: @"facebook_autopost_add"
+                                                                                     withValue: isYesButton
+                                                                                      forUseId: appDelegate.currentUser.uniqueId
+                                                                             completionHandler: CompletionBlock
+                                                                                  errorHandler: ErrorBlock];
+                                                    }
+                                                                          
+                                                } errorHandler: ErrorBlock];
+                        }
          
          
-                                                                  onFailure: ErrorBlock];
+                                    onFailure: ErrorBlock];
+    }
+    else
+    {
+        [wAppDelegate.oAuthNetworkEngine setFlag: @"facebook_autopost_add"
+                                       withValue: isYesButton // should be no
+                                        forUseId: appDelegate.currentUser.uniqueId
+                               completionHandler: CompletionBlock
+                                    errorHandler: ErrorBlock];
     }
 }
 
