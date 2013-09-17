@@ -1333,94 +1333,101 @@
 - (BOOL) parseAndActionRockpackURL: (NSURL *) url
 {
     BOOL success = FALSE;
-
-    NSString *userId = url.host;
-    NSArray *pathComponents = url.pathComponents;
     
-    // Default to other user's deep link
-    NSString *httpScheme = @"http:";
-    
-    // Vary schema dependent on whether the deep link is from current user or a different user
-    if ([userId isEqualToString: self.currentUser.uniqueId])
+    if (self.currentUser)
     {
-        httpScheme = @"https:";
+        NSString *userId = url.host;
+        NSArray *pathComponents = url.pathComponents;
+        
+        // Default to other user's deep link
+        NSString *httpScheme = @"http:";
+        
+        // Vary schema dependent on whether the deep link is from current user or a different user
+        if ([userId isEqualToString: self.currentUser.uniqueId])
+        {
+            httpScheme = @"https:";
+        }
+        
+        NSString *hostName = [[NSBundle mainBundle] objectForInfoDictionaryKey: ([userId isEqualToString: self.currentUser.uniqueId])? @"SecureAPIHostName" : @"APIHostName"];
+        
+        switch (pathComponents.count)
+        {
+                // User profile
+            case 1:
+            {
+                if (userId)
+                {
+                    ChannelOwner *channelOwner = [ChannelOwner instanceFromDictionary: @{@"id" : userId}
+                                                            usingManagedObjectContext: self.mainManagedObjectContext
+                                                                  ignoringObjectTypes: kIgnoreChannelObjects];
+                    
+                    [self.viewStackManager viewProfileDetails: channelOwner];
+                    success = TRUE;
+                }
+                
+                break;
+            }
+                
+                // Channel
+            case 3:
+            {
+                // Extract the channelId from the path
+                NSString *channelId = pathComponents[2];
+                NSString *resourceURL = [NSString stringWithFormat: @"%@//%@/ws/%@/channels/%@/", httpScheme, hostName, userId, channelId];
+                Channel* channel = [Channel instanceFromDictionary: @{@"id" : channelId, @"resource_url" : resourceURL}
+                                         usingManagedObjectContext: self.mainManagedObjectContext];
+                
+                if (channel)
+                {
+                    [self.viewStackManager viewChannelDetails: channel];
+                    success = TRUE;
+                }
+                break;
+            }
+                
+                // Video Instance
+            case 5:
+            {
+                NSString *channelId = pathComponents[2];
+                NSString *videoId = pathComponents[4];
+                NSString *resourceURL = [NSString stringWithFormat: @"%@//%@/ws/%@/channels/%@/", httpScheme, hostName, userId, channelId];
+                Channel* channel = [Channel instanceFromDictionary: @{@"id" : channelId, @"resource_url" : resourceURL}
+                                         usingManagedObjectContext: self.mainManagedObjectContext];
+                
+                if (channel)
+                {
+                    // We need to remove any video overlay first
+                    [self.masterViewController removeVideoOverlayController];
+                    
+                    [self.viewStackManager viewChannelDetails: channel
+                                               withAutoplayId: videoId];
+                    success = TRUE;
+                }
+                break;
+            }
+                
+            default:
+                // Not sure what this is so indicate failure
+                break;
+        }
+        
+        
+        // track
+        
+        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+        
+        [tracker sendEventWithCategory: @"goal"
+                            withAction: @"openDeepLink"
+                             withLabel: url.absoluteString
+                             withValue: nil];
+        
+        
+        [self.oAuthNetworkEngine trackSessionWithMessage:url.absoluteString];
     }
-    
-    NSString *hostName = [[NSBundle mainBundle] objectForInfoDictionaryKey: ([userId isEqualToString: self.currentUser.uniqueId])? @"SecureAPIHostName" : @"APIHostName"];
-    
-    switch (pathComponents.count)
+    else
     {
-            // User profile
-        case 1:
-        {
-            if (userId)
-            {
-                ChannelOwner *channelOwner = [ChannelOwner instanceFromDictionary: @{@"id" : userId}
-                                                        usingManagedObjectContext: self.mainManagedObjectContext
-                                                              ignoringObjectTypes: kIgnoreChannelObjects];
-                
-                [self.viewStackManager viewProfileDetails: channelOwner];
-                success = TRUE;
-            }
-            
-            break;
-        }
-            
-            // Channel
-        case 3:
-        {
-            // Extract the channelId from the path
-            NSString *channelId = pathComponents[2];
-            NSString *resourceURL = [NSString stringWithFormat: @"%@//%@/ws/%@/channels/%@/", httpScheme, hostName, userId, channelId];
-            Channel* channel = [Channel instanceFromDictionary: @{@"id" : channelId, @"resource_url" : resourceURL}
-                                     usingManagedObjectContext: self.mainManagedObjectContext];
-            
-            if (channel)
-            {
-                [self.viewStackManager viewChannelDetails: channel];
-                success = TRUE;
-            }
-            break;
-        }
-            
-            // Video Instance
-        case 5:
-        {
-            NSString *channelId = pathComponents[2];
-            NSString *videoId = pathComponents[4];
-            NSString *resourceURL = [NSString stringWithFormat: @"%@//%@/ws/%@/channels/%@/", httpScheme, hostName, userId, channelId];
-            Channel* channel = [Channel instanceFromDictionary: @{@"id" : channelId, @"resource_url" : resourceURL}
-                                     usingManagedObjectContext: self.mainManagedObjectContext];
-            
-            if (channel)
-            {
-                // We need to remove any video overlay first
-                [self.masterViewController removeVideoOverlayController];
-                
-                [self.viewStackManager viewChannelDetails: channel
-                                           withAutoplayId: videoId];
-                success = TRUE;
-            }
-            break;
-        }
-            
-        default:
-            // Not sure what this is so indicate failure
-            break;
+        DebugLog(@"No active user, ignored");
     }
-    
-    
-    // track
-    
-    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-    
-    [tracker sendEventWithCategory: @"goal"
-                        withAction: @"openDeepLink"
-                         withLabel: url.absoluteString
-                         withValue: nil];
-    
-    
-    [self.oAuthNetworkEngine trackSessionWithMessage:url.absoluteString];
     
     return success;
 }

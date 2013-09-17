@@ -14,6 +14,11 @@
                 <rect key="frame" x="0.0" y="0.0" width="70" height="85"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <imageView clipsSubviews="YES" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" id="7L2-Yb-HyQ" userLabel="User Thumbnail">
+                        <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </imageView>
                     <label autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="left" text="NAME" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" id="atS-e1-vjb" userLabel="Name UILabel">
                         <rect key="frame" x="0.0" y="70" width="70" height="15"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -24,15 +29,6 @@
                         <color key="shadowColor" red="0.50980395079999996" green="0.55294120309999995" blue="0.56862747670000002" alpha="0.0" colorSpace="calibratedRGB"/>
                         <size key="shadowOffset" width="0.0" height="1"/>
                     </label>
-                    <imageView clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" id="7L2-Yb-HyQ" userLabel="User Thumbnail">
-                        <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="OverlayFriends.png" id="kio-lL-Zk9" userLabel="Shadow Image View">
-                        <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
@@ -40,11 +36,7 @@
             <connections>
                 <outlet property="imageView" destination="7L2-Yb-HyQ" id="37G-ES-shT"/>
                 <outlet property="nameLabel" destination="atS-e1-vjb" id="0Fa-Hn-Aeb"/>
-                <outlet property="shadowImage" destination="kio-lL-Zk9" id="jKU-IB-Ano"/>
             </connections>
         </collectionViewCell>
     </objects>
-    <resources>
-        <image name="OverlayFriends.png" width="114" height="114"/>
-    </resources>
 </document>
