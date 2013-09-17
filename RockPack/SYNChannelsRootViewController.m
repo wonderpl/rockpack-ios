@@ -198,6 +198,9 @@
     [self displayChannelsForGenre: self.currentGenre];
     
     [self loadChannelsForGenre: self.currentGenre];
+    
+    
+    
 }
 
 
@@ -236,6 +239,11 @@
 {
     [super viewDidAppear:animated];
     [self checkForOnBoarding];
+    
+    CGRect vFrame = self.view.frame;
+    vFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar];
+    self.view.frame = vFrame;
+    
 }
 
 - (void) viewDidScrollToBack

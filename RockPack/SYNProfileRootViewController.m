@@ -295,6 +295,8 @@
     
     self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = NO;
     self.channelThumbnailCollectionView.scrollsToTop = NO;
+    
+    
 }
 
 
@@ -544,7 +546,6 @@
         newFrame.size.width = 160.0f;
         self.headerSubscriptionsView.frame = newFrame;
         
-        viewHeight = MAX([SYNDeviceManager.sharedInstance currentScreenHeight], [SYNDeviceManager.sharedInstance currentScreenWidth]) - 20.0f;
         channelsLayout = self.channelsPortraitLayout;
         subscriptionsLayout = self.subscriptionsPortraitLayout;
     }
@@ -580,7 +581,7 @@
             subscriptionsLayout = self.subscriptionsLandscapeLayout;
         }
         
-        viewHeight = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar];
+        
         
         //Apply correct backgorund images
         [self.headerSubscriptionsView setBackgroundImage: ([SYNDeviceManager.sharedInstance isLandscape] ?
@@ -592,9 +593,12 @@
                                                         [UIImage imageNamed: @"HeaderProfilePortraitBoth"]];
     }
     
+    viewHeight = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar];
+    
     // Setup Channel feed collection view
     newFrame = self.channelThumbnailCollectionView.frame;
     newFrame.size.width = self.isIPhone ? 320.0f : self.headerChannelsView.frame.size.width;
+    
     newFrame.size.height = viewHeight - newFrame.origin.y;
     self.channelThumbnailCollectionView.collectionViewLayout = channelsLayout;
     self.channelThumbnailCollectionView.frame = newFrame;

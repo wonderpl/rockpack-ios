@@ -127,6 +127,17 @@
     
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    
+    // Compensate for iOS7
+    
+    CGRect vFrame = self.view.frame;
+    vFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar];
+    self.view.frame = vFrame;
+}
 
 - (void) resetDataRequestRange
 {

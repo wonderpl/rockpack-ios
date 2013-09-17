@@ -51,6 +51,8 @@
                                              selector: @selector(userDataChanged:)
                                                  name: kUserDataChanged
                                                object: nil];
+    
+    
     [self pack];
 }
 
@@ -86,13 +88,16 @@
         self.fullNameLabel.frame = CGRectMake(42.0f, 0.0f, 150, 34);
         self.fullNameLabel.attributedText = attString;
         [self.fullNameLabel sizeToFit];
-        CGPoint center = self.view.center;
+        
+        
         CGRect newFrame = self.view.frame;
-        newFrame.size.width = 44.0f+self.fullNameLabel.frame.size.width;
+        newFrame.size.width = 44.0f + self.fullNameLabel.frame.size.width;
         self.view.frame = newFrame;
+        
         [self.view addSubview:self.fullNameLabel];
+        
         self.fullNameLabel.center = CGPointMake(44.0f + self.fullNameLabel.frame.size.width/2.0f, 19.0f);
-        self.view.center = center;
+        
     }
     else
     {
