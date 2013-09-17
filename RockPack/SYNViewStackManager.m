@@ -280,13 +280,22 @@
                                               
                                               self.sideNavigatorController.mainContentView.alpha = 1.0f;
                                               
+                                              if(IS_IOS_7_OR_GREATER)
+                                                  [searchBoxVC.searchBoxView shrinkForiOS7];
                                               
                                               CGRect newFrame = searchBoxVC.searchBoxView.frame;
                                               
                                               if(self.searchBarOriginSideNavigation && !total)
-                                                  newFrame.origin = CGPointMake(0.0f, IS_IOS_7_OR_GREATER? 68.0f : 58.0f);
+                                              {
+                                                  newFrame.origin = CGPointMake(0.0f, 58.0f);
+                                              }
+                                                  
+                                              
                                               else
+                                              {
                                                   newFrame.origin = CGPointMake(0.0f, -58.0f);
+                                              }
+                                              
                                               
                                               searchBoxVC.searchBoxView.frame = newFrame;
                                               
@@ -307,13 +316,15 @@
                      }];
 }
 
+
+// for iPhone
+
 -(void)presentSearchBar
 {
     
     SYNSearchBoxViewController* searchBoxVC = self.sideNavigatorController.searchViewController;
     
     self.searchBarOriginSideNavigation = (self.sideNavigatorController.state != SideNavigationStateHidden);
-    
     
     
     // do the swap...
@@ -337,20 +348,31 @@
     
     searchBoxVC.searchBoxView.frame = newFrame;
     
-    
     [UIView animateWithDuration: 0.2f
-                         delay :0.0f
+                          delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations: ^{
                          
                          self.sideNavigatorController.mainContentView.alpha = 0.0f;
                          
+                         if(IS_IOS_7_OR_GREATER)
+                             [searchBoxVC.searchBoxView enlargeForiOS7]; // set the elements for iOS7
+                         
                          CGRect endFrame = searchBoxVC.searchBoxView.frame;
                          
                          if(self.searchBarOriginSideNavigation)
+                         {
                              endFrame.origin.y -= 58.0f;
+                             
+                             
+                             
+                         }
                          else
+                         {
                              endFrame.origin.y += 58.0f;
+                             endFrame.size.height -= IS_IOS_7_OR_GREATER ? 10.0f : 0.0f;
+                         }
+                         
                          
                          
                          

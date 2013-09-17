@@ -10,6 +10,7 @@
                 <outlet property="darkOverlayView" destination="34" id="35"/>
                 <outlet property="errorContainerView" destination="31" id="32"/>
                 <outlet property="headerButton" destination="41" id="47"/>
+                <outlet property="headerContainerView" destination="bGf-Ia-h26" id="hV8-mT-xye"/>
                 <outlet property="hideNavigationButton" destination="36" id="39"/>
                 <outlet property="navigationContainerView" destination="28" id="33"/>
                 <outlet property="overlayView" destination="23" id="26"/>

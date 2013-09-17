@@ -303,7 +303,8 @@ typedef enum {
         if (self.currentlyLoadedViewController && [self.currentlyLoadedViewController isKindOfClass:[SYNNotificationsTableViewController class]])
         {
             ((SYNNotificationsTableViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
-        } 
+        }
+        
     } errorHandler:^(id error) {
         DebugLog(@"Could not load notifications");
     }];

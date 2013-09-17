@@ -61,6 +61,7 @@
     else
     {
         self.view = [[NSBundle mainBundle] loadNibNamed:@"SYNSearchBoxIphoneView" owner:self options:nil][0];
+        
     }    
 }
 
