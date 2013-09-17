@@ -14,16 +14,16 @@
                 <rect key="frame" x="0.0" y="0.0" width="310" height="175"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleToFill" image="BackgroundVideoThumbnailRegular.png" id="52">
+                    <imageView autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleToFill" image="BackgroundVideoThumbnailRegular.png" id="52" userLabel="BG ImageView">
                         <rect key="frame" x="0.0" y="0.0" width="310" height="175"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <imageView clipsSubviews="YES" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleToFill" id="53">
+                    <imageView clipsSubviews="YES" clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleToFill" id="53" userLabel="User Thumb ImageView">
                         <rect key="frame" x="0.0" y="0.0" width="310" height="174"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="GlossVideo.png" id="86">
-                        <rect key="frame" x="0.0" y="0.0" width="310" height="174"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="GlossVideo.png" id="86" userLabel="GlossVideo.png">
+                        <rect key="frame" x="0.0" y="0.0" width="310" height="175"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                     <button autoresizesSubviews="NO" clearsContextBeforeDrawing="NO" contentMode="center" highlighted="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="83" userLabel="Button - Add">
