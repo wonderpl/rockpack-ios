@@ -374,7 +374,12 @@
     
     // instructions label
     CGRect ilFrame = self.instructionsLabel.frame;
-    ilFrame.origin.y = self.state == InstructionsShareStatePacks ? 280.0f : (IS_IPAD ? 150.0f : 120.0f);
+    
+    if(IS_IPAD)
+        ilFrame.origin.y = self.state == InstructionsShareStatePacks ? 280.0f : 150.0f;
+    else // IS_IPHONE
+        ilFrame.origin.y = self.state == InstructionsShareStatePacks ? 180.0f : 120.0f;
+    
     ilFrame.origin.x = 0.0f;
     ilFrame.size.width = self.view.frame.size.width;
     self.instructionsLabel.frame = CGRectIntegral(ilFrame);
