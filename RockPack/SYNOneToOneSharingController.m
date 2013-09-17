@@ -270,6 +270,8 @@
     
     // always present the buttons at the bottom
     [self presentActivities];
+    
+    [GAI.sharedInstance.defaultTracker sendView: @"Share"];
 }
 
 - (void) viewWillAppear: (BOOL) animated
@@ -1136,7 +1138,8 @@
                                                [appDelegate.viewStackManager removePopoverView];
                                                
                                                id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-                                               NSString* actionType = [self.mutableShareDictionary[@"type"] isEqualToString:@"channel"] ? @"channelShared" : @"videoShared";
+                                               NSString* actionType =
+                                               [self.mutableShareDictionary[@"type"] isEqualToString:@"channel"] ? @"channelShared" : @"videoShared";
                                                [tracker sendEventWithCategory: actionType
                                                                    withAction: @"1to1"
                                                                     withLabel: nil
