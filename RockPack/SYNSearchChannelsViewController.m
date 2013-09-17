@@ -12,11 +12,15 @@
 #import "SYNSearchChannelsViewController.h"
 #import "SYNSearchRootViewController.h"
 #import "SYNSearchTabView.h"
+#import "SYNFeedMessagesView.h"
+#import "SYNDeviceManager.h"
+#import "SYNAppDelegate.h"
 
 @interface SYNSearchChannelsViewController ()
 
 @property (nonatomic, weak) NSString* searchTerm;
 @property (nonatomic, weak) MKNetworkOperation* runningSearchOperation;
+@property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
 
 @end
 
@@ -78,6 +82,40 @@
     [super viewWillAppear:animated];
   
     [self displayChannelsForGenre];
+}
+
+
+- (void) removeEmptyGenreMessage
+{
+    if (!self.emptyGenreMessageView)
+        return;
+    
+    [self.emptyGenreMessageView removeFromSuperview];
+}
+
+
+- (void) displayEmptyGenreMessage: (NSString*) messageKey
+                        andLoader: (BOOL) isLoader
+{
+    
+    if (self.emptyGenreMessageView)
+    {
+        [self.emptyGenreMessageView removeFromSuperview];
+        self.emptyGenreMessageView = nil;
+    }
+    
+    self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:NSLocalizedString(messageKey ,nil) andLoader:isLoader];
+    
+    CGRect messageFrame = self.emptyGenreMessageView.frame;
+    messageFrame.origin.y = ([[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5) - (messageFrame.size.height * 0.5);
+    messageFrame.origin.x = ([[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5) - (messageFrame.size.width * 0.5);
+    
+    messageFrame = CGRectIntegral(messageFrame);
+    self.emptyGenreMessageView.frame = messageFrame;
+    self.emptyGenreMessageView.autoresizingMask =
+    UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+    
+    [self.view addSubview: self.emptyGenreMessageView];
 }
 
 
@@ -167,8 +205,11 @@
         appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
     }
     
-    self.dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
+    [self removeEmptyGenreMessage];
     
+    [self displayEmptyGenreMessage:@"Searching for Packs" andLoader:YES];
+    
+    self.dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
     
     [appDelegate.networkEngine searchChannelsForTerm: term
                                             andRange: self.dataRequestRange
@@ -180,6 +221,13 @@
                                                   [self.itemToUpdate
                                                    setNumberOfItems: self.dataItemsAvailable
                                                    animated: YES];
+                                              }
+                                              
+                                              [self removeEmptyGenreMessage];
+                                              
+                                              if (itemsCount == 0)
+                                              {
+                                                  [self displayEmptyGenreMessage:[NSString stringWithFormat:@"There are no packs called '%@'.  Why not make one?",term] andLoader:NO];
                                               }
                                           }];
     

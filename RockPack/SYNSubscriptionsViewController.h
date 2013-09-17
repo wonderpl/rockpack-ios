@@ -9,7 +9,7 @@
 #import "SYNChannelsRootViewController.h"
 #import "Channel.h"
 #import "SYNYouHeaderView.h"
-
+#import "SYNNoChannelsMessageView.h"
 
 @interface SYNSubscriptionsViewController : SYNChannelsRootViewController
 
@@ -17,6 +17,8 @@
 @property (nonatomic, weak) SYNYouHeaderView* headerView;
 
 @property (nonatomic, weak) ChannelOwner* user;
+
+@property (nonatomic, weak) SYNNoChannelsMessageView *noChannelsMessage;
 
 - (void) setViewFrame: (CGRect) frame;
 

@@ -12,10 +12,14 @@
 #import "SYNSearchTabView.h"
 #import "SYNSearchUsersViewController.h"
 #import "SYNUserThumbnailCell.h"
+#import "SYNFeedMessagesView.h"
 
 @interface SYNSearchUsersViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (nonatomic, weak) NSString *searchTerm;
+//@property (nonatomic, weak) MKNetworkOperation* runningSearchOperation;
+@property (nonatomic, strong) SYNFeedMessagesView* emptyGenreMessageView;
+
 
 @end
 
@@ -77,6 +81,40 @@
 }
 
 
+- (void) removeEmptyGenreMessage
+{
+    if (!self.emptyGenreMessageView)
+        return;
+    
+    [self.emptyGenreMessageView removeFromSuperview];
+}
+
+
+- (void) displayEmptyGenreMessage: (NSString*) messageKey
+                        andLoader: (BOOL) isLoader
+{
+    
+    if (self.emptyGenreMessageView)
+    {
+        [self.emptyGenreMessageView removeFromSuperview];
+        self.emptyGenreMessageView = nil;
+    }
+    
+    self.emptyGenreMessageView = [SYNFeedMessagesView withMessage:NSLocalizedString(messageKey ,nil) andLoader:isLoader];
+    
+    CGRect messageFrame = self.emptyGenreMessageView.frame;
+    messageFrame.origin.y = ([[SYNDeviceManager sharedInstance] currentScreenHeight] * 0.5) - (messageFrame.size.height * 0.5);
+    messageFrame.origin.x = ([[SYNDeviceManager sharedInstance] currentScreenWidth] * 0.5) - (messageFrame.size.width * 0.5);
+    
+    messageFrame = CGRectIntegral(messageFrame);
+    self.emptyGenreMessageView.frame = messageFrame;
+    self.emptyGenreMessageView.autoresizingMask =
+    UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+    
+    [self.view addSubview: self.emptyGenreMessageView];
+}
+
+
 #pragma mark - Collection view
 
 - (CGSize) itemSize
@@ -128,6 +166,10 @@
         appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
     }
     
+    [self removeEmptyGenreMessage];
+    
+    [self displayEmptyGenreMessage:@"Searching for People" andLoader:YES];
+    
     self.dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
     
     [appDelegate.networkEngine searchUsersForTerm: term
@@ -141,6 +183,13 @@
                                                [self.itemToUpdate
                                                 setNumberOfItems: self.dataItemsAvailable
                                                 animated: YES];
+                                           }
+                                           
+                                           [self removeEmptyGenreMessage];
+                                           
+                                           if (itemsCount == 0)
+                                           {
+                                               [self displayEmptyGenreMessage:[NSString stringWithFormat:@"'%@' is not on Rockpack. Yet.",term] andLoader:NO];
                                            }
                                        }];
     

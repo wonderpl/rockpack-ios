@@ -185,6 +185,7 @@
     
     notificationCell.detailTextLabel.text = notification.dateDifferenceString;
     
+    
     return notificationCell;
 }
 

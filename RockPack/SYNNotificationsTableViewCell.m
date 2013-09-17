@@ -175,7 +175,9 @@
 
 - (void) setMessageTitle: (NSString *) messageTitle
 {
+    
     // == main text label == //
+    
     NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
     
     [paragrahStyle setLineSpacing: 2];
@@ -189,16 +191,21 @@
     CGRect textLabelFrame = self.textLabel.frame;
     CGFloat maxWidth = IS_IPAD ? 200.0 : 170.0;
     
-    self.mainTextSize = [messageTitle sizeWithFont: self.textLabel.font
-                                 constrainedToSize: CGSizeMake(maxWidth, 500.0)
-                                     lineBreakMode: self.textLabel.lineBreakMode];
+    CGSize mainTSize = [messageTitle sizeWithFont: self.textLabel.font
+                                constrainedToSize: CGSizeMake(maxWidth, 500.0)
+                                    lineBreakMode: self.textLabel.lineBreakMode];
+    
+    mainTSize.height += 2.0f;
+    self.mainTextSize = mainTSize;
+    
+    
     
     textLabelFrame.size = self.mainTextSize;
     
+    self.textLabel.attributedText = attributedString;
     self.textLabel.frame = textLabelFrame;
     
     //self.textLabel.text = messageTitle;
-    self.textLabel.attributedText = attributedString;
 }
 
 

@@ -286,7 +286,7 @@
     
     [self removeEmptyGenreMessage];
     
-    [self displayEmptyGenreMessage:@"SEARCHING FOR VIDEOS" andLoader:YES];
+    [self displayEmptyGenreMessage:@"Searching for Videos" andLoader:YES];
     
     self.dataRequestRange = NSMakeRange(0, kAPIInitialBatchSize);
     
@@ -307,7 +307,7 @@
                                                                                
                                                                                if (itemsCount == 0)
                                                                                {
-                                                                                   [self displayEmptyGenreMessage:@"NO VIDEOS FOUND" andLoader:NO];
+                                                                                   [self displayEmptyGenreMessage:[NSString stringWithFormat:@"There are no videos called '%@'",term] andLoader:NO];
                                                                                }
                                                                            }];
     self.searchTerm = term;
