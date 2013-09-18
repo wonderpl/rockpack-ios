@@ -14,16 +14,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="158" height="158"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" id="20" userLabel="View - Drop Shadow">
-                        <rect key="frame" x="3" y="155" width="152" height="1"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.23000000000000001" colorSpace="calibratedWhite"/>
-                    </view>
-                    <view contentMode="scaleToFill" id="19" userLabel="View - White Box">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PanelChannelCreateNew.png" id="plN-HM-lU1">
                         <rect key="frame" x="3" y="3" width="152" height="152"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
+                    </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="CREATE NEW PACK" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="18">
                         <rect key="frame" x="9" y="11" width="140" height="144"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -40,4 +34,7 @@
             </connections>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="PanelChannelCreateNew.png" width="184" height="184"/>
+    </resources>
 </document>
