@@ -2674,7 +2674,7 @@ shouldChangeTextInRange: (NSRange) range
         
         
         CGRect bFrame = self.cancelTextInputButton.frame;
-        bFrame.origin.y = 22.0f;
+        bFrame.origin.y = IS_IOS_7_OR_GREATER ? 22.0f : 8.0f;
         self.cancelTextInputButton.frame = bFrame;
     }
 }
