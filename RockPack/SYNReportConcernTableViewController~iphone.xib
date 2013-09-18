@@ -9,7 +9,6 @@
             <connections>
                 <outlet property="cancelButton" destination="4" id="26"/>
                 <outlet property="reportButton" destination="5" id="27"/>
-                <outlet property="reportTableTitleLabel" destination="3" id="51"/>
                 <outlet property="tableView" destination="45" id="46"/>
                 <outlet property="view" destination="2" id="31"/>
             </connections>
@@ -25,7 +24,7 @@
                     <color key="backgroundColor" white="0.0" alpha="0.80000000000000004" colorSpace="calibratedWhite"/>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="5" userLabel="Button - Report">
-                    <rect key="frame" x="262" y="29" width="48" height="49"/>
+                    <rect key="frame" x="212" y="25" width="106" height="58"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                     <state key="normal" image="ButtonReportConfirm.png">
@@ -54,13 +53,6 @@
                         <action selector="actionCancel" destination="-1" eventType="touchUpInside" id="49"/>
                     </connections>
                 </button>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="REPORT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3">
-                    <rect key="frame" x="60" y="31" width="200" height="52"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="44" sectionFooterHeight="22" id="45">
                     <rect key="frame" x="0.0" y="88" width="320" height="460"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
@@ -80,7 +72,7 @@
     <resources>
         <image name="ButtonCancel.png" width="44" height="45"/>
         <image name="ButtonCancelHighlighted.png" width="44" height="45"/>
-        <image name="ButtonReportConfirm.png" width="48" height="49"/>
-        <image name="ButtonReportConfirmHighlighted.png" width="48" height="49"/>
+        <image name="ButtonReportConfirm.png" width="106" height="58"/>
+        <image name="ButtonReportConfirmHighlighted.png" width="106" height="58"/>
     </resources>
 </document>
