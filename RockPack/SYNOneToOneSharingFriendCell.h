@@ -13,6 +13,5 @@
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) IBOutlet UILabel* nameLabel;
 
--(void)setDisplayName:(NSString*)name;
 
 @end

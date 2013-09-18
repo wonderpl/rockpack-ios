@@ -16,7 +16,12 @@
     
     self.nameLabel.font = [UIFont rockpackFontOfSize:self.nameLabel.font.pointSize];
     
-    
+    if(!IS_IOS_7_OR_GREATER)
+    {
+        CGRect lFrame = self.nameLabel.frame;
+        lFrame.origin.y = 72.0f;
+        self.nameLabel.frame = lFrame;
+    }
     
     
 }
