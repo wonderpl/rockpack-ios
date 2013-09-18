@@ -92,6 +92,7 @@
         
         CGRect newFrame = self.view.frame;
         newFrame.size.width = 44.0f + self.fullNameLabel.frame.size.width;
+        
         self.view.frame = newFrame;
         
         [self.view addSubview:self.fullNameLabel];
