@@ -616,13 +616,18 @@
                                             placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarChannel"]
                                                      options: SDWebImageRetryFailed];
             }
+//            else if(friend.email)
+//            {
+//                userThumbnailCell.imageView.image = [UIImage imageNamed:@"ABContactPlaceholder"];
+//                
+//            }
             else
             {
                 userThumbnailCell.imageView.image = [UIImage imageNamed:@"PlaceholderAvatarChannel"];
             }
             
         }
-        else if(!friend.thumbnailURL)
+        else if(!friend.thumbnailURL && friend.email)
         {
             userThumbnailCell.imageView.image = [UIImage imageNamed:@"ABContactPlaceholder"];
         }

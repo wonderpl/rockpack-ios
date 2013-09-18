@@ -514,9 +514,7 @@
 
 - (void) applicationDidBecomeActive: (UIApplication *) application
 {
-    // Publish 
-//    NSString *facebookAppId = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"FacebookAppID"];
-//    [FBSettings publishInstall: facebookAppId];
+
     [FBAppEvents activateApp];
     
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
@@ -527,9 +525,28 @@
     
     [self checkForUpdatedPlayerCode];
     
+    // send tracking code
     
     
-    [self.oAuthNetworkEngine trackSessionWithMessage: enteredAppThroughNotification ? @"URL" : nil];
+    
+    NSString* message;
+    
+    
+    if(![[NSUserDefaults standardUserDefaults] boolForKey: kUserDefaultsNotFirstInstall]) // IS first install
+    {
+        message = @"install";
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kUserDefaultsNotFirstInstall];
+    }
+    else if(enteredAppThroughNotification)
+    {
+        message = @"URL";
+        enteredAppThroughNotification = NO;
+    }
+    else
+    {
+        message = nil;
+    }
+    [self.oAuthNetworkEngine trackSessionWithMessage: message];
     
 }
 
@@ -793,13 +810,7 @@
     
     // track first install
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL isNotFirstInstall = [defaults boolForKey: kUserDefaultsNotFirstInstall];
-    if(!isNotFirstInstall) // IS first install
-    {
-        
-        [self.oAuthNetworkEngine trackSessionWithMessage:@"install"];
-    }
+    
     
 }
 
@@ -1476,6 +1487,8 @@
             self.connection = [[NSURLConnection alloc] initWithRequest: request
                                                               delegate: self];
         }
+        
+        enteredAppThroughNotification = YES;
         
         id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
         
