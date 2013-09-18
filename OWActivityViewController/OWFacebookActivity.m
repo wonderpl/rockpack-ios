@@ -25,6 +25,7 @@
 
 #import "OWActivityViewController.h"
 #import "OWFacebookActivity.h"
+#import "SYNAppDelegate.h"
 
 
 @implementation OWFacebookActivity
@@ -179,7 +180,11 @@
         
         [viewController presentViewController: facebookViewComposer
                                      animated: YES
-                                   completion: nil];
+                                   completion: ^{
+                                       SYNAppDelegate *appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
+                                       
+                                       [appDelegate.viewStackManager removePopoverView];
+                                   }];
     }
 }
 

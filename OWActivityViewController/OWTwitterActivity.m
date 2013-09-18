@@ -25,6 +25,7 @@
 
 #import "OWActivityViewController.h"
 #import "OWTwitterActivity.h"
+#import "SYNAppDelegate.h"
 #import <Twitter/Twitter.h>
 
 @implementation OWTwitterActivity
@@ -100,6 +101,10 @@
     
     [viewController presentViewController: twitterViewComposer
                                  animated: YES
-                               completion: nil];
+                               completion: ^{
+                                   SYNAppDelegate *appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
+                                   
+                                   [appDelegate.viewStackManager removePopoverView];
+                               }];
 }
 @end

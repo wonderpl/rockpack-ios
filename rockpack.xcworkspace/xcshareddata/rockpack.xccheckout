@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>17E1C5D7-CEAC-48C8-BC6E-B3212A95B025</string>
+	<key>IDESourceControlProjectName</key>
+	<string>rockpack</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>DECE446C-4914-4293-B7EF-36CF32BDCB44</key>
+		<string>https://github.com/rockpack/ios-app.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>rockpack.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>DECE446C-4914-4293-B7EF-36CF32BDCB44</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/rockpack/ios-app.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>DECE446C-4914-4293-B7EF-36CF32BDCB44</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>DECE446C-4914-4293-B7EF-36CF32BDCB44</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ios-app</string>
+		</dict>
+	</array>
+</dict>
+</plist>
