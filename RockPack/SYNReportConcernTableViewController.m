@@ -75,9 +75,7 @@
                            NSLocalizedString (@"Actively promotes self-harm", nil),
                            NSLocalizedString (@"Spam", nil),
                            NSLocalizedString (@"Other", nil)];
-    
-    self.reportTableTitleLabel.font = [UIFont rockpackFontOfSize: self.reportTableTitleLabel.font.pointSize];
-    
+
     
         
     UIButton *customUseButton = [UIButton buttonWithType: UIButtonTypeCustom];
@@ -244,20 +242,6 @@ didSelectRowAtIndexPath: (NSIndexPath *) indexPath
         
         // Wrap it in a navigation controller
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: self];
-        
-        // Hard way of adding a title (need to due to custom font offsets)
-        UIView *containerView = [[UIView alloc] initWithFrame: CGRectMake (0, 0, 80, 28)];
-        containerView.backgroundColor = [UIColor clearColor];
-        UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake (0, 4, 80, 28)];
-        label.backgroundColor = [UIColor clearColor];
-        label.font = [UIFont rockpackFontOfSize: 20.0];
-        label.textAlignment = NSTextAlignmentCenter;
-        label.textColor = [UIColor blackColor];
-        label.shadowColor = [UIColor whiteColor];
-        label.shadowOffset = CGSizeMake(0.0, 1.0);
-        label.text = NSLocalizedString(@"Report", nil);
-        [containerView addSubview: label];
-        self.navigationItem.titleView = containerView;
         
         // Need show the popover controller
         self.reportConcernPopoverController = [[UIPopoverController alloc] initWithContentViewController: navController];
