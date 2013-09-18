@@ -131,6 +131,10 @@
                                                                    [self updateAPIRater];
                                                                }
                                                            }];
+        
+        SYNAppDelegate *appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
+        
+        [appDelegate.viewStackManager removePopoverView];
     }
     
     //    else
