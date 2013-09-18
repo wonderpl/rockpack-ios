@@ -27,6 +27,7 @@
 #import <AddressBook/AddressBook.h>
 #import <QuartzCore/QuartzCore.h>
 #import <objc/runtime.h>
+#import "GAI.h"
 
 #define kOneToOneSharingViewId	  @"kOneToOneSharingViewId"
 #define kNumberOfEmptyRecentSlots 5
@@ -167,7 +168,10 @@
                          self.closeButton.alpha = _typingMode ? 1.0f : 0.0f;
                          
                          CGRect sfFrame = self.searchFieldFrameImageView.frame;
-                         sfFrame.size.width = _typingMode ? 362.0f : 400.0f;
+                         if(IS_IPAD)
+                             sfFrame.size.width = _typingMode ? 362.0f : 400.0f;
+                         else
+                             sfFrame.size.width = _typingMode ? 272.0f : 300.0f;
                          self.searchFieldFrameImageView.frame = sfFrame;
                      }
                      completion:^(BOOL finished) {
@@ -269,6 +273,8 @@
     
     // always present the buttons at the bottom
     [self presentActivities];
+    
+    [GAI.sharedInstance.defaultTracker sendView: @"Share"];
 }
 
 - (void) viewWillAppear: (BOOL) animated
@@ -400,6 +406,13 @@
                                    
                                }
                            }
+            
+                        id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+            
+                        [tracker sendEventWithCategory: @"AddressBookPerm"
+                                            withAction: granted ? @"accepted" : @"rejected"
+                                             withLabel: nil
+                                             withValue: nil];
             
                         if(addressBookRef)
                            CFRelease(addressBookRef);
@@ -742,7 +755,7 @@
 {
     Friend *friend;
     
-    
+    BOOL lastCellPressed = NO;
     if (indexPath.row < self.searchedFriends.count)
     {
         friend = self.searchedFriends[indexPath.row];
@@ -756,12 +769,20 @@
     }
     else // last cell pressed
     {
+        lastCellPressed = YES;
         [self presentAlertToFillEmailForFriend:nil];
     }
      
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
+    [tracker sendEventWithCategory: @"SearchFriendtoShare"
+                        withAction: (lastCellPressed ? @"New" : ([friend.externalSystem isEqualToString:kFacebook] ? @"fromFB" : @"fromAB"))
+                         withLabel: nil
+                         withValue: nil];
     
     [tableView removeFromSuperview];
+    
+    self.searchTextField.text = @"";
 }
 
 
@@ -831,7 +852,7 @@
         {
             self.friendToAddEmail = nil;
             
-            [self sendEmailToFriend:loadedFriend];
+            
             
             return;
         }
@@ -846,6 +867,14 @@
         self.friendToAddEmail.externalUID = self.friendToAddEmail.email; // workaround the fact that we do not have a UID for this new user
     }
     
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    NSString* whereFrom = [self.friendToAddEmail.externalSystem isEqualToString:kFacebook] ? @"fromFB" : @"New";
+    
+    [tracker sendEventWithCategory: @"ProvideEmailtoShare"
+                        withAction: whereFrom
+                         withLabel: nil
+                         withValue: nil];
     
     [self sendEmailToFriend: self.friendToAddEmail];
 }
@@ -861,11 +890,11 @@
     
     NSUInteger newLength = (oldLength + newCharacterLength) - rangeLength;
     
-    self.currentSearchTerm = [NSMutableString stringWithString: [textField.text uppercaseString]];
+    self.currentSearchTerm = [NSMutableString stringWithString: textField.text];
     
     if (oldLength < newLength)
     {
-        [self.currentSearchTerm appendString: [newCharacter uppercaseString]];
+        [self.currentSearchTerm appendString: newCharacter];
     }
     else
     {
@@ -887,8 +916,8 @@
     {
         NSPredicate *searchPredicate = [NSPredicate predicateWithBlock: ^BOOL (Friend *friend, NSDictionary *bindings) {
             // either first or last name matches
-            return ([[friend.firstName uppercaseString] hasPrefix: self.currentSearchTerm]) ||
-                    ([[friend.lastName uppercaseString] hasPrefix: self.currentSearchTerm]);
+            return ([[friend.firstName uppercaseString] hasPrefix: [self.currentSearchTerm uppercaseString]]) ||
+                    ([[friend.lastName uppercaseString] hasPrefix: [self.currentSearchTerm uppercaseString]]);
         }];
         
         return [self.friends filteredArrayUsingPredicate: searchPredicate];
@@ -920,12 +949,20 @@
     
     self.typingMode = YES;
     
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    [tracker sendEventWithCategory: @"SearchFriendtoShare"
+                        withAction: nil
+                         withLabel: nil
+                         withValue: nil];
+    
     return YES;
 }
 
 
 - (void) textFieldDidEndEditing: (UITextField *) textField
 {
+    
     
 }
 
@@ -1051,6 +1088,8 @@
     
     self.view.userInteractionEnabled = NO;
     
+    
+    
     if(self.mutableShareDictionary[@"url"] == [NSNull null])
     {
         
@@ -1103,6 +1142,14 @@
                                                
                                                [appDelegate.viewStackManager presentSuccessNotificationWithMessage:notificationText];
                                                [appDelegate.viewStackManager removePopoverView];
+                                               
+                                               id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+                                               NSString* actionType =
+                                               [self.mutableShareDictionary[@"type"] isEqualToString:@"channel"] ? @"channelShared" : @"videoShared";
+                                               [tracker sendEventWithCategory: actionType
+                                                                   withAction: @"1to1"
+                                                                    withLabel: nil
+                                                                    withValue: nil];
                                                
                                            } errorHandler: ^(NSDictionary *error) {
                                                

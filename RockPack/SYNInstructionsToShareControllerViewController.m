@@ -12,6 +12,7 @@
 #import "SYNDeviceManager.h"
 #import "SYNInstructionsToShareControllerViewController.h"
 #import "UIFont+SYNFont.h"
+#import "GAI.h"
 
 #define OBSERVE_HIGHLIGHTED_KEY @"highlighted"
 
@@ -126,8 +127,39 @@
     
     [self.backgroundImageView removeGestureRecognizer:self.backgroundImageView.gestureRecognizers[0]]; // remove the tap gesture for house keeping
     
+    id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+    
+    if(self.state == InstructionsShareStatePacks)
+    {
+        
+        [tracker sendEventWithCategory: @"PassedCard1"
+                            withAction: nil
+                             withLabel: nil
+                             withValue: nil];
+    }
+    else if (self.state == InstructionsShareStatePressAndHold || self.state == InstructionsShareStateChooseAction)
+    {
+        [tracker sendEventWithCategory: @"PassedCard2"
+                            withAction: nil
+                             withLabel: nil
+                             withValue: nil];
+    }
+    else if (self.state == InstructionsShareStateGoodJob)
+    {
+        [tracker sendEventWithCategory: @"GestureDoneCard2"
+                            withAction: nil
+                             withLabel: nil
+                             withValue: nil];
+    }
+    
+    
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate.viewStackManager removeCoverPopoverViewController]; // hide self
+    
+    
+    
+    
+    
     
 }
 

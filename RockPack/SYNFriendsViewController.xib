@@ -10,6 +10,7 @@
                 <outlet property="activityIndicator" destination="14" id="15"/>
                 <outlet property="allFriendsButton" destination="28" id="31"/>
                 <outlet property="facebookLoginButton" destination="4" id="9"/>
+                <outlet property="followInviteLabel" destination="3ni-uD-zPA" id="TS7-Ps-yvh"/>
                 <outlet property="friendsCollectionView" destination="7" id="11"/>
                 <outlet property="onRockpackButton" destination="29" id="30"/>
                 <outlet property="preLoginLabel" destination="6" id="10"/>
@@ -36,7 +37,7 @@
                     </connections>
                 </textField>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="none" id="7">
-                    <rect key="frame" x="6" y="118" width="350" height="420"/>
+                    <rect key="frame" x="6" y="166" width="350" height="402"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" red="0.50980395079999996" green="0.55294120309999995" blue="0.56862747670000002" alpha="0.0" colorSpace="calibratedRGB"/>
                     <inset key="contentInset" minX="2" minY="0.0" maxX="2" maxY="0.0"/>
@@ -76,15 +77,24 @@
                     <color key="shadowColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <size key="shadowOffset" width="0.0" height="1"/>
                 </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3ni-uD-zPA" userLabel="Invite/Follow text">
+                    <rect key="frame" x="10" y="114" width="342" height="47"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <color key="textColor" red="0.5490196078431373" green="0.5490196078431373" blue="0.5490196078431373" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <color key="shadowColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <size key="shadowOffset" width="0.0" height="1"/>
+                </label>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="gray" id="14">
                     <rect key="frame" x="171" y="153" width="20" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </activityIndicatorView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="28">
-                    <rect key="frame" x="10" y="64" width="172" height="44"/>
+                    <rect key="frame" x="180" y="62" width="172" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <state key="normal" title="ALL FRIENDS" backgroundImage="TabFriendsDefault.png">
+                    <state key="normal" title="F" backgroundImage="TabFriendsDefault.png">
                         <color key="titleColor" red="0.15686275059999999" green="0.1764705926" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -99,11 +109,11 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="29">
-                    <rect key="frame" x="180" y="64" width="172" height="44"/>
+                    <rect key="frame" x="10" y="62" width="172" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.50980395079999996" green="0.55294120309999995" blue="0.56862747670000002" alpha="0.0" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <state key="normal" title="ON ROCKPACK" backgroundImage="TabFriendsDefault.png">
+                    <state key="normal" title="R" backgroundImage="TabFriendsDefault.png">
                         <color key="titleColor" red="0.15686275059999999" green="0.1764705926" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -127,10 +137,7 @@
         <image name="ButtonFacebookFriendsHighlighted.png" width="280" height="45"/>
         <image name="FieldSearchFriends.png" width="342" height="44"/>
         <image name="TabFriendsDefault.png" width="172" height="44"/>
-        <image name="TabFriendsDefault.png" width="172" height="44"/>
         <image name="TabFriendsHighlighted.png" width="172" height="44"/>
-        <image name="TabFriendsHighlighted.png" width="172" height="44"/>
-        <image name="TabFriendsSelected.png" width="171" height="44"/>
         <image name="TabFriendsSelected.png" width="171" height="44"/>
     </resources>
 </document>

@@ -1297,7 +1297,7 @@
         
         [self parseAndActionRockpackURL: rockpackURL];
         
-        [self.oAuthNetworkEngine trackSessionWithMessage:[rockpackURL absoluteString]];
+        [self.oAuthNetworkEngine trackSessionWithMessage:@"URL"];
     }
 }
 

@@ -108,22 +108,11 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
         [GAI.sharedInstance.defaultTracker sendView: @"Friends Fb Connect"];
     }
     
+    self.followInviteLabel.font = [UIFont rockpackFontOfSize:self.followInviteLabel.font.pointSize];
+    
     if(IS_IPHONE)
     {
-        // iPhone specific setup
         
-        //Resizing images
-        UIImage* backgroundImageOff = [[UIImage imageNamed:@"SearchTab"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 1.0f, 0.0f, 1.0f)];
-        UIImage* backgroundImageOn = [[UIImage imageNamed:@"SearchTabSelected" ]resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 1.0f, 0.0f, 1.0f)];
-        UIImage* backgroundImageHighlighted = [[UIImage imageNamed:@"SearchTabHighlighted"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 1.0f, 0.0f, 1.0f)];
-        
-        [self.onRockpackButton setBackgroundImage:backgroundImageOff forState:UIControlStateNormal];
-        [self.onRockpackButton setBackgroundImage:backgroundImageOn forState:UIControlStateSelected];
-        [self.onRockpackButton setBackgroundImage:backgroundImageHighlighted forState:UIControlStateHighlighted];
-        
-        [self.allFriendsButton setBackgroundImage:backgroundImageOff forState:UIControlStateNormal];
-        [self.allFriendsButton setBackgroundImage:backgroundImageOn forState:UIControlStateSelected];
-        [self.allFriendsButton setBackgroundImage:backgroundImageHighlighted forState:UIControlStateHighlighted];
         
         self.searchFieldBackground.image = [[UIImage imageNamed: @"FieldSearch"]
                                     resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f,20.0f, 0.0f, 20.0f)];
@@ -144,11 +133,17 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     
     [self.searchField resignFirstResponder];
     
-    if(tab == self.onRockpackButton) {
+    if(tab == self.onRockpackButton)
+    {
         self.allFriendsButton.selected = NO;
+        self.followInviteLabel.text = NSLocalizedString(@"friends_follow", nil);
         [GAI.sharedInstance.defaultTracker sendView: @"Friends RP"];
-    } else {
+        
+    }
+    else
+    {
         self.onRockpackButton.selected = NO;
+        self.followInviteLabel.text = NSLocalizedString(@"friends_invite", nil);
         [GAI.sharedInstance.defaultTracker sendView: @"Friends All"];
     }
         
@@ -182,15 +177,10 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     if(!error)
     {
    
-        
-        [self setTitleForFriendsTab:[NSString stringWithFormat:@"FACEBOOK FRIENDS (%i)", existingFriendsArray.count]
-                     andRockpackTab:[NSString stringWithFormat:@"ON ROCKPACK (%i)", self.rockpackFriends.count]];
-        
-        
-        
         self.friends = [NSArray arrayWithArray:existingFriendsArray];
         
-        [self.allFriendsButton setSelected:YES];
+        self.allFriendsButton.selected = YES;
+        self.followInviteLabel.text = NSLocalizedString(@"friends_invite", nil);
         
         [self.friendsCollectionView reloadData];
     }
@@ -254,18 +244,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
         [self.activityIndicator stopAnimating];
     }
 }
--(void)setTitleForFriendsTab:(NSString*)ftText andRockpackTab:(NSString*)rtText
-{
-    // set first tab
-    [self.allFriendsButton setTitle:ftText forState:UIControlStateNormal];
-    [self.allFriendsButton setTitle:ftText forState:UIControlStateHighlighted];
-    [self.allFriendsButton setTitle:ftText forState:UIControlStateSelected];
-    
-    // set second tab
-    [self.onRockpackButton setTitle:rtText forState:UIControlStateNormal];
-    [self.onRockpackButton setTitle:rtText forState:UIControlStateHighlighted];
-    [self.onRockpackButton setTitle:rtText forState:UIControlStateSelected];
-}
+
 
 -(IBAction)facebookLoginPressed:(id)sender
 {
@@ -508,21 +487,6 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     
 }
 
--(IBAction)inviteButtonPressed:(id)sender
-{
-    
-//    [[SYNFacebookManager sharedFBManager] sendAppRequestToFriend:self.currentlySelectedFriend
-//                                                       onSuccess:^{
-//                                                           
-//                                                           [appDelegate.viewStackManager removePopoverView];
-//        
-//                                                       } onFailure:^(NSError *error) {
-//                                                           
-//                                                           [appDelegate.viewStackManager removePopoverView];
-//        
-//                                                       }];
-    
-}
 
 -(void)dealloc
 {
@@ -567,7 +531,6 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     self.buttonShowSearch.hidden = YES;
     self.buttonShowSearch.alpha = 0.0f;
     
-    SYNSideNavigatorViewController *obj;
     
     [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationCurveEaseIn animations:^{
         CGRect newFrame = self.searchSlider.frame;
@@ -591,4 +554,16 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     return [self.friends filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"resourceURL != NULL"]];
 }
 
+-(void)setTitleForFriendsTab:(NSString*)ftText andRockpackTab:(NSString*)rtText
+{
+    // set first tab
+    [self.allFriendsButton setTitle:ftText forState:UIControlStateNormal];
+    [self.allFriendsButton setTitle:ftText forState:UIControlStateHighlighted];
+    [self.allFriendsButton setTitle:ftText forState:UIControlStateSelected];
+    
+    // set second tab
+    [self.onRockpackButton setTitle:rtText forState:UIControlStateNormal];
+    [self.onRockpackButton setTitle:rtText forState:UIControlStateHighlighted];
+    [self.onRockpackButton setTitle:rtText forState:UIControlStateSelected];
+}
 @end

@@ -40,6 +40,7 @@
 
 @property (nonatomic, assign) CGRect originalFrame;
 @property (nonatomic, assign) CGRect originalSwipeFrame;
+@property (nonatomic, assign) CGFloat yOffset;
 @property (nonatomic, assign) int currentSelectedIndex;
 @property (nonatomic, copy) NSArray *videoInstanceArray;
 @property (nonatomic, getter = isVideoExpanded) BOOL videoExpanded;
@@ -115,6 +116,15 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    if (IS_IOS_7_OR_GREATER)
+    {
+        self.yOffset = -10.0f;
+    }
+    else
+    {
+        self.yOffset = 0.0f;
+    }
     
     BOOL isLandscape = [SYNDeviceManager.sharedInstance isLandscape];
     
@@ -202,12 +212,12 @@
         {
             // Landscape
             
-            blackPanelFrame = CGRectMake(0, 0, 1024, 768);
+            blackPanelFrame = CGRectMake(0, 0 + self.yOffset, 1024, 768);
         }
         else
         {
             // Portrait
-            blackPanelFrame = CGRectMake(128, -128, 768, 1024);
+            blackPanelFrame = CGRectMake(128, -128 + self.yOffset, 768, 1024);
         }
     }
     
@@ -406,7 +416,7 @@
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
     {
         // Landscape
-        blackPanelFrame = CGRectMake(0, 0, 1024, 768);
+        blackPanelFrame = CGRectMake(0, 0 + self.yOffset, 1024, 768);
         blurViewFrame = CGRectMake(0, 0, 1024, 768);        
         if (self.isVideoExpanded)
         {
@@ -416,7 +426,7 @@
     else
     {
         // Portrait
-        blackPanelFrame = CGRectMake(128, -128, 768, 1024);
+        blackPanelFrame = CGRectMake(128, -128 + self.yOffset, 768, 1024);
         blurViewFrame = CGRectMake(0, 0, 768, 1024);
         
         if (self.isVideoExpanded)
@@ -916,7 +926,7 @@
                                     self.blackPanelView.alpha = 0.0f;
                                     self.chromeView.alpha = 1.0f;
                                     self.swipeView.frame =  CGRectMake(172, 142, 676, 251);
-                                    self.blackPanelView.frame = CGRectMake(0, 0, 1024, 768);
+                                    self.blackPanelView.frame = CGRectMake(0, 0 + self.yOffset, 1024, 768);
                                     self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
                                     self.videoPlaybackViewController.view.center = CGPointMake(512, 279);
                                     self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
@@ -933,7 +943,7 @@
                                     self.blackPanelView.alpha = 0.0f;
                                     self.chromeView.alpha = 1.0f;
                                     self.swipeView.frame =  CGRectMake(172, 142, 676, 251);
-                                    self.blackPanelView.frame = CGRectMake(128, -128, 768, 1024);
+                                    self.blackPanelView.frame = CGRectMake(128, -128 + self.yOffset, 768, 1024);
                                     self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
                                     self.videoPlaybackViewController.view.center = CGPointMake(512, 279);
                                     self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
@@ -954,7 +964,7 @@
                                     self.blackPanelView.alpha = 1.0f;
                                     self.chromeView.alpha = 0.0f;
                                     self.swipeView.frame =  CGRectMake(0, 0, 1024, 768);
-                                    self.blackPanelView.frame = CGRectMake(0, 0, 1024, 768);
+                                    self.blackPanelView.frame = CGRectMake(0, 0 + self.yOffset, 1024, 768);
                                     self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.384f, 1.384f);
                                     self.videoPlaybackViewController.view.center = CGPointMake(512, 374);
                                     self.videoPlaybackViewController.shuttleBarView.alpha = 0.0f;
@@ -971,7 +981,7 @@
                                     self.blackPanelView.alpha = 1.0f;
                                     self.chromeView.alpha = 0.0f;
                                     self.swipeView.frame =  CGRectMake(0, 0, 1024, 768);
-                                    self.blackPanelView.frame = CGRectMake(128, -128, 768, 1024);
+                                    self.blackPanelView.frame = CGRectMake(128, -128 + self.yOffset, 768, 1024);
                                     self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0392f, 1.0392f);
                                     self.videoPlaybackViewController.view.center = CGPointMake(512, 374);
                                     self.videoPlaybackViewController.shuttleBarView.alpha = 0.0f;

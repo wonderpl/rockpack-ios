@@ -71,9 +71,14 @@
     }
     else
     {
-        calculatedViewFrame = CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar);
+        calculatedViewFrame = CGRectMake(0.0, 0.0,
+                                         [[SYNDeviceManager sharedInstance] currentScreenWidth],
+                                         [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar]);
         
-        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY);
+        videoCollectionViewFrame = CGRectMake(0.0,
+                                              kStandardCollectionViewOffsetY + 56.0f,
+                                              [[SYNDeviceManager sharedInstance] currentScreenWidth],
+                                              [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - kStandardCollectionViewOffsetY - 52.0f);
         
         // Collection view parameters
         contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -102,8 +107,11 @@
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     self.videoThumbnailCollectionView.scrollsToTop = NO;
     self.videoThumbnailCollectionView.contentInset = contentInset;
+    self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    
     [self.view
      addSubview: self.videoThumbnailCollectionView];
+    
     
     self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
@@ -156,16 +164,8 @@
     }
     else
     {
-        CGRect collectionFrame = self.videoThumbnailCollectionView.frame;
-        collectionFrame.origin.y += 54.0;
-        collectionFrame.size.width = self.view.frame.size.width;
-        collectionFrame.size.height = self.view.frame.size.height - 150.0;
-        self.videoThumbnailCollectionView.frame = collectionFrame;
-        UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *) self.videoThumbnailCollectionView.collectionViewLayout;
-        UIEdgeInsets insets = layout.sectionInset;
-        insets.top = 0.0f;
-        insets.bottom = 15.0f;
-        layout.sectionInset = insets;
+        
+        
     }
     
     CGRect videoThumbFrame = self.videoThumbnailCollectionView.frame;
@@ -433,8 +433,6 @@
 }
 
 
-#pragma mark - Override Header Related Methods
-
 - (CGSize) collectionView: (UICollectionView *) collectionView
                    layout: (UICollectionViewLayout *) collectionViewLayout
            referenceSizeForHeaderInSection: (NSInteger) section
@@ -448,20 +446,10 @@
    sizeForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     if (IS_IPAD)
-    {
-        if ([SYNDeviceManager.sharedInstance isLandscape])
-        {
-            return CGSizeMake(497, 140);
-        }
-        else
-        {
-            return CGSizeMake(370, 140);
-        }
-    }
+        return ([SYNDeviceManager.sharedInstance isLandscape] ? CGSizeMake(497, 140) : CGSizeMake(370, 140));
     else
-    {
         return CGSizeMake(310, 221);
-    }
+    
 }
 
 - (VideoInstance *) videoInstanceForIndexPath: (NSIndexPath *) indexPath
@@ -475,12 +463,16 @@
 {
     [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
                                             duration: duration];
+    
+    [self.videoThumbnailCollectionView performBatchUpdates:nil completion:nil];
 }
 
 
 - (void) didRotateFromInterfaceOrientation: (UIInterfaceOrientation) fromInterfaceOrientation
 {
     [super didRotateFromInterfaceOrientation: fromInterfaceOrientation];
+    
+    
 }
 
 

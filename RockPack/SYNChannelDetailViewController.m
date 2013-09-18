@@ -33,6 +33,7 @@
 #import "SYNReportConcernTableViewController.h"
 #import "SYNSubscribersViewController.h"
 #import "SYNVideoThumbnailRegularCell.h"
+#import "SYNInstructionsToShareControllerViewController.h"
 #import "SubGenre.h"
 #import "UIFont+SYNFont.h"
 #import "UIImageView+WebCache.h"
@@ -428,33 +429,13 @@
         self.logoImageView.center = CGPointMake(self.logoImageView.center.x, self.logoImageView.center.y + kiOS7PlusHeaderYOffset - 2.0f);
         self.activityIndicator.center = CGPointMake(self.activityIndicator.center.x, self.activityIndicator.center.y + kiOS7PlusHeaderYOffset);
     }
+    
+    
+    [self performSelector: @selector(checkForOnBoarding)
+               withObject: nil
+               afterDelay: 1.0f];
 
-//
-//    if ([self.channel.resourceURL hasPrefix: @"https"])                          // https does not cache so it is fresh
-//    {
-//        [appDelegate.oAuthNetworkEngine channelDataForUserId: appDelegate.currentUser.uniqueId
-//                                                   channelId: self.channel.uniqueId
-//                                                     inRange: self.dataRequestRange
-//                                           completionHandler: ^(NSDictionary *dictionary) {
-//                                              NSLog (@"Failure"); NSLog (@"Success");
-//                                           }
-//                                                errorHandler: ^(NSDictionary *errorDictionary) {
-//                                                    NSLog (@"Failure");
-//                                                }];
-//    }
-//    else
-//    {
-//        [appDelegate.networkEngine channelDataForUserId: appDelegate.currentUser.uniqueId
-//                                              channelId: self.channel.uniqueId
-//                                                inRange: self.dataRequestRange
-//                                      completionHandler: ^(NSDictionary *dictionary) {
-//                                          NSLog (@"Success");
-//                                      }
-//         
-//                                           errorHandler: ^(NSDictionary *errorDictionary) {
-//                                               NSLog (@"Failure");
-//                                           }];
-//    }
+
 }
 
 
@@ -960,8 +941,7 @@
                          completion: nil];
     }
     
-    // Moved this here from viewWillAppear so that we have a known state for the subscribe button for onboarding
-    [self checkOnBoarding];
+    
 }
 
 
@@ -1106,16 +1086,6 @@
     
     cell = videoThumbnailCell;
     
-    BOOL isIpad = IS_IPAD;
-    
-    if ((isIpad && indexPath.item == 2) || (!isIpad && indexPath.item == 0))
-    {
-        //perform after 0.0f delay to make sure the call is queued after the cell has been added to the view
-        [self performSelector: @selector(checkOnBoarding)
-                   withObject: nil
-                   afterDelay: 0.0f];
-    }
-    
     return cell;
 }
 
@@ -1150,7 +1120,8 @@
 {
     CGSize footerSize;
     
-    if (collectionView == self.videoThumbnailCollectionView && self.channel.videoInstances.count != 0)
+    if (collectionView == self.videoThumbnailCollectionView &&
+        self.channel.videoInstances.count != 0)
     {
         footerSize = [self footerSize];
         
@@ -2722,9 +2693,25 @@ shouldChangeTextInRange: (NSRange) range
 }
 
 
-- (void) checkOnBoarding
+- (void) checkForOnBoarding
 {
     
+    if(![appDelegate.viewStackManager controllerViewIsVisible:self])
+        return;
+    
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSInteger onBoarding1State = [defaults integerForKey:kInstruction1OnBoardingState];
+    
+    if(!onBoarding1State || onBoarding1State == 1) // has shown on channel details and can show here IF videos are present
+    {
+        SYNInstructionsToShareControllerViewController* itsVC = [[SYNInstructionsToShareControllerViewController alloc] initWithDelegate:self andState:InstructionsShareStatePressAndHold];
+        
+        [appDelegate.viewStackManager presentCoverViewController:itsVC];
+        
+        [defaults setInteger:2 forKey:kInstruction1OnBoardingState]; // inc by one
+        
+    }
 }
 
 

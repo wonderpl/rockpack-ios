@@ -66,4 +66,6 @@ typedef void(^ViewStackReturnBlock)(void);
 
 - (void) displaySideNavigatorFromPushNotification;
 
+-(BOOL) controllerViewIsVisible:(SYNAbstractViewController*)controllerToTest;
+
 @end

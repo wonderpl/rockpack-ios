@@ -120,6 +120,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             autocompleteControllerFrame.origin.y = 10.0;
             self.searchBoxController.view.frame = autocompleteControllerFrame;
         }
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSInteger onBoarding1State = [defaults integerForKey:kInstruction1OnBoardingState];
+        if(onBoarding1State == 2) // has shown on channel details and can show here IF videos are present
+        {
+            
+            
+            [defaults setInteger:3 forKey:kInstruction1OnBoardingState]; // inc by one
+            
+        }
     }
     
     return self;
@@ -187,18 +197,20 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         splashView = [[UIImageView alloc] initWithImage:[UIImage imageNamed: @"Default"]];
     }
     
-	[self.view addSubview: splashView];
+//	[self.view addSubview: splashView];
+//    
+//    [UIView animateWithDuration: kSplashAnimationDuration
+//                          delay: kSplashViewDuration
+//                        options: UIViewAnimationOptionCurveEaseInOut
+//                     animations: ^{
+//                         splashView.alpha = 0.0f;
+//                     } completion: ^(BOOL finished) {
+//                         
+//                         
+//                         [splashView removeFromSuperview];
+//                     }];
     
-    [UIView animateWithDuration: kSplashAnimationDuration
-                          delay: kSplashViewDuration
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         splashView.alpha = 0.0f;
-                     } completion: ^(BOOL finished) {
-                         
-                         
-                         [splashView removeFromSuperview];
-                     }];
+    
     
     self.navigationContainerView.userInteractionEnabled = YES;
     
