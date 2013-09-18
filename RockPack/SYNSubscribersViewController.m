@@ -25,11 +25,13 @@
 {
     if (self = [super initWithViewId: kSubscribersListViewId])
     {
-        self.title = NSLocalizedString(@"SUBSCRIBERS", nil);
+        
         self.channel = channel;
         
-        UILabel *titleLabel = [[UILabel alloc] initWithFrame: CGRectMake(-(self.contentSizeForViewInPopover.width * 0.5), -15.0, self.contentSizeForViewInPopover.width, 40.0)];
-        titleLabel.backgroundColor = [UIColor clearColor];
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame: CGRectZero];
+        
+        
+        
         
         titleLabel.textColor = [UIColor colorWithRed: (28.0 / 255.0)
                                                green: (31.0 / 255.0)
@@ -41,6 +43,14 @@
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.shadowColor = [UIColor whiteColor];
         titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+        titleLabel.textColor = [UIColor blackColor];
+        [titleLabel sizeToFit];
+        
+        
+        CGRect tFrame = titleLabel.frame;
+        tFrame.origin.x -= tFrame.size.width * 0.5f;
+        tFrame.origin.y -= tFrame.size.height * 0.5f;
+        titleLabel.frame = tFrame;
         
         UIView *labelContentView = [[UIView alloc]init];
         [labelContentView addSubview: titleLabel];

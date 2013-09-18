@@ -72,6 +72,7 @@
 @property (nonatomic, strong) UISwipeGestureRecognizer* leftSwipeRecogniser;
 @property (nonatomic, strong) UISwipeGestureRecognizer* rightSwipeRecogniser;
 @property (nonatomic, strong) UITapGestureRecognizer* tapRecogniser;
+@property (nonatomic, strong) UITapGestureRecognizer* doubleTapRecogniser;
 @property (nonatomic, strong) UIPinchGestureRecognizer *pinchRecogniser;
 @property (weak, nonatomic) IBOutlet UIButton *addVideoButton;
 @property (weak, nonatomic) IBOutlet UIButton *shareButton;
@@ -274,8 +275,19 @@
     self.tapRecogniser = [[UITapGestureRecognizer alloc] initWithTarget: self
                                                                  action: @selector(userTappedVideo)];
     
+    self.tapRecogniser.numberOfTapsRequired = 1;
     self.tapRecogniser.delegate = self;
     [self.swipeView addGestureRecognizer: self.tapRecogniser];
+    
+    self.doubleTapRecogniser = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                                 action: @selector(userTouchedMaxMinButton)];
+    
+    self.doubleTapRecogniser.numberOfTapsRequired = 2;
+    self.doubleTapRecogniser.delegate = self;
+    [self.swipeView addGestureRecognizer: self.doubleTapRecogniser];
+    
+    // Magic needed for it all to work
+    [self.tapRecogniser requireGestureRecognizerToFail: self.doubleTapRecogniser];
 
 #ifdef ALLOW_PINCH_OUT
     self.pinchRecogniser = [[UIPinchGestureRecognizer alloc] initWithTarget: self
