@@ -176,7 +176,7 @@
     
     
     // friends from address book are not found in the web service responce and should be protected from deletion
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"externalSystem != %@", kEmail];
+    //fetchRequest.predicate = [NSPredicate predicateWithFormat:@"externalSystem != %@", kEmail];
     
     existingFriendsArray = [appDelegate.searchManagedObjectContext executeFetchRequest: fetchRequest
                                                                                  error: &error];
@@ -190,7 +190,8 @@
         
         existingFriendsByUID[existingFriend.uniqueId] = existingFriend;
         
-        existingFriend.markedForDeletionValue = YES;
+        if(!existingFriend.localOriginValue) // protect from address book
+            existingFriend.markedForDeletionValue = YES;
             
     }
     
