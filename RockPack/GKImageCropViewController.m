@@ -147,8 +147,11 @@
     UIImage *maskedImage = [UIImage imageWithCGImage: imgRef];
     CGImageRelease(imgRef);
     
-    [self.toolbar setBackgroundImage:maskedImage forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+    [self.toolbar setBackgroundImage:[UIImage new]
+                  forToolbarPosition:UIToolbarPositionAny
+                          barMetrics:UIBarMetricsDefault];
     
+    [self.toolbar setBackgroundColor:[UIColor clearColor]];
     return maskedImage;
 }
 
@@ -156,8 +159,13 @@
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         self.toolbar = [[UIToolbar alloc] initWithFrame:CGRectZero];
         self.toolbar.clipsToBounds = YES;
-
-        [self.toolbar setBackgroundImage:[self _toolbarBackgroundImage] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+        
+        [self.toolbar setBackgroundImage:[UIImage new]
+                      forToolbarPosition:UIToolbarPositionAny
+                              barMetrics:UIBarMetricsDefault];
+        
+        [self.toolbar setBackgroundColor:[UIColor clearColor]];
+        
         [self.view addSubview:self.toolbar];
         
         [self _setupCancelButton];
