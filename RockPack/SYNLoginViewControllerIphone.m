@@ -66,6 +66,7 @@
 @property (weak, nonatomic) IBOutlet UIView *passwordView;
 @property (weak, nonatomic) IBOutlet UIView *secondSignupView;
 @property (weak, nonatomic) IBOutlet UIView *termsAndConditionsView;
+@property (weak, nonatomic) IBOutlet UIView *whiteLineView;
 
 @end
 
@@ -163,7 +164,9 @@
     self.loginErrorLabel.font = [UIFont rockpackFontOfSize:self.loginErrorLabel.font.pointSize];
     self.passwordResetErrorLabel.font = [UIFont rockpackFontOfSize:self.passwordResetErrorLabel.font.pointSize];
     self.signupErrorLabel.font = [UIFont rockpackFontOfSize:self.signupErrorLabel.font.pointSize];
-
+    
+    self.signupButton.titleLabel.font = [UIFont rockpackFontOfSize:17.0f];
+    self.loginButton.titleLabel.font = [UIFont rockpackFontOfSize:17.0f];
     
     NSMutableAttributedString* termsString = [[NSMutableAttributedString alloc] initWithString: NSLocalizedString(@"register_screen_legal" , nil)];
     
@@ -268,7 +271,7 @@
     self.facebookButton.alpha = 0.0f;
     CGRect facebookButtonFrame = self.facebookButton.frame;
     if(!isPreIPhone5)
-        facebookButtonFrame.origin.y += 80.0;
+        facebookButtonFrame.origin.y += isPreIPhone5 ? 80.0 : IS_IOS_7_OR_GREATER ? 110.0 : 90.0;
     
     self.facebookButton.frame = facebookButtonFrame;
     [UIView animateWithDuration:0.3f
@@ -289,7 +292,7 @@
     self.signupButton.alpha = 0.0f;
     CGRect signUpButtonFrame = self.signupButton.frame;
     if(!isPreIPhone5)
-        signUpButtonFrame.origin.y += 80.0;
+        signUpButtonFrame.origin.y += isPreIPhone5 ? 80.0 : IS_IOS_7_OR_GREATER ? 110.0 : 90.0;
     self.signupButton.frame = signUpButtonFrame;
     [UIView animateWithDuration:0.3f
                           delay:0.1f
@@ -306,7 +309,7 @@
     self.loginButton.alpha = 0.0f;
     CGRect loginButtonFrame = self.loginButton.frame;
     if(!isPreIPhone5)
-        loginButtonFrame.origin.y += 80.0;
+        loginButtonFrame.origin.y += isPreIPhone5 ? 80.0 : IS_IOS_7_OR_GREATER ? 110.0 : 90.0;
     self.loginButton.frame = loginButtonFrame;
     
     [UIView animateWithDuration:0.3f
@@ -318,6 +321,24 @@
                          
                      } completion:^(BOOL finished) {
                      }];
+        
+        self.whiteLineView.alpha = 0.0f;
+        CGRect whiteLineViewFrame = self.whiteLineView.frame;
+        if(!isPreIPhone5)
+            whiteLineViewFrame.origin.y += isPreIPhone5 ? 80.0 : IS_IOS_7_OR_GREATER ? 110.0 : 90.0;
+        self.whiteLineView.frame = whiteLineViewFrame;
+        
+        [UIView animateWithDuration:0.3f
+                              delay:0.1f
+                            options: UIViewAnimationOptionCurveEaseOut
+                         animations:^{
+                             self.whiteLineView.alpha = 0.8f;
+                             
+                             self.whiteLineView.frame = CGRectMake(self.whiteLineView.frame.origin.x, self.whiteLineView.frame.origin.y - 20.0f, self.whiteLineView.frame.size.width, self.whiteLineView.frame.size.height);
+                             
+                         } completion:^(BOOL finished) {
+                         }];
+        
         self.hasAnimated=YES;
     }
 }
