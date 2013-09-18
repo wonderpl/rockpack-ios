@@ -389,7 +389,8 @@
             self.selectCategoryButton.contentEdgeInsets = eInsets;
             
             CGRect vFrame;
-            for (UIView* viewToMove in @[self.saveChannelButton, self.createChannelButton, self.cancelEditButton, self.deleteChannelButton]) {
+            for (UIView* viewToMove in @[self.saveChannelButton, self.createChannelButton,
+                                         self.cancelEditButton, self.deleteChannelButton, self.cancelTextInputButton]) {
                 vFrame = viewToMove.frame;
                 vFrame.origin.y += 6.0f;
                 viewToMove.frame = vFrame;
@@ -2664,12 +2665,17 @@ shouldChangeTextInRange: (NSRange) range
 
 - (void) textViewDidBeginEditing: (UITextView *) textView
 {
-    if (self.isIPhone)
+    if (IS_IPHONE)
     {
         self.createChannelButton.hidden = YES;
         self.saveChannelButton.hidden = YES;
         self.deleteChannelButton.hidden = YES;
         self.cancelTextInputButton.hidden = NO;
+        
+        
+        CGRect bFrame = self.cancelTextInputButton.frame;
+        bFrame.origin.y = 22.0f;
+        self.cancelTextInputButton.frame = bFrame;
     }
 }
 

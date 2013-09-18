@@ -1806,9 +1806,18 @@
 
 -(void)trackSessionWithMessage:(NSString*)message
 {
+    
+    
+    NSString* did = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    
+    NSMutableDictionary *params = @{@"device":did}.mutableCopy;
+    
+    if(message)
+        [params addEntriesFromDictionary:@{@"trigger":message}];
+       
     SYNNetworkOperationJsonObject *networkOperation =
     (SYNNetworkOperationJsonObject *) [self operationWithPath: kAPIReportSession
-                                                       params: @{@"trigger":message}
+                                                       params: params
                                                    httpMethod: @"POST" ssl:YES];
     
     [networkOperation setPostDataEncoding:MKNKPostDataEncodingTypeJSON];

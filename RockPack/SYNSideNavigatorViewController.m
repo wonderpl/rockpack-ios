@@ -138,7 +138,8 @@ typedef enum {
                                          blue: (51.0/255.0)
                                         alpha: (1.0)];
     
-    //Need to init this higher up
+    // Need to init this higher up
+    
     if (IS_IPHONE)
     {
         self.searchViewController = [[SYNSearchBoxViewController alloc] init];
@@ -154,8 +155,8 @@ typedef enum {
         // move elements down so that the title does not hit the new transparent status bar
         
         NSMutableArray * viewArray = [[NSMutableArray alloc] initWithArray: @[self.tableView, self.containerView,
-                                   self.avatarButton, self.userNameLabel,
-                                    self.activityIndicator, self.profilePictureImageView]];
+                                                                              self.avatarButton, self.userNameLabel,
+                                                                              self.activityIndicator, self.profilePictureImageView]];
         
         if (IS_IPHONE)
         {
