@@ -168,7 +168,10 @@
                          self.closeButton.alpha = _typingMode ? 1.0f : 0.0f;
                          
                          CGRect sfFrame = self.searchFieldFrameImageView.frame;
-                         sfFrame.size.width = _typingMode ? 362.0f : 400.0f;
+                         if(IS_IPAD)
+                             sfFrame.size.width = _typingMode ? 362.0f : 400.0f;
+                         else
+                             sfFrame.size.width = _typingMode ? 272.0f : 300.0f;
                          self.searchFieldFrameImageView.frame = sfFrame;
                      }
                      completion:^(BOOL finished) {
@@ -778,6 +781,8 @@
                          withValue: nil];
     
     [tableView removeFromSuperview];
+    
+    self.searchTextField.text = @"";
 }
 
 
@@ -885,11 +890,11 @@
     
     NSUInteger newLength = (oldLength + newCharacterLength) - rangeLength;
     
-    self.currentSearchTerm = [NSMutableString stringWithString: [textField.text uppercaseString]];
+    self.currentSearchTerm = [NSMutableString stringWithString: textField.text];
     
     if (oldLength < newLength)
     {
-        [self.currentSearchTerm appendString: [newCharacter uppercaseString]];
+        [self.currentSearchTerm appendString: newCharacter];
     }
     else
     {
@@ -911,8 +916,8 @@
     {
         NSPredicate *searchPredicate = [NSPredicate predicateWithBlock: ^BOOL (Friend *friend, NSDictionary *bindings) {
             // either first or last name matches
-            return ([[friend.firstName uppercaseString] hasPrefix: self.currentSearchTerm]) ||
-                    ([[friend.lastName uppercaseString] hasPrefix: self.currentSearchTerm]);
+            return ([[friend.firstName uppercaseString] hasPrefix: [self.currentSearchTerm uppercaseString]]) ||
+                    ([[friend.lastName uppercaseString] hasPrefix: [self.currentSearchTerm uppercaseString]]);
         }];
         
         return [self.friends filteredArrayUsingPredicate: searchPredicate];
@@ -957,6 +962,7 @@
 
 - (void) textFieldDidEndEditing: (UITextField *) textField
 {
+    
     
 }
 

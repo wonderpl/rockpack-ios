@@ -120,6 +120,16 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             autocompleteControllerFrame.origin.y = 10.0;
             self.searchBoxController.view.frame = autocompleteControllerFrame;
         }
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSInteger onBoarding1State = [defaults integerForKey:kInstruction1OnBoardingState];
+        if(onBoarding1State == 2) // has shown on channel details and can show here IF videos are present
+        {
+            
+            
+            [defaults setInteger:3 forKey:kInstruction1OnBoardingState]; // inc by one
+            
+        }
     }
     
     return self;
@@ -199,6 +209,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 //                         
 //                         [splashView removeFromSuperview];
 //                     }];
+    
+    
     
     self.navigationContainerView.userInteractionEnabled = YES;
     

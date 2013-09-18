@@ -75,7 +75,7 @@
     CGRect titleFrame = self.titleLabel.frame;
     
     titleFrame.size.width = originalWidth;
-    titleFrame.origin.y = self.imageView.frame.size.height - titleFrame.size.height + 2.0;
+    titleFrame.origin.y = self.imageView.frame.size.height - (IS_IOS_7_OR_GREATER ? 8.0f : 0.0f) -titleFrame.size.height + 2.0;
     
     self.titleLabel.frame = titleFrame;
     

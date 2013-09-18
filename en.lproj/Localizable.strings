@@ -132,6 +132,8 @@
 "core_nav_section_notifications" = "NOTIFICATIONS";
 "core_nav_section_friends" = "MY FRIENDS";
 
+"friends_follow" = "Follow your friends on Rockpack";
+"friends_invite" = "Invite your friends to Rockpack";
 
 // == One to One Sharing == //
 
