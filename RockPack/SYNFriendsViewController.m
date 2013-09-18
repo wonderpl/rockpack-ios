@@ -131,11 +131,13 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     if(IS_IPHONE)
     {
         CGRect bFrame = self.onRockpackButton.frame;
-        bFrame.size.height = 44.0f;
+        bFrame.size.height = 54.0f;
+        bFrame.origin.y -= 10.0f;
         self.onRockpackButton.frame = bFrame;
         
         bFrame = self.onFacebookButton.frame;
-        bFrame.size.height = 44.0f;
+        bFrame.size.height = 54.0f;
+        bFrame.origin.y -= 10.0f;
         self.onFacebookButton.frame = bFrame;
     }
 }
