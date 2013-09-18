@@ -26,7 +26,7 @@
 "VIDEOS" = "VIDEOS";
 "CHANNELS" = "PACKS";
 "USERS" = "PEOPLE";
-"SUBSCRIBERS" = "Followers";
+"SUBSCRIBERS" = "FOLLOWERS";
 
 //Camera
 "channel_creation_screen_select_upload_photo_label" = "Select Source";

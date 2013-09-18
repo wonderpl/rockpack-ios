@@ -610,19 +610,15 @@
     
     SYNSubscribersViewController *subscribersViewController = [[SYNSubscribersViewController alloc] initWithChannel: self.channel];
     
+    
     if (IS_IPAD)
     {
-        //        UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController: subscribersViewController];
-        //        navigationController.view.backgroundColor = [UIColor clearColor];
-        //
-        //        self.subscribersPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
-        //        self.subscribersPopover.popoverContentSize = CGSizeMake(512, 626);
-        //        self.subscribersPopover.delegate = self;
-        //
-        //        self.subscribersPopover.popoverBackgroundViewClass = [SYNAccountSettingsPopoverBackgroundView class];
+        
+        
         
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController: subscribersViewController];
         navigationController.view.backgroundColor = [UIColor clearColor];
+        
         
         self.subscribersPopover = [[UIPopoverController alloc] initWithContentViewController: navigationController];
         
@@ -634,6 +630,7 @@
         
         CGRect rect = CGRectMake([SYNDeviceManager.sharedInstance currentScreenWidth] * 0.5,
                                  480.0f, 1, 1);
+        
         
         [self.subscribersPopover presentPopoverFromRect: rect
                                                  inView: self.view
