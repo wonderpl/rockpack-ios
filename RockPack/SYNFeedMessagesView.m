@@ -48,16 +48,17 @@
         UILabel* label = [[UILabel alloc] initWithFrame: labelFrame];
         label.font = fontToUse;
         label.backgroundColor = [UIColor clearColor];
-        label.textColor = [UIColor whiteColor];
+        label.textColor = [UIColor colorWithWhite:170.0f/255.0f alpha:1.0f];
         label.textAlignment = NSTextAlignmentCenter;
+        label.shadowColor = [UIColor whiteColor];
+        label.shadowOffset = CGSizeMake(0.0f, 1.0f);
         
         label.numberOfLines = 0;
         
         self.messageLabel = label;
         
         // BG
-        self.backgroundColor = [UIColor colorWithWhite: 0.333f
-                                                 alpha: 0.8f];
+        self.backgroundColor = [UIColor clearColor];
 
         // Add
         [self addSubview: label];
