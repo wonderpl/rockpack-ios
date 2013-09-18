@@ -605,7 +605,7 @@
             
             UIImage *img;
             
-            if (!pdata || !(img = [UIImage imageWithData: pdata]))
+            if (!pdata || !(img = [UIImage imageWithData: pdata])) // address book friends with no image
             {
                 img = [UIImage imageNamed: @"ABContactPlaceholder"];
             }
@@ -620,24 +620,24 @@
                                             placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarChannel"]
                                                      options: SDWebImageRetryFailed];
             }
-//            else if(friend.email)
-//            {
-//                userThumbnailCell.imageView.image = [UIImage imageNamed:@"ABContactPlaceholder"];
-//                
-//            }
+            else if(friend.email)
+            {
+                userThumbnailCell.imageView.image = [UIImage imageNamed:@"ABContactPlaceholder"];
+                
+            }
             else
             {
                 userThumbnailCell.imageView.image = [UIImage imageNamed:@"PlaceholderAvatarChannel"];
             }
             
         }
-        else if(!friend.thumbnailURL && friend.email)
+        else if(friend.isOnRockpack)
         {
-            userThumbnailCell.imageView.image = [UIImage imageNamed:@"ABContactPlaceholder"];
+            userThumbnailCell.imageView.image = [UIImage imageNamed:@"PlaceholderAvatarChannel"];
         }
         else
         {
-            userThumbnailCell.imageView.image = [UIImage imageNamed:@"PlaceholderAvatarChannel"];
+            userThumbnailCell.imageView.image = [UIImage imageNamed:@"ABContactPlaceholder"];
         }
         
         userThumbnailCell.nameLabel.text = nameToDisplay;
