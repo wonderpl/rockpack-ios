@@ -21,14 +21,4 @@
     
 }
 
--(void)setDisplayName:(NSString*)name
-{
-    
-   
-    
-    self.nameLabel.text = name;
-    
-    
-    
-}
 @end

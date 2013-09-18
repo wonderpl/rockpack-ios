@@ -569,7 +569,8 @@
     if(realIndex == 0 && displayEmailCell)
     {
         userThumbnailCell.imageView.image = [UIImage imageNamed:@"ShareAddEntry.jpg"];
-        [userThumbnailCell setDisplayName: @"Add new Email"];
+        userThumbnailCell.nameLabel.text = @"Add new Email";
+       
         
         userThumbnailCell.imageView.alpha = 1.0f;
         
@@ -592,6 +593,8 @@
         else
             nameToDisplay = @"";
         
+        
+        
         if ([friend.thumbnailURL hasPrefix: @"cached://"]) // cached from address book image
         {
             NSPurgeableData *pdata = [self.addressBookImageCache objectForKey: friend.thumbnailURL];
@@ -607,17 +610,29 @@
         }
         else if([friend.thumbnailURL hasPrefix:@"http"]) // includes https of course
         {
-            NSLog(@"%@", friend.thumbnailURL);
-            [userThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: friend.thumbnailURL]
-                                        placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarChannel"]
-                                                 options: SDWebImageRetryFailed];
+            if([friend.thumbnailURL rangeOfString:@"localhost"].location == NSNotFound) // is not a fake URL
+            {
+                [userThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: friend.thumbnailURL]
+                                            placeholderImage: [UIImage imageNamed: @"PlaceholderAvatarChannel"]
+                                                     options: SDWebImageRetryFailed];
+            }
+            else
+            {
+                userThumbnailCell.imageView.image = [UIImage imageNamed:@"PlaceholderAvatarChannel"];
+            }
+            
         }
-        else
+        else if(!friend.thumbnailURL)
         {
             userThumbnailCell.imageView.image = [UIImage imageNamed:@"ABContactPlaceholder"];
         }
+        else
+        {
+            userThumbnailCell.imageView.image = [UIImage imageNamed:@"PlaceholderAvatarChannel"];
+        }
         
-        [userThumbnailCell setDisplayName: nameToDisplay];
+        userThumbnailCell.nameLabel.text = nameToDisplay;
+        
         
         userThumbnailCell.imageView.alpha = 1.0f;
         
@@ -626,7 +641,8 @@
     else // on the fake slots (stubs)
     {
         userThumbnailCell.imageView.image = [UIImage imageNamed: @"RecentContactPlaceholder"];
-        [userThumbnailCell setDisplayName: @"Recent"];
+        userThumbnailCell.nameLabel.text = @"Recent";
+        
         
         CGFloat factor = 1.0f - ((float) (realIndex - self.recentFriends.count) / (float) kNumberOfEmptyRecentSlots);
         // fade slots
