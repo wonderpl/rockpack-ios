@@ -22,7 +22,6 @@
 @property (nonatomic, strong) IBOutlet UILabel* followInviteLabel;
 
 -(IBAction)facebookLoginPressed:(id)sender;
--(IBAction)inviteButtonPressed:(id)sender;
 
 -(void)addSearchBarToView:(UIView*)view;
 

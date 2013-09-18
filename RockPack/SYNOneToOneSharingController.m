@@ -781,6 +781,8 @@
                          withValue: nil];
     
     [tableView removeFromSuperview];
+    
+    self.searchTextField.text = @"";
 }
 
 
@@ -888,11 +890,11 @@
     
     NSUInteger newLength = (oldLength + newCharacterLength) - rangeLength;
     
-    self.currentSearchTerm = [NSMutableString stringWithString: [textField.text uppercaseString]];
+    self.currentSearchTerm = [NSMutableString stringWithString: textField.text];
     
     if (oldLength < newLength)
     {
-        [self.currentSearchTerm appendString: [newCharacter uppercaseString]];
+        [self.currentSearchTerm appendString: newCharacter];
     }
     else
     {
@@ -914,8 +916,8 @@
     {
         NSPredicate *searchPredicate = [NSPredicate predicateWithBlock: ^BOOL (Friend *friend, NSDictionary *bindings) {
             // either first or last name matches
-            return ([[friend.firstName uppercaseString] hasPrefix: self.currentSearchTerm]) ||
-                    ([[friend.lastName uppercaseString] hasPrefix: self.currentSearchTerm]);
+            return ([[friend.firstName uppercaseString] hasPrefix: [self.currentSearchTerm uppercaseString]]) ||
+                    ([[friend.lastName uppercaseString] hasPrefix: [self.currentSearchTerm uppercaseString]]);
         }];
         
         return [self.friends filteredArrayUsingPredicate: searchPredicate];
@@ -960,6 +962,7 @@
 
 - (void) textFieldDidEndEditing: (UITextField *) textField
 {
+    
     
 }
 
