@@ -810,7 +810,7 @@
     self.friendToAddEmail = friend; // either a newly created or
     
     UIAlertView *prompt = [[UIAlertView alloc] initWithTitle: titleText
-                                                     message: @"We'll send this channel to their email."
+                                                     message: @"We'll send this pack to their email."
                                                     delegate: self
                                            cancelButtonTitle: @"Cancel"
                                            otherButtonTitles: @"Send", nil];

@@ -227,7 +227,7 @@
                                               
                                               if (itemsCount == 0)
                                               {
-                                                  [self displayEmptyGenreMessage:[NSString stringWithFormat:@"There are no packs called '%@'.  Why not make one?",term] andLoader:NO];
+                                                  [self displayEmptyGenreMessage:[NSString stringWithFormat:@"There are no packs called '%@'.\nWhy not make one?",term] andLoader:NO];
                                               }
                                           }];
     

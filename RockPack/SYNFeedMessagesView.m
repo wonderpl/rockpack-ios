@@ -51,10 +51,8 @@
         label.textColor = [UIColor whiteColor];
         label.textAlignment = NSTextAlignmentCenter;
         
-        if (IS_IPHONE)
-        {
-            label.numberOfLines = 0;
-        }
+        label.numberOfLines = 0;
+        
         self.messageLabel = label;
         
         // BG

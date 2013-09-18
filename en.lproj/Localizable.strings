@@ -121,7 +121,7 @@
 
 // Password Reset - Email sent AlertView
 "forgot_password_screen_complete_title" = "Password Reset";
-"forgot_password_screen_complete_message" = "Check your inbox. We've just sent you a password reset email";
+"forgot_password_screen_complete_message" = "Check your inbox. We've just sent you a password reset email.";
 
 
 // == Core Navigation == //
@@ -173,7 +173,7 @@
 "full_name" = "(full name)";
 "select_category" = "CHOOSE A CATEGORY";
 "enter_title" = "ENTER A TITLE";
-"select_cover" = "CHOOSE A COVER.";
+"select_cover" = "CHOOSE A COVER";
 "channel_created_succesfully" = "PACK CREATED";
 "channel_will_remain_private_until" = "PACKS STAY PRIVATE UNTIL YOU ";
 "private_condition_category" = "CHOOSE A RELEVANT CATEGORY";
@@ -217,7 +217,7 @@
 // == Feed == //
 
 "feed_screen_section_title" = "FEED";
-"feed_screen_empty_message" = "Hard to believe, but this dull space will soon be bursting with video excitement. Just start following some packs.";
+"feed_screen_empty_message" = "Hard to believe, but this dull space will soon be bursting with video excitement.\nJust start following some packs.";
 "feed_screen_loading_error" = "There was a problem while loading your feed, please try again.";
 "feed_screen_updating_error" = "There was a problem while refreshing your feed, please try again.";
 "feed_screen_loading_message" = "Your Video Feed is Being Refreshed, Please Wait...";
