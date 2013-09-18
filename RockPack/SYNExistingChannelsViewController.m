@@ -535,7 +535,7 @@
             
             //Portrait position of Close & Confirm buttons
             closeButtonFrame.origin.x = 78.0f;
-            confirmButtonFrame.origin.x = 627.0f;
+            confirmButtonFrame.origin.x = 520.0f;
         }
         else
         {
@@ -543,7 +543,7 @@
             
             //Landscape position of Close & Confirm buttons
             closeButtonFrame.origin.x = 106.0f;
-            confirmButtonFrame.origin.x = 855.0f;
+            confirmButtonFrame.origin.x = 748.0f;
         }
         
         self.closeButton.frame = closeButtonFrame;
