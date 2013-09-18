@@ -790,6 +790,7 @@ referenceSizeForFooterInSection: (NSInteger) section
     
     self.categoryTableViewController = [[SYNChannelCategoryTableViewController alloc] init];
     CGRect newFrame = self.channelThumbnailCollectionView.frame;
+    newFrame.size.height += IS_IOS_7_OR_GREATER ? 20.0f : 0.0f;
     newFrame.size.width = self.categoryTableViewController.view.frame.size.width;
     self.categoryTableViewController.view.frame = newFrame;
     [self.view addSubview: self.categoryTableViewController.view];
@@ -871,8 +872,11 @@ referenceSizeForFooterInSection: (NSInteger) section
     if (self.categoryTableViewController.view.hidden)
     {
         CGRect startFrame = self.categoryTableViewController.view.frame;
+        
         startFrame.origin.x = -startFrame.size.width;
+        
         self.categoryTableViewController.view.frame = startFrame;
+        
         self.categoryTableViewController.view.hidden = NO;
         self.categorySelectDismissControl.hidden = NO;
         

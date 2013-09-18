@@ -146,6 +146,7 @@
                              forControlEvents: UIControlEventTouchUpOutside];
             
             [topHeader.arrowImage removeFromSuperview];
+            
             self.tableView.tableHeaderView = topHeader;
         }
     }
