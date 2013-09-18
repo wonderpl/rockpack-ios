@@ -57,6 +57,15 @@
 - (void)_setupNavigationBar
 {
     // Add title (offset due to custom font)
+    UIView *containerView = [[UIView alloc] initWithFrame: CGRectMake (0, 0, 200, 28)];
+    containerView.backgroundColor = [UIColor clearColor];
+    UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake (-10, 0, 180, 28)];
+    label.backgroundColor = [UIColor clearColor];
+    label.textAlignment = NSTextAlignmentLeft;
+    label.textColor = [UIColor whiteColor];
+    label.text = self.navigationItem.title;
+    [containerView addSubview: label];
+    self.navigationItem.titleView = containerView;
     
     UIButton *customCancelButton = [UIButton buttonWithType: UIButtonTypeCustom];
     UIImage* customCancelButtonImage = [UIImage imageNamed: @"ButtonMoveAndScaleCancel.png"];
@@ -95,6 +104,7 @@
     UIBarButtonItem *customUseButtonItem = [[UIBarButtonItem alloc] initWithCustomView: customUseButton];
         
     self.navigationItem.rightBarButtonItem = customUseButtonItem;
+    
 }
 
 
