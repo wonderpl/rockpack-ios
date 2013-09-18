@@ -964,15 +964,8 @@
 
 - (void) userTappedVideo
 {
-//    if (self.shuttleBarVisible == FALSE)
-//    {
         [self fadeUpShuttleBar];
         [self scheduleFadeOutShuttleBar];
-//    }
-//    else
-//    {
-//        [self fadeOutShuttleBar];
-//    }
 }
 
 
