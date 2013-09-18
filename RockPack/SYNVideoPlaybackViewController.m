@@ -1628,6 +1628,11 @@ static UIWebView* vimeoideoWebViewInstance;
 //    DebugLog (@"Setting time %f", newTime);
     
     self.currentTimeLabel.text = [NSString timecodeStringFromSeconds: newTime];
+    
+    if (self.updateBlock)
+    {
+        self.updateBlock();
+    }
 }
 
 

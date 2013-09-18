@@ -166,6 +166,7 @@
     self.videoTitleLabel.textColor = [UIColor colorWithRed: 40.0f/ 255.0f green: 45.0f/ 255.0f blue: 51.0f/ 255.0f alpha: 1.0f];
     
     self.videoTitleLabel.numberOfLines = 2;
+    self.videoTitleLabel.textAlignment = NSTextAlignmentCenter;
     
     // Regster video thumbnail cell
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailSmallCell"
@@ -237,8 +238,13 @@
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
     self.videoPlaybackViewController = [SYNVideoPlaybackViewController sharedInstance];
+    
+    __weak typeof(self) weakSelf = self;
+    
+    self.videoPlaybackViewController.updateBlock = ^ {
+            [weakSelf scheduleFadeOutShuttleBar];
+    };
 
-    __weak SYNVideoViewerViewController* weakSelf = self;
     [self.videoPlaybackViewController updateWithFrame: videoFrame
                                        channelCreator: videoInstance.video.sourceUsername
                                          indexUpdater: ^(int newIndex){
@@ -1290,7 +1296,7 @@
                          }
                          completion: nil];
     }
-            afterDelay: 3.0f
+            afterDelay: 6.0f
  cancelPreviousRequest: YES];
 
 }
