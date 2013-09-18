@@ -24,10 +24,7 @@
 - (void) playIfVideoActive;
 - (void) pauseIfVideoActive;
 
-// FIXME: FAVOURITES the method below is used as a workaround for missing favouriting/unfavouriting functionality. Must be removed and reworked when favouriting on Video or VideoInstance has been decided.
--(void)markAsFavourites;
-
--(void)prepareForAppearAnimation;
--(void)runAppearAnimation;
+- (void) prepareForAppearAnimation;
+- (void) runAppearAnimation;
 
 @end

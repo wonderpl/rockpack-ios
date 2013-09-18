@@ -37,7 +37,9 @@
 
 @interface SYNVideoViewerViewController () <UIGestureRecognizerDelegate>
 
-
+@property (nonatomic, assign) BOOL userPinchedOut;
+@property (nonatomic, assign) BOOL userPinchedIn;
+@property (nonatomic, assign) BOOL shuttleBarVisible;
 @property (nonatomic, assign) CGRect originalFrame;
 @property (nonatomic, assign) CGRect originalSwipeFrame;
 @property (nonatomic, assign) CGFloat yOffset;
@@ -70,6 +72,7 @@
 @property (nonatomic, strong) UISwipeGestureRecognizer* leftSwipeRecogniser;
 @property (nonatomic, strong) UISwipeGestureRecognizer* rightSwipeRecogniser;
 @property (nonatomic, strong) UITapGestureRecognizer* tapRecogniser;
+@property (nonatomic, strong) UIPinchGestureRecognizer *pinchRecogniser;
 @property (weak, nonatomic) IBOutlet UIButton *addVideoButton;
 @property (weak, nonatomic) IBOutlet UIButton *shareButton;
 
@@ -90,8 +93,7 @@
   	if ((self = [super init]))
     {
 		self.videoInstanceArray = videoInstanceArray;
-        self.currentSelectedIndex = selectedIndex;
-        
+        self.currentSelectedIndex = selectedIndex;  
 	}
     
 	return self;
@@ -104,6 +106,7 @@
     self.rightSwipeRecogniser.delegate = nil;
     self.leftSwipeRecogniser.delegate = nil;
     self.tapRecogniser.delegate = nil;
+    self.pinchRecogniser.delegate = nil;
 }
 
 -(void)setFeedCollectionView:(UICollectionView*)collectionView
@@ -273,6 +276,13 @@
     
     self.tapRecogniser.delegate = self;
     [self.swipeView addGestureRecognizer: self.tapRecogniser];
+
+#ifdef ALLOW_PINCH_OUT
+    self.pinchRecogniser = [[UIPinchGestureRecognizer alloc] initWithTarget: self
+                                                                     action: @selector(handlePinchGesture:)];
+    
+    [self.view addGestureRecognizer: self.pinchRecogniser];
+#endif
     
     if ([videoInstance.channel.channelOwner.displayName length] == 0)
     {
@@ -352,7 +362,7 @@
         
         if (self.currentOrientation == UIDeviceOrientationLandscapeLeft)
         {
-            [self userTappedVideo];
+            [self handleMinMax];
         }
     }
     else
@@ -375,6 +385,8 @@
     // We need to scroll the current thumbnail before the view appears (with no animation)
     [self scrollToCellAtIndex: self.currentSelectedIndex
                      animated: YES];
+    
+    [self scheduleFadeOutShuttleBar];
 
 }
 
@@ -439,6 +451,48 @@
     self.blackPanelView.frame = blackPanelFrame;
     self.blurView.frame = blurViewFrame;
     self.blurColourView.frame = blurViewFrame;
+}
+
+- (void) handlePinchGesture: (UIPinchGestureRecognizer *) sender
+{
+    if (sender.state == UIGestureRecognizerStateBegan)
+    {
+        // At this stage, we don't know whether the user is pinching in or out
+        self.userPinchedOut = FALSE;
+        self.userPinchedIn = FALSE;
+        
+    }
+    else if (sender.state == UIGestureRecognizerStateChanged)
+    {
+        //        DebugLog (@"UIGestureRecognizerStateChanged");
+        float scale = sender.scale;
+        
+        if (scale < 1.0)
+        {
+            self.userPinchedIn = TRUE;
+        }
+        else
+        {
+            self.userPinchedOut = TRUE;
+        }
+    }
+    else if (sender.state == UIGestureRecognizerStateEnded)
+    {
+        DebugLog (@"UIGestureRecognizerStateEnded");
+        
+        if (self.userPinchedOut == TRUE)
+        {
+            // TODO: Zoom video to full screen
+        }
+        else if (self.userPinchedIn == TRUE)
+        {
+            // TODO: Zoom video back to windowed
+        }
+    }
+    else if (sender.state == UIGestureRecognizerStateCancelled)
+    {
+        DebugLog (@"UIGestureRecognizerStateCancelled");
+    }
 }
 
 
@@ -908,8 +962,14 @@
     [appDelegate.viewStackManager viewProfileDetails: videoInstance.channel.channelOwner];
 }
 
-
 - (void) userTappedVideo
+{
+        [self fadeUpShuttleBar];
+        [self scheduleFadeOutShuttleBar];
+}
+
+
+- (void) handleMinMax
 {
     if (IS_IPAD)
     {
@@ -929,9 +989,12 @@
                                     self.blackPanelView.frame = CGRectMake(0, 0 + self.yOffset, 1024, 768);
                                     self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
                                     self.videoPlaybackViewController.view.center = CGPointMake(512, 279);
-                                    self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
                                 }
-                                completion: nil];
+                                completion: ^(BOOL success){
+                                    [self.videoPlaybackViewController.shuttleBarMaxMinButton setImage: [UIImage imageNamed: @"ButtonShuttleBarMaximise.png"]
+                                                                                             forState: UIControlStateNormal];
+                                    
+                                }];
             }
             else
             {
@@ -946,9 +1009,11 @@
                                     self.blackPanelView.frame = CGRectMake(128, -128 + self.yOffset, 768, 1024);
                                     self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
                                     self.videoPlaybackViewController.view.center = CGPointMake(512, 279);
-                                    self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
                                 }
-                                completion: nil];
+                                completion: ^(BOOL success){
+                                    [self.videoPlaybackViewController.shuttleBarMaxMinButton setImage: [UIImage imageNamed: @"ButtonShuttleBarMaximise.png"]
+                                                                                             forState: UIControlStateNormal];
+                                }];
             }
         }
         else
@@ -963,13 +1028,15 @@
                                 animations: ^ {
                                     self.blackPanelView.alpha = 1.0f;
                                     self.chromeView.alpha = 0.0f;
-                                    self.swipeView.frame =  CGRectMake(0, 0, 1024, 768);
+                                    self.swipeView.frame =  CGRectMake(0, 90, 1024, 510);
                                     self.blackPanelView.frame = CGRectMake(0, 0 + self.yOffset, 1024, 768);
                                     self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.384f, 1.384f);
                                     self.videoPlaybackViewController.view.center = CGPointMake(512, 374);
-                                    self.videoPlaybackViewController.shuttleBarView.alpha = 0.0f;
                                 }
-                                completion: nil];
+                                completion: ^(BOOL success){
+                                    [self.videoPlaybackViewController.shuttleBarMaxMinButton setImage: [UIImage imageNamed: @"ButtonShuttleBarMinimise.png"]
+                                                                                             forState: UIControlStateNormal];
+                                }];
             }
             else
             {
@@ -980,13 +1047,16 @@
                                 animations: ^ {
                                     self.blackPanelView.alpha = 1.0f;
                                     self.chromeView.alpha = 0.0f;
-                                    self.swipeView.frame =  CGRectMake(0, 0, 1024, 768);
+                                    self.swipeView.frame =  CGRectMake(0, 155, 1024, 400);
                                     self.blackPanelView.frame = CGRectMake(128, -128 + self.yOffset, 768, 1024);
                                     self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0392f, 1.0392f);
                                     self.videoPlaybackViewController.view.center = CGPointMake(512, 374);
-                                    self.videoPlaybackViewController.shuttleBarView.alpha = 0.0f;
                                 }
-                                completion: nil];
+                                completion: ^(BOOL success){
+                                    [self.videoPlaybackViewController.shuttleBarMaxMinButton setImage: [UIImage imageNamed: @"ButtonShuttleBarMinimise.png"]
+                                                                                             forState: UIControlStateNormal];
+                                }];
+                                    
             }
         }
         
@@ -994,10 +1064,10 @@
     }
     else
     {
-        if (self.videoExpanded == TRUE)
-        {
-            [self scheduleFadeOutShuttleBar];
-        }
+//        if (self.videoExpanded == TRUE)
+//        {
+//            [self scheduleFadeOutShuttleBar];
+//        }
     }
 }
 
@@ -1029,7 +1099,7 @@
     else
     {
         // We are on the iPad
-        [self userTappedVideo];
+        [self handleMinMax];
     }
     
     if (self.isVideoExpanded)
@@ -1116,7 +1186,7 @@
                             CGRect videoFrame = self.videoPlaybackViewController.view.frame;
                             videoFrame.origin = self.originalFrame.origin;
                             self.videoPlaybackViewController.view.frame = videoFrame;
-                            self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
+//                            self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
                             [self.videoPlaybackViewController resetShuttleBarFrame];
                             self.iPhonePanelImageView.alpha = 1.0f;
                         }
@@ -1125,8 +1195,6 @@
                             {
                                 [[NSNotificationCenter defaultCenter] postNotificationName:kNoteShowNetworkMessages object:nil];
                             }
-                            
-                            [self cancelscheduledFadeOutShuttleBar];
                         }];
     }
     else if (UIDeviceOrientationIsLandscape(newOrientation))
@@ -1197,7 +1265,9 @@
 
 - (void) scheduleFadeOutShuttleBar
 {
-    self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
+    self.shuttleBarVisible = FALSE;
+    
+//    self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
     // Arrange to fade out shuttle bar
     [self performBlock: ^{
         [UIView animateWithDuration: 0.5f
@@ -1208,26 +1278,44 @@
                          }
                          completion: nil];
     }
-            afterDelay: 5.0f
+            afterDelay: 3.0f
  cancelPreviousRequest: YES];
 
 }
 
-- (void) cancelscheduledFadeOutShuttleBar
+- (void) fadeOutShuttleBar
 {
+    self.shuttleBarVisible = FALSE;
+    
+    //    self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
     // Arrange to fade out shuttle bar
     [self performBlock: ^{
         [UIView animateWithDuration: 0.5f
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseInOut
                          animations: ^ {
-                             self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
+                             self.videoPlaybackViewController.shuttleBarView.alpha = 0.0f;
                          }
                          completion: nil];
     }
             afterDelay: 0.0f
  cancelPreviousRequest: YES];
     
+}
+
+- (void) fadeUpShuttleBar
+{
+    self.shuttleBarVisible = TRUE;
+    
+    // Arrange to fade out shuttle bar
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^ {
+                         self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
+                     }
+                     completion: nil];
+
 }
 
 
