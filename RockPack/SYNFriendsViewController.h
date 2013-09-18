@@ -16,7 +16,7 @@
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityIndicator;
 @property (nonatomic, strong) IBOutlet UITextField* searchField;
 
-@property (nonatomic, strong) IBOutlet UIButton* allFriendsButton;
+@property (nonatomic, strong) IBOutlet UIButton* onFacebookButton;
 @property (nonatomic, strong) IBOutlet UIButton* onRockpackButton;
 
 @property (nonatomic, strong) IBOutlet UILabel* followInviteLabel;

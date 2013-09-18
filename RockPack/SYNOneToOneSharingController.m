@@ -488,18 +488,13 @@
     MKNKUserSuccessBlock successBlock = ^(id dictionary) {
         
         if([appDelegate.searchRegistry registerFriendsFromDictionary:dictionary])
-        {
-            [weakSelf fetchAndDisplayFriends];
-        }
+            [weakSelf fetchAndDisplayFriends]; // this will reload the collection view
         else
-        {
             DebugLog(@"There was a problem loading friends");
-        }
-        
+
         
         hasAttemptedToLoadData = YES;
         
-        [self.recentFriendsCollectionView reloadData];
         
         
         [self showLoader:NO];
@@ -509,8 +504,6 @@
     MKNKUserSuccessBlock failureBlock = ^(id dictionary) {
         
         hasAttemptedToLoadData = YES;
-        
-        [weakSelf.recentFriendsCollectionView reloadData];
         
         [self showLoader:NO];
         

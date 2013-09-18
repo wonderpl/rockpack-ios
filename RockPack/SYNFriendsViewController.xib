@@ -8,10 +8,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SYNFriendsViewController">
             <connections>
                 <outlet property="activityIndicator" destination="14" id="15"/>
-                <outlet property="allFriendsButton" destination="28" id="31"/>
                 <outlet property="facebookLoginButton" destination="4" id="9"/>
                 <outlet property="followInviteLabel" destination="3ni-uD-zPA" id="TS7-Ps-yvh"/>
                 <outlet property="friendsCollectionView" destination="7" id="11"/>
+                <outlet property="onFacebookButton" destination="28" id="5jC-Nz-uC1"/>
                 <outlet property="onRockpackButton" destination="29" id="30"/>
                 <outlet property="preLoginLabel" destination="6" id="10"/>
                 <outlet property="searchField" destination="20" id="27"/>

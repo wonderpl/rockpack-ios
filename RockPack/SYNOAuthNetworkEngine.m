@@ -1672,7 +1672,7 @@
                                                                                                    httpMethod: @"GET"
                                                                                                           ssl: YES];
     
-    
+    NSLog(@"%@", networkOperation.url);
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
                                 errorHandler: errorBlock];
@@ -1765,7 +1765,7 @@
     
     NSString *apiString = [kAPIFriends stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
-    NSMutableDictionary *params = @{@"device_filter": @"ios"}.mutableCopy;
+    NSMutableDictionary *params = @{}.mutableCopy;
     if(recent)
         params[@YES] = @"share_filter";
     
