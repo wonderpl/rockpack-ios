@@ -205,6 +205,5 @@
         <image name="ButtonFriendsRockpackHighlighted.png" width="160" height="44"/>
         <image name="ButtonFriendsRockpackSelected.png" width="160" height="44"/>
         <image name="IconSearch.png" width="34" height="45"/>
-        <image name="IconSearch.png" width="34" height="45"/>
     </resources>
 </document>
