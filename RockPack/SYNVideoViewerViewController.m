@@ -166,6 +166,7 @@
     self.videoTitleLabel.textColor = [UIColor colorWithRed: 40.0f/ 255.0f green: 45.0f/ 255.0f blue: 51.0f/ 255.0f alpha: 1.0f];
     
     self.videoTitleLabel.numberOfLines = 2;
+    self.videoTitleLabel.textAlignment = NSTextAlignmentCenter;
     
     // Regster video thumbnail cell
     UINib *videoThumbnailCellNib = [UINib nibWithNibName: @"SYNVideoThumbnailSmallCell"
