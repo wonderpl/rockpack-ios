@@ -159,7 +159,7 @@
         CGRectMake(0.0f, 0.0f, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar);
     }
     
-    self.view = [[SYNTrackableFrameView alloc] initWithFrame: newFrame];
+    self.view = [[UIView alloc] initWithFrame: newFrame];
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
