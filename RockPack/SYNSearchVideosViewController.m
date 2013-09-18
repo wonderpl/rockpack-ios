@@ -102,6 +102,8 @@
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     self.videoThumbnailCollectionView.scrollsToTop = NO;
     self.videoThumbnailCollectionView.contentInset = contentInset;
+    self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    
     [self.view
      addSubview: self.videoThumbnailCollectionView];
     
@@ -433,8 +435,6 @@
 }
 
 
-#pragma mark - Override Header Related Methods
-
 - (CGSize) collectionView: (UICollectionView *) collectionView
                    layout: (UICollectionViewLayout *) collectionViewLayout
            referenceSizeForHeaderInSection: (NSInteger) section
@@ -448,20 +448,10 @@
    sizeForItemAtIndexPath: (NSIndexPath *) indexPath
 {
     if (IS_IPAD)
-    {
-        if ([SYNDeviceManager.sharedInstance isLandscape])
-        {
-            return CGSizeMake(497, 140);
-        }
-        else
-        {
-            return CGSizeMake(370, 140);
-        }
-    }
+        return ([SYNDeviceManager.sharedInstance isLandscape] ? CGSizeMake(497, 140) : CGSizeMake(370, 140));
     else
-    {
         return CGSizeMake(310, 221);
-    }
+    
 }
 
 - (VideoInstance *) videoInstanceForIndexPath: (NSIndexPath *) indexPath
@@ -475,12 +465,16 @@
 {
     [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
                                             duration: duration];
+    
+    [self.videoThumbnailCollectionView performBatchUpdates:nil completion:nil];
 }
 
 
 - (void) didRotateFromInterfaceOrientation: (UIInterfaceOrientation) fromInterfaceOrientation
 {
     [super didRotateFromInterfaceOrientation: fromInterfaceOrientation];
+    
+    
 }
 
 

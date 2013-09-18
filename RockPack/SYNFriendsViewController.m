@@ -108,6 +108,8 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
         [GAI.sharedInstance.defaultTracker sendView: @"Friends Fb Connect"];
     }
     
+    self.followInviteLabel.font = [UIFont rockpackFontOfSize:self.followInviteLabel.font.pointSize];
+    
     if(IS_IPHONE)
     {
         // iPhone specific setup
@@ -144,11 +146,17 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     
     [self.searchField resignFirstResponder];
     
-    if(tab == self.onRockpackButton) {
+    if(tab == self.onRockpackButton)
+    {
         self.allFriendsButton.selected = NO;
+        self.followInviteLabel.text = NSLocalizedString(@"friends_follow", nil);
         [GAI.sharedInstance.defaultTracker sendView: @"Friends RP"];
-    } else {
+        
+    }
+    else
+    {
         self.onRockpackButton.selected = NO;
+        self.followInviteLabel.text = NSLocalizedString(@"friends_invite", nil);
         [GAI.sharedInstance.defaultTracker sendView: @"Friends All"];
     }
         
@@ -567,7 +575,6 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     self.buttonShowSearch.hidden = YES;
     self.buttonShowSearch.alpha = 0.0f;
     
-    SYNSideNavigatorViewController *obj;
     
     [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationCurveEaseIn animations:^{
         CGRect newFrame = self.searchSlider.frame;

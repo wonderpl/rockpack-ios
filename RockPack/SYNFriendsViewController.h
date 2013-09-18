@@ -19,6 +19,8 @@
 @property (nonatomic, strong) IBOutlet UIButton* allFriendsButton;
 @property (nonatomic, strong) IBOutlet UIButton* onRockpackButton;
 
+@property (nonatomic, strong) IBOutlet UILabel* followInviteLabel;
+
 -(IBAction)facebookLoginPressed:(id)sender;
 -(IBAction)inviteButtonPressed:(id)sender;
 
