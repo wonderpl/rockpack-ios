@@ -686,25 +686,10 @@ typedef void(^FeedDataErrorBlock)(void);
 {
     
     
-    // FIXME hack , very very dirty
-    if(IS_IPHONE && IS_IOS_7_OR_GREATER)
-    {
-        [self performSelector:@selector(fixHeight) withObject:nil afterDelay:0.0];
-        
-        
-    }
-    
-    
-    
     [self.feedCollectionView reloadData];
 }
 
--(void)fixHeight
-{
-    CGRect vFrame = self.view.frame;
-    vFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar];
-    self.view.frame = vFrame;
-}
+
 - (FeedItem*) feedItemAtIndexPath: (NSIndexPath*) indexPath
 {
     NSArray* sectionArray = self.feedItemsData[indexPath.section];

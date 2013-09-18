@@ -1327,6 +1327,7 @@
 		BEA216E017E9B389007C6DF7 /* ButtonFriendsRockpackSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEA216C817E9B389007C6DF7 /* ButtonFriendsRockpackSelected@2x.png */; };
 		BEA216E117E9B389007C6DF7 /* ButtonFriendsRockpackSelected@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BEA216C917E9B389007C6DF7 /* ButtonFriendsRockpackSelected@2x~iphone.png */; };
 		BEA216E217E9B389007C6DF7 /* ButtonFriendsRockpackSelected~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = BEA216CA17E9B389007C6DF7 /* ButtonFriendsRockpackSelected~iphone.png */; };
+		BEA216E517E9ED31007C6DF7 /* SYNTrackableFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA216E417E9ED31007C6DF7 /* SYNTrackableFrameView.m */; };
 		BEA2AEDC176E03370099DB74 /* ButtonNavCD.png in Resources */ = {isa = PBXBuildFile; fileRef = BEA2AED6176E03370099DB74 /* ButtonNavCD.png */; };
 		BEA2AEDD176E03370099DB74 /* ButtonNavCD@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BEA2AED7176E03370099DB74 /* ButtonNavCD@2x.png */; };
 		BEA2AEDE176E03370099DB74 /* ButtonNavHighlightedCD.png in Resources */ = {isa = PBXBuildFile; fileRef = BEA2AED8176E03370099DB74 /* ButtonNavHighlightedCD.png */; };
@@ -2957,6 +2958,8 @@
 		BEA216C817E9B389007C6DF7 /* ButtonFriendsRockpackSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonFriendsRockpackSelected@2x.png"; path = "Assets/Images/ButtonFriendsRockpackSelected@2x.png"; sourceTree = "<group>"; };
 		BEA216C917E9B389007C6DF7 /* ButtonFriendsRockpackSelected@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonFriendsRockpackSelected@2x~iphone.png"; path = "Assets/Images/ButtonFriendsRockpackSelected@2x~iphone.png"; sourceTree = "<group>"; };
 		BEA216CA17E9B389007C6DF7 /* ButtonFriendsRockpackSelected~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonFriendsRockpackSelected~iphone.png"; path = "Assets/Images/ButtonFriendsRockpackSelected~iphone.png"; sourceTree = "<group>"; };
+		BEA216E317E9ED31007C6DF7 /* SYNTrackableFrameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNTrackableFrameView.h; sourceTree = "<group>"; };
+		BEA216E417E9ED31007C6DF7 /* SYNTrackableFrameView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNTrackableFrameView.m; sourceTree = "<group>"; };
 		BEA2AED6176E03370099DB74 /* ButtonNavCD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonNavCD.png; path = Assets/Images/ButtonNavCD.png; sourceTree = "<group>"; };
 		BEA2AED7176E03370099DB74 /* ButtonNavCD@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonNavCD@2x.png"; path = "Assets/Images/ButtonNavCD@2x.png"; sourceTree = "<group>"; };
 		BEA2AED8176E03370099DB74 /* ButtonNavHighlightedCD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonNavHighlightedCD.png; path = Assets/Images/ButtonNavHighlightedCD.png; sourceTree = "<group>"; };
@@ -4235,6 +4238,8 @@
 				01EC6235166EAAA6003154B1 /* SYNChannelDetailViewController.m */,
 				01ABBB3317218A60007E4462 /* SYNChannelDetailViewController.xib */,
 				38FD441E172A9E280086B524 /* SYNChannelDetailViewController~iphone.xib */,
+				BEA216E317E9ED31007C6DF7 /* SYNTrackableFrameView.h */,
+				BEA216E417E9ED31007C6DF7 /* SYNTrackableFrameView.m */,
 			);
 			name = Channels;
 			sourceTree = "<group>";
@@ -7357,6 +7362,7 @@
 				BE0815CA16D5478B00ADB1DC /* SYNRegistry.m in Sources */,
 				BE0815CD16D5487B00ADB1DC /* SYNSearchRegistry.m in Sources */,
 				BE0815D216D6448200ADB1DC /* SYNSideNavigatorViewController.m in Sources */,
+				BEA216E517E9ED31007C6DF7 /* SYNTrackableFrameView.m in Sources */,
 				BEF9E5B016DCBAC800286113 /* SYNSoundPlayer.m in Sources */,
 				015487CF16DCD2A1002A41A2 /* SYNVideoPlaybackViewController.m in Sources */,
 				0194FD2316DE6FE90058A7C2 /* SYNVideoThumbnailSmallCell.m in Sources */,

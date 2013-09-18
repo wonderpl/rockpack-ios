@@ -25,6 +25,7 @@
 #import "SYNNetworkEngine.h"
 #import "SubGenre.h"
 #import "UIFont+SYNFont.h"
+#import "SYNTrackableFrameView.h"
 #import "UIImageView+WebCache.h"
 #import "SYNInstructionsToShareControllerViewController.h"
 #import "Video.h"
@@ -80,12 +81,13 @@
 - (void) loadView
 {
     
-    BOOL isIPhone = IS_IPHONE;
     
     StartingCategoryText  = NSLocalizedString(@"ALL PACKS", nil);
+    
+    
     SYNIntegralCollectionViewFlowLayout *flowLayout;
     
-    if (isIPhone)
+    if (IS_IPHONE)
     {
         flowLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(158.0f, IS_IOS_7_OR_GREATER ? 172.0f : 169.0f)
                                                      minimumInterItemSpacing: 0.0
@@ -109,9 +111,13 @@
     
     CGRect channelCollectionViewFrame = CGRectZero;
     
-    if (isIPhone)
+    if (IS_IPHONE)
     {
-        channelCollectionViewFrame = CGRectMake(0.0f, 103.0f, [SYNDeviceManager.sharedInstance currentScreenWidth], [SYNDeviceManager.sharedInstance currentScreenHeight] - 123.0f);
+        CGFloat offsetY = 103.0f;
+        channelCollectionViewFrame = CGRectMake(0.0f,
+                                                offsetY,
+                                                [SYNDeviceManager.sharedInstance currentScreenWidth],
+                                                [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] - offsetY);
     }
     else
     {
@@ -140,11 +146,11 @@
     
     CGRect newFrame;
     
-    if (isIPhone)
+    if (IS_IPHONE)
     {
-        newFrame = CGRectMake(0.0f, 59.0f,
+        newFrame = CGRectMake(0.0f, 0.0f,
                               [SYNDeviceManager.sharedInstance currentScreenWidth],
-                              [SYNDeviceManager.sharedInstance currentScreenHeight] - 20.0f);
+                              [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar]);
     }
     else
     {
@@ -153,7 +159,7 @@
         CGRectMake(0.0f, 0.0f, kFullScreenWidthPortrait, kFullScreenHeightPortraitMinusStatusBar);
     }
     
-    self.view = [[UIView alloc] initWithFrame: newFrame];
+    self.view = [[SYNTrackableFrameView alloc] initWithFrame: newFrame];
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
@@ -202,7 +208,10 @@
     
     
 }
-
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
 
 - (void) viewDidScrollToFront
 {
@@ -237,16 +246,7 @@
         
     }
 }
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    
-    CGRect vFrame = self.view.frame;
-    vFrame.size.height = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar];
-    self.view.frame = vFrame;
-    
-}
+
 
 - (void) viewDidScrollToBack
 {
