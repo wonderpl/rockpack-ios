@@ -104,7 +104,7 @@
     
     if (_isLoader)
     {
-        self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhite];
+        self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
         self.activityIndicatorView.hidesWhenStopped = YES;
         CGRect activityFrame = self.activityIndicatorView.frame;
         activityFrame.origin.x = kSpinnerTextDistance + self.messageLabel.frame.origin.x + self.messageLabel.frame.size.width;
