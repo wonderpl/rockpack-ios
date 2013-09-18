@@ -368,6 +368,8 @@
     self.activityViewController.userInfo = self.mutableShareDictionary;
     
     [self.activitiesContainerView addSubview: self.activityViewController.view];
+    
+    /// [appDelegate.viewStackManager removePopoverView];
 }
 
 

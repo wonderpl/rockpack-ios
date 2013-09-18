@@ -26,6 +26,7 @@
 #import "OWActivityDelegateObject.h"
 #import "OWActivityViewController.h"
 #import "OWMailActivity.h"
+#import "SYNAppDelegate.h"
 
 @implementation OWMailActivity
 
@@ -100,7 +101,9 @@
                                                        [activityViewController.presentingController presentViewController: mailComposeViewController
                                                                                                                  animated: YES
                                                                                                                completion: ^{
-                                                                                                                   NSLog(@"");
+                                                                                                                   SYNAppDelegate *appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
+                                                                                                                   
+                                                                                                                   [appDelegate.viewStackManager removePopoverView];
                                                                                                                }];
                                                    }];
     };
