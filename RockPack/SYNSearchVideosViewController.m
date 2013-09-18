@@ -71,9 +71,14 @@
     }
     else
     {
-        calculatedViewFrame = CGRectMake(0.0, 0.0, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar);
+        calculatedViewFrame = CGRectMake(0.0, 0.0,
+                                         [[SYNDeviceManager sharedInstance] currentScreenWidth],
+                                         [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar]);
         
-        videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetY, kFullScreenWidthLandscape, kFullScreenHeightLandscapeMinusStatusBar - kStandardCollectionViewOffsetY);
+        videoCollectionViewFrame = CGRectMake(0.0,
+                                              kStandardCollectionViewOffsetY + 56.0f,
+                                              [[SYNDeviceManager sharedInstance] currentScreenWidth],
+                                              [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - kStandardCollectionViewOffsetY - 52.0f);
         
         // Collection view parameters
         contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -106,6 +111,7 @@
     
     [self.view
      addSubview: self.videoThumbnailCollectionView];
+    
     
     self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
@@ -158,16 +164,8 @@
     }
     else
     {
-        CGRect collectionFrame = self.videoThumbnailCollectionView.frame;
-        collectionFrame.origin.y += 54.0;
-        collectionFrame.size.width = self.view.frame.size.width;
-        collectionFrame.size.height = self.view.frame.size.height - 150.0;
-        self.videoThumbnailCollectionView.frame = collectionFrame;
-        UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *) self.videoThumbnailCollectionView.collectionViewLayout;
-        UIEdgeInsets insets = layout.sectionInset;
-        insets.top = 0.0f;
-        insets.bottom = 15.0f;
-        layout.sectionInset = insets;
+        
+        
     }
     
     CGRect videoThumbFrame = self.videoThumbnailCollectionView.frame;
