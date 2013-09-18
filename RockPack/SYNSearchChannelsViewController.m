@@ -60,20 +60,7 @@
 {
     [super viewDidLoad];
     
-    if (IS_IPHONE)
-    {
-        CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
-        collectionFrame.origin.y += 60.0;
-        collectionFrame.size.height -= 60.0;
-        self.channelThumbnailCollectionView.frame = collectionFrame;
-    }
-    else
-    {
-        CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
-        collectionFrame.origin.y += 5.0;
-        collectionFrame.size.height -= 5.0;
-        self.channelThumbnailCollectionView.frame = collectionFrame;
-    }
+    
 }
 
 
@@ -93,6 +80,22 @@
     [self.emptyGenreMessageView removeFromSuperview];
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
+    if (IS_IPHONE)
+    {
+        collectionFrame.origin.y += 10.0;
+        collectionFrame.size.height -= 10.0;
+    }
+    else
+    {
+        collectionFrame.origin.y += 5.0;
+        collectionFrame.size.height -= 5.0;
+    }
+    self.channelThumbnailCollectionView.frame = collectionFrame;
+}
 
 - (void) displayEmptyGenreMessage: (NSString*) messageKey
                         andLoader: (BOOL) isLoader

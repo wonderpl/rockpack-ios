@@ -75,8 +75,8 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     
     [self.activityIndicator hidesWhenStopped];
     
-    self.allFriendsButton.titleLabel.font = [UIFont rockpackFontOfSize: IS_IPAD ? 14.0f : 12.0f];
-    self.allFriendsButton.contentEdgeInsets = UIEdgeInsetsMake(IS_IPAD ? 7.0f : 5.0, 0.0f, 0.0f, 0.0f);
+    self.onFacebookButton.titleLabel.font = [UIFont rockpackFontOfSize: IS_IPAD ? 14.0f : 12.0f];
+    self.onFacebookButton.contentEdgeInsets = UIEdgeInsetsMake(IS_IPAD ? 7.0f : 5.0, 0.0f, 0.0f, 0.0f);
     self.onRockpackButton.titleLabel.font = [UIFont rockpackFontOfSize: IS_IPAD ? 14.0f : 12.0f];
     self.onRockpackButton.contentEdgeInsets = UIEdgeInsetsMake(IS_IPAD ? 7.0f : 5.0, 0.0f, 0.0f, 0.0f);
     
@@ -90,7 +90,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
         self.activityIndicator.hidden = NO;
         
         self.onRockpackButton.hidden = NO;
-        self.allFriendsButton.hidden = NO;
+        self.onFacebookButton.hidden = NO;
         
         [self fetchAndDisplayFriends];
         
@@ -99,7 +99,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     else
     {
         self.onRockpackButton.hidden = YES;
-        self.allFriendsButton.hidden = YES;
+        self.onFacebookButton.hidden = YES;
         self.facebookLoginButton.hidden = NO;
         self.preLoginLabel.hidden = NO;
         self.friendsCollectionView.hidden = YES;
@@ -121,9 +121,26 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
         CGRect searchSliderFrame = self.searchSlider.frame;
         searchSliderFrame.origin.x = searchSliderFrame.size.width;
         self.searchSlider.frame= searchSliderFrame;
+        
+        
     }
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    if(IS_IPHONE)
+    {
+        CGRect bFrame = self.onRockpackButton.frame;
+        bFrame.size.height = 54.0f;
+        bFrame.origin.y -= 10.0f;
+        self.onRockpackButton.frame = bFrame;
+        
+        bFrame = self.onFacebookButton.frame;
+        bFrame.size.height = 54.0f;
+        bFrame.origin.y -= 10.0f;
+        self.onFacebookButton.frame = bFrame;
+    }
+}
 
 
 -(IBAction)switchClicked:(UIButton*)tab
@@ -135,7 +152,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     
     if(tab == self.onRockpackButton)
     {
-        self.allFriendsButton.selected = NO;
+        self.onFacebookButton.selected = NO;
         self.followInviteLabel.text = NSLocalizedString(@"friends_follow", nil);
         [GAI.sharedInstance.defaultTracker sendView: @"Friends RP"];
         
@@ -158,7 +175,6 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
 {
     
     
-    
     NSError *error;
     NSArray *existingFriendsArray;
     
@@ -168,7 +184,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
                                          inManagedObjectContext: appDelegate.searchManagedObjectContext]];
     
     
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"externalSystem != %@", kEmail];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"externalSystem != %@ AND hasIOSDevice == YES", kEmail];
     
     existingFriendsArray = [appDelegate.searchManagedObjectContext executeFetchRequest: fetchRequest
                                                                                  error: &error];
@@ -179,8 +195,8 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
    
         self.friends = [NSArray arrayWithArray:existingFriendsArray];
         
-        self.allFriendsButton.selected = YES;
-        self.followInviteLabel.text = NSLocalizedString(@"friends_invite", nil);
+        self.onRockpackButton.selected = YES;
+        self.followInviteLabel.text = NSLocalizedString(@"friends_follow", nil);
         
         [self.friendsCollectionView reloadData];
     }
@@ -233,12 +249,12 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
         [self.activityIndicator startAnimating];
         
         self.onRockpackButton.hidden = YES;
-        self.allFriendsButton.hidden = YES;
+        self.onFacebookButton.hidden = YES;
     }
     else
     {
         self.onRockpackButton.hidden = NO;
-        self.allFriendsButton.hidden = NO;
+        self.onFacebookButton.hidden = NO;
         
         
         [self.activityIndicator stopAnimating];
@@ -278,7 +294,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
                                                               weakSelf.facebookLoginButton.hidden = YES;
                                                               
                                                               weakSelf.onRockpackButton.hidden = NO;
-                                                              weakSelf.allFriendsButton.hidden = NO;
+                                                              weakSelf.onFacebookButton.hidden = NO;
                                                               
                                                               [weakSelf fetchAndDisplayFriends];
             
@@ -557,9 +573,9 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
 -(void)setTitleForFriendsTab:(NSString*)ftText andRockpackTab:(NSString*)rtText
 {
     // set first tab
-    [self.allFriendsButton setTitle:ftText forState:UIControlStateNormal];
-    [self.allFriendsButton setTitle:ftText forState:UIControlStateHighlighted];
-    [self.allFriendsButton setTitle:ftText forState:UIControlStateSelected];
+    [self.onFacebookButton setTitle:ftText forState:UIControlStateNormal];
+    [self.onFacebookButton setTitle:ftText forState:UIControlStateHighlighted];
+    [self.onFacebookButton setTitle:ftText forState:UIControlStateSelected];
     
     // set second tab
     [self.onRockpackButton setTitle:rtText forState:UIControlStateNormal];

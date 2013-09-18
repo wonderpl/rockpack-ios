@@ -565,7 +565,7 @@ static UIWebView* vimeoideoWebViewInstance;
     
     self.originalShuttleBarFrame = shuttleBarView.frame;
     
-#ifdef SHOW_SHUTTLE_DEBUG_COLOURS
+#if 0
     shuttleBarView.backgroundColor = [UIColor redColor];
     self.durationLabel.backgroundColor = [UIColor yellowColor];
     volumeView.backgroundColor = [UIColor greenColor];

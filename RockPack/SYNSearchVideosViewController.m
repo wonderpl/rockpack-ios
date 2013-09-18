@@ -64,9 +64,8 @@
         
         videoCollectionViewFrame = CGRectMake(0.0, kStandardCollectionViewOffsetYiPhone, screenSize.width, screenSize.height - 20.0f - kStandardCollectionViewOffsetYiPhone);
         
-        // Collection view parameters
-        contentInset = UIEdgeInsetsMake(4, 0, 0, 0);
-        sectionInset = UIEdgeInsetsMake(10.0f, 5.0f, 15.0f, 5.0f);
+        
+        sectionInset = UIEdgeInsetsMake(0.0f, 5.0f, 15.0f, 5.0f);
         minimumLineSpacing = 10.0f;
     }
     else
@@ -76,13 +75,12 @@
                                          [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar]);
         
         videoCollectionViewFrame = CGRectMake(0.0,
-                                              kStandardCollectionViewOffsetY + 56.0f,
+                                              kStandardCollectionViewOffsetY + 40.0f,
                                               [[SYNDeviceManager sharedInstance] currentScreenWidth],
-                                              [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - kStandardCollectionViewOffsetY - 52.0f);
+                                              [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - kStandardCollectionViewOffsetY - 36.0f);
         
-        // Collection view parameters
-        contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-        sectionInset = UIEdgeInsetsMake(10.0f, 10.0f, 15.0f, 10.0f);
+        
+        sectionInset = UIEdgeInsetsMake(0.0f, 10.0f, 15.0f, 10.0f);
         minimumLineSpacing = 30.0f;
     }
     
@@ -106,7 +104,7 @@
     self.videoThumbnailCollectionView.dataSource = self;
     self.videoThumbnailCollectionView.backgroundColor = [UIColor clearColor];
     self.videoThumbnailCollectionView.scrollsToTop = NO;
-    self.videoThumbnailCollectionView.contentInset = contentInset;
+    self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsZero;
     self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
     [self.view
@@ -464,7 +462,7 @@
     [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
                                             duration: duration];
     
-    [self.videoThumbnailCollectionView performBatchUpdates:nil completion:nil];
+    
 }
 
 
@@ -472,7 +470,8 @@
 {
     [super didRotateFromInterfaceOrientation: fromInterfaceOrientation];
     
-    
+    [self.videoThumbnailCollectionView performBatchUpdates:nil completion:nil];
+    [self reloadCollectionViews];
 }
 
 
@@ -481,7 +480,7 @@
 {
     [super willRotateToInterfaceOrientation: toInterfaceOrientation
                                    duration: duration];
-    [self reloadCollectionViews];
+    
 }
 
 
