@@ -179,8 +179,8 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
    
         self.friends = [NSArray arrayWithArray:existingFriendsArray];
         
-        self.allFriendsButton.selected = YES;
-        self.followInviteLabel.text = NSLocalizedString(@"friends_invite", nil);
+        self.onRockpackButton.selected = YES;
+        self.followInviteLabel.text = NSLocalizedString(@"friends_follow", nil);
         
         [self.friendsCollectionView reloadData];
     }
