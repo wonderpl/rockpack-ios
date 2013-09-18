@@ -22,6 +22,7 @@ typedef void (^SYNVideoIndexUpdater)(int);
 @property (nonatomic, strong) UIView *shuttleBarView;
 @property (nonatomic, strong) VideoInstance *currentVideoInstance;
 @property (nonatomic, strong) UIButton *shuttleBarMaxMinButton;
+@property (nonatomic, copy) void (^updateBlock) (void);
 
 + (SYNVideoPlaybackViewController *) sharedInstance;
 
