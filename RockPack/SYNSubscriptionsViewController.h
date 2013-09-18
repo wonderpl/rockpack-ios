@@ -18,7 +18,7 @@
 
 @property (nonatomic, weak) ChannelOwner* user;
 
-@property (nonatomic, weak) SYNNoChannelsMessageView *noChannelsMessage;
+@property (nonatomic, strong) SYNNoChannelsMessageView *noChannelsMessage;
 
 - (void) setViewFrame: (CGRect) frame;
 
