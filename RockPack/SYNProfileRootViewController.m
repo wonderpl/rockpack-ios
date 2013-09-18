@@ -226,7 +226,7 @@
     
     if (self.isIPhone)
     {
-        self.userProfileController.view.center = CGPointMake(160.0f, 28.0f);
+        self.userProfileController.view.center = CGPointMake(160.0f, IS_IOS_7_OR_GREATER ? 38.0f : 28.0f);
     }
     else
     {

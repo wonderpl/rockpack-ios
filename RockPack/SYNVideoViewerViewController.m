@@ -43,6 +43,7 @@
 @property (nonatomic, assign) CGRect originalFrame;
 @property (nonatomic, assign) CGRect originalSwipeFrame;
 @property (nonatomic, assign) CGFloat yOffset;
+@property (nonatomic, assign) CGFloat iPhoneYOffset;
 @property (nonatomic, assign) int currentSelectedIndex;
 @property (nonatomic, copy) NSArray *videoInstanceArray;
 @property (nonatomic, getter = isVideoExpanded) BOOL videoExpanded;
@@ -124,10 +125,12 @@
     if (IS_IOS_7_OR_GREATER)
     {
         self.yOffset = -10.0f;
+        self.iPhoneYOffset = 0.0f;
     }
     else
     {
         self.yOffset = 0.0f;
+        self.iPhoneYOffset = 20.0f;
     }
     
     BOOL isLandscape = [SYNDeviceManager.sharedInstance isLandscape];
@@ -462,7 +465,7 @@
         if (self.isVideoExpanded)
         {
             self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0392f, 1.0392f);
-            self.videoPlaybackViewController.view.center = CGPointMake(512, 374);
+            self.videoPlaybackViewController.view.center = CGPointMake(512, 374 + self.yOffset);
         }
     }
     
@@ -1243,8 +1246,8 @@
                             self.blackPanelView.alpha = 1.0f;
                             self.chromeView.alpha = 0.0f;
                             self.swipeView.frame =  fullScreenFrame;
-                            self.swipeView.center = CGPointMake(fullScreenFrame.size.height/2.0f,fullScreenFrame.size.width/2.0f - 20.0f);
-                            self.videoPlaybackViewController.view.center = CGPointMake(fullScreenFrame.size.height/2.0f,fullScreenFrame.size.width/2.0f - 20.0f);
+                            self.swipeView.center = CGPointMake(fullScreenFrame.size.height/2.0f,fullScreenFrame.size.width/2.0f - self.iPhoneYOffset);
+                            self.videoPlaybackViewController.view.center = CGPointMake(fullScreenFrame.size.height/2.0f,fullScreenFrame.size.width/2.0f - self.iPhoneYOffset);
                             
                             self.swipeView.transform = CGAffineTransformMakeRotation((newOrientation==UIDeviceOrientationLandscapeLeft) ? M_PI_2 : -M_PI_2 );
                             
