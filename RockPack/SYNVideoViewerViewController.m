@@ -39,6 +39,7 @@
 
 @property (nonatomic, assign) BOOL userPinchedOut;
 @property (nonatomic, assign) BOOL userPinchedIn;
+@property (nonatomic, assign) BOOL shuttleBarVisible;
 @property (nonatomic, assign) CGRect originalFrame;
 @property (nonatomic, assign) CGRect originalSwipeFrame;
 @property (nonatomic, assign) CGFloat yOffset;
@@ -384,6 +385,8 @@
     // We need to scroll the current thumbnail before the view appears (with no animation)
     [self scrollToCellAtIndex: self.currentSelectedIndex
                      animated: YES];
+    
+    [self scheduleFadeOutShuttleBar];
 
 }
 
@@ -961,9 +964,15 @@
 
 - (void) userTappedVideo
 {
-    self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
-
-    [self scheduleFadeOutShuttleBar];
+//    if (self.shuttleBarVisible == FALSE)
+//    {
+        [self fadeUpShuttleBar];
+        [self scheduleFadeOutShuttleBar];
+//    }
+//    else
+//    {
+//        [self fadeOutShuttleBar];
+//    }
 }
 
 
@@ -987,11 +996,11 @@
                                     self.blackPanelView.frame = CGRectMake(0, 0 + self.yOffset, 1024, 768);
                                     self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
                                     self.videoPlaybackViewController.view.center = CGPointMake(512, 279);
-                                    self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
                                 }
                                 completion: ^(BOOL success){
                                     [self.videoPlaybackViewController.shuttleBarMaxMinButton setImage: [UIImage imageNamed: @"ButtonShuttleBarMaximise.png"]
                                                                                              forState: UIControlStateNormal];
+                                    
                                 }];
             }
             else
@@ -1007,7 +1016,6 @@
                                     self.blackPanelView.frame = CGRectMake(128, -128 + self.yOffset, 768, 1024);
                                     self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0, 1.0);
                                     self.videoPlaybackViewController.view.center = CGPointMake(512, 279);
-                                    self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
                                 }
                                 completion: ^(BOOL success){
                                     [self.videoPlaybackViewController.shuttleBarMaxMinButton setImage: [UIImage imageNamed: @"ButtonShuttleBarMaximise.png"]
@@ -1035,7 +1043,6 @@
                                 completion: ^(BOOL success){
                                     [self.videoPlaybackViewController.shuttleBarMaxMinButton setImage: [UIImage imageNamed: @"ButtonShuttleBarMinimise.png"]
                                                                                              forState: UIControlStateNormal];
-                                    [self scheduleFadeOutShuttleBar];
                                 }];
             }
             else
@@ -1055,7 +1062,6 @@
                                 completion: ^(BOOL success){
                                     [self.videoPlaybackViewController.shuttleBarMaxMinButton setImage: [UIImage imageNamed: @"ButtonShuttleBarMinimise.png"]
                                                                                              forState: UIControlStateNormal];
-                                    [self scheduleFadeOutShuttleBar];
                                 }];
                                     
             }
@@ -1187,7 +1193,7 @@
                             CGRect videoFrame = self.videoPlaybackViewController.view.frame;
                             videoFrame.origin = self.originalFrame.origin;
                             self.videoPlaybackViewController.view.frame = videoFrame;
-                            self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
+//                            self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
                             [self.videoPlaybackViewController resetShuttleBarFrame];
                             self.iPhonePanelImageView.alpha = 1.0f;
                         }
@@ -1196,8 +1202,6 @@
                             {
                                 [[NSNotificationCenter defaultCenter] postNotificationName:kNoteShowNetworkMessages object:nil];
                             }
-                            
-                            [self cancelscheduledFadeOutShuttleBar];
                         }];
     }
     else if (UIDeviceOrientationIsLandscape(newOrientation))
@@ -1268,7 +1272,9 @@
 
 - (void) scheduleFadeOutShuttleBar
 {
-    self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
+    self.shuttleBarVisible = FALSE;
+    
+//    self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
     // Arrange to fade out shuttle bar
     [self performBlock: ^{
         [UIView animateWithDuration: 0.5f
@@ -1284,21 +1290,39 @@
 
 }
 
-- (void) cancelscheduledFadeOutShuttleBar
+- (void) fadeOutShuttleBar
 {
+    self.shuttleBarVisible = FALSE;
+    
+    //    self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
     // Arrange to fade out shuttle bar
     [self performBlock: ^{
         [UIView animateWithDuration: 0.5f
                               delay: 0.0f
                             options: UIViewAnimationOptionCurveEaseInOut
                          animations: ^ {
-                             self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
+                             self.videoPlaybackViewController.shuttleBarView.alpha = 0.0f;
                          }
                          completion: nil];
     }
             afterDelay: 0.0f
  cancelPreviousRequest: YES];
     
+}
+
+- (void) fadeUpShuttleBar
+{
+    self.shuttleBarVisible = TRUE;
+    
+    // Arrange to fade out shuttle bar
+    [UIView animateWithDuration: 0.5f
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^ {
+                         self.videoPlaybackViewController.shuttleBarView.alpha = 1.0f;
+                     }
+                     completion: nil];
+
 }
 
 
