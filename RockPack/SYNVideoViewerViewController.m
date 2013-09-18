@@ -238,8 +238,13 @@
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
     self.videoPlaybackViewController = [SYNVideoPlaybackViewController sharedInstance];
+    
+    __weak typeof(self) weakSelf = self;
+    
+    self.videoPlaybackViewController.updateBlock = ^ {
+            [weakSelf scheduleFadeOutShuttleBar];
+    };
 
-    __weak SYNVideoViewerViewController* weakSelf = self;
     [self.videoPlaybackViewController updateWithFrame: videoFrame
                                        channelCreator: videoInstance.video.sourceUsername
                                          indexUpdater: ^(int newIndex){
@@ -1291,7 +1296,7 @@
                          }
                          completion: nil];
     }
-            afterDelay: 3.0f
+            afterDelay: 6.0f
  cancelPreviousRequest: YES];
 
 }
