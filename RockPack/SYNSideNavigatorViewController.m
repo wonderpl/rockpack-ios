@@ -160,6 +160,10 @@ typedef enum {
         if (IS_IPHONE)
         {
             [viewArray addObjectsFromArray: @[self.settingsButton, self.searchViewController.searchBoxView]];
+            
+            CGRect nFrame = self.nicknameLabel.frame;
+            nFrame.origin.y = 468.0f;
+            self.nicknameLabel.frame = nFrame;
         }
         
         for (UIView* viewToMove in viewArray)
