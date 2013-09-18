@@ -3093,7 +3093,7 @@ shouldChangeTextInRange: (NSRange) range
             blurOpacity = differenceInY > 140 ? 1.0 : differenceInY / 140.0; // 1 .. 0
         }
         
-        self.channelCoverImageView.alpha = 1.0 - blurOpacity;
+        self.blurredBGImageView.alpha = 0.0 + blurOpacity;
     }
 }
 
@@ -3154,9 +3154,11 @@ shouldChangeTextInRange: (NSRange) range
         self.blurredBGImageView = [[UIImageView alloc] init];
         self.blurredBGImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.blurredBGImageView.contentMode = UIViewContentModeScaleAspectFill;
+        self.blurredBGImageView.backgroundColor = [UIColor clearColor];
+        self.blurredBGImageView.alpha = 0.0f;
         
         [self.view insertSubview: self.blurredBGImageView
-                    belowSubview: self.channelCoverImageView];
+                    aboveSubview: self.channelCoverImageView];
     }
     
     self.blurredBGImageView.frame = self.channelCoverImageView.frame;
