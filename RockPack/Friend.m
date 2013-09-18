@@ -98,6 +98,8 @@
     self.lastShareDate = [dictionary dateFromISO6801StringForKey:@"last_shared_date"
                                                      withDefault:nil];
     
+    self.localOriginValue = @NO;
+    
 }
 
 -(NSString*)firstName

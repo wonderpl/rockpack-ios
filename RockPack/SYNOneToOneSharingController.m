@@ -467,6 +467,8 @@
             
         }
         
+        
+        
         // sort by date
         
         
@@ -474,6 +476,8 @@
                                 
                                 return [friendB.lastShareDate compare:friendA.lastShareDate];
         }];
+        
+        
         
         [self.recentFriendsCollectionView reloadData];
     }
@@ -679,6 +683,7 @@
     }
     
     Friend *friend = self.recentFriends[indexPath.row - (displayEmailCell ? 1 : 0)];
+    
     
     [self sendEmailToFriend: friend];
 }

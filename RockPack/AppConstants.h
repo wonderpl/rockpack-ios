@@ -405,7 +405,7 @@ typedef enum : NSInteger {
 #define kTwitter @"twitter"
 #define kGooglePlus @"google"
 #define kAPNS   @"apns"
-
+#define kAddressBook @"AddressBook"
 
 typedef enum {
     LoginOriginRockpack = 0,

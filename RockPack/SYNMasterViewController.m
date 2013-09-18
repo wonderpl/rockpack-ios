@@ -168,6 +168,14 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     frameToAdjust.origin.y += offsetFromTop;
     self.sideNavigationButton.frame = frameToAdjust;
     
+    if(IS_IPHONE && IS_IOS_7_OR_GREATER)
+    {
+        frameToAdjust = self.searchButton.frame;
+        frameToAdjust.origin.y += 2.0f;
+        self.searchButton.frame = frameToAdjust;
+    }
+    
+    
     // ======================= //
     
     
