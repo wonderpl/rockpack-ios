@@ -23,7 +23,7 @@
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="1">
+        <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" id="1">
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -81,36 +81,40 @@
                     <rect key="frame" x="150" y="138" width="20" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </activityIndicatorView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="28">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="28" userLabel="F Button">
                     <rect key="frame" x="160" y="0.0" width="160" height="44"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <state key="normal" title="ALL FRIENDS" backgroundImage="TabFriendsDefault.png">
+                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <state key="normal" image="ButtonFriendsFacebookDefault.png">
                         <color key="titleColor" red="0.15686275059999999" green="0.1764705926" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
-                    <state key="selected" backgroundImage="TabFriendsSelected.png">
-                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <state key="selected" image="ButtonFriendsFacebookSelected.png">
+                        <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </state>
-                    <state key="highlighted" backgroundImage="TabFriendsHighlighted.png">
+                    <state key="highlighted" image="ButtonFriendsFacebookHighlighted.png">
                         <color key="titleColor" red="0.15686275059999999" green="0.1764705926" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
                         <action selector="switchClicked:" destination="-1" eventType="touchUpInside" id="33"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="29">
+                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="29" userLabel="R Button">
                     <rect key="frame" x="0.0" y="0.0" width="160" height="44"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <state key="normal" title="ON ROCKPACK" backgroundImage="TabFriendsDefault.png">
+                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <state key="normal" image="ButtonFriendsRockpackDefault.png">
                         <color key="titleColor" red="0.15686275059999999" green="0.1764705926" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
-                    <state key="selected" backgroundImage="TabFriendsSelected.png">
-                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <state key="selected" image="ButtonFriendsRockpackSelected.png">
+                        <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </state>
-                    <state key="highlighted" backgroundImage="TabFriendsHighlighted.png">
+                    <state key="highlighted" image="ButtonFriendsRockpackHighlighted.png">
                         <color key="titleColor" red="0.15686275059999999" green="0.1764705926" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
@@ -194,9 +198,13 @@
         <image name="ButtonCloseSearchHighlighted.png" width="44" height="45"/>
         <image name="ButtonFacebookFriendsDefault.png" width="280" height="45"/>
         <image name="ButtonFacebookFriendsHighlighted.png" width="280" height="45"/>
+        <image name="ButtonFriendsFacebookDefault.png" width="160" height="44"/>
+        <image name="ButtonFriendsFacebookHighlighted.png" width="160" height="44"/>
+        <image name="ButtonFriendsFacebookSelected.png" width="160" height="44"/>
+        <image name="ButtonFriendsRockpackDefault.png" width="160" height="44"/>
+        <image name="ButtonFriendsRockpackHighlighted.png" width="160" height="44"/>
+        <image name="ButtonFriendsRockpackSelected.png" width="160" height="44"/>
         <image name="IconSearch.png" width="34" height="45"/>
-        <image name="TabFriendsDefault.png" width="172" height="44"/>
-        <image name="TabFriendsHighlighted.png" width="172" height="44"/>
-        <image name="TabFriendsSelected.png" width="171" height="44"/>
+        <image name="IconSearch.png" width="34" height="45"/>
     </resources>
 </document>
