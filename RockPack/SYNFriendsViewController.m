@@ -567,7 +567,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     self.buttonShowSearch.hidden = YES;
     self.buttonShowSearch.alpha = 0.0f;
     
-    SYNSideNavigatorViewController *obj;
+//    SYNSideNavigatorViewController *obj;
     
     [UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationCurveEaseIn animations:^{
         CGRect newFrame = self.searchSlider.frame;
