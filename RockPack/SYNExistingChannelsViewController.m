@@ -518,7 +518,7 @@
     CGRect autopostViewFrame = self.autopostView.frame;
     
     autopostViewFrame.origin.y = self.view.frame.size.height - autopostViewFrame.size.height - 15;
-    if(IS_IPHONE_5 && IS_IOS_7_OR_GREATER)
+    if(IS_IPHONE && IS_IOS_7_OR_GREATER)
         autopostViewFrame.origin.y += 15.0;
     
     self.autopostView.frame = autopostViewFrame;

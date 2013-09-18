@@ -35,7 +35,9 @@
 #import <AVFoundation/AVFoundation.h>
 #import <FacebookSDK/FacebookSDK.h>
 
-@interface SYNAppDelegate ()
+@interface SYNAppDelegate () {
+    BOOL enteredAppThroughNotification;
+}
 
 @property (nonatomic, strong) NSManagedObjectContext *channelsManagedObjectContext;
 @property (nonatomic, strong) NSManagedObjectContext *mainManagedObjectContext;
@@ -524,6 +526,11 @@
     }
     
     [self checkForUpdatedPlayerCode];
+    
+    
+    
+    [self.oAuthNetworkEngine trackSessionWithMessage: enteredAppThroughNotification ? @"URL" : nil];
+    
 }
 
 
@@ -741,8 +748,7 @@
     {
         NSError *error = nil;
         
-        if (![self.searchManagedObjectContext
-              save: &error])
+        if (![self.searchManagedObjectContext save:&error])
         {
             AssertOrLog(@"Error saving Search moc: %@\n%@", [error localizedDescription], [error userInfo]);
         }
@@ -761,8 +767,7 @@
     {
         NSError *error = nil;
         
-        if (![self.channelsManagedObjectContext
-              save: &error])
+        if (![self.channelsManagedObjectContext save:&error])
         {
             AssertOrLog(@"Error saving Channels moc: %@\n%@", [error localizedDescription], [error userInfo]);
         }
@@ -856,9 +861,6 @@
     {
         [self.mainManagedObjectContext deleteObject: objectToDelete];
     }
-    
-    
-    
     
     
     // === Clear Channels === //
@@ -1063,6 +1065,7 @@
 - (void) checkForUpdatedPlayerCode
 {
     [self.networkEngine updatePlayerSourceWithCompletionHandler: ^(NSDictionary *dictionary) {
+        
          if (dictionary && [dictionary isKindOfClass: [NSDictionary class]])
          {
              // Handle YouTube player updates
@@ -1297,7 +1300,7 @@
         
         [self parseAndActionRockpackURL: rockpackURL];
         
-        [self.oAuthNetworkEngine trackSessionWithMessage:@"URL"];
+        
     }
 }
 
@@ -1422,7 +1425,7 @@
                              withValue: nil];
         
         
-        [self.oAuthNetworkEngine trackSessionWithMessage:url.absoluteString];
+        enteredAppThroughNotification = YES;
     }
     else
     {
