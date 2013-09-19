@@ -1292,22 +1292,21 @@
     self.logoImageView.hidden = !visible;
     
     // If the current user's favourites channel, hide edit button and move subscribers
-    if (self.channel.favouritesValue && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId])
+    if (self.channel.favouritesValue &&
+        [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId])
     {
         self.editButton.hidden = TRUE;
         
         CGFloat offset = IS_IPAD ? 130.0f : 125.0f;
         
-        
-        
         CGRect frame = self.subscribersLabel.frame;
         
-        
         frame.origin.x = 144.0f - offset;
+        
         self.subscribersLabel.frame = frame;
-        ///
+      
         self.originalSubscribersLabelRect = frame;
-        ///
+  
         self.subscribersButton.center = self.subscribersLabel.center;
     }
     
