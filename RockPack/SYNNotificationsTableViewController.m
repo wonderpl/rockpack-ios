@@ -228,17 +228,32 @@
 
 #pragma mark - Delegate Handler
 
+-(SYNNotificationsTableViewCell*)getCellFromButton:(UIButton*)button
+{
+    
+    
+    UIView* cell = button;
+    while (![cell isKindOfClass:[SYNNotificationsTableViewCell class]])
+    {
+        cell = cell.superview;
+    }
+    
+    
+    return (SYNNotificationsTableViewCell*)cell;
+}
+
 // this is the user who initialed the action, goes to is profile
 - (void) mainImageTableCellPressed: (UIButton *) button
 {
-    SYNNotificationsTableViewCell *cellPressed = (SYNNotificationsTableViewCell *) button.superview;
+    
+    
+    SYNNotificationsTableViewCell *cellPressed = [self getCellFromButton:button];
     
     NSIndexPath *indexPathForCellPressed = [self.tableView indexPathForCell: cellPressed];
     
     if (indexPathForCellPressed.row > self.notifications.count)
-    {
         return;
-    }
+
     
     SYNRockpackNotification *notification = self.notifications[indexPathForCellPressed.row];
     
@@ -252,7 +267,7 @@
 
 - (void) itemImageTableCellPressed: (UIButton *) button
 {
-    SYNNotificationsTableViewCell *cellPressed = (SYNNotificationsTableViewCell *) button.superview;
+    SYNNotificationsTableViewCell *cellPressed = [self getCellFromButton:button];
     
     NSIndexPath *indexPathForCellPressed = [self.tableView
                                             indexPathForCell: cellPressed];
