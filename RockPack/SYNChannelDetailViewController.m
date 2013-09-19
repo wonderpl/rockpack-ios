@@ -1297,7 +1297,7 @@
     {
         self.editButton.hidden = TRUE;
         
-        CGFloat offset = IS_IPAD ? 130.0f : 125.0f;
+        CGFloat offset = IS_IPAD ? 80.0f : 125.0f;
         
         CGRect frame = self.subscribersLabel.frame;
         
