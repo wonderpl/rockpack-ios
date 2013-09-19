@@ -537,6 +537,8 @@
  
     self.oneToOneViewController = [[SYNOneToOneSharingController alloc] initWithInfo: self.mutableShareDictionary];
     
+     
+    
     [appDelegate.viewStackManager presentPopoverView: self.oneToOneViewController.view];
 }
 
