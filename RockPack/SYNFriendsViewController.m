@@ -559,7 +559,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
 
 -(NSArray*)facebookFriends
 {
-    return [self.friends filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"externalSystem == %@", kFacebook]];
+    return [self.friends filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"externalSystem == %@ AND isOnRockpack == NO", kFacebook]];
 }
 
 -(NSArray*)rockpackFriends

@@ -87,7 +87,7 @@
                     <size key="shadowOffset" width="0.0" height="1"/>
                 </label>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="gray" id="14">
-                    <rect key="frame" x="171" y="153" width="20" height="20"/>
+                    <rect key="frame" x="171" y="190" width="20" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </activityIndicatorView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="28">
