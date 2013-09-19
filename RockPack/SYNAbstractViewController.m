@@ -718,6 +718,19 @@
                                                   // Currently highlighted, so decrement
                                                   videoInstance.starredByUserValue = NO;
                                                   videoInstance.video.starCountValue -= 1;
+                                                  
+                                                  Channel* parentChannel = videoInstance.channel;
+                                                  if(parentChannel &&
+                                                     parentChannel.favouritesValue &&
+                                                     [parentChannel.channelOwner.uniqueId isEqualToString:appDelegate.currentUser.uniqueId])
+                                                  {
+                                                      // the video belonged to favorites
+                                                      
+                                                      [parentChannel removeVideoInstancesObject:videoInstance];
+                                                      
+                                                      
+                                                      
+                                                  }
                                               }
                                               else
                                               {
