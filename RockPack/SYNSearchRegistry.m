@@ -158,7 +158,6 @@
 - (BOOL) registerFriendsFromDictionary:(NSDictionary *) dictionary
 {
     
-    
     NSDictionary *usersDictionary = dictionary[@"users"];
     
     if (!usersDictionary || ![usersDictionary[@"items"] isKindOfClass:[NSArray class]])
@@ -184,6 +183,7 @@
     
     
     NSMutableDictionary* existingFriendsByUID = [NSMutableDictionary dictionaryWithCapacity:existingFriendsArray.count];
+//    NSMutableDictionary* existingFriendsByEmail = [NSMutableDictionary dictionaryWithCapacity:existingFriendsArray.count];
     
     for (Friend* existingFriend in existingFriendsArray)
     {
@@ -197,8 +197,11 @@
         
         existingFriendsByUID[existingFriend.uniqueId] = existingFriend;
         
-        if(!existingFriend.localOriginValue) // protect the address book friends
+        if(!existingFriend.localOriginValue) // protect the address book friends...
             existingFriend.markedForDeletionValue = YES;
+//        else if (existingFriend.email && ![existingFriend.email isEqualToString:@""]) // ... and save them in the dictionary
+//            existingFriendsByEmail[existingFriend.email] = existingFriend;
+        
             
     }
     
@@ -218,7 +221,13 @@
                                usingManagedObjectContext: appDelegate.searchManagedObjectContext]))
                 continue;
         
+//        if(friend.email && existingFriendsByEmail[friend.email]) // the friend returned also exists on address book
+//        {
+//            ((Friend*)existingFriendsByEmail[friend.email]).markedForDeletionValue = YES;
+//        }
         
+        
+        // if an address book friend has been transfered to
         
         friend.markedForDeletionValue = NO;
         

@@ -2140,7 +2140,9 @@
                                                       userInfo: nil];
     
     // return to previous screen as if the back button tapped
+    
     appDelegate.viewStackManager.returnBlock = ^{
+        
         [appDelegate.oAuthNetworkEngine deleteChannelForUserId: appDelegate.currentUser.uniqueId
                                                      channelId: self.channel.uniqueId
                                              completionHandler: ^(id response) {
@@ -2153,10 +2155,14 @@
                                                  
                                                  
                                                  [appDelegate saveContext: YES];
-                                             }
-                                                  errorHandler: ^(id error) {
-                                                      DebugLog(@"Delete channel failed");
-                                                  }];
+                                                 
+                                                 
+                                                 
+                                             } errorHandler: ^(id error) {
+                                                
+                                                 DebugLog(@"Delete channel failed");
+                                                 
+                                             }];
     };
     
     [appDelegate.viewStackManager popController];
