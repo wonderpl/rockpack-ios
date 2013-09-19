@@ -138,6 +138,7 @@
         self.mode = mode;
         self.channel = channel;
         
+        
         // Get share link pre-emptively
         [self requestShareLinkWithObjectType: @"channel"
                                     objectId: channel.uniqueId];
@@ -296,7 +297,7 @@
         self.addButton.hidden = NO;
         self.createChannelButton.hidden = YES;
     }
-    else
+    else if(self.mode)
     {
         // Google analytics support
         [GAI.sharedInstance.defaultTracker
@@ -396,6 +397,9 @@
                 viewToMove.frame = vFrame;
             }
         }
+        
+        if(self.mode == kChannelDetailsModeCreate)
+            self.deleteChannelButton.hidden = YES;
     }
     
     self.selectedCategoryId = self.channel.categoryId;
@@ -908,24 +912,35 @@
     // Whether to show play channel button
     if (self.channel.videoInstances.count > 0)
     {
-        [UIView animateWithDuration: kChannelEditModeAnimationDuration
-                         animations: ^{
+        [UIView animateWithDuration:kChannelEditModeAnimationDuration
+                              delay:0.0f
+                            options:UIViewAnimationCurveEaseOut
+                         animations:^{
+                             
                              self.playChannelButton.alpha = 1;
                              CGRect buttonFrame = self.subscribeButton.frame;
                              buttonFrame.origin.x = buttonRect.origin.x + offset;
                              self.subscribeButton.frame = buttonFrame;
                              self.editButton.frame = buttonFrame;
+                             
+                             
                              CGRect labelFrame = self.subscribersLabel.frame;
                              labelFrame.origin.x = labelRect.origin.x + offset;
                              self.subscribersLabel.frame = labelFrame;
                              self.subscribersButton.frame = labelFrame;
-                         }
-                         completion: nil];
+            
+                         } completion:nil];
+        
+        
     }
     else
     {
-        [UIView animateWithDuration: kChannelEditModeAnimationDuration
-                         animations: ^{
+        
+        [UIView animateWithDuration:kChannelEditModeAnimationDuration
+                              delay:0.0f
+                            options:UIViewAnimationCurveEaseOut
+                         animations:^{
+                             
                              self.playChannelButton.alpha = 0;
                              CGRect buttonFrame = self.subscribeButton.frame;
                              buttonFrame.origin.x = buttonRect.origin.x;
@@ -935,8 +950,10 @@
                              labelFrame.origin.x = labelRect.origin.x;
                              self.subscribersLabel.frame = labelFrame;
                              self.subscribersButton.frame = labelFrame;
-                         }
-                         completion: nil];
+                             
+                         } completion:nil];
+        
+        
     }
     
     

@@ -64,6 +64,8 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     
     self.friends = @[];
     
+    
+    
     // Register Cells
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNFriendThumbnailCell"
                                              bundle: nil];
@@ -137,6 +139,8 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     bFrame.size.height = 54.0f;
     bFrame.origin.y -= 10.0f;
     self.onFacebookButton.frame = bFrame;
+    
+    
 }
 
 
@@ -196,9 +200,12 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
         self.onRockpackButton.selected = YES;
         self.followInviteLabel.text = NSLocalizedString(@"friends_follow", nil);
         
+        
+        
         [self.friendsCollectionView reloadData];
+        
+        
     }
-    
     
     if(hasAttemptedToLoadData)
         return;
