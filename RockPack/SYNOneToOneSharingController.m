@@ -575,7 +575,7 @@
     if(realIndex == 0 && displayEmailCell)
     {
         userThumbnailCell.imageView.image = [UIImage imageNamed:@"ShareAddEntry.jpg"];
-        userThumbnailCell.nameLabel.text = @"Add new Email";
+        userThumbnailCell.nameLabel.text = @"Add New";
        
         
         userThumbnailCell.imageView.alpha = 1.0f;
