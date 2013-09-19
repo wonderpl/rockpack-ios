@@ -52,20 +52,7 @@
     return instance;
 }
 
--(void)setStarredByUserValue:(BOOL)value_
-{
-    if (value_) {
-        NSLog(@"*");
-    }
-    self.starredByUser = @(value_);
-}
--(void)setStarredByUser:(NSNumber *)starredByUser
-{
-    if([starredByUser boolValue])
-    {
-        NSLog(@"*");
-    }
-}
+
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext

@@ -598,9 +598,10 @@
     self.channelTitleLabel.text = videoInstance.channel.title;
     self.videoTitleLabel.text = videoInstance.title;
     self.heartButton.selected = videoInstance.starredByUserValue;
-    NSLog(@"%@", videoInstance.video);
     self.likesCountLabel.text = [videoInstance.video.starCount stringValue];
+    
     [self refreshAddbuttonStatus:nil];
+    
 }
 
 

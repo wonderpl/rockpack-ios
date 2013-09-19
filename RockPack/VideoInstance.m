@@ -238,6 +238,7 @@ static NSDateFormatter *dateFormatter = nil;
         return;
     
     [self.starrersSet addObject:copyOfChannelOwner];
+    
 }
 
 -(void)removeStarrersObject:(ChannelOwner *)value_
@@ -254,8 +255,6 @@ static NSDateFormatter *dateFormatter = nil;
             
             break;
         }
-        
-        
     }
 }
 
@@ -293,8 +292,15 @@ static NSDateFormatter *dateFormatter = nil;
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     NSString* currentUserUniqueId = appDelegate.currentUser.uniqueId;
     for (ChannelOwner* co in self.starrers)
+    {
         if([co.uniqueId isEqualToString:currentUserUniqueId])
+        {
+            self.video.starredByUserValue = YES; //preemptively set the flag
             return @YES;
+        }
+        
+    }
+    
     
     return @NO;
 }
