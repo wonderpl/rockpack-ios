@@ -92,7 +92,7 @@
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" id="VEo-FO-5Og" userLabel="White Line">
-                            <rect key="frame" x="160" y="425.5" width="1" height="29"/>
+                            <rect key="frame" x="160" y="425" width="1" height="29"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         </view>
@@ -186,7 +186,7 @@
                             <rect key="frame" x="15" y="54" width="290" height="49"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
-                        <textField opaque="NO" clipsSubviews="YES" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="EMAIL OR USERNAME" minimumFontSize="17" clearButtonMode="whileEditing" id="28" customClass="SYNTextFieldLoginiPhone">
+                        <textField opaque="NO" clipsSubviews="YES" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email or Username" minimumFontSize="17" clearButtonMode="whileEditing" id="28" customClass="SYNTextFieldLoginiPhone">
                             <rect key="frame" x="30" y="62" width="260" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
