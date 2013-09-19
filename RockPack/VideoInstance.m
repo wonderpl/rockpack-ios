@@ -154,6 +154,8 @@ static NSDateFormatter *dateFormatter = nil;
             
             // the method addStarrersObject has been overriden so as to copy the CO, do not use unless in need of a copy
             // ex. when passing the currentUser to the video instance
+            
+            
             [self.starrersSet addObject:starringChannelOwner];
             
         }
@@ -227,7 +229,6 @@ static NSDateFormatter *dateFormatter = nil;
             return;
     
     
-    
     ChannelOwner* copyOfChannelOwner = [ChannelOwner instanceFromChannelOwner:value_
                                                                     andViewId:self.viewId
                                                     usingManagedObjectContext:self.managedObjectContext
@@ -269,9 +270,9 @@ static NSDateFormatter *dateFormatter = nil;
     
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     if([starredByUser boolValue])
-        [self addStarrersObject:appDelegate.currentUser];
+        [self addStarrersObject:appDelegate.currentUser]; // will copy the user into a new object
     else
-        [self removeStarrersObject:appDelegate.currentUser];
+        [self removeStarrersObject:appDelegate.currentUser]; // will remove the duplicate rather than the real user
     
     self.video.starredByUser = starredByUser;
     
@@ -285,7 +286,8 @@ static NSDateFormatter *dateFormatter = nil;
 }
 -(NSNumber*)starredByUser
 {
-    if(self.video.starredByUserValue || [_starredByUser boolValue]) // check ivar for "caching"
+    
+    if(self.video.starredByUserValue == YES || (_starredByUser && ([_starredByUser boolValue] == YES))) // check ivar for "caching"
         return @YES;
     
     SYNAppDelegate* appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -305,6 +307,19 @@ static NSDateFormatter *dateFormatter = nil;
     self.markedForDeletion = [NSNumber numberWithBool:value_];
     self.channel.markedForDeletionValue = value_;
     self.channel.channelOwner.markedForDeletionValue = value_;
+}
+
+-(NSString*)description
+{
+    NSMutableString* dMutableString = [[NSMutableString alloc] init];
+    
+    [dMutableString appendString:@"[VideoInstance "];
+    [dMutableString appendFormat:@"%@", self.starredByUserValue ? @"* " : @""];
+    [dMutableString appendFormat:@"(*c:%i)", self.starrers.count];
+    [dMutableString appendString:@"]"];
+    
+    
+    return [NSString stringWithString:dMutableString];
 }
 
 @end

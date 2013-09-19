@@ -61,7 +61,7 @@
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *shareActivityIndicator;
 @property (nonatomic, strong) IBOutlet UIButton *nextVideoButton;
 @property (nonatomic, strong) IBOutlet UIButton *previousVideoButton;
-@property (nonatomic, strong) IBOutlet UIButton *starButton;
+@property (nonatomic, strong) IBOutlet UIButton *heartButton;
 @property (nonatomic, strong) IBOutlet UIButton* reportConcernButton;
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) IBOutlet UIImageView *channelThumbnailImageView;
@@ -597,7 +597,8 @@
     
     self.channelTitleLabel.text = videoInstance.channel.title;
     self.videoTitleLabel.text = videoInstance.title;
-    self.starButton.selected = videoInstance.starredByUserValue;
+    self.heartButton.selected = videoInstance.starredByUserValue;
+    NSLog(@"%@", videoInstance.video);
     self.likesCountLabel.text = [videoInstance.video.starCount stringValue];
     [self refreshAddbuttonStatus:nil];
 }
@@ -1373,8 +1374,8 @@
     self.shareButton.alpha = 0.0f;
     self.shareButton.transform = CGAffineTransformMakeTranslation(self.shareButton.frame.size.width, 0.0f);
     
-    self.starButton.alpha = 0.0f;
-    self.starButton.transform = CGAffineTransformMakeTranslation(-self.shareButton.frame.size.width, 0.0f);
+    self.heartButton.alpha = 0.0f;
+    self.heartButton.transform = CGAffineTransformMakeTranslation(-self.shareButton.frame.size.width, 0.0f);
     
     self.likesCountLabel.alpha = 0.0f;
     self.likesCountLabel.transform = CGAffineTransformMakeTranslation(-80.0f, 0.0f);
@@ -1399,7 +1400,7 @@
         
         self.shareButton.transform = CGAffineTransformIdentity;
         
-        self.starButton.transform = CGAffineTransformIdentity;
+        self.heartButton.transform = CGAffineTransformIdentity;
         
         self.likesCountLabel.transform = CGAffineTransformIdentity;
         
@@ -1409,7 +1410,7 @@
         
         self.shareButton.alpha = 1.0f;
         
-        self.starButton.alpha = 1.0f;
+        self.heartButton.alpha = 1.0f;
 
     } completion:nil];
 

@@ -14,13 +14,13 @@
                 <outlet property="chromeView" destination="111" id="115"/>
                 <outlet property="closeButton" destination="79" id="80"/>
                 <outlet property="heartActivityIndicator" destination="149" id="150"/>
+                <outlet property="heartButton" destination="15" id="Mtp-kv-D5G"/>
                 <outlet property="likesCountLabel" destination="161" id="162"/>
                 <outlet property="panelView" destination="iPW-v0-OUF" id="c5i-Ej-yfZ"/>
                 <outlet property="placeholderView" destination="152" id="154"/>
                 <outlet property="reportConcernButton" destination="139" id="141"/>
                 <outlet property="shareActivityIndicator" destination="155" id="156"/>
                 <outlet property="shareButton" destination="14" id="158"/>
-                <outlet property="starButton" destination="15" id="134"/>
                 <outlet property="swipeView" destination="113" id="114"/>
                 <outlet property="videoThumbnailCollectionView" destination="81" id="160"/>
                 <outlet property="videoTitleLabel" destination="142" id="143"/>

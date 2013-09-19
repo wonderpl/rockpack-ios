@@ -22,7 +22,7 @@
     instance.sourceId = video.sourceId;
     instance.sourceUsername = video.sourceUsername;
     instance.starCount = video.starCount;
-    instance.starredByUser = video.starredByUser;
+    instance.starredByUserValue = video.starredByUserValue;
     instance.thumbnailURL = video.thumbnailURL;
     
     return instance;
@@ -52,7 +52,20 @@
     return instance;
 }
 
-
+-(void)setStarredByUserValue:(BOOL)value_
+{
+    if (value_) {
+        NSLog(@"*");
+    }
+    self.starredByUser = @(value_);
+}
+-(void)setStarredByUser:(NSNumber *)starredByUser
+{
+    if([starredByUser boolValue])
+    {
+        NSLog(@"*");
+    }
+}
 - (void) setAttributesFromDictionary: (NSDictionary *) dictionary
                               withId: (NSString *) uniqueId
            usingManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
@@ -94,6 +107,8 @@
     
     self.starCount = [dictionary objectForKey: @"star_count"
                                   withDefault: @0];
+    
+    self.starredByUserValue = NO;
     
     self.thumbnailURL = [dictionary objectForKey: @"thumbnail_url"
                                      withDefault: @""];

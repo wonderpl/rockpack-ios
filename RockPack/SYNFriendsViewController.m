@@ -186,7 +186,6 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
     existingFriendsArray = [appDelegate.searchManagedObjectContext executeFetchRequest: fetchRequest
                                                                                  error: &error];
     
-    NSLog(@"%@", existingFriendsArray);
     
     
     if(!error)

@@ -10,6 +10,7 @@
       forManagedObjectContext:(NSManagedObjectContext*)managedObjectContext;
 
 
+- (void) setAttributesFromDictionary: (NSDictionary *) dictionary;
 
 @property (nonatomic, readonly) BOOL isOnRockpack;
 
