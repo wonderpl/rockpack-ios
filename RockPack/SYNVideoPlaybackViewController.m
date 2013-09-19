@@ -560,7 +560,9 @@ static UIWebView* vimeoideoWebViewInstance;
     [volumeView sizeToFit];
     volumeView.backgroundColor = [UIColor clearColor];
     volumeView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-    [shuttleBarView addSubview: volumeView];
+    
+    //Airplay was messing with the maximise button
+    [shuttleBarView insertSubview:volumeView belowSubview:self.shuttleBarMaxMinButton];
     [self.view addSubview: shuttleBarView];
     
     self.originalShuttleBarFrame = shuttleBarView.frame;
