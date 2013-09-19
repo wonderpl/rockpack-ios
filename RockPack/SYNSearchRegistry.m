@@ -213,12 +213,7 @@
         
         
         
-        if (!friend.hasIOSDevice)  // filter for users with iOS devices only
-            continue;
-        
-        
         friend.markedForDeletionValue = NO;
-        
         
         
     }

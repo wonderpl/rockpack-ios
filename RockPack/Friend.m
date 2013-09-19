@@ -98,7 +98,7 @@
     self.lastShareDate = [dictionary dateFromISO6801StringForKey:@"last_shared_date"
                                                      withDefault:nil];
     
-    self.localOriginValue = @NO;
+    self.localOriginValue = NO;
     
 }
 
@@ -133,11 +133,21 @@
 }
 -(BOOL)isFromAddressBook
 {
-    return [self.externalSystem isEqualToString:kEmail];
+    return self.localOriginValue;
 }
 -(NSString*)description
 {
-    return [NSString stringWithFormat:@"[Friend (id:%@, name:%@, email:'%@')]", self.uniqueId, self.displayName, self.email];
+    NSString* from;
+    if(self.localOriginValue)
+        from = @"Loc";
+    else if (self.isFromFacebook)
+        from = @"FB";
+    else if (self.isOnRockpack)
+        from = @"RP";
+    else
+        from = @"?";
+    
+    return [NSString stringWithFormat:@"[Friend [%@] (name:'%@', email:'%@')]", from, self.displayName, self.email];
 }
 
 @end
