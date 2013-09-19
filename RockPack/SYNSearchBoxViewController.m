@@ -160,7 +160,7 @@
     
     
     CGRect searchTBVFrame = self.searchCategoriesController.tableView.frame;
-    searchTBVFrame.origin = CGPointMake(0.0f, 64.0f);
+    searchTBVFrame.origin = CGPointMake(0.0f, IS_IOS_7_OR_GREATER ? 74.0f : 64.0f);
     self.searchCategoriesController.tableView.frame = searchTBVFrame;
     [self.searchCategoriesController setSize:CGSizeMake(self.view.frame.size.width,
                                                        [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - searchTBVFrame.origin.y)];
