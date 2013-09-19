@@ -899,37 +899,37 @@
         [self autoplayVideoIfAvailable];
     }
     
-    CGRect buttonRect = self.originalSubscribeButtonRect;
-    CGRect labelRect = self.originalSubscribersLabelRect;
+    CGRect orgButtonRect = self.originalSubscribeButtonRect;
+    CGRect orgLabelRect = self.originalSubscribersLabelRect;
     
-    int offset = 48;
-    
-    if (IS_IPAD)
-    {
-        offset = 54;
-    }
+    float offset = IS_IPAD ? 54.0f : 48.0;
     
     // Whether to show play channel button
     if (self.channel.videoInstances.count > 0)
     {
+        
+        
         [UIView animateWithDuration:kChannelEditModeAnimationDuration
                               delay:0.0f
                             options:UIViewAnimationCurveEaseOut
                          animations:^{
                              
-                             self.playChannelButton.alpha = 1;
+                             self.playChannelButton.alpha = 1.0f;
+                             
                              CGRect buttonFrame = self.subscribeButton.frame;
-                             buttonFrame.origin.x = buttonRect.origin.x + offset;
+                             buttonFrame.origin.x = orgButtonRect.origin.x + offset;
                              self.subscribeButton.frame = buttonFrame;
                              self.editButton.frame = buttonFrame;
                              
                              
                              CGRect labelFrame = self.subscribersLabel.frame;
-                             labelFrame.origin.x = labelRect.origin.x + offset;
+                             labelFrame.origin.x = orgLabelRect.origin.x + offset;
                              self.subscribersLabel.frame = labelFrame;
                              self.subscribersButton.frame = labelFrame;
             
                          } completion:nil];
+        
+        
         
         
     }
@@ -941,13 +941,13 @@
                             options:UIViewAnimationCurveEaseOut
                          animations:^{
                              
-                             self.playChannelButton.alpha = 0;
+                             self.playChannelButton.alpha = 0.0f;
                              CGRect buttonFrame = self.subscribeButton.frame;
-                             buttonFrame.origin.x = buttonRect.origin.x;
+                             buttonFrame.origin.x = orgButtonRect.origin.x;
                              self.subscribeButton.frame = buttonFrame;
                              self.editButton.frame = buttonFrame;
                              CGRect labelFrame = self.subscribersLabel.frame;
-                             labelFrame.origin.x = labelRect.origin.x;
+                             labelFrame.origin.x = orgLabelRect.origin.x;
                              self.subscribersLabel.frame = labelFrame;
                              self.subscribersButton.frame = labelFrame;
                              
@@ -1296,15 +1296,14 @@
     {
         self.editButton.hidden = TRUE;
         
-        CGFloat offset = 125;
+        CGFloat offset = IS_IPAD ? 130.0f : 125.0f;
         
-        if (!self.isIPhone)
-        {
-            offset = 130;
-        }
+        
         
         CGRect frame = self.subscribersLabel.frame;
-        frame.origin.x -= offset;
+        
+        
+        frame.origin.x = 144.0f - offset;
         self.subscribersLabel.frame = frame;
         ///
         self.originalSubscribersLabelRect = frame;
