@@ -311,7 +311,7 @@
                         <view contentMode="top" id="113" userLabel="View - Swipe and Tap area">
                             <rect key="frame" x="172" y="142" width="676" height="251"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="1" green="0.21456023190000001" blue="1" alpha="0.34999999999999998" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <gestureRecognizers/>
                         </view>
                     </subviews>
