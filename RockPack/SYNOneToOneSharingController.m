@@ -266,7 +266,7 @@
         {
             self.searchTextField.placeholder = @"Type an email address";
         }
-        
+        [self fetchAndDisplayFriends];
         hasAttemptedToLoadData = YES;
         [self.recentFriendsCollectionView reloadData]; // to display the add email cell
     }

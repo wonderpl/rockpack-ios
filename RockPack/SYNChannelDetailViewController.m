@@ -1517,6 +1517,7 @@
                          cell.alpha = 0.0;
                      }
                      completion: ^(BOOL finished) {
+                         
                          [self.channel.videoInstancesSet removeObject: videoInstanceToDelete];
                          
                          [videoInstanceToDelete.managedObjectContext deleteObject: videoInstanceToDelete];
@@ -2105,22 +2106,8 @@
 
 
 
-// Alert view delegarte for
-//- (void)	 alertView: (UIAlertView *) alertView
-//         clickedButtonAtIndex: (NSInteger) buttonIndex
-//{
-//    if (buttonIndex == 0)
-//    {
-//        // cancel, do nothing
-//        DebugLog(@"Delete cancelled");
-//    }
-//    else
-//    {
-//        [self deleteVideoInstance];
-//    }
-//}
 
-- (void)	 alertView: (UIAlertView *) alertView
+- (void) alertView: (UIAlertView *) alertView
          willDismissWithButtonIndex: (NSInteger) buttonIndex
 {
     if (alertView == self.deleteChannelAlertView)
@@ -2147,8 +2134,15 @@
 
 - (void) deleteChannel
 {
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
+                                                        object: self
+                                                      userInfo: nil];
+    
     // return to previous screen as if the back button tapped
+    
     appDelegate.viewStackManager.returnBlock = ^{
+        
         [appDelegate.oAuthNetworkEngine deleteChannelForUserId: appDelegate.currentUser.uniqueId
                                                      channelId: self.channel.uniqueId
                                              completionHandler: ^(id response) {
@@ -2157,14 +2151,21 @@
                                                  [self.channel.managedObjectContext deleteObject: self.channel];
                                                  [self.originalChannel.managedObjectContext deleteObject:self.originalChannel];
                                                  
+                                                 // bring back controls
+                                                 
+                                                 
                                                  [appDelegate saveContext: YES];
-                                             }
-                                                  errorHandler: ^(id error) {
-                                                      DebugLog(@"Delete channel failed");
-                                                  }];
+                                                 
+                                                 
+                                                 
+                                             } errorHandler: ^(id error) {
+                                                
+                                                 DebugLog(@"Delete channel failed");
+                                                 
+                                             }];
     };
     
-    [appDelegate.viewStackManager popController];   
+    [appDelegate.viewStackManager popController];
 }
 
 
