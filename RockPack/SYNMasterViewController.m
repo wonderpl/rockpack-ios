@@ -448,6 +448,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
                                                             object: nil];
         [self resumeVideoIfShowing];
+        
+        if(IS_IPHONE)
+        {
+            self.searchButton.hidden = NO;
+        }
+        
         return;
     }
     
@@ -461,6 +467,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         [setOfVideosToPost addObject:newVideoInstance];
     }
+    
+    
+    
 
     [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentUser.uniqueId
                                                           channelId: selectedChannel.uniqueId
