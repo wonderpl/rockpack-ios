@@ -60,7 +60,7 @@
     {
         if ([uniqueId isEqualToString: obj])
         {
-            video.starredByUserValue = TRUE;
+            video.starredByUserValue = YES;
             *stop = YES;
         }
     }];

@@ -113,7 +113,7 @@
         self.autopostView.hidden = YES;
     }
     
-    if(IS_IPHONE && IS_IOS_7_OR_GREATER)
+    if(IS_IPHONE)
     {
         CGRect vFrame;
         for (UIView* viewToMove in @[self.closeButton, self.titleLabel, self.confirmButtom])
@@ -518,7 +518,7 @@
     CGRect autopostViewFrame = self.autopostView.frame;
     
     autopostViewFrame.origin.y = self.view.frame.size.height - autopostViewFrame.size.height - 15;
-    if(IS_IPHONE && IS_IOS_7_OR_GREATER)
+    if(IS_IPHONE)
         autopostViewFrame.origin.y += 15.0;
     
     self.autopostView.frame = autopostViewFrame;

@@ -138,6 +138,7 @@
         self.mode = mode;
         self.channel = channel;
         
+        
         // Get share link pre-emptively
         [self requestShareLinkWithObjectType: @"channel"
                                     objectId: channel.uniqueId];
@@ -296,7 +297,7 @@
         self.addButton.hidden = NO;
         self.createChannelButton.hidden = YES;
     }
-    else
+    else if(self.mode)
     {
         // Google analytics support
         [GAI.sharedInstance.defaultTracker
@@ -396,6 +397,9 @@
                 viewToMove.frame = vFrame;
             }
         }
+        
+        if(self.mode == kChannelDetailsModeCreate)
+            self.deleteChannelButton.hidden = YES;
     }
     
     self.selectedCategoryId = self.channel.categoryId;
@@ -895,48 +899,61 @@
         [self autoplayVideoIfAvailable];
     }
     
-    CGRect buttonRect = self.originalSubscribeButtonRect;
-    CGRect labelRect = self.originalSubscribersLabelRect;
+    CGRect orgButtonRect = self.originalSubscribeButtonRect;
+    CGRect orgLabelRect = self.originalSubscribersLabelRect;
     
-    int offset = 48;
-    
-    if (IS_IPAD)
-    {
-        offset = 54;
-    }
+    float offset = IS_IPAD ? 54.0f : 48.0;
     
     // Whether to show play channel button
     if (self.channel.videoInstances.count > 0)
     {
-        [UIView animateWithDuration: kChannelEditModeAnimationDuration
-                         animations: ^{
-                             self.playChannelButton.alpha = 1;
+        
+        
+        [UIView animateWithDuration:kChannelEditModeAnimationDuration
+                              delay:0.0f
+                            options:UIViewAnimationCurveEaseOut
+                         animations:^{
+                             
+                             self.playChannelButton.alpha = 1.0f;
+                             
                              CGRect buttonFrame = self.subscribeButton.frame;
-                             buttonFrame.origin.x = buttonRect.origin.x + offset;
+                             buttonFrame.origin.x = orgButtonRect.origin.x + offset;
                              self.subscribeButton.frame = buttonFrame;
                              self.editButton.frame = buttonFrame;
+                             
+                             
                              CGRect labelFrame = self.subscribersLabel.frame;
-                             labelFrame.origin.x = labelRect.origin.x + offset;
+                             labelFrame.origin.x = orgLabelRect.origin.x + offset;
                              self.subscribersLabel.frame = labelFrame;
                              self.subscribersButton.frame = labelFrame;
-                         }
-                         completion: nil];
+            
+                         } completion:nil];
+        
+        
+        
+        
     }
     else
     {
-        [UIView animateWithDuration: kChannelEditModeAnimationDuration
-                         animations: ^{
-                             self.playChannelButton.alpha = 0;
+        
+        [UIView animateWithDuration:kChannelEditModeAnimationDuration
+                              delay:0.0f
+                            options:UIViewAnimationCurveEaseOut
+                         animations:^{
+                             
+                             self.playChannelButton.alpha = 0.0f;
                              CGRect buttonFrame = self.subscribeButton.frame;
-                             buttonFrame.origin.x = buttonRect.origin.x;
+                             buttonFrame.origin.x = orgButtonRect.origin.x;
                              self.subscribeButton.frame = buttonFrame;
                              self.editButton.frame = buttonFrame;
                              CGRect labelFrame = self.subscribersLabel.frame;
-                             labelFrame.origin.x = labelRect.origin.x;
+                             labelFrame.origin.x = orgLabelRect.origin.x;
                              self.subscribersLabel.frame = labelFrame;
                              self.subscribersButton.frame = labelFrame;
-                         }
-                         completion: nil];
+                             
+                         } completion:nil];
+        
+        
     }
     
     
@@ -1069,7 +1086,6 @@
     
     VideoInstance *videoInstance = self.channel.videoInstances [indexPath.item];
     
-    videoInstance.video.starredByUserValue = self.channel.favouritesValue;
     
     [videoThumbnailCell.imageView
      setImageWithURL: [NSURL URLWithString: videoInstance.video.thumbnailURL]
@@ -1276,23 +1292,21 @@
     self.logoImageView.hidden = !visible;
     
     // If the current user's favourites channel, hide edit button and move subscribers
-    if (self.channel.favouritesValue && [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId])
+    if (self.channel.favouritesValue &&
+        [self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId])
     {
         self.editButton.hidden = TRUE;
         
-        CGFloat offset = 125;
-        
-        if (!self.isIPhone)
-        {
-            offset = 130;
-        }
+        CGFloat offset = IS_IPAD ? 80.0f : 125.0f;
         
         CGRect frame = self.subscribersLabel.frame;
-        frame.origin.x -= offset;
+        
+        frame.origin.x = 144.0f - offset;
+        
         self.subscribersLabel.frame = frame;
-        ///
+      
         self.originalSubscribersLabelRect = frame;
-        ///
+  
         self.subscribersButton.center = self.subscribersLabel.center;
     }
     
@@ -1503,6 +1517,7 @@
                          cell.alpha = 0.0;
                      }
                      completion: ^(BOOL finished) {
+                         
                          [self.channel.videoInstancesSet removeObject: videoInstanceToDelete];
                          
                          [videoInstanceToDelete.managedObjectContext deleteObject: videoInstanceToDelete];
@@ -2091,22 +2106,8 @@
 
 
 
-// Alert view delegarte for
-//- (void)	 alertView: (UIAlertView *) alertView
-//         clickedButtonAtIndex: (NSInteger) buttonIndex
-//{
-//    if (buttonIndex == 0)
-//    {
-//        // cancel, do nothing
-//        DebugLog(@"Delete cancelled");
-//    }
-//    else
-//    {
-//        [self deleteVideoInstance];
-//    }
-//}
 
-- (void)	 alertView: (UIAlertView *) alertView
+- (void) alertView: (UIAlertView *) alertView
          willDismissWithButtonIndex: (NSInteger) buttonIndex
 {
     if (alertView == self.deleteChannelAlertView)
@@ -2133,8 +2134,15 @@
 
 - (void) deleteChannel
 {
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
+                                                        object: self
+                                                      userInfo: nil];
+    
     // return to previous screen as if the back button tapped
+    
     appDelegate.viewStackManager.returnBlock = ^{
+        
         [appDelegate.oAuthNetworkEngine deleteChannelForUserId: appDelegate.currentUser.uniqueId
                                                      channelId: self.channel.uniqueId
                                              completionHandler: ^(id response) {
@@ -2143,14 +2151,21 @@
                                                  [self.channel.managedObjectContext deleteObject: self.channel];
                                                  [self.originalChannel.managedObjectContext deleteObject:self.originalChannel];
                                                  
+                                                 // bring back controls
+                                                 
+                                                 
                                                  [appDelegate saveContext: YES];
-                                             }
-                                                  errorHandler: ^(id error) {
-                                                      DebugLog(@"Delete channel failed");
-                                                  }];
+                                                 
+                                                 
+                                                 
+                                             } errorHandler: ^(id error) {
+                                                
+                                                 DebugLog(@"Delete channel failed");
+                                                 
+                                             }];
     };
     
-    [appDelegate.viewStackManager popController];   
+    [appDelegate.viewStackManager popController];
 }
 
 
@@ -3483,4 +3498,7 @@ shouldChangeTextInRange: (NSRange) range
 {
     return NO;
 }
+
+
+
 @end

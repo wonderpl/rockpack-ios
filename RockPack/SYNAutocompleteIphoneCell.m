@@ -63,9 +63,7 @@
         self.textLabel.shadowColor = self.defaultShadowColor;
         self.textLabel.shadowOffset = CGSizeMake(0.0f,1.0f);
         self.textLabel.backgroundColor = [UIColor clearColor];
-        UIImageView* imageView = [[UIImageView alloc] initWithFrame:self.frame];
-        self.backgroundView = imageView;
-        self.backgroundImageView = imageView;
+        
     }
     return self;
 }
@@ -89,15 +87,22 @@
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
+    
     if(selected)
     {
-        self.backgroundImageView.image = [UIImage imageNamed:@"NavSelected"];
+        if(IS_IOS_7_OR_GREATER)
+            self.backgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"NavSelected"]];
+        else
+            self.backgroundColor = [UIColor whiteColor];
         self.textLabel.textColor = self.selectedColor;
         self.textLabel.shadowColor = self.selectedShadowColor;
     }
     else
     {
-        self.backgroundImageView.image = [UIImage imageNamed:@"NavDefault"];
+        if(IS_IOS_7_OR_GREATER)
+            self.backgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"NavSeleNavDefaultcted"]];
+        else
+            self.backgroundColor = [UIColor whiteColor];
         self.textLabel.textColor = self.defaultColor;
         self.textLabel.shadowColor = self.defaultShadowColor;
     }

@@ -706,9 +706,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         [UIView animateWithDuration:0.3
                          animations:^{
+                             
                              self.darkOverlayView.alpha = 0.0;
+                             
                          } completion:^(BOOL finished) {
+                             
                              self.darkOverlayView.hidden = YES;
+                             
                          }];
         
         CGRect sboxFrame = self.searchBoxController.view.frame;
@@ -1404,7 +1408,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             }
             else
             {
+                
                 [self showSearchBoxField:nil];
+                
                 self.closeSearchButton.hidden = YES;
                 self.sideNavigationButton.hidden = NO;
             }

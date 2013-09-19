@@ -1458,7 +1458,7 @@
     }
     
     UIImageView *splashView = [[UIImageView alloc] initWithFrame: CGRectMake(0, 0, 1024, 748)];
-    splashView.image = [UIImage imageNamed:  @"Default-Landscape.png"];
+    splashView.image = IS_IOS_7_OR_GREATER ? [UIImage imageNamed:  @"Default-Landscape-iOS7.png"]  : [UIImage imageNamed:  @"Default-Landscape.png"];
     splashView.alpha = 0.0;
 	[self.view addSubview: splashView];
     
