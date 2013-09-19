@@ -14,6 +14,7 @@
                 <outlet property="chromeView" destination="111" id="115"/>
                 <outlet property="closeButton" destination="79" id="80"/>
                 <outlet property="heartActivityIndicator" destination="155" id="156"/>
+                <outlet property="heartButton" destination="15" id="LKL-Rg-OFW"/>
                 <outlet property="likesCountLabel" destination="160" id="161"/>
                 <outlet property="nextVideoButton" destination="17" id="73"/>
                 <outlet property="panelView" destination="gqX-es-9WE" id="Q3J-dE-CgQ"/>
@@ -22,7 +23,6 @@
                 <outlet property="reportConcernButton" destination="144" id="146"/>
                 <outlet property="shareActivityIndicator" destination="157" id="158"/>
                 <outlet property="shareButton" destination="14" id="159"/>
-                <outlet property="starButton" destination="15" id="134"/>
                 <outlet property="swipeView" destination="113" id="114"/>
                 <outlet property="videoThumbnailCollectionView" destination="81" id="85"/>
                 <outlet property="videoTitleLabel" destination="152" id="153"/>

@@ -188,9 +188,16 @@
     for (Friend* existingFriend in existingFriendsArray)
     {
         
+        if(!existingFriend.uniqueId)
+        {
+            existingFriend.markedForDeletionValue = YES;
+            continue;
+        }
+        
+        
         existingFriendsByUID[existingFriend.uniqueId] = existingFriend;
         
-        if(!existingFriend.localOriginValue) // protect from address book
+        if(!existingFriend.localOriginValue) // protect the address book friends
             existingFriend.markedForDeletionValue = YES;
             
     }
