@@ -794,9 +794,7 @@
     {
         return;
     }
-    
-    
-    
+
     // if the user does NOT have a FB account linked, no prompt
     
     ExternalAccount* facebookAccount = appDelegate.currentUser.facebookAccount;
@@ -1049,7 +1047,7 @@
                                 animations: ^ {
                                     self.blackPanelView.alpha = 1.0f;
                                     self.chromeView.alpha = 0.0f;
-                                    self.swipeView.frame =  CGRectMake(0, 90, 1024, 510);
+                                    self.swipeView.frame =  CGRectMake(0, 140, 1024, 410);
                                     self.blackPanelView.frame = CGRectMake(0, 0 + self.yOffset, 1024, 768);
                                     self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.384f, 1.384f);
                                     self.videoPlaybackViewController.view.center = CGPointMake(512, 374);
@@ -1068,7 +1066,7 @@
                                 animations: ^ {
                                     self.blackPanelView.alpha = 1.0f;
                                     self.chromeView.alpha = 0.0f;
-                                    self.swipeView.frame =  CGRectMake(0, 155, 1024, 400);
+                                    self.swipeView.frame =  CGRectMake(0, 210, 1024, 290);
                                     self.blackPanelView.frame = CGRectMake(128, -128 + self.yOffset, 768, 1024);
                                     self.videoPlaybackViewController.view.transform = CGAffineTransformMakeScale(1.0392f, 1.0392f);
                                     self.videoPlaybackViewController.view.center = CGPointMake(512, 374);
