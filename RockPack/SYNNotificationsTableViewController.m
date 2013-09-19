@@ -246,14 +246,12 @@
 - (void) mainImageTableCellPressed: (UIButton *) button
 {
     
-    
     SYNNotificationsTableViewCell *cellPressed = [self getCellFromButton:button];
     
     NSIndexPath *indexPathForCellPressed = [self.tableView indexPathForCell: cellPressed];
     
     if (indexPathForCellPressed.row > self.notifications.count)
         return;
-
     
     SYNRockpackNotification *notification = self.notifications[indexPathForCellPressed.row];
     
