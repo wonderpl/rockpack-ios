@@ -347,25 +347,10 @@
         
         
     } errorHandler: ^(id response) {
-        
-        self.tokenExpiryTimer = nil;
-        
-        // If we didn't have network connectivity, then response is nil
-        if (response)
+        DebugLog(@"Failed to refresh token");
+        if (!self.window.rootViewController)
         {
-            [self logout];
-
-            if (!self.window.rootViewController)
-            {
-                self.window.rootViewController = [self createAndReturnLoginViewController];
-            }
-        }
-        else
-        {
-            if (!self.window.rootViewController)
-            {
-                self.window.rootViewController = [self createAndReturnRootViewController];
-            }
+            self.window.rootViewController = [self createAndReturnRootViewController];
         }
         
         [startImageView removeFromSuperview];
@@ -383,12 +368,7 @@
      refreshOAuthTokenWithCompletionHandler: ^(id response) {
      }
      errorHandler: ^(id response) {
-         
-         // If we didn't have network connectivity, then response is nil
-         if (response)
-         {
-             [self logout];
-         }
+        DebugLog(@"Failed to refresh token");
      }];
 }
 
