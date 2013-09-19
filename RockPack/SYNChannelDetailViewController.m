@@ -138,6 +138,7 @@
         self.mode = mode;
         self.channel = channel;
         
+        
         // Get share link pre-emptively
         [self requestShareLinkWithObjectType: @"channel"
                                     objectId: channel.uniqueId];
@@ -296,7 +297,7 @@
         self.addButton.hidden = NO;
         self.createChannelButton.hidden = YES;
     }
-    else
+    else if(self.mode)
     {
         // Google analytics support
         [GAI.sharedInstance.defaultTracker
@@ -396,6 +397,9 @@
                 viewToMove.frame = vFrame;
             }
         }
+        
+        if(self.mode == kChannelDetailsModeCreate)
+            self.deleteChannelButton.hidden = YES;
     }
     
     self.selectedCategoryId = self.channel.categoryId;
