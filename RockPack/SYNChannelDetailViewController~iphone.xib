@@ -294,7 +294,7 @@ CATEGORY</string>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="100" userLabel="Button - Create">
-                                    <rect key="frame" x="214" y="0.0" width="106" height="58"/>
+                                    <rect key="frame" x="212" y="2" width="106" height="58"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                     <state key="normal" title="Button" image="ButtonCreate.png">
@@ -320,7 +320,7 @@ CATEGORY</string>
                                     </connections>
                                 </button>
                                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="108" userLabel="Button - doneTyping">
-                                    <rect key="frame" x="267" y="5" width="48" height="49"/>
+                                    <rect key="frame" x="265" y="5" width="48" height="49"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                     <state key="normal" title="Button" image="ButtonConfirmYellow.png">
@@ -426,6 +426,7 @@ CATEGORY</string>
         <image name="ButtonCoverCategory.png" width="155" height="65"/>
         <image name="ButtonCoverCategoryHighlighted.png" width="155" height="65"/>
         <image name="ButtonCreate.png" width="130" height="45"/>
+        <image name="ButtonCreateDisabled.png" width="130" height="45"/>
         <image name="ButtonCreateDisabled.png" width="130" height="45"/>
         <image name="ButtonCreateHighlighted.png" width="130" height="45"/>
         <image name="ButtonEdit.png" width="120" height="45"/>
