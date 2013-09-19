@@ -23,6 +23,7 @@
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNMainRegistry.h"
 #import "SYNNetworkEngine.h"
+#import "SYNPassthroughView.h"
 #import "SubGenre.h"
 #import "UIFont+SYNFont.h"
 #import "SYNTrackableFrameView.h"
@@ -144,6 +145,24 @@
     self.channelThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.channelThumbnailCollectionView.scrollsToTop = NO;
     
+    // Allocate a touch transparent recognizer view the same size as our collection view
+//    SYNPassthroughView *recognizerView = [[SYNPassthroughView alloc] initWithFrame: self.channelThumbnailCollectionView.bounds];
+//    recognizerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//    recognizerView.userInteractionEnabled = true;
+//    recognizerView.backgroundColor = [UIColor redColor];
+//    [self.channelThumbnailCollectionView addSubview: recognizerView];
+    
+    self.longPress = [[UILongPressGestureRecognizer alloc] initWithTarget: self
+                                                                   action: @selector(showMenu:)];
+    self.longPress.delegate = self;
+    [self.channelThumbnailCollectionView addGestureRecognizer: self.longPress];
+    
+    // Tap for showing video
+    self.tap = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                       action: @selector(showChannel:)];
+    self.tap.delegate = self;
+    [self.channelThumbnailCollectionView addGestureRecognizer: self.tap];
+    
     CGRect newFrame;
     
     if (IS_IPHONE)
@@ -208,10 +227,23 @@
     
     
 }
--(void)viewDidAppear:(BOOL)animated
+
+
+- (void) showChannel: (UITapGestureRecognizer *) recognizer
 {
-    [super viewDidAppear:animated];
+    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: [recognizer locationOfTouch: 0
+                                                                                                                inView: self.channelThumbnailCollectionView]];
+                              
+    UICollectionViewCell *cell = [self.channelThumbnailCollectionView cellForItemAtIndexPath: indexPath];
+    [self channelTapped: cell];
 }
+
+
+- (void) showMenu: (UILongPressGestureRecognizer *) recognizer
+{
+    [self arcMenuUpdateState: recognizer];
+}
+
 
 - (void) viewDidScrollToFront
 {

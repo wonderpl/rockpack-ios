@@ -20,8 +20,6 @@
 @property (nonatomic, strong) IBOutlet UIImageView *lowlightImageView;
 @property (nonatomic, strong) IBOutlet UILabel *byLabel;
 @property (nonatomic, strong) SYNTouchGestureRecognizer *touch;
-@property (nonatomic, strong) UILongPressGestureRecognizer *longPress;
-@property (nonatomic, strong) UITapGestureRecognizer *tap;
 
 @end
 
@@ -31,21 +29,6 @@
 - (void) awakeFromNib
 {
     [super awakeFromNib];
-    
-#ifdef ENABLE_ARC_MENU
-    
-    // Add long-press and tap recognizers (once only per cell)
-    self.longPress = [[UILongPressGestureRecognizer alloc] initWithTarget: self
-                                                                   action: @selector(showMenu:)];
-    self.longPress.delegate = self;
-    [self addGestureRecognizer: self.longPress];
-#endif
-    
-    // Tap for showing video
-    self.tap = [[UITapGestureRecognizer alloc] initWithTarget: self
-                                                       action: @selector(showChannel:)];
-    self.tap.delegate = self;
-    [self addGestureRecognizer: self.tap];
     
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
     
@@ -131,19 +114,6 @@
     }
     
     return YES; // handle the touch
-}
-
-
-- (void) showChannel: (UITapGestureRecognizer *) recognizer
-{
-    // Just need to reference any button in the cell (as there is no longer an actual video button)
-    [self.viewControllerDelegate channelTapped: self];
-}
-
-
-- (void) showMenu: (UILongPressGestureRecognizer *) recognizer
-{
-    [self.viewControllerDelegate arcMenuUpdateState: recognizer];
 }
 
 
