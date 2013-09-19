@@ -14,6 +14,7 @@
 #import "SYNDeviceManager.h"
 #import "SYNMasterViewController.h"
 #import "SYNOAuthNetworkEngine.h"
+#import "SYNOpaqueView.h"
 #import "SYNProgressView.h"
 #import "SYNVideoPlaybackViewController.h"
 #import "UIFont+SYNFont.h"
@@ -318,6 +319,9 @@ static UIWebView* vimeoideoWebViewInstance;
     self.videoPlaceholderView = [self createNewVideoPlaceholderView];
     
     self.shuttleBarView = [self createShuttleBarView];
+    UIView *blockBarView = [[UIView alloc] initWithFrame: self.shuttleBarView.frame];
+    blockBarView.userInteractionEnabled = YES;
+    blockBarView.backgroundColor = [UIColor clearColor];
     
     // Setup our web views
     youTubeVideoWebViewInstance.frame = self.view.bounds;
@@ -339,6 +343,9 @@ static UIWebView* vimeoideoWebViewInstance;
     self.currentVideoWebView = youTubeVideoWebViewInstance;
     
     [self.view insertSubview: self.currentVideoWebView
+                belowSubview: self.shuttleBarView];
+    
+    [self.view insertSubview: blockBarView
                 belowSubview: self.shuttleBarView];
 }
 
@@ -431,9 +438,7 @@ static UIWebView* vimeoideoWebViewInstance;
     shuttleBarFrame.origin.x = 0.0f;
     shuttleBarFrame.origin.y = self.view.frame.size.height - kShuttleBarHeight;
     UIView *shuttleBarView = [[UIView alloc] initWithFrame: shuttleBarFrame];
-    
 
-    
     // Add transparent background view
     UIView *shuttleBarBackgroundView = [[UIView alloc] initWithFrame: shuttleBarView.bounds];
     shuttleBarBackgroundView.alpha = 0.5f;
