@@ -296,7 +296,7 @@ typedef enum : NSInteger {
 #define kSplashAnimationDuration  0.75f
 
 // Edit mode
-#define kChannelEditModeAnimationDuration 0.3f
+#define kChannelEditModeAnimationDuration 0.4f
 
 // Tabs
 #define kTabAnimationDuration 0.3f
