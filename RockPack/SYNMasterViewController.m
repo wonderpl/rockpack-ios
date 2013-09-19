@@ -911,6 +911,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             self.sideNavigationButton.hidden = YES;
         }
         
+        self.searchButton.hidden = NO;
+        
         self.pageTitleLabel.hidden = NO;
         
         self.pagePositionIndicatorView.hidden = NO;
