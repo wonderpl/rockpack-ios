@@ -130,6 +130,7 @@
         cell.textLabel.font = rockpackFont;
         cell.textLabel.textColor = textColor;
         
+        
         cell.textLabel.text = [((NSString*)wordsArray[indexPath.row]) capitalizedString];
     }
 
