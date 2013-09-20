@@ -448,6 +448,12 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
                                                             object: nil];
         [self resumeVideoIfShowing];
+        
+        if(IS_IPHONE)
+        {
+            self.searchButton.hidden = NO;
+        }
+        
         return;
     }
     
@@ -461,6 +467,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     {
         [setOfVideosToPost addObject:newVideoInstance];
     }
+    
+    
+    
 
     [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentUser.uniqueId
                                                           channelId: selectedChannel.uniqueId
@@ -706,9 +715,13 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         
         [UIView animateWithDuration:0.3
                          animations:^{
+                             
                              self.darkOverlayView.alpha = 0.0;
+                             
                          } completion:^(BOOL finished) {
+                             
                              self.darkOverlayView.hidden = YES;
+                             
                          }];
         
         CGRect sboxFrame = self.searchBoxController.view.frame;
@@ -897,6 +910,8 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         {
             self.sideNavigationButton.hidden = YES;
         }
+        
+        self.searchButton.hidden = NO;
         
         self.pageTitleLabel.hidden = NO;
         
@@ -1404,7 +1419,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             }
             else
             {
+                
                 [self showSearchBoxField:nil];
+                
                 self.closeSearchButton.hidden = YES;
                 self.sideNavigationButton.hidden = NO;
             }

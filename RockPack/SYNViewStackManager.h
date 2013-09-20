@@ -59,6 +59,7 @@ typedef void(^ViewStackReturnBlock)(void);
 
 - (void) hideModalController;
 
+
 - (void) hideSideNavigator;
 - (void) showSideNavigator;
 

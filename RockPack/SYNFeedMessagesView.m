@@ -58,7 +58,7 @@
         self.messageLabel = label;
         
         // BG
-        self.backgroundColor = [UIColor colorWithWhite:237.0f/255.0f alpha:1.0f];
+        self.backgroundColor = [UIColor colorWithWhite:IS_IPHONE ? 237.0f/255.0f : 242.0f/255.0f alpha:0.9f];
 
         // Add
         [self addSubview: label];

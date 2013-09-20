@@ -529,10 +529,13 @@
 {
     void(^RemovePopoverComplete)(BOOL) = ^(BOOL finished)
     {
+        
         [backgroundView removeFromSuperview];
         [popoverView removeFromSuperview];
+        popoverView.hidden = YES;
         backgroundView = nil;
         popoverView = nil;
+        
     };
     
     if(IS_IPAD)

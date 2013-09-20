@@ -200,6 +200,9 @@
     
     self.mainRegistry = appDelegate.mainRegistry;
     
+    
+    self.view.multipleTouchEnabled = NO;
+    
     self.channels = [NSMutableArray array];
     
     // Register Cells

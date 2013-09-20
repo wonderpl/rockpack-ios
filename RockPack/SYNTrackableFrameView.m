@@ -16,6 +16,9 @@
     [super setFrame:frame];
 }
 
-
+-(void)dealloc
+{
+    NSLog(@"");
+}
 
 @end

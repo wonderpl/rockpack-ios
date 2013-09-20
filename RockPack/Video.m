@@ -22,7 +22,7 @@
     instance.sourceId = video.sourceId;
     instance.sourceUsername = video.sourceUsername;
     instance.starCount = video.starCount;
-    instance.starredByUser = video.starredByUser;
+    instance.starredByUserValue = video.starredByUserValue;
     instance.thumbnailURL = video.thumbnailURL;
     
     return instance;
@@ -94,6 +94,8 @@
     
     self.starCount = [dictionary objectForKey: @"star_count"
                                   withDefault: @0];
+    
+    self.starredByUserValue = NO;
     
     self.thumbnailURL = [dictionary objectForKey: @"thumbnail_url"
                                      withDefault: @""];

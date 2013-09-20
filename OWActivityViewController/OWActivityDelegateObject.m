@@ -26,6 +26,8 @@
 #import "Appirater.h"
 #import "OWActivityDelegateObject.h"
 
+
+
 @implementation OWActivityDelegateObject
 
 static OWActivityDelegateObject *_sharedObject = nil;
@@ -65,6 +67,8 @@ static OWActivityDelegateObject *_sharedObject = nil;
     
     [self.controller
      dismissViewControllerAnimated: YES
-     completion: nil];
+     completion:^{
+         
+     }];
 }
 @end
