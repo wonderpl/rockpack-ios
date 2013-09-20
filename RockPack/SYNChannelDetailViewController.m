@@ -1643,9 +1643,17 @@
 
 - (IBAction) cancelEditTapped: (id) sender
 {
+    // Bit of a hack to fix #57314580
+    NSDictionary *userInfo = nil;
+    
+    if (self.mode == kChannelDetailsModeCreate)
+    {
+        userInfo = @{@"showSearch" : @"yes"};
+    }
+    
     [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAllNavControlsShow
                                                         object: self
-                                                      userInfo: nil];
+                                                      userInfo: userInfo];
     
     if (self.mode == kChannelDetailsModeCreate)
     {
