@@ -899,7 +899,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     
     if ([notificationName isEqualToString: kNoteAllNavControlsShow])
     {
-        if(IS_IPAD)
+        NSString  *showSearchString = notification.userInfo[@"showSearch"];
+        
+        if(IS_IPAD || showSearchString)
             self.searchButton.hidden = NO;
         
         self.sideNavigationButton.hidden = NO;
@@ -911,7 +913,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             self.sideNavigationButton.hidden = YES;
         }
         
-        self.searchButton.hidden = NO;
+//        self.searchButton.hidden = NO;
         
         self.pageTitleLabel.hidden = NO;
         
