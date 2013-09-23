@@ -277,7 +277,7 @@
          
              // Save the new credential object in the keychain
              // The user passed back is assumed to be the current user
-             [newOAuth2Credentials saveToKeychainForService: kOAuth2Service
+             [newOAuth2Credentials saveToKeychainForService: [[NSBundle mainBundle] bundleIdentifier]
                                                     account: responseDictionary[@"user_id"]];
              completionBlock(responseDictionary);
         }
@@ -1049,6 +1049,45 @@
     
     [self enqueueSignedOperation: networkOperation];
 }
+
+
+- (MKNetworkOperation *) updateRecommendedChannelsScreenForUserId: (NSString *) userId
+                                                          rorRange: (NSRange) range
+                                                    ignoringCache: (BOOL) ignore
+                                                     onCompletion: (MKNKJSONCompleteBlock) completeBlock
+                                                          onError: (MKNKJSONErrorBlock) errorBlock
+{
+    NSMutableDictionary *tempParameters = [NSMutableDictionary dictionary];
+    
+    tempParameters[@"start"] = [NSString stringWithFormat: @"%i", range.location];
+    tempParameters[@"size"] = [NSString stringWithFormat: @"%i", range.length];
+    
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId};
+    NSString *apiString = [kAPIRecommendedChannels stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject *) [self operationWithPath: apiString
+                                                                                                         params: [self getLocaleParamWithParams: tempParameters]
+                                                                                                     httpMethod: @"GET"
+                                                                                                            ssl: TRUE];
+    
+    networkOperation.ignoreCachedResponse = ignore;
+    
+    [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
+        completeBlock(dictionary);
+    } errorHandler: ^(NSError *error) {
+        errorBlock(@{@"network_error": @"Engine Failed to Load Channels"});
+        
+        if (error.code >= 500 && error.code < 600)
+        {
+            [self showErrorPopUpForError: error];
+        }
+    }];
+    
+    [self enqueueSignedOperation: networkOperation];
+    
+    return networkOperation;
+}
+
 
 
 - (MKNetworkOperation*) updateChannel: (NSString *) resourceURL

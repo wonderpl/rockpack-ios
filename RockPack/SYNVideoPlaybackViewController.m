@@ -138,7 +138,7 @@ static UIWebView* vimeoideoWebViewInstance;
     newWebViewInstance.mediaPlaybackAllowsAirPlay = YES;
     
     // Required for autoplay
-    newWebViewInstance.allowsInlineMediaPlayback = YES;
+    newWebViewInstance.allowsInlineMediaPlayback = YES  ;
     
     // Required to work correctly
     newWebViewInstance.mediaPlaybackRequiresUserAction = FALSE;

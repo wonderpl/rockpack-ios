@@ -145,6 +145,7 @@ typedef enum _FeedItemResourceType {
 // Something
 #define kAPIPopularVideos           @"ws/videos/"
 #define kAPIPopularChannels         @"ws/channels/"
+#define kAPIRecommendedChannels     @"/ws/USERID/channel_recommendations"
 #define kAPICategories              @"ws/categories/"
 
 #define kLocationService            @"/ws/location/"                            /* GET */
@@ -242,7 +243,6 @@ typedef enum _FeedItemResourceType {
 // OAuth Username and Password
 
 #define kOAuth2ClientId @"c8fe5f6rock873dpack19Q"
-#define kOAuth2Service @"com.rockpack.rockpack"
 #define kOAuth2ClientSecret @"7d6a1956c0207ed9d0bbc22ddf9d95"
 
 // Enable full screen thumbnail view 

@@ -140,8 +140,8 @@
 
 -(void)removeFromKeychain
 {
-    [self removeFromKeychainForService:kOAuth2Service
-                               account:self.userId];
+    [self removeFromKeychainForService: [[NSBundle mainBundle] bundleIdentifier]
+                               account: self.userId];
 }
 
 #pragma mark - For debugging only
