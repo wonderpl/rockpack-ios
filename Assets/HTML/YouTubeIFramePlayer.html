@@ -24,7 +24,7 @@
                                        {
                                        "playsinline": 1,
                                        "border" : 0,
-                                       "controls" : 0,
+                                       "controls" : 2,
                                        "modestbranding" : 1,
                                        "showinfo" : 0,
                                        "rel" : 0,
@@ -51,7 +51,10 @@
 
             }
 
-            
+            function onPlayerReady(event)
+            {
+                webkitEnterFullscreen ();
+            }
 
             // All possible event functions
             

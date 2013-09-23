@@ -342,11 +342,13 @@ static UIWebView* vimeoideoWebViewInstance;
     // Default to using YouTube player for now
     self.currentVideoWebView = youTubeVideoWebViewInstance;
     
-    [self.view insertSubview: self.currentVideoWebView
-                belowSubview: self.shuttleBarView];
+    [self.view addSubview: self.self.currentVideoWebView];
     
-    [self.view insertSubview: blockBarView
-                belowSubview: self.shuttleBarView];
+//    [self.view insertSubview: self.currentVideoWebView
+//                belowSubview: self.shuttleBarView];
+//    
+//    [self.view insertSubview: blockBarView
+//                belowSubview: self.shuttleBarView];
 }
 
 
@@ -568,7 +570,7 @@ static UIWebView* vimeoideoWebViewInstance;
     
     //Airplay was messing with the maximise button
     [shuttleBarView insertSubview:volumeView belowSubview:self.shuttleBarMaxMinButton];
-    [self.view addSubview: shuttleBarView];
+//    [self.view addSubview: shuttleBarView];
     
     self.originalShuttleBarFrame = shuttleBarView.frame;
     

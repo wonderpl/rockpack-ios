@@ -507,7 +507,7 @@
         [self.loginViewController applicationResume];
     }
     
-    [self checkForUpdatedPlayerCode];
+//    [self checkForUpdatedPlayerCode];
     
     // send tracking code
     
