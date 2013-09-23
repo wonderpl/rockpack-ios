@@ -277,7 +277,7 @@
          
              // Save the new credential object in the keychain
              // The user passed back is assumed to be the current user
-             [newOAuth2Credentials saveToKeychainForService: kOAuth2Service
+             [newOAuth2Credentials saveToKeychainForService: [[NSBundle mainBundle] bundleIdentifier]
                                                     account: responseDictionary[@"user_id"]];
              completionBlock(responseDictionary);
         }
