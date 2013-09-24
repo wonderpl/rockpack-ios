@@ -1657,7 +1657,7 @@
         [self.channel.managedObjectContext save: &error];
         
         if (self.isIPhone)
-        {
+        {   
             [self backButtonTapped: nil];
         }
         else
