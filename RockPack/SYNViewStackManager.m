@@ -15,7 +15,7 @@
 #import "SYNSideNavigatorViewController.h"
 #import "SYNViewStackManager.h"
 #import "SYNSearchBoxViewController.h"
-#import "SYNNetworkErrorView.h"
+#import "SYNNetworkMessageView.h"
 
 #define STACK_LIMIT 6
 #define BG_ALPHA_DEFAULT 0.7f
@@ -562,7 +562,6 @@
                          }
                          completion:RemovePopoverComplete];
         
-        
     }
     
 }
@@ -630,9 +629,13 @@
                      }];
 }
 
+
+
+#pragma mark - Network Messages (from the bottom)
+
 - (void) presentSuccessNotificationWithMessage : (NSString*) message
 {
-    __block SYNNetworkErrorView* successNotification = [[SYNNetworkErrorView alloc] init];
+    __block SYNNetworkMessageView* successNotification = [[SYNNetworkMessageView alloc] init];
     successNotification.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"BarSucess"]];
     [successNotification setText: message];
     

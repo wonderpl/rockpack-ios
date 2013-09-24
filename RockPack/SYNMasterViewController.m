@@ -21,7 +21,7 @@
 #import "SYNExistingChannelsViewController.h"
 #import "SYNFacebookManager.h"
 #import "SYNMasterViewController.h"
-#import "SYNNetworkErrorView.h"
+#import "SYNNetworkMessageView.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNPageView.h"
 #import "SYNSearchBoxViewController.h"
@@ -55,7 +55,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) SYNAccountSettingsModalContainer* modalAccountContainer;
 @property (nonatomic, strong) SYNBackButtonControl* backButtonControl;
 @property (nonatomic, strong) SYNExistingChannelsViewController* existingChannelsController;
-@property (nonatomic, strong) SYNNetworkErrorView* networkErrorView;
+@property (nonatomic, strong) SYNNetworkMessageView* networkErrorView;
 @property (nonatomic, strong) SYNSearchBoxViewController* searchBoxController;
 @property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
 @property (nonatomic, strong) SYNSideNavigatorViewController* sideNavigatorViewController;
@@ -1149,7 +1149,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         return;
     }
     
-    self.networkErrorView = [SYNNetworkErrorView errorView];
+    self.networkErrorView = [SYNNetworkMessageView errorView];
     [self.networkErrorView setText:message];
     [self.errorContainerView addSubview:self.networkErrorView];
     

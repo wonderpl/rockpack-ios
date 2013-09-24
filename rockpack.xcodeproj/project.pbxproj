@@ -1071,7 +1071,7 @@
 		BE285DA717258A0A00D995AB /* ButtonConfirm@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DA317258A0A00D995AB /* ButtonConfirm@2x.png */; };
 		BE285DA817258A0A00D995AB /* ButtonConfirmHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DA417258A0A00D995AB /* ButtonConfirmHighlighted.png */; };
 		BE285DA917258A0A00D995AB /* ButtonConfirmHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DA517258A0A00D995AB /* ButtonConfirmHighlighted@2x.png */; };
-		BE285DB01725A23300D995AB /* SYNNetworkErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE285DAF1725A23300D995AB /* SYNNetworkErrorView.m */; };
+		BE285DB01725A23300D995AB /* SYNNetworkMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE285DAF1725A23300D995AB /* SYNNetworkMessageView.m */; };
 		BE285DB31725A85600D995AB /* ChannelCreationCoverNone.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DB11725A85500D995AB /* ChannelCreationCoverNone.png */; };
 		BE285DB41725A85600D995AB /* ChannelCreationCoverNone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DB21725A85600D995AB /* ChannelCreationCoverNone@2x.png */; };
 		BE285DB71725A8BD00D995AB /* PanelChannelCreationCoverSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = BE285DB51725A8BD00D995AB /* PanelChannelCreationCoverSelected.png */; };
@@ -2661,8 +2661,8 @@
 		BE285DA317258A0A00D995AB /* ButtonConfirm@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonConfirm@2x.png"; path = "Assets/Images/ButtonConfirm@2x.png"; sourceTree = "<group>"; };
 		BE285DA417258A0A00D995AB /* ButtonConfirmHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonConfirmHighlighted.png; path = Assets/Images/ButtonConfirmHighlighted.png; sourceTree = "<group>"; };
 		BE285DA517258A0A00D995AB /* ButtonConfirmHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonConfirmHighlighted@2x.png"; path = "Assets/Images/ButtonConfirmHighlighted@2x.png"; sourceTree = "<group>"; };
-		BE285DAE1725A23300D995AB /* SYNNetworkErrorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkErrorView.h; sourceTree = "<group>"; };
-		BE285DAF1725A23300D995AB /* SYNNetworkErrorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkErrorView.m; sourceTree = "<group>"; };
+		BE285DAE1725A23300D995AB /* SYNNetworkMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNNetworkMessageView.h; sourceTree = "<group>"; };
+		BE285DAF1725A23300D995AB /* SYNNetworkMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNNetworkMessageView.m; sourceTree = "<group>"; };
 		BE285DB11725A85500D995AB /* ChannelCreationCoverNone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ChannelCreationCoverNone.png; path = Assets/Images/ChannelCreationCoverNone.png; sourceTree = "<group>"; };
 		BE285DB21725A85600D995AB /* ChannelCreationCoverNone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ChannelCreationCoverNone@2x.png"; path = "Assets/Images/ChannelCreationCoverNone@2x.png"; sourceTree = "<group>"; };
 		BE285DB51725A8BD00D995AB /* PanelChannelCreationCoverSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PanelChannelCreationCoverSelected.png; path = Assets/Images/PanelChannelCreationCoverSelected.png; sourceTree = "<group>"; };
@@ -5524,8 +5524,8 @@
 				BEBFD0941779F25800C90544 /* SYNCautionMessageView.m */,
 				BE5D29E917577E2800C00486 /* SYNFeedMessagesView.h */,
 				BE5D29EA17577E2800C00486 /* SYNFeedMessagesView.m */,
-				BE285DAE1725A23300D995AB /* SYNNetworkErrorView.h */,
-				BE285DAF1725A23300D995AB /* SYNNetworkErrorView.m */,
+				BE285DAE1725A23300D995AB /* SYNNetworkMessageView.h */,
+				BE285DAF1725A23300D995AB /* SYNNetworkMessageView.m */,
 			);
 			name = "Slide In Messages";
 			sourceTree = "<group>";
@@ -7475,7 +7475,7 @@
 				BE285D9B1725726300D995AB /* SYNExistingChannelsViewController.m in Sources */,
 				01AFF99617EC91540002131A /* NSData+LLDBQuickLook.m in Sources */,
 				BE285D9F172584E200D995AB /* SYNChannelCreateNewCell.m in Sources */,
-				BE285DB01725A23300D995AB /* SYNNetworkErrorView.m in Sources */,
+				BE285DB01725A23300D995AB /* SYNNetworkMessageView.m in Sources */,
 				BE285DBC1726828F00D995AB /* SYNChannelManager.m in Sources */,
 				BEE732BA1727D99E0083E1B9 /* SYNContainerScrollView.m in Sources */,
 				0111CDFC1729314E00612186 /* SYNCoverThumbnailCell.m in Sources */,
