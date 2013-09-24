@@ -139,9 +139,7 @@
     [self.currentlyCreatingChannel addVideoInstancesObject:copyOfVideoInstance];
     
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNoteAddToChannelRequest object:self];
-    
-    
+    [self.appDelegate.viewStackManager presentExistingChannelsController];
     
 }
 

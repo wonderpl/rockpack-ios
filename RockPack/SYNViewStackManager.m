@@ -16,6 +16,7 @@
 #import "SYNViewStackManager.h"
 #import "SYNSearchBoxViewController.h"
 #import "SYNNetworkMessageView.h"
+#import "SYNExistingChannelsViewController.h"
 
 #define STACK_LIMIT 6
 #define BG_ALPHA_DEFAULT 0.7f
@@ -691,6 +692,48 @@
         return YES;
     
     return NO;
+}
+
+
+#pragma mark - Existing Channels
+
+- (void) presentExistingChannelsController
+{
+    
+    SYNExistingChannelsViewController* existingController = [[SYNExistingChannelsViewController alloc] initWithViewId:kExistingChannelsViewId];
+    
+    [self.masterController addChildViewController:existingController];
+    
+    [self.masterController.view addSubview:existingController.view];
+    
+    // animate in //
+    
+    existingController.view.alpha = 1.0f;
+    
+    CGRect newFrame = existingController.view.frame;
+    newFrame.origin.y = newFrame.size.height;
+    existingController.view.frame = newFrame;
+    [existingController prepareForAppearAnimation];
+    
+    [UIView animateWithDuration: kAddToChannelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         CGRect newFrame = existingController.view.frame;
+                         newFrame.origin.y = 0.0f;
+                         existingController.view.frame = newFrame;
+                     }
+                     completion: ^(BOOL finished) {
+                         
+                         [existingController runAppearAnimation];
+                         
+                         
+                         if (self.masterController.videoViewerViewController)
+                         {
+                             [self.masterController.videoViewerViewController pauseIfVideoActive];
+                         }
+                     }];
 }
 
 @end
