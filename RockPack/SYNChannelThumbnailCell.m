@@ -19,7 +19,6 @@
 
 @property (nonatomic, strong) IBOutlet UIImageView *lowlightImageView;
 @property (nonatomic, strong) IBOutlet UILabel *byLabel;
-@property (nonatomic, strong) SYNTouchGestureRecognizer *touch;
 
 @end
 
@@ -38,16 +37,9 @@
     
     self.deleteButton.hidden = YES;
     
-    
     if (IS_IOS_7_OR_GREATER) {
         self.displayNameLabel.frame = CGRectMake(self.displayNameLabel.frame.origin.x, self.displayNameLabel.frame.origin.y - 1.0f, self.displayNameLabel.frame.size.width, self.displayNameLabel.frame.size.height);
     }
-}
-
-
-- (void) showDeleteButton: (BOOL) showDeleteButton
-{
-    self.deleteButton.hidden = showDeleteButton ? FALSE : TRUE;
 }
 
 
@@ -55,14 +47,9 @@
 {
     _viewControllerDelegate = viewControllerDelegate;
     
-    
     [self.displayNameButton addTarget: self.viewControllerDelegate
                                action: @selector(displayNameButtonPressed:)
                      forControlEvents: UIControlEventTouchUpInside];
-    
-    [self.deleteButton addTarget: self.viewControllerDelegate
-                          action: @selector(channelDeleteButtonTapped:)
-                forControlEvents: UIControlEventTouchUpInside];
 }
 
 
@@ -132,6 +119,33 @@
         }
         default:
             break;
+    }
+}
+
+
+- (void) setLowlight: (BOOL) lowlight
+            forPoint: (CGPoint) pointInCell
+{
+    // Default iPad gloss image
+    NSString *imageName = @"GlossChannelThumbnail";
+    
+    // Use different image for iPhone
+    if (IS_IPHONE)
+    {
+        imageName = @"GlossChannelProfile";
+    }
+    
+    if (lowlight)
+    {
+        // Set lowlight tint
+        UIImage *glossImage = [UIImage imageNamed: imageName];
+        UIImage *lowlightImage = [glossImage tintedImageUsingColor: [UIColor colorWithWhite: 0.0
+                                                                                      alpha: 0.3]];
+        self.lowlightImageView.image = lowlightImage;
+    }
+    else
+    {
+        self.lowlightImageView.image = [UIImage imageNamed: imageName];
     }
 }
 

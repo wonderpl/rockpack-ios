@@ -206,22 +206,6 @@
     [self loadChannelsForGenre: self.currentGenre];
 }
 
-//
-//- (void) showChannel: (UITapGestureRecognizer *) recognizer
-//{
-//    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: [recognizer locationOfTouch: 0
-//                                                                                                                inView: self.channelThumbnailCollectionView]];
-//                              
-//    UICollectionViewCell *cell = [self.channelThumbnailCollectionView cellForItemAtIndexPath: indexPath];
-//    [self channelTapped: cell];
-//}
-//
-//
-//- (void) showMenu: (UILongPressGestureRecognizer *) recognizer
-//{
-//    [self arcMenuUpdateState: recognizer];
-//}
-
 
 - (void) viewDidScrollToFront
 {

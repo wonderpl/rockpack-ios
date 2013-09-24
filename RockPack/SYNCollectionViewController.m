@@ -8,6 +8,7 @@
 
 #import "SYNCollectionViewController.h"
 #import "SYNCellHighlightProtocol.h"
+#import "SYNAbstractViewController.h"
 
 @interface SYNCollectionViewController () <UIGestureRecognizerDelegate,
                                            SYNCellHighlightProtocol>
@@ -111,7 +112,34 @@
     
     if ([cell respondsToSelector: @selector(lowlight:)])
     {
-        [(id <SYNCellHighlightProtocol>)cell lowlight: recognizer];
+        CGPoint pointInCell = [recognizer locationOfTouch: 0 inView: cell];
+        
+        switch (recognizer.state)
+        {
+            case UIGestureRecognizerStateBegan:
+            {
+                [(SYNAbstractViewController *)self.collectionView.delegate arcMenuSelectedCell: cell
+                                               andComponentIndex: kArcMenuInvalidComponentIndex];
+                
+                [(id <SYNCellHighlightProtocol>)cell setLowlight: TRUE
+                                                        forPoint: pointInCell];
+                break;
+            }
+                
+            case UIGestureRecognizerStateEnded:
+            case UIGestureRecognizerStateCancelled:
+            case UIGestureRecognizerStateFailed:
+            {
+                [(id <SYNCellHighlightProtocol>)cell setLowlight: TRUE
+                                                        forPoint: pointInCell];
+                break;
+            }
+                
+            default:
+                break;
+        }
+
+
     }
 }
 

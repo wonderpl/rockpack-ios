@@ -10,6 +10,6 @@
 
 @protocol SYNCellHighlightProtocol <NSObject>
 
-- (void) lowlight: (SYNTouchGestureRecognizer *) recognizer;
-
+- (void) setLowlight: (BOOL) lowlight
+            forPoint: (CGPoint) pointInCell;
 @end
