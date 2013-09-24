@@ -29,7 +29,6 @@
 #import "SYNSideNavigatorViewController.h"
 #import "SYNSoundPlayer.h"
 #import "SYNVideoPlaybackViewController.h"
-#import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
@@ -54,7 +53,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* navigationContainerView;
 @property (nonatomic, strong) SYNAccountSettingsModalContainer* modalAccountContainer;
 @property (nonatomic, strong) SYNBackButtonControl* backButtonControl;
-@property (nonatomic, strong) SYNExistingChannelsViewController* existingChannelsController;
 @property (nonatomic, strong) SYNNetworkMessageView* networkErrorView;
 @property (nonatomic, strong) SYNSearchBoxViewController* searchBoxController;
 @property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
@@ -229,7 +227,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.mainNavigationController.view.frame = self.view.frame;
     [self.view insertSubview:self.mainNavigationController.view atIndex:0];
     
-    self.existingChannelsController = [[SYNExistingChannelsViewController alloc] initWithViewId:kExistingChannelsViewId];
+    
     
     // == Back Button == //
     
@@ -281,7 +279,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountSettingsLogout) name:kAccountSettingsLogout object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addToChannelRequested:) name:kNoteAddToChannelRequest object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addedToChannelAction:) name:kNoteVideoAddedToExistingChannel object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsHide object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsShow object:nil];
@@ -381,39 +378,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 #pragma mark - Channel Creation Methods
 
-- (void) addToChannelRequested: (NSNotification*) notification
-{
-    
-    [self addChildViewController:self.existingChannelsController];
 
-    [self.view addSubview: self.existingChannelsController.view];
-    
-    // animate in //
-    
-    self.existingChannelsController.view.alpha = 1.0f;
-    
-    CGRect newFrame = self.existingChannelsController.view.frame;
-    newFrame.origin.y = newFrame.size.height;
-    self.existingChannelsController.view.frame = newFrame;
-    [self.existingChannelsController prepareForAppearAnimation];
-    
-    [UIView animateWithDuration: kAddToChannelAnimationDuration
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         
-                         CGRect newFrame = self.existingChannelsController.view.frame;
-                         newFrame.origin.y = 0.0f;
-                         self.existingChannelsController.view.frame = newFrame;
-                     }
-                     completion: ^(BOOL finished) {
-                         [self.existingChannelsController runAppearAnimation];
-                         if (self.videoViewerViewController)
-                         {
-                             [self.videoViewerViewController pauseIfVideoActive];
-                         }
-                     }];
-}
 
 
 - (void) createNewChannelAction: (NSNotification*) notification

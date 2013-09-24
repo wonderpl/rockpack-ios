@@ -11,6 +11,8 @@
 #import "SYNAccountSettingsPopoverBackgroundView.h"
 #import "SYNAppDelegate.h"
 #import "SYNContainerViewController.h"
+
+#import "SYNVideoViewerViewController.h"
 #import <UIKit/UIKit.h>
 
 typedef void (^VideoOverlayDismissBlock)(void);
@@ -31,6 +33,7 @@ typedef void (^VideoOverlayDismissBlock)(void);
 @property (strong, nonatomic) Reachability *reachability;
 @property (nonatomic, readonly) BOOL hasSearchBarOn;
 @property (nonatomic, readonly) BOOL isInSearchMode;
+@property (nonatomic, readonly) SYNVideoViewerViewController *videoViewerViewController;
 
 @property (nonatomic, strong) IBOutlet UIView* errorContainerView;
 

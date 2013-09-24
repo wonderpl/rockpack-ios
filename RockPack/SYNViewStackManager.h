@@ -52,6 +52,8 @@ typedef void(^ViewStackReturnBlock)(void);
 - (void) viewChannelDetails: (Channel *) channel withAutoplayId: (NSString *) autoplayId;
 - (void) viewChannelDetails: (Channel *) channel;
 
+- (void) presentExistingChannelsController;
+
 - (void) dismissSearchBar;
 - (void) presentSearchBar;
 

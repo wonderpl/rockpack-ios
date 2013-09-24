@@ -345,7 +345,10 @@
     self.confirmButtom.enabled = NO;
     
     [self closeAnimation: ^(BOOL finished) {
+        
+        // will remove itself and will be deallocated since no other reference is held
         [self.view removeFromSuperview];
+        [self removeFromParentViewController];
         // Post notification without object. Needed to restart video player if visible.
         [[NSNotificationCenter defaultCenter] postNotificationName: kNoteVideoAddedToExistingChannel
                                                             object: self];
