@@ -2443,6 +2443,8 @@
     // == Decide on the success message type shown == //
     NSNotification *successNotification = [NSNotification notificationWithName: kNoteChannelSaved
                                                                         object: self];
+    
+    
     SYNCaution *caution;
     CautionCallbackBlock actionBlock;
     NSMutableArray *conditionsArray = [NSMutableArray arrayWithCapacity: 3];

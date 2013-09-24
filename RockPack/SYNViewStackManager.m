@@ -636,9 +636,19 @@
 
 
 
-#pragma mark - Network Messages (from the bottom)
+#pragma mark - Network Notification Messages (from the bottom)
+
+-(void)presentErrorNotificationWithMessage : (NSString*)message
+{
+    [self presentNotificationWithMessage:message withType:NotificationMessageTypeError];
+}
 
 - (void) presentSuccessNotificationWithMessage : (NSString*) message
+{
+     [self presentNotificationWithMessage:message withType:NotificationMessageTypeSuccess];
+}
+
+-(void)presentNotificationWithMessage:(NSString*)message withType:(NotificationMessageType)type
 {
     __block SYNNetworkMessageView* successNotification = [[SYNNetworkMessageView alloc] init];
     successNotification.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"BarSucess"]];
@@ -669,6 +679,8 @@
                                           }];
                      }];
 }
+
+
 
 #pragma mark - Helper
 

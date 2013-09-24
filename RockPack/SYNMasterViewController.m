@@ -279,7 +279,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountSettingsLogout) name:kAccountSettingsLogout object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addedToChannelAction:) name:kNoteVideoAddedToExistingChannel object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsHide object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelSuccessfullySaved:) name:kNoteChannelSaved object:nil];
@@ -376,65 +375,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 
-- (void) addedToChannelAction: (NSNotification*) notification
-{
-    
-    Channel* selectedChannel = (Channel*)[notification userInfo][kChannel];
-    if (!selectedChannel)
-    {
-        //Channel select was cancelled.
-        [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
-                                                            object: nil];
-        [self resumeVideoIfShowing];
-        
-        if(IS_IPHONE)
-        {
-            self.searchButton.hidden = NO;
-        }
-        
-        return;
-    }
-    
-    NSString* message = IS_IPHONE ? NSLocalizedString(@"VIDEO ADDED",nil)
-                                  : NSLocalizedString(@"YOUR VIDEOS HAVE BEEN ADDED INTO YOUR CHANNEL",nil);
-    
-    Channel* currentlyCreating = appDelegate.videoQueue.currentlyCreatingChannel;
-
-    NSMutableOrderedSet* setOfVideosToPost = [NSMutableOrderedSet orderedSetWithOrderedSet:selectedChannel.videoInstancesSet];
-    for (VideoInstance* newVideoInstance in currentlyCreating.videoInstances)
-    {
-        [setOfVideosToPost addObject:newVideoInstance];
-    }
-    
-    
-    
-
-    [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentUser.uniqueId
-                                                          channelId: selectedChannel.uniqueId
-                                                   videoInstanceSet: setOfVideosToPost
-                                                      clearPrevious: NO
-                                                  completionHandler: ^(NSDictionary* result) {
-                                                      
-                                                      id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-                                                      
-                                                      [tracker sendEventWithCategory: @"goal"
-                                                                          withAction: @"channelUpdated"
-                                                                           withLabel: nil
-                                                                           withValue: nil];
-                                                      
-                                                      [self presentSuccessNotificationWithMessage:message];
-                                                      
-                                                      [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
-                                                                                                          object: self];
-                                                      [self resumeVideoIfShowing];
-                                                      
-                                                  } errorHandler:^(NSDictionary* errorDictionary) {
-                                                      
-                                                      [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
-                                                                                                          object: self];
-                                                      [self resumeVideoIfShowing];
-                                                  }];
-}
 
 
 - (void) resumeVideoIfShowing
