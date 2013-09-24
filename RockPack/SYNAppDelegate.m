@@ -175,11 +175,15 @@
     // Now cause the playback controller to be instantiated
     [SYNVideoPlaybackViewController sharedInstance];
     
-    if (self.currentUser && self.currentOAuth2Credentials)
+    // Don't use the currentCredentials method as this will assert if there is a vaild user,but no credentials, preventing completion of the logic below
+    // inlduding logout, which is the correct flow
+    // This should realistically never happen (except after swapping between dev and prod before the fix to the keychain account (before there was only one
+    // account shared between prod and dev, not they both have their own based on the bundle id
+    SYNOAuth2Credential *credential = [SYNOAuth2Credential credentialFromKeychainForService: [[NSBundle mainBundle] bundleIdentifier]
+                                                                                    account: self.currentUser.uniqueId];
+    
+    if (self.currentUser && credential)
     {
-        // If we already have a current user, then register/re-register for notifications
-        
-        
         // If we have a user and a refresh token... //
         if ([self.currentOAuth2Credentials hasExpired])
         {
@@ -199,7 +203,7 @@
     }
     else
     {
-        if (self.currentUser || self.currentOAuth2Credentials)
+        if (self.currentUser || credential)
         {
             [self logout];
         }
@@ -1017,7 +1021,7 @@
     
     if (_currentOAuth2Credentials != nil)
     {
-        [_currentOAuth2Credentials saveToKeychainForService: kOAuth2Service
+        [_currentOAuth2Credentials saveToKeychainForService: [[NSBundle mainBundle] bundleIdentifier]
                                                     account: _currentOAuth2Credentials.userId];
     }
 }
@@ -1032,11 +1036,11 @@
     
     if (!_currentOAuth2Credentials)
     {
-        _currentOAuth2Credentials = [SYNOAuth2Credential credentialFromKeychainForService: kOAuth2Service
+        _currentOAuth2Credentials = [SYNOAuth2Credential credentialFromKeychainForService: [[NSBundle mainBundle] bundleIdentifier]
                                                                                   account: self.currentUser.uniqueId];
         if (!_currentOAuth2Credentials)
         {
-            AssertOrLog(@"Detected currentUser data, but no matching OAuth2 credentials");
+            DebugLog(@"Detected currentUser data, but no matching OAuth2 credentials");
         }
     }
     

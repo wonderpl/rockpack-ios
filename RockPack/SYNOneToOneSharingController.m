@@ -846,18 +846,18 @@
     UITextField *textfield = [alertView textFieldAtIndex: 0];
     
     // search if friend already exists by his email
-    for (Friend* loadedFriend in self.friends)
-    {
-        if([loadedFriend.email isEqualToString:textfield.text])
-        {
-            self.friendToAddEmail = nil;
-            
-            
-            
-            return;
-        }
-        
-    }
+//    for (Friend* loadedFriend in self.friends)
+//    {
+//        if([loadedFriend.email isEqualToString:textfield.text])
+//        {
+//            self.friendToAddEmail = nil;
+//            
+//            
+//            
+//            return;
+//        }
+//        
+//    }
     
     self.friendToAddEmail.email = textfield.text;
     
@@ -1123,9 +1123,26 @@
                                                
                                                friend.lastShareDate = [NSDate date]; // update the date
                                                
+                                               BOOL foundFriend = FALSE;
+                                               for (Friend* loadedFriend in self.friends)
+                                               {
+                                                   if([loadedFriend.email isEqualToString: friend.email])
+                                                   {
+                                                       foundFriend = TRUE;
+                                                   }
+                                               }
                                                    
                                                NSError* error;
-                                               [friend.managedObjectContext save:&error];
+                                               
+                                               if (!foundFriend)
+                                               {
+                                                   [friend.managedObjectContext save:&error];
+                                               }
+                                               else
+                                               {
+                                                   // Roll-back the context (i.e. remove the friend just added)
+                                                   [friend.managedObjectContext reset];
+                                               }
                                                
                                                wself.friendToAddEmail = nil;
                                                
