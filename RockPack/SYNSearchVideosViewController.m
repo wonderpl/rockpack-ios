@@ -49,7 +49,7 @@
     // ==============================
     
     SYNIntegralCollectionViewFlowLayout *standardFlowLayout;
-    UIEdgeInsets sectionInset, contentInset;
+    UIEdgeInsets sectionInset;
     CGRect videoCollectionViewFrame, calculatedViewFrame;
     CGSize screenSize;
     CGFloat minimumLineSpacing;

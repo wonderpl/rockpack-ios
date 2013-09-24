@@ -52,7 +52,6 @@
                                                  name: kUserDataChanged
                                                object: nil];
     
-    
     [self pack];
 }
 

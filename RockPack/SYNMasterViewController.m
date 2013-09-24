@@ -283,7 +283,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsHide object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelSuccessfullySaved:) name:kNoteChannelSaved object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createNewChannelAction:) name:kNoteCreateNewChannel object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideOrShowNetworkMessages:) name:kNoteHideNetworkMessages object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideOrShowNetworkMessages:) name:kNoteShowNetworkMessages object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideTitleAndDots:) name:kNoteHideTitleAndDots object:nil];
@@ -375,32 +374,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     }
 }
 
-
-#pragma mark - Channel Creation Methods
-
-
-
-
-- (void) createNewChannelAction: (NSNotification*) notification
-{
-    if (self.videoViewerViewController)
-    {
-        [self removeVideoOverlayController];
-    }
-    
-    if (IS_IPHONE)
-    {
-        // On iPhone the create workflow is presented modally on the existing channels page. Therefore return after closing the video player.
-        return;
-    }
-  
-    // this channel's managedObjectContext is the appDelegate.channelManagedObjectContext
-    SYNChannelDetailViewController *channelCreationVC =
-    [[SYNChannelDetailViewController alloc] initWithChannel: appDelegate.videoQueue.currentlyCreatingChannel
-                                                  usingMode: kChannelDetailsModeCreate] ;
-    
-    [appDelegate.viewStackManager pushController:channelCreationVC];
-}
 
 
 - (void) addedToChannelAction: (NSNotification*) notification

@@ -105,6 +105,10 @@
     
     [self.masterController headerButtonIsActive:controller.needsHeaderButton];
     
+    if (self.masterController.videoViewerViewController) // close the video viewer if in view
+        [self.masterController removeVideoOverlayController];
+    
+    
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
                         options: UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionBeginFromCurrentState
@@ -713,7 +717,8 @@
     CGRect newFrame = existingController.view.frame;
     newFrame.origin.y = newFrame.size.height;
     existingController.view.frame = newFrame;
-    [existingController prepareForAppearAnimation];
+    
+    [existingController prepareForAppearAnimation]; // this should fade the cells out in preparation for the animation
     
     [UIView animateWithDuration: kAddToChannelAnimationDuration
                           delay: 0.0f
@@ -723,10 +728,11 @@
                          CGRect newFrame = existingController.view.frame;
                          newFrame.origin.y = 0.0f;
                          existingController.view.frame = newFrame;
+                         
                      }
                      completion: ^(BOOL finished) {
                          
-                         [existingController runAppearAnimation];
+                         [existingController runAppearAnimation]; // this should animate the cells in, one by one
                          
                          
                          if (self.masterController.videoViewerViewController)

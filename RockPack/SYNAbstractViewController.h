@@ -137,5 +137,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 
 - (BOOL) needsHeaderButton ;
 
+- (void) createAndDisplayNewChannel;
+
 -(void)checkForOnBoarding ;
 @end
