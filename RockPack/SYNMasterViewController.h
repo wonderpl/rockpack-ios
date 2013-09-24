@@ -17,6 +17,11 @@
 
 typedef void (^VideoOverlayDismissBlock)(void);
 
+typedef enum NotificationMessageType {
+    NotificationMessageTypeError = 0,
+    NotificationMessageTypeSuccess = 1
+} NotificationMessageType;
+
 @interface SYNMasterViewController : UIViewController <UIPopoverControllerDelegate,
                                                        UIGestureRecognizerDelegate,
                                                        UINavigationControllerDelegate>
