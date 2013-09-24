@@ -9,13 +9,15 @@
 #import "SYNAbstractViewController.h"
 #import "SYNChannelFooterMoreView.h"
 
+#import "SYNCollectionViewController.h"
+
 @interface SYNChannelsRootViewController : SYNAbstractViewController
 {
     @protected
     NSMutableArray* channels;
 }
 
-@property (nonatomic, strong) UICollectionViewController *channelCollectionViewController;
+@property (nonatomic, strong) SYNCollectionViewController *channelCollectionViewController;
 @property (nonatomic, assign) BOOL enableCategoryTable;
 
 - (void) superArcMenuUpdateState: (UIGestureRecognizer *) recognizer;

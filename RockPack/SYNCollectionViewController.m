@@ -73,7 +73,7 @@ typedef void (^LongPressRecognizedBlock) (UIGestureRecognizer *recognizer);
     self.touchGestureRecognizer = [[SYNTouchGestureRecognizer alloc] initWithTarget: self
                                                                              action: @selector(touchRecognized:)];
     self.touchGestureRecognizer.delegate = self;
-    [self.view addGestureRecognizer: self.longPressGestureRecognizer];
+    [self.view addGestureRecognizer: self.touchGestureRecognizer];
     
     // Tap for showing video
     self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget: self
@@ -115,7 +115,7 @@ typedef void (^LongPressRecognizedBlock) (UIGestureRecognizer *recognizer);
     
     UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath: indexPath];
     
-    if ([cell respondsToSelector: @selector(showGlossLowlight:)])
+    if ([cell respondsToSelector: @selector(lowlight:)])
     {
         [(id <SYNCellHighlightProtocol>)cell lowlight: recognizer];
     }

@@ -293,7 +293,7 @@
         [self updateTabStates];
     }
     
-    self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = NO;
+    self.subscriptionsViewController.channelCollectionViewController.collectionView.scrollsToTop = NO;
     self.channelThumbnailCollectionView.scrollsToTop = NO;
     
     
@@ -344,13 +344,13 @@
         {
             self.channelThumbnailCollectionView.scrollsToTop = !self.subscriptionsTabActive;
             
-            self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = self.subscriptionsTabActive;
+            self.subscriptionsViewController.channelCollectionViewController.collectionView.scrollsToTop = self.subscriptionsTabActive;
         }
         else
         {
             self.channelThumbnailCollectionView.scrollsToTop = YES;
             
-            self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = NO;
+            self.subscriptionsViewController.channelCollectionViewController.collectionView.scrollsToTop = NO;
         }
         
         [GAI.sharedInstance.defaultTracker
@@ -392,13 +392,13 @@
     {
         self.channelThumbnailCollectionView.scrollsToTop = !self.subscriptionsTabActive;
         
-        self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = self.subscriptionsTabActive;
+        self.subscriptionsViewController.channelCollectionViewController.collectionView.scrollsToTop = self.subscriptionsTabActive;
     }
     else
     {
         self.channelThumbnailCollectionView.scrollsToTop = YES;
         
-        self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = YES;
+        self.subscriptionsViewController.channelCollectionViewController.collectionView.scrollsToTop = YES;
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kChannelOwnerUpdateRequest
@@ -411,7 +411,7 @@
 {
     self.channelThumbnailCollectionView.scrollsToTop = NO;
     
-    self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = NO;
+    self.subscriptionsViewController.channelCollectionViewController.collectionView.scrollsToTop = NO;
 }
 
 
@@ -467,15 +467,15 @@
 - (void) willRotateToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation duration: (NSTimeInterval) duration
 {
     //Decide which collection view should be in control of the scroll offset on orientaiton change. The tallest one wins...
-    if (self.channelThumbnailCollectionView.collectionViewLayout.collectionViewContentSize.height > self.subscriptionsViewController.channelThumbnailCollectionView.collectionViewLayout.collectionViewContentSize.height)
+    if (self.channelThumbnailCollectionView.collectionViewLayout.collectionViewContentSize.height > self.subscriptionsViewController.channelCollectionViewController.collectionView.collectionViewLayout.collectionViewContentSize.height)
     {
         self.channelsIndexPath = [self topIndexPathForCollectionView: self.channelThumbnailCollectionView];
         self.orientationDesicionmaker = self.channelThumbnailCollectionView;
     }
     else
     {
-        self.subscriptionsIndexPath = [self topIndexPathForCollectionView: self.subscriptionsViewController.channelThumbnailCollectionView];
-        self.orientationDesicionmaker = self.subscriptionsViewController.channelThumbnailCollectionView;
+        self.subscriptionsIndexPath = [self topIndexPathForCollectionView: self.subscriptionsViewController.channelCollectionViewController.collectionView];
+        self.orientationDesicionmaker = self.subscriptionsViewController.channelCollectionViewController.collectionView;
     }
 }
 
@@ -492,9 +492,9 @@
     
     if (self.subscriptionsIndexPath)
     {
-        [self.subscriptionsViewController.channelThumbnailCollectionView scrollToItemAtIndexPath: self.subscriptionsIndexPath
-                                                                                atScrollPosition: UICollectionViewScrollPositionTop
-                                                                                        animated: NO];
+        [self.subscriptionsViewController.channelCollectionViewController.collectionView scrollToItemAtIndexPath: self.subscriptionsIndexPath
+                                                                                                atScrollPosition: UICollectionViewScrollPositionTop
+                                                                                                        animated: NO];
     }
     
     self.orientationDesicionmaker = nil;
@@ -609,7 +609,7 @@
     newFrame.size.width = self.isIPhone ? 320.0f : self.headerSubscriptionsView.frame.size.width;
     newFrame.size.height = viewHeight - newFrame.origin.y;
     newFrame.origin.x = self.isIPhone ? 0.0f : self.headerSubscriptionsView.frame.origin.x;
-    self.subscriptionsViewController.channelThumbnailCollectionView.collectionViewLayout = subscriptionsLayout;
+    self.subscriptionsViewController.channelCollectionViewController.collectionView.collectionViewLayout = subscriptionsLayout;
     self.subscriptionsViewController.view.frame = newFrame;
     
     
@@ -855,7 +855,7 @@
 {
     self.channelThumbnailCollectionView.scrollsToTop = !self.subscriptionsTabActive;
     
-    self.subscriptionsViewController.channelThumbnailCollectionView.scrollsToTop = self.subscriptionsTabActive;
+    self.subscriptionsViewController.channelCollectionViewController.collectionView.scrollsToTop = self.subscriptionsTabActive;
     
     self.channelsTabButton.selected = !self.subscriptionsTabActive;
     self.subscriptionsTabButton.selected = self.subscriptionsTabActive;

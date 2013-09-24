@@ -17,7 +17,6 @@
 #import "SYNChannelDetailViewController.h"
 #import "SYNChannelThumbnailCell.h"
 #import "SYNChannelsRootViewController.h"
-#import "SYNCollectionViewController.h"
 #import "SYNDeviceManager.h"
 #import "SYNFeedMessagesView.h"
 #import "SYNGenreItemView.h"
@@ -51,7 +50,6 @@
 @property (nonatomic, strong) NSMutableArray *channels;
 @property (nonatomic, strong) NSString *currentCategoryId;
 @property (nonatomic, strong) SYNChannelCategoryTableViewController *categoryTableViewController;
-@property (nonatomic, strong) SYNCollectionViewController *channelCollectionViewController;
 @property (nonatomic, strong) SYNFeedMessagesView *emptyGenreMessageView;
 @property (nonatomic, strong) UIButton *categorySelectButton;
 @property (nonatomic, strong) UIControl *categorySelectDismissControl;
@@ -175,16 +173,16 @@
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelThumbnailCell"
                                              bundle: nil];
     
-    [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
-                          forCellWithReuseIdentifier: @"SYNChannelThumbnailCell"];
+    [self.channelCollectionViewController.collectionView registerNib: thumbnailCellNib
+                                          forCellWithReuseIdentifier: @"SYNChannelThumbnailCell"];
     
     // Register Footer
     UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
                                           bundle: nil];
     
-    [self.channelThumbnailCollectionView registerNib: footerViewNib
-                          forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
-                                 withReuseIdentifier: @"SYNChannelFooterMoreView"];
+    [self.channelCollectionViewController.collectionView registerNib: footerViewNib
+                                          forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
+                                                 withReuseIdentifier: @"SYNChannelFooterMoreView"];
     
     
     self.currentGenre = nil;
@@ -218,11 +216,8 @@
 {
     [self updateAnalytics];
     
-    self.channelThumbnailCollectionView.scrollsToTop = YES;
-    
-    
-    
-    
+    self.channelCollectionViewController.collectionView.scrollsToTop = YES;
+
     // if the user has requested 'Load More' channels then dont refresh the page cause he is in the middle of a search
     if (self.dataRequestRange.location == 0)
     {
@@ -251,7 +246,7 @@
 
 - (void) viewDidScrollToBack
 {
-    self.channelThumbnailCollectionView.scrollsToTop = NO;
+    self.channelCollectionViewController.collectionView.scrollsToTop = NO;
 }
 
 
@@ -445,7 +440,7 @@
     self.channels = [NSMutableArray arrayWithArray: resultsArray];
     
     
-    [self.channelThumbnailCollectionView reloadData];
+    [self.channelCollectionViewController.collectionView reloadData];
     
     
 }
@@ -546,13 +541,13 @@
 {
     UICollectionReusableView *supplementaryView;
     
-    if (collectionView == self.channelThumbnailCollectionView)
+    if (collectionView == self.channelCollectionViewController.collectionView)
     {
         if (kind == UICollectionElementKindSectionFooter)
         {
-            self.footerView = [self.channelThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
-                                                                                      withReuseIdentifier: @"SYNChannelFooterMoreView"
-                                                                                             forIndexPath: indexPath];
+            self.footerView = [self.channelCollectionViewController.collectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                                                      withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                                             forIndexPath: indexPath];
             
             supplementaryView = self.footerView;
             
@@ -573,7 +568,7 @@ referenceSizeForFooterInSection: (NSInteger) section
 {
     CGSize footerSize;
     
-    if (collectionView == self.channelThumbnailCollectionView && self.channels.count != 0)
+    if (collectionView == self.channelCollectionViewController.collectionView && self.channels.count != 0)
     {
         footerSize = [self footerSize];
         
@@ -612,7 +607,7 @@ referenceSizeForFooterInSection: (NSInteger) section
 - (void) channelTapped: (UICollectionViewCell *) cell
 {
     SYNChannelThumbnailCell *selectedCell = (SYNChannelThumbnailCell *) cell;
-    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: selectedCell.center];
+    NSIndexPath *indexPath = [self.channelCollectionViewController.collectionView indexPathForItemAtPoint: selectedCell.center];
     
     if (self.isAnimating) // prevent double clicking
     {
@@ -661,20 +656,20 @@ referenceSizeForFooterInSection: (NSInteger) section
                               delay: 0.0
                             options: UIViewAnimationCurveEaseInOut
                          animations: ^{
-                             CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
+                             CGRect currentCollectionViewFrame = self.channelCollectionViewController.view.frame;
                              currentCollectionViewFrame.origin.y += kCategorySecondRowHeight;
                              //
-                             self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
+                             self.channelCollectionViewController.view.frame = currentCollectionViewFrame;
                          }
          
          
                          completion: ^(BOOL result) {
                              tabExpanded = YES;
                              self.isAnimating = NO;
-                             [self.channelThumbnailCollectionView reloadData];
-                             CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
+                             [self.channelCollectionViewController.collectionView reloadData];
+                             CGRect currentCollectionViewFrame = self.channelCollectionViewController.view.frame;
                              currentCollectionViewFrame.size.height -= kCategorySecondRowHeight;
-                             self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
+                             self.channelCollectionViewController.view.frame = currentCollectionViewFrame;
                          }];
     }
     else if (tabExpanded)
@@ -685,10 +680,10 @@ referenceSizeForFooterInSection: (NSInteger) section
                               delay: 0.1
                             options: UIViewAnimationCurveEaseInOut
                          animations: ^{
-                             CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
+                             CGRect currentCollectionViewFrame = self.channelCollectionViewController.view.frame;
                              currentCollectionViewFrame.origin.y -= kCategorySecondRowHeight;
                              //
-                             self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
+                             self.channelCollectionViewController.view.frame = currentCollectionViewFrame;
                          }
          
          
@@ -696,11 +691,11 @@ referenceSizeForFooterInSection: (NSInteger) section
                              tabExpanded = NO;
                              self.isAnimating = NO;
                              
-                             [self.channelThumbnailCollectionView reloadData];
+                             [self.channelCollectionViewController.collectionView reloadData];
                              
-                             CGRect currentCollectionViewFrame = self.channelThumbnailCollectionView.frame;
+                             CGRect currentCollectionViewFrame = self.channelCollectionViewController.view.frame;
                              currentCollectionViewFrame.size.height += kCategorySecondRowHeight;
-                             self.channelThumbnailCollectionView.frame = currentCollectionViewFrame;
+                             self.channelCollectionViewController.view.frame = currentCollectionViewFrame;
                          }];
     }
 }
@@ -744,13 +739,12 @@ referenceSizeForFooterInSection: (NSInteger) section
         self.currentGenre = genre;
     }
     
-    CGPoint currentOffset = self.channelThumbnailCollectionView.contentOffset;
+    CGPoint currentOffset = self.channelCollectionViewController.collectionView.contentOffset;
     currentOffset.y = 0;
     
     // Need to do this immediately, as opposed to animated or we may get strange offsets //
-    
-    [self.channelThumbnailCollectionView setContentOffset: currentOffset
-                                                 animated: NO];
+    [self.channelCollectionViewController.collectionView setContentOffset: currentOffset
+                                                                 animated: NO];
     
     // display what is already in the DB and then load and display again
     
@@ -800,7 +794,7 @@ referenceSizeForFooterInSection: (NSInteger) section
     
     
     self.categoryTableViewController = [[SYNChannelCategoryTableViewController alloc] init];
-    CGRect newFrame = self.channelThumbnailCollectionView.frame;
+    CGRect newFrame = self.channelCollectionViewController.view.frame;
     newFrame.size.height += IS_IOS_7_OR_GREATER ? 20.0f : 0.0f;
     newFrame.size.width = self.categoryTableViewController.view.frame.size.width;
     self.categoryTableViewController.view.frame = newFrame;
@@ -1023,8 +1017,8 @@ referenceSizeForFooterInSection: (NSInteger) section
 
 - (void) headerTapped
 {
-    [self.channelThumbnailCollectionView setContentOffset: CGPointZero
-                                                 animated: YES];
+    [self.channelCollectionViewController.collectionView setContentOffset: CGPointZero
+                                                                 animated: YES];
 }
 
 #pragma mark - Arc menu support
@@ -1088,7 +1082,7 @@ referenceSizeForFooterInSection: (NSInteger) section
 
 - (NSIndexPath *) indexPathForChannelCell: (UICollectionViewCell *) cell
 {
-    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForCell: cell];
+    NSIndexPath *indexPath = [self.channelCollectionViewController.collectionView indexPathForCell: cell];
     return  indexPath;
 }
 
@@ -1097,7 +1091,7 @@ referenceSizeForFooterInSection: (NSInteger) section
 {
     SYNChannelThumbnailCell *parent = (SYNChannelThumbnailCell *) [[button superview] superview];
     
-    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForCell: parent];
+    NSIndexPath *indexPath = [self.channelCollectionViewController.collectionView indexPathForCell: parent];
     
     Channel *channel = (Channel *) self.channels[indexPath.row];
     
