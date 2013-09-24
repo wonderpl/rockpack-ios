@@ -2036,11 +2036,6 @@
 }
 
 
-- (void) addItToChannelPresssed: (id) sender
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAddToChannelRequest
-                                                        object: self];
-}
 
 
 #pragma mark - iPad Category Tab Delegate
