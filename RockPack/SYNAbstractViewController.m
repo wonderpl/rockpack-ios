@@ -119,34 +119,25 @@
                                                  name: kClearedLocationBoundData
                                                object: nil];
     
-    appDelegate = (SYNAppDelegate *)[[UIApplication sharedApplication] delegate];
+    appDelegate = (SYNAppDelegate *) [[UIApplication sharedApplication] delegate];
     
     // for loading data
     
     [self resetDataRequestRange];
     
     self.view.multipleTouchEnabled = NO;
-    
 }
 
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    
-    // Compensate for iOS7
-    
-
-}
 
 - (void) resetDataRequestRange
 {
     self.dataRequestRange = NSMakeRange(0, STANDARD_REQUEST_LENGTH);
 }
 
+
 - (void) viewDidScrollToFront
 {
-//    DebugLog (@"%@ came to front", self.title);
+    //    DebugLog (@"%@ came to front", self.title);
 }
 
 
@@ -160,8 +151,6 @@
 {
     //AssertOrLog (@"Abstract class called 'reloadCollectionViews'");
 }
-
-
 
 
 // This can be overridden if updating star may cause the videoFetchedResults
@@ -178,17 +167,13 @@
 }
 
 
-
-
-
 - (BOOL) moreItemsToLoad
 {
-    
-    return (self.dataRequestRange.location + self.dataRequestRange.length < self.dataItemsAvailable);
+    return self.dataRequestRange.location + self.dataRequestRange.length < self.dataItemsAvailable;
 }
 
 
-- (void) incrementRangeForNextRequest
+-(void) incrementRangeForNextRequest
 {
     if(!self.moreItemsToLoad)
         return;
@@ -328,9 +313,6 @@
 }
 
 
-
-
-
 #pragma mark - Trace
 
 - (NSString*) description
@@ -378,28 +360,34 @@
     DebugLog(@"WARNING: Abstract method called");
 }
 
--(void)clearedLocationBoundData
+- (void) clearedLocationBoundData
 {
     // to be implemented by child
 }
+
+
 - (BOOL) showSubGenres
 {
     return YES;
 }
 
 
-
--(void)setTitle:(NSString *)title
+- (void) setTitle: (NSString *) title
 {
     abstractTitle = title;
 }
 
--(NSString*)title
+
+- (NSString *) title
 {
-    if(abstractTitle && ![abstractTitle isEqualToString:@""])
+    if (abstractTitle && ![abstractTitle isEqualToString: @""])
+    {
         return abstractTitle;
+    }
     else
+    {
         return viewId;
+    }
 }
 
 #pragma mark - Social network sharing
@@ -590,8 +578,6 @@
                                                              object:self];
          
      } errorHandler: ^(NSDictionary *errorDictionary) {
-         
-         
      }];
 }
 
@@ -601,25 +587,30 @@
 - (void) initiatePurchaseAtURL: (NSURL *) purchaseURL
 {
     if ([[UIApplication sharedApplication] canOpenURL: purchaseURL])
-	{
-		[[UIApplication sharedApplication] openURL: purchaseURL];
-	}
+    {
+        [[UIApplication sharedApplication] openURL: purchaseURL];
+    }
 }
+
 
 - (void) headerTapped
 {
     // to be implemented by subclass
 }
 
+
 - (void) viewDidScrollToBack
 {
     // to be implemented by subclass
 }
 
--(void)performAction:(NSString*)action withObject:(id)object
+
+- (void) performAction: (NSString *) action withObject: (id) object
 {
-    // to be implemented by subclass 
+    // to be implemented by subclass
 }
+
+
 #pragma mark - Load more footer
 
 // Load more footer
@@ -810,16 +801,18 @@
 - (NSIndexPath *) indexPathForChannelCell: (UICollectionViewCell *) cell
 {
     AssertOrLog(@"Shouldn't be calling abstract function");
-    return  nil;
+    return nil;
 }
+
 
 #pragma mark - Arc Menu
 
--(void)arcMenuShowFake:(UILongPressGestureRecognizer*)longPressRecogniser
+- (void) arcMenuShowFake: (UILongPressGestureRecognizer *) longPressRecogniser
 {
     self.arcMenuIsFakeCell = YES;
-    [self arcMenuUpdateState:longPressRecogniser];
+    [self arcMenuUpdateState: longPressRecogniser];
 }
+
 
 - (void) arcMenuSelectedCell: (UICollectionViewCell *) selectedCell
            andComponentIndex: (NSInteger) componentIndex
@@ -836,7 +829,7 @@
         self.arcMenuIsChannelCell = FALSE;
         self.arcMenuIndexPath = [self indexPathForVideoCell: selectedCell];
     }
-
+    
     self.arcMenuComponentIndex = componentIndex;
 }
 
@@ -1052,20 +1045,24 @@
     return appDelegate.masterViewController.view;
 }
 
+
 - (BOOL) needsHeaderButton
 {
     return YES;
 }
 
--(void)checkForOnBoarding
+
+- (void) checkForOnBoarding
 {
     // to be implemented in subclass
 }
 
--(UIStatusBarStyle)preferredStatusBarStyle
+
+- (UIStatusBarStyle) preferredStatusBarStyle
 {
     return UIStatusBarStyleLightContent;
 }
+
 
 
 @end

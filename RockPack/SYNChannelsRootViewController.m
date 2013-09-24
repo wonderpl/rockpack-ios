@@ -17,17 +17,15 @@
 #import "SYNChannelDetailViewController.h"
 #import "SYNChannelThumbnailCell.h"
 #import "SYNChannelsRootViewController.h"
+#import "SYNCollectionViewController.h"
 #import "SYNDeviceManager.h"
 #import "SYNFeedMessagesView.h"
 #import "SYNGenreItemView.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNMainRegistry.h"
 #import "SYNNetworkEngine.h"
-<<<<<<< HEAD
 #import "SYNPassthroughView.h"
-=======
 #import "SYNOAuthNetworkEngine.h"
->>>>>>> refs/heads/develop
 #import "SubGenre.h"
 #import "UIFont+SYNFont.h"
 #import "SYNTrackableFrameView.h"
@@ -53,6 +51,7 @@
 @property (nonatomic, strong) NSMutableArray *channels;
 @property (nonatomic, strong) NSString *currentCategoryId;
 @property (nonatomic, strong) SYNChannelCategoryTableViewController *categoryTableViewController;
+@property (nonatomic, strong) SYNCollectionViewController *channelCollectionViewController;
 @property (nonatomic, strong) SYNFeedMessagesView *emptyGenreMessageView;
 @property (nonatomic, strong) UIButton *categorySelectButton;
 @property (nonatomic, strong) UIControl *categorySelectDismissControl;
@@ -69,17 +68,6 @@
 @synthesize dataItemsAvailable;
 @synthesize channels;
 @synthesize runningNetworkOperation = _runningNetworkOperation;
-
-
-#pragma mark - Object lifecycle
-
-- (void) dealloc
-{
-    // Defensive programming
-    self.channelThumbnailCollectionView.delegate = nil;
-    self.channelThumbnailCollectionView.dataSource = nil;
-}
-
 
 #pragma mark - View lifecycle
 
@@ -139,33 +127,11 @@
         
     }
     
-    self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: channelCollectionViewFrame
-                                                             collectionViewLayout: flowLayout];
-    self.channelThumbnailCollectionView.dataSource = self;
-    self.channelThumbnailCollectionView.delegate = self;
-    self.channelThumbnailCollectionView.backgroundColor = [UIColor clearColor];
-    self.channelThumbnailCollectionView.showsVerticalScrollIndicator = NO;
-    
-    self.channelThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.channelThumbnailCollectionView.scrollsToTop = NO;
-    
-    // Allocate a touch transparent recognizer view the same size as our collection view
-//    SYNPassthroughView *recognizerView = [[SYNPassthroughView alloc] initWithFrame: self.channelThumbnailCollectionView.bounds];
-//    recognizerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-//    recognizerView.userInteractionEnabled = true;
-//    recognizerView.backgroundColor = [UIColor redColor];
-//    [self.channelThumbnailCollectionView addSubview: recognizerView];
-    
-    self.longPress = [[UILongPressGestureRecognizer alloc] initWithTarget: self
-                                                                   action: @selector(showMenu:)];
-    self.longPress.delegate = self;
-    [self.channelThumbnailCollectionView addGestureRecognizer: self.longPress];
-    
-    // Tap for showing video
-    self.tap = [[UITapGestureRecognizer alloc] initWithTarget: self
-                                                       action: @selector(showChannel:)];
-    self.tap.delegate = self;
-    [self.channelThumbnailCollectionView addGestureRecognizer: self.tap];
+    self.channelCollectionViewController = [[SYNCollectionViewController alloc] initWithCollectionViewLayout: flowLayout];
+    self.channelCollectionViewController.view.frame = channelCollectionViewFrame;
+    self.channelCollectionViewController.collectionView.dataSource = self;
+    self.channelCollectionViewController.collectionView.delegate = self;
+    self.channelCollectionViewController.collectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     CGRect newFrame;
     
@@ -186,15 +152,11 @@
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-    [self.view addSubview: self.channelThumbnailCollectionView];
+    [self.view addSubview: self.channelCollectionViewController.view];
     
     if (self.enableCategoryTable)
 
     {[self layoutChannelsCategoryTable];}
-    
-    
-    
-    self.channelThumbnailCollectionView.showsVerticalScrollIndicator = YES;
 }
 
 
@@ -235,21 +197,21 @@
     
 }
 
-
-- (void) showChannel: (UITapGestureRecognizer *) recognizer
-{
-    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: [recognizer locationOfTouch: 0
-                                                                                                                inView: self.channelThumbnailCollectionView]];
-                              
-    UICollectionViewCell *cell = [self.channelThumbnailCollectionView cellForItemAtIndexPath: indexPath];
-    [self channelTapped: cell];
-}
-
-
-- (void) showMenu: (UILongPressGestureRecognizer *) recognizer
-{
-    [self arcMenuUpdateState: recognizer];
-}
+//
+//- (void) showChannel: (UITapGestureRecognizer *) recognizer
+//{
+//    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: [recognizer locationOfTouch: 0
+//                                                                                                                inView: self.channelThumbnailCollectionView]];
+//                              
+//    UICollectionViewCell *cell = [self.channelThumbnailCollectionView cellForItemAtIndexPath: indexPath];
+//    [self channelTapped: cell];
+//}
+//
+//
+//- (void) showMenu: (UILongPressGestureRecognizer *) recognizer
+//{
+//    [self arcMenuUpdateState: recognizer];
+//}
 
 
 - (void) viewDidScrollToFront

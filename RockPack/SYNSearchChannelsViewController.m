@@ -83,7 +83,7 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
+    CGRect collectionFrame = self.channelCollectionViewController.view.frame;
     if (IS_IPHONE)
     {
         collectionFrame.origin.y += 10.0;
@@ -94,7 +94,7 @@
         collectionFrame.origin.y += 5.0;
         collectionFrame.size.height -= 5.0;
     }
-    self.channelThumbnailCollectionView.frame = collectionFrame;
+    self.channelCollectionViewController.view.frame = collectionFrame;
 }
 
 - (void) displayEmptyGenreMessage: (NSString*) messageKey
@@ -164,7 +164,7 @@
     
     channels = [NSMutableArray arrayWithArray: resultsArray];
     
-    [self.channelThumbnailCollectionView reloadData];
+    [self.channelCollectionViewController.collectionView reloadData];
 }
 
 

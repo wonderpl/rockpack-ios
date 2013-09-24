@@ -20,9 +20,6 @@
 - (void) loadView
 {
     [super loadView];
-    
-    self.channelThumbnailCollectionView.backgroundColor = [UIColor clearColor];
-    self.channelThumbnailCollectionView.showsVerticalScrollIndicator = NO;
 }
 
 
@@ -49,21 +46,20 @@
     UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
                                           bundle: nil];
     
-    [self.channelThumbnailCollectionView registerNib: footerViewNib
-                          forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
-                                 withReuseIdentifier: @"SYNChannelFooterMoreView"];
+    [self.channelCollectionViewController.collectionView registerNib: footerViewNib
+                                          forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
+                                                 withReuseIdentifier: @"SYNChannelFooterMoreView"];
     
     // Register Cells
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelMidCell"
                                              bundle: nil];
     
-    [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
-                          forCellWithReuseIdentifier: @"SYNChannelMidCell"];
+    [self.channelCollectionViewController.collectionView registerNib: thumbnailCellNib
+                                          forCellWithReuseIdentifier: @"SYNChannelMidCell"];
 
-    CGRect correntFrame = self.channelThumbnailCollectionView.frame;
+    CGRect correntFrame = self.channelCollectionViewController.view.frame;
     correntFrame.size.width = 20.0;
-    self.channelThumbnailCollectionView.frame = correntFrame;
-    self.channelThumbnailCollectionView.scrollsToTop = NO;
+    self.channelCollectionViewController.view.frame = correntFrame;
 }
 
 #pragma mark - Add UIView if there are no channels
@@ -184,14 +180,14 @@
     }
     
     [self isCurrentUserProfile];
-    [self.channelThumbnailCollectionView reloadData];
+    [self.channelCollectionViewController.collectionView reloadData];
 }
 
 
 - (void) setViewFrame: (CGRect) frame
 {
     self.view.frame = frame;
-    self.channelThumbnailCollectionView.frame = CGRectMake(0.0, 0.0, frame.size.width, frame.size.height);
+    self.channelCollectionViewController.view.frame = CGRectMake(0.0, 0.0, frame.size.width, frame.size.height);
 }
 
 
@@ -199,13 +195,14 @@
 
 - (UICollectionView *) collectionView
 {
-    return self.channelThumbnailCollectionView;
+    return self.channelCollectionViewController.collectionView;
 }
 
 
 - (void) headerTapped
 {
-    [self.channelThumbnailCollectionView setContentOffset:CGPointZero animated:YES];
+    [self.channelCollectionViewController.collectionView setContentOffset: CGPointZero
+                                                                 animated: YES];
 }
 
 
@@ -214,14 +211,14 @@
     // no additional checks because it is done above
     _user = user;
     
-    [self.channelThumbnailCollectionView reloadData];
+    [self.channelCollectionViewController.collectionView reloadData];
 }
 
 
 - (void) channelTapped: (UICollectionViewCell *) cell
 {
     SYNChannelMidCell *selectedCell = (SYNChannelMidCell *) cell;
-    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: selectedCell.center];
+    NSIndexPath *indexPath = [self.channelCollectionViewController.collectionView indexPathForItemAtPoint: selectedCell.center];
     
     Channel *channel = self.user.subscriptions[indexPath.item];
     
@@ -231,7 +228,7 @@
 
 - (NSIndexPath *) indexPathForChannelCell: (UICollectionViewCell *) cell
 {
-    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForCell: cell];
+    NSIndexPath *indexPath = [self.channelCollectionViewController.collectionView indexPathForCell: cell];
     return  indexPath;
 }
 

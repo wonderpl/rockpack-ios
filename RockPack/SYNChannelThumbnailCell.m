@@ -32,13 +32,6 @@
     
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
     
-    // Touch for highlighting cells when the user touches them (like UIButton)
-    self.touch = [[SYNTouchGestureRecognizer alloc] initWithTarget: self
-                                                            action: @selector(showGlossLowlight:)];
-    
-    self.touch.delegate = self;
-    [self addGestureRecognizer: self.touch];
-    
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
     self.displayNameLabel.font = [UIFont rockpackFontOfSize: self.displayNameLabel.font.pointSize];
     self.byLabel.font = [UIFont rockpackFontOfSize: self.byLabel.font.pointSize];
@@ -104,21 +97,9 @@
 
 #pragma mark - Gesture regognizer support
 
-// Required to pass through events to controls overlaid on view with gesture recognizers
-- (BOOL) gestureRecognizer: (UIGestureRecognizer *) gestureRecognizer shouldReceiveTouch: (UITouch *) touch
-{
-    if ([touch.view isKindOfClass: [UIControl class]])
-    {
-        // we touched a button, slider, or other UIControl
-        return NO; // ignore the touch
-    }
-    
-    return YES; // handle the touch
-}
-
 
 // This is used to lowlight the gloss image on touch
-- (void) showGlossLowlight: (SYNTouchGestureRecognizer *) recognizer
+- (void) lowlight: (SYNTouchGestureRecognizer *) recognizer
 {
     // Default iPad gloss image
     NSString *imageName = @"GlossChannelThumbnail";

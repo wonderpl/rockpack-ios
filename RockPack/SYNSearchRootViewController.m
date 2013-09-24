@@ -158,10 +158,10 @@
     {
         // FIXME: This magic number layout is not so good. self.view needs to be setup with the correct frame, and then we can start doing a relative layout.
         CGRect collectionViewFrame = CGRectMake(0, 48.0f, 320.0f, self.view.frame.size.height - 103.0f);
-        self.searchChannelsController.channelThumbnailCollectionView.frame = collectionViewFrame;
-        self.searchChannelsController.channelThumbnailCollectionView.backgroundColor = [UIColor colorWithWhite: 0.97f
+        self.searchChannelsController.channelCollectionViewController.view.frame = collectionViewFrame;
+        self.searchChannelsController.channelCollectionViewController.view.backgroundColor = [UIColor colorWithWhite: 0.97f
                                                                                                          alpha: 1.0f];
-        UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *) self.searchChannelsController.channelThumbnailCollectionView.collectionViewLayout;
+        UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *) self.searchChannelsController.channelCollectionViewController.collectionView.collectionViewLayout;
         UIEdgeInsets insets = layout.sectionInset;
         insets.top = 5.0f;
         insets.bottom = 10.0f;

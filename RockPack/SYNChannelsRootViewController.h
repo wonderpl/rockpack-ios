@@ -15,7 +15,7 @@
     NSMutableArray* channels;
 }
 
-@property (nonatomic, strong) UICollectionView *channelThumbnailCollectionView;
+@property (nonatomic, strong) UICollectionViewController *channelCollectionViewController;
 @property (nonatomic, assign) BOOL enableCategoryTable;
 
 - (void) superArcMenuUpdateState: (UIGestureRecognizer *) recognizer;

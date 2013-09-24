@@ -65,8 +65,6 @@ typedef void (^SYNShareCompletionBlock)(void);
 @property (readonly) BOOL alwaysDisplaysSearchBox;
 @property (readonly) NSManagedObjectContext *mainManagedObjectContext;
 @property (readonly, getter = isVideoQueueVisible) BOOL videoQueueVisible;
-@property (nonatomic, strong) UILongPressGestureRecognizer *longPress;
-@property (nonatomic, strong) UITapGestureRecognizer *tap;
 
 - (void) performAction: (NSString *) action withObject: (id) object;
 

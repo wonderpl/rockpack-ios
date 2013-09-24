@@ -200,6 +200,7 @@
 		0173F70B16E0C5DF005B3ECA /* SYNVideoViewerThumbnailLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 0173F70A16E0C5DF005B3ECA /* SYNVideoViewerThumbnailLayoutAttributes.m */; };
 		0177002717C37AF6006DE415 /* SYNTouchGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177002617C37AF6006DE415 /* SYNTouchGestureRecognizer.m */; };
 		0177002A17C382C3006DE415 /* UIImage+Tint.m in Sources */ = {isa = PBXBuildFile; fileRef = 0177002917C382C3006DE415 /* UIImage+Tint.m */; };
+		017B2B9617F1AF68009F8882 /* SYNCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 017B2B9517F1AF68009F8882 /* SYNCollectionViewController.m */; };
 		01811A5717576D2A00AFA926 /* ButtonShuttleBarMaximise@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01811A5317576D2A00AFA926 /* ButtonShuttleBarMaximise@2x.png */; };
 		01811A5817576D2A00AFA926 /* ButtonShuttleBarMaximise.png in Resources */ = {isa = PBXBuildFile; fileRef = 01811A5417576D2A00AFA926 /* ButtonShuttleBarMaximise.png */; };
 		01811A5917576D2A00AFA926 /* ButtonShuttleBarMinimise.png in Resources */ = {isa = PBXBuildFile; fileRef = 01811A5517576D2A00AFA926 /* ButtonShuttleBarMinimise.png */; };
@@ -1686,6 +1687,9 @@
 		0177002617C37AF6006DE415 /* SYNTouchGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNTouchGestureRecognizer.m; sourceTree = "<group>"; };
 		0177002817C382C3006DE415 /* UIImage+Tint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Tint.h"; sourceTree = "<group>"; };
 		0177002917C382C3006DE415 /* UIImage+Tint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Tint.m"; sourceTree = "<group>"; };
+		017B2B9417F1AF68009F8882 /* SYNCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCollectionViewController.h; sourceTree = "<group>"; };
+		017B2B9517F1AF68009F8882 /* SYNCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCollectionViewController.m; sourceTree = "<group>"; };
+		017B2BDB17F1D883009F8882 /* SYNCellHighlightProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SYNCellHighlightProtocol.h; sourceTree = "<group>"; };
 		01811A5317576D2A00AFA926 /* ButtonShuttleBarMaximise@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonShuttleBarMaximise@2x.png"; path = "Assets/Images/ButtonShuttleBarMaximise@2x.png"; sourceTree = "<group>"; };
 		01811A5417576D2A00AFA926 /* ButtonShuttleBarMaximise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonShuttleBarMaximise.png; path = Assets/Images/ButtonShuttleBarMaximise.png; sourceTree = "<group>"; };
 		01811A5517576D2A00AFA926 /* ButtonShuttleBarMinimise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonShuttleBarMinimise.png; path = Assets/Images/ButtonShuttleBarMinimise.png; sourceTree = "<group>"; };
@@ -3390,6 +3394,7 @@
 		012632CC162DF7B30009FF9C /* Collection Assets */ = {
 			isa = PBXGroup;
 			children = (
+				017B2BDC17F1D89F009F8882 /* Protocols */,
 				BE7D036A17A69A99008053DC /* Aggregate Cells */,
 				01B7CD9E166E163D001F4AF0 /* Channel cells */,
 				0199F12D166F95C000E479C6 /* Collections */,
@@ -3681,6 +3686,14 @@
 				0177002617C37AF6006DE415 /* SYNTouchGestureRecognizer.m */,
 			);
 			name = "Gesture Recognisers";
+			sourceTree = "<group>";
+		};
+		017B2BDC17F1D89F009F8882 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				017B2BDB17F1D883009F8882 /* SYNCellHighlightProtocol.h */,
+			);
+			name = Protocols;
 			sourceTree = "<group>";
 		};
 		018919F51672235000AB07BB /* Feed */ = {
@@ -4007,6 +4020,8 @@
 		01982562162ADE5200216900 /* Container */ = {
 			isa = PBXGroup;
 			children = (
+				017B2B9417F1AF68009F8882 /* SYNCollectionViewController.h */,
+				017B2B9517F1AF68009F8882 /* SYNCollectionViewController.m */,
 				0198250A1629DCF100216900 /* SYNContainerViewController.h */,
 				0198250B1629DCF100216900 /* SYNContainerViewController.m */,
 				BEE732B81727D99E0083E1B9 /* SYNContainerScrollView.h */,
@@ -7490,6 +7505,7 @@
 				011C1677173003E800CF50B9 /* OWActivityDelegateObject.m in Sources */,
 				011C1678173003E800CF50B9 /* OWActivityView.m in Sources */,
 				011C167A173003E800CF50B9 /* OWActivityViewController.m in Sources */,
+				017B2B9617F1AF68009F8882 /* SYNCollectionViewController.m in Sources */,
 				011C167B173003E800CF50B9 /* OWCopyActivity.m in Sources */,
 				011C167C173003E800CF50B9 /* OWFacebookActivity.m in Sources */,
 				011C167D173003E800CF50B9 /* OWMailActivity.m in Sources */,
