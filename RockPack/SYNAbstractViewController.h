@@ -55,7 +55,6 @@ typedef void (^SYNShareCompletionBlock)(void);
 @property (nonatomic, strong) IBOutlet UICollectionView *videoThumbnailCollectionView;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) NSIndexPath *draggedIndexPath;
-@property (nonatomic, strong) SYNAddButtonControl *addButton;
 @property (nonatomic, strong) SYNArcMenuView *arcMenu;
 @property (nonatomic, strong) SYNChannelFooterMoreView *footerView;
 @property (nonatomic, strong) SYNTabViewController *tabViewController;

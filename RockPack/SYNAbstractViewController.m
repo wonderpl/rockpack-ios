@@ -63,7 +63,6 @@
 @synthesize selectedIndex = _selectedIndex;
 
 @synthesize tabViewController;
-@synthesize addButton;
 
 @synthesize viewId;
 

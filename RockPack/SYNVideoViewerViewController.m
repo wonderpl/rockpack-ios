@@ -264,8 +264,6 @@
     [videoView insertSubview: self.videoPlaybackViewController.view
                      aboveSubview: self.blackPanelView];
     
-    self.addButton.center = CGPointMake(self.videoPlaybackViewController.view.frame.origin.x + self.videoPlaybackViewController.view.frame.size.width - self.addButton.frame.size.width/2.0f, self.videoPlaybackViewController.view.frame.origin.y - self.addButton.frame.size.height/2.0f - 10.f);
-    [videoView addSubview:self.addButton];
     
     self.rightSwipeRecogniser = [[UISwipeGestureRecognizer alloc] initWithTarget: self
                                                                           action: @selector(userTouchedPreviousVideoButton:)];
@@ -787,7 +785,6 @@
         addItButton.selected = NO;
     }
     
-    self.addButton.hidden = !addItButton.selected;
 }
 
 - (IBAction) toggleStarButton: (UIButton *) button
@@ -1358,7 +1355,6 @@
     //We should only track the status of the queue on iPad since iPhone only ever adds one object at a time
     VideoInstance* videoInstance = self.videoInstanceArray[self.currentSelectedIndex];
     self.addVideoButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];
-    self.addButton.hidden = !self.addVideoButton.selected;
 }
 
 
