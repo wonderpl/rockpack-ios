@@ -124,6 +124,7 @@ typedef void (^LongPressRecognizedBlock) (UIGestureRecognizer *recognizer);
 
 - (void) tapRecognized: (UITapGestureRecognizer *) recognizer
 {
+    DebugLog(@"Tap recognised");
     NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint: [recognizer locationOfTouch: 0
                                                                                                 inView: self.collectionView]];
     UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath: indexPath];
@@ -137,6 +138,7 @@ typedef void (^LongPressRecognizedBlock) (UIGestureRecognizer *recognizer);
 
 - (void) longPressRecognized: (UILongPressGestureRecognizer *) recognizer
 {
+    DebugLog(@"Long press recognised");
     if (self.longPressRecognizedBlock)
     {
         self.longPressRecognizedBlock(recognizer);
