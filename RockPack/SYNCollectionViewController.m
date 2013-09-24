@@ -9,17 +9,11 @@
 #import "SYNCollectionViewController.h"
 #import "SYNCellHighlightProtocol.h"
 
-// Define these separately, just in case they are required to be different
-typedef void (^TapRecognizedBlock) (UICollectionViewCell *cell);
-typedef void (^LongPressRecognizedBlock) (UIGestureRecognizer *recognizer);
-
 @interface SYNCollectionViewController () <UIGestureRecognizerDelegate,
                                            SYNCellHighlightProtocol>
 
 @property (nonatomic, assign) id<UICollectionViewDelegate> delegate;
 @property (nonatomic, assign) id<UICollectionViewDataSource> dataSource;
-@property (nonatomic, copy) TapRecognizedBlock tapRecognizedBlock;
-@property (nonatomic, copy) LongPressRecognizedBlock longPressRecognizedBlock;
 
 @end
 

@@ -184,15 +184,26 @@
                                           forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
                                                  withReuseIdentifier: @"SYNChannelFooterMoreView"];
     
+    // Add the recogniser blocks for this collection view
+    __weak typeof(self) weakself = self;
     
+    TapRecognizedBlock tapRecognizedBlock = ^(UICollectionViewCell *cell) {
+        [weakself channelTapped: cell];
+    };
+    
+    self.channelCollectionViewController.tapRecognizedBlock = tapRecognizedBlock;
+    
+    LongPressRecognizedBlock longPressRecognizedBlock = ^(UIGestureRecognizer *recognizer) {
+        [weakself arcMenuUpdateState: recognizer];
+    };
+    
+    self.channelCollectionViewController.longPressRecognizedBlock = longPressRecognizedBlock;
+
     self.currentGenre = nil;
     
     [self displayChannelsForGenre: self.currentGenre];
     
     [self loadChannelsForGenre: self.currentGenre];
-    
-    
-    
 }
 
 //
