@@ -1374,7 +1374,6 @@
 		BEBA957D17E212FD007DCD9C /* SYNInstructionsToShareControllerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEBA957B17E212FD007DCD9C /* SYNInstructionsToShareControllerViewController.xib */; };
 		BEBD097C1743A18A0092F527 /* SYNCoverChooserController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBD097A1743A18A0092F527 /* SYNCoverChooserController.m */; };
 		BEBD097D1743A18A0092F527 /* SYNCoverChooserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BEBD097B1743A18A0092F527 /* SYNCoverChooserController.xib */; };
-		BEBD09811744ECD50092F527 /* SYNAddButtonControl.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBD09801744ECD50092F527 /* SYNAddButtonControl.m */; };
 		BEBFD0921779F0F800C90544 /* SYNCaution.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBFD0911779F0F800C90544 /* SYNCaution.m */; };
 		BEBFD0951779F25800C90544 /* SYNCautionMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBFD0941779F25800C90544 /* SYNCautionMessageView.m */; };
 		BEBFD0A2177A039D00C90544 /* ButtonPrivateLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = BEBFD098177A039D00C90544 /* ButtonPrivateLeft.png */; };
@@ -3031,8 +3030,6 @@
 		BEBD09791743A18A0092F527 /* SYNCoverChooserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCoverChooserController.h; sourceTree = "<group>"; };
 		BEBD097A1743A18A0092F527 /* SYNCoverChooserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCoverChooserController.m; sourceTree = "<group>"; };
 		BEBD097B1743A18A0092F527 /* SYNCoverChooserController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SYNCoverChooserController.xib; sourceTree = "<group>"; };
-		BEBD097F1744ECD50092F527 /* SYNAddButtonControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAddButtonControl.h; sourceTree = "<group>"; };
-		BEBD09801744ECD50092F527 /* SYNAddButtonControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNAddButtonControl.m; sourceTree = "<group>"; };
 		BEBFD0901779F0F800C90544 /* SYNCaution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCaution.h; sourceTree = "<group>"; };
 		BEBFD0911779F0F800C90544 /* SYNCaution.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNCaution.m; sourceTree = "<group>"; };
 		BEBFD0931779F25700C90544 /* SYNCautionMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNCautionMessageView.h; sourceTree = "<group>"; };
@@ -4073,8 +4070,6 @@
 			children = (
 				01D0998917452A4000351C82 /* BBCyclingLabel.h */,
 				01D0998A17452A4000351C82 /* BBCyclingLabel.m */,
-				BEBD097F1744ECD50092F527 /* SYNAddButtonControl.h */,
-				BEBD09801744ECD50092F527 /* SYNAddButtonControl.m */,
 				BE7D354F171870780085AB81 /* SYNBackButtonControl.h */,
 				BE7D3550171870780085AB81 /* SYNBackButtonControl.m */,
 				BE7D3539171708F60085AB81 /* SYNRefreshButton.h */,
@@ -7532,7 +7527,6 @@
 				38281F1D17439B770024DC18 /* SYNLoginBaseViewController.m in Sources */,
 				BEBD097C1743A18A0092F527 /* SYNCoverChooserController.m in Sources */,
 				3864D2DC1743DB3000A90ED3 /* SYNImagePickerController.m in Sources */,
-				BEBD09811744ECD50092F527 /* SYNAddButtonControl.m in Sources */,
 				01D0998B17452A4000351C82 /* BBCyclingLabel.m in Sources */,
 				011BA5DD174D1EB700041A16 /* SYNCoverRightMoreView.m in Sources */,
 				BE0FF0321754C39D0088294F /* ISO8601DateFormatter.m in Sources */,
