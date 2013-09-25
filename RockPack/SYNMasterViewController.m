@@ -377,17 +377,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 
 
-- (void) resumeVideoIfShowing
-{
-    //Special case! If we have a videoViewerViewContoroller here it means we are returning from the add to channel selector.
-    // try to resume playback.
-    if (self.videoViewerViewController)
-    {
-        [self.videoViewerViewController playIfVideoActive];
-    }
-}
-
-
 #pragma mark - Navigation Panel Methods
 
 - (IBAction) showAndHideSideNavigation: (UIButton*) sender
@@ -769,7 +758,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) allNavControlsRequested: (NSNotification*) notification
 {
-    
     
     NSString* notificationName = [notification name];
     if (!notificationName)
