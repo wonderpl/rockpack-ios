@@ -51,7 +51,6 @@
 @property (nonatomic, strong) SYNUserProfileViewController *userProfileController;
 @property (nonatomic, strong) SYNYouHeaderView *headerChannelsView;
 @property (nonatomic, strong) SYNYouHeaderView *headerSubscriptionsView;
-@property (nonatomic, strong) UICollectionView *channleCollectionView;
 @property (nonatomic, strong) id orientationDesicionmaker;
 @property (nonatomic, weak) UIButton *channelsTabButton;
 @property (nonatomic, weak) UIButton *subscriptionsTabButton;
@@ -161,12 +160,13 @@
     collectionViewFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] - collectionViewFrame.origin.y;
     
     self.channelCollectionViewController = [[SYNCollectionViewController alloc] initWithCollectionViewLayout: self.channelsLandscapeLayout];
-    self.channelCollectionViewController.view.frame = collectionViewFrame;
     self.channelCollectionView.dataSource = self;
     self.channelCollectionView.delegate = self;
     self.channelCollectionView.backgroundColor = [UIColor clearColor];
     self.channelCollectionView.showsVerticalScrollIndicator = NO;
     self.channelCollectionView.alwaysBounceVertical = YES;
+    self.channelCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.channelCollectionViewController.view.frame = collectionViewFrame;
     
     // Subscriptions Collection View
     self.subscriptionsViewController = [[SYNSubscriptionsViewController alloc] initWithViewId: kProfileViewId];
@@ -599,12 +599,12 @@
     viewHeight = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar];
     
     // Setup Channel feed collection view
-    newFrame = self.channelCollectionView.frame;
+    newFrame = self.channelCollectionViewController.view.frame;
     newFrame.size.width = self.isIPhone ? 320.0f : self.headerChannelsView.frame.size.width;
     
     newFrame.size.height = viewHeight - newFrame.origin.y;
     self.channelCollectionView.collectionViewLayout = channelsLayout;
-    self.channelCollectionView.frame = newFrame;
+    self.channelCollectionViewController.view.frame = newFrame;
     
     
     //Setup subscription feed collection view
