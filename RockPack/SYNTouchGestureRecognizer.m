@@ -28,6 +28,9 @@
     [super touchesBegan: touches
               withEvent: event];
     
+    if (touches.count > 1)
+        return;
+    
     self.state = UIGestureRecognizerStateBegan;
 }
 

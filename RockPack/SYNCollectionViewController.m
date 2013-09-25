@@ -107,38 +107,42 @@
 - (void) touchRecognized: (SYNTouchGestureRecognizer *) gestureRecognizer
 {
     DebugLog(@"Touch recognised");
-    NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint: [gestureRecognizer locationOfTouch: 0
-                                                                                                inView: self.collectionView]];
     
-    UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath: indexPath];
-    
-    if ([cell respondsToSelector: @selector(setLowlight:forPoint:)])
+    for (int touchIndex = 0; touchIndex < gestureRecognizer.numberOfTouches; touchIndex++)
     {
-        CGPoint pointInCell = [gestureRecognizer locationOfTouch: 0 inView: cell];
+        NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint: [gestureRecognizer locationOfTouch: touchIndex
+                                                                                                           inView: self.collectionView]];
         
-        switch (gestureRecognizer.state)
+        UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath: indexPath];
+        
+        if ([cell respondsToSelector: @selector(setLowlight:forPoint:)])
         {
-            case UIGestureRecognizerStateBegan:
+            CGPoint pointInCell = [gestureRecognizer locationOfTouch: touchIndex inView: cell];
+            
+            switch (gestureRecognizer.state)
             {
-                [(SYNAbstractViewController *)self.collectionView.delegate arcMenuSelectedCell: cell
-                                                                             andComponentIndex: kArcMenuInvalidComponentIndex];
-                
-                [(id <SYNCellHighlightProtocol>)cell setLowlight: TRUE
-                                                        forPoint: pointInCell];
-                break;
+                case UIGestureRecognizerStateBegan:
+                {
+                    [(SYNAbstractViewController *)self.collectionView.delegate arcMenuSelectedCell: cell
+                                                                                 andComponentIndex: kArcMenuInvalidComponentIndex];
+                    
+                    [(id <SYNCellHighlightProtocol>)cell setLowlight: TRUE
+                                                            forPoint: pointInCell];
+                    break;
+                }
+                    
+                case UIGestureRecognizerStateEnded:
+                case UIGestureRecognizerStateCancelled:
+                case UIGestureRecognizerStateFailed:
+                {
+                    [(id <SYNCellHighlightProtocol>)cell setLowlight: FALSE
+                                                            forPoint: pointInCell];
+                    break;
+                }
+                    
+                default:
+                    break;
             }
-                
-            case UIGestureRecognizerStateEnded:
-            case UIGestureRecognizerStateCancelled:
-            case UIGestureRecognizerStateFailed:
-            {
-                [(id <SYNCellHighlightProtocol>)cell setLowlight: FALSE
-                                                        forPoint: pointInCell];
-                break;
-            }
-                
-            default:
-                break;
         }
     }
 }
