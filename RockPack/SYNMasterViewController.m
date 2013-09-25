@@ -21,7 +21,7 @@
 #import "SYNExistingChannelsViewController.h"
 #import "SYNFacebookManager.h"
 #import "SYNMasterViewController.h"
-#import "SYNNetworkErrorView.h"
+#import "SYNNetworkMessageView.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNPageView.h"
 #import "SYNSearchBoxViewController.h"
@@ -29,7 +29,6 @@
 #import "SYNSideNavigatorViewController.h"
 #import "SYNSoundPlayer.h"
 #import "SYNVideoPlaybackViewController.h"
-#import "SYNVideoViewerViewController.h"
 #import "UIFont+SYNFont.h"
 #import "VideoInstance.h"
 #import <QuartzCore/QuartzCore.h>
@@ -54,8 +53,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 @property (nonatomic, strong) IBOutlet UIView* navigationContainerView;
 @property (nonatomic, strong) SYNAccountSettingsModalContainer* modalAccountContainer;
 @property (nonatomic, strong) SYNBackButtonControl* backButtonControl;
-@property (nonatomic, strong) SYNExistingChannelsViewController* existingChannelsController;
-@property (nonatomic, strong) SYNNetworkErrorView* networkErrorView;
+@property (nonatomic, strong) SYNNetworkMessageView* networkErrorView;
 @property (nonatomic, strong) SYNSearchBoxViewController* searchBoxController;
 @property (nonatomic, strong) SYNSearchRootViewController* searchViewController;
 @property (nonatomic, strong) SYNSideNavigatorViewController* sideNavigatorViewController;
@@ -229,7 +227,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
     self.mainNavigationController.view.frame = self.view.frame;
     [self.view insertSubview:self.mainNavigationController.view atIndex:0];
     
-    self.existingChannelsController = [[SYNExistingChannelsViewController alloc] initWithViewId:kExistingChannelsViewId];
+    
     
     // == Back Button == //
     
@@ -281,12 +279,9 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountSettingsLogout) name:kAccountSettingsLogout object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addToChannelRequested:) name:kNoteAddToChannelRequest object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addedToChannelAction:) name:kNoteVideoAddedToExistingChannel object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsHide object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allNavControlsRequested:) name:kNoteAllNavControlsShow object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(channelSuccessfullySaved:) name:kNoteChannelSaved object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createNewChannelAction:) name:kNoteCreateNewChannel object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideOrShowNetworkMessages:) name:kNoteHideNetworkMessages object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideOrShowNetworkMessages:) name:kNoteShowNetworkMessages object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideTitleAndDots:) name:kNoteHideTitleAndDots object:nil];
@@ -379,135 +374,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 }
 
 
-#pragma mark - Channel Creation Methods
 
-- (void) addToChannelRequested: (NSNotification*) notification
-{
-    
-    [self addChildViewController:self.existingChannelsController];
-
-    [self.view addSubview: self.existingChannelsController.view];
-    
-    // animate in //
-    
-    self.existingChannelsController.view.alpha = 1.0f;
-    
-    CGRect newFrame = self.existingChannelsController.view.frame;
-    newFrame.origin.y = newFrame.size.height;
-    self.existingChannelsController.view.frame = newFrame;
-    [self.existingChannelsController prepareForAppearAnimation];
-    
-    [UIView animateWithDuration: kAddToChannelAnimationDuration
-                          delay: 0.0f
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations: ^{
-                         
-                         CGRect newFrame = self.existingChannelsController.view.frame;
-                         newFrame.origin.y = 0.0f;
-                         self.existingChannelsController.view.frame = newFrame;
-                     }
-                     completion: ^(BOOL finished) {
-                         [self.existingChannelsController runAppearAnimation];
-                         if (self.videoViewerViewController)
-                         {
-                             [self.videoViewerViewController pauseIfVideoActive];
-                         }
-                     }];
-}
-
-
-- (void) createNewChannelAction: (NSNotification*) notification
-{
-    if (self.videoViewerViewController)
-    {
-        [self removeVideoOverlayController];
-    }
-    
-    if (IS_IPHONE)
-    {
-        // On iPhone the create workflow is presented modally on the existing channels page. Therefore return after closing the video player.
-        return;
-    }
-  
-    // this channel's managedObjectContext is the appDelegate.channelManagedObjectContext
-    SYNChannelDetailViewController *channelCreationVC =
-    [[SYNChannelDetailViewController alloc] initWithChannel: appDelegate.videoQueue.currentlyCreatingChannel
-                                                  usingMode: kChannelDetailsModeCreate] ;
-    
-    [appDelegate.viewStackManager pushController:channelCreationVC];
-}
-
-
-- (void) addedToChannelAction: (NSNotification*) notification
-{
-    
-    Channel* selectedChannel = (Channel*)[notification userInfo][kChannel];
-    if (!selectedChannel)
-    {
-        //Channel select was cancelled.
-        [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
-                                                            object: nil];
-        [self resumeVideoIfShowing];
-        
-        if(IS_IPHONE)
-        {
-            self.searchButton.hidden = NO;
-        }
-        
-        return;
-    }
-    
-    NSString* message = IS_IPHONE ? NSLocalizedString(@"VIDEO ADDED",nil)
-                                  : NSLocalizedString(@"YOUR VIDEOS HAVE BEEN ADDED INTO YOUR CHANNEL",nil);
-    
-    Channel* currentlyCreating = appDelegate.videoQueue.currentlyCreatingChannel;
-
-    NSMutableOrderedSet* setOfVideosToPost = [NSMutableOrderedSet orderedSetWithOrderedSet:selectedChannel.videoInstancesSet];
-    for (VideoInstance* newVideoInstance in currentlyCreating.videoInstances)
-    {
-        [setOfVideosToPost addObject:newVideoInstance];
-    }
-    
-    
-    
-
-    [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentUser.uniqueId
-                                                          channelId: selectedChannel.uniqueId
-                                                   videoInstanceSet: setOfVideosToPost
-                                                      clearPrevious: NO
-                                                  completionHandler: ^(NSDictionary* result) {
-                                                      
-                                                      id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-                                                      
-                                                      [tracker sendEventWithCategory: @"goal"
-                                                                          withAction: @"channelUpdated"
-                                                                           withLabel: nil
-                                                                           withValue: nil];
-                                                      
-                                                      [self presentSuccessNotificationWithMessage:message];
-                                                      
-                                                      [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
-                                                                                                          object: self];
-                                                      [self resumeVideoIfShowing];
-                                                      
-                                                  } errorHandler:^(NSDictionary* errorDictionary) {
-                                                      
-                                                      [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
-                                                                                                          object: self];
-                                                      [self resumeVideoIfShowing];
-                                                  }];
-}
-
-
-- (void) resumeVideoIfShowing
-{
-    //Special case! If we have a videoViewerViewContoroller here it means we are returning from the add to channel selector.
-    // try to resume playback.
-    if (self.videoViewerViewController)
-    {
-        [self.videoViewerViewController playIfVideoActive];
-    }
-}
 
 
 #pragma mark - Navigation Panel Methods
@@ -892,7 +759,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 - (void) allNavControlsRequested: (NSNotification*) notification
 {
     
-    
     NSString* notificationName = [notification name];
     if (!notificationName)
         return;
@@ -1149,7 +1015,7 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
         return;
     }
     
-    self.networkErrorView = [SYNNetworkErrorView errorView];
+    self.networkErrorView = [SYNNetworkMessageView errorView];
     [self.networkErrorView setText:message];
     [self.errorContainerView addSubview:self.networkErrorView];
     

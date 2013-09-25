@@ -345,10 +345,17 @@
     self.confirmButtom.enabled = NO;
     
     [self closeAnimation: ^(BOOL finished) {
+        
+        // will remove itself and will be deallocated since no other reference is held
         [self.view removeFromSuperview];
-        // Post notification without object. Needed to restart video player if visible.
-        [[NSNotificationCenter defaultCenter] postNotificationName: kNoteVideoAddedToExistingChannel
-                                                            object: self];
+        [self removeFromParentViewController];
+        
+        // TODO : Implement below
+        
+//        if (self.videoViewerViewController)
+//        {
+//            [self.videoViewerViewController playIfVideoActive];
+//        }
     }];
 }
 
@@ -430,70 +437,45 @@
 {
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
-    if (indexPath.row == 0)
+    if(indexPath.row != 0) // only the 'create new channel' triggers the function , the rest of the cells respond to press
+        return;
+    
+    [tracker sendEventWithCategory: @"uiAction"
+                        withAction: @"channelSelectionClick"
+                         withLabel: @"New"
+                         withValue: nil];
+    
+    //Reset any previous selection
+    self.previouslySelectedPath = nil;
+    self.selectedChannel = nil;
+    self.confirmButtom.enabled = NO;
+    
+    [self createAndDisplayNewChannel];
+    
+    if (IS_IPAD)
     {
-        [tracker sendEventWithCategory: @"uiAction"
-                            withAction: @"channelSelectionClick"
-                             withLabel: @"New"
-                             withValue: nil];
-        
-        //Reset any previous selection
-        self.previouslySelectedPath = nil;
         self.selectedChannel = nil;
-        self.confirmButtom.enabled = NO;
         
-        if (IS_IPAD)
-        {
-            self.selectedChannel = nil;
-            
-            
-            [UIView animateWithDuration: 0.3
-                                  delay: 0.0
-                                options: UIViewAnimationCurveLinear
-                             animations: ^{
-                                 self.view.alpha = 0.0;
-                             }
-                             completion: ^(BOOL finished) {
-                                 [self.view removeFromSuperview];
-                                 
-                                 [[NSNotificationCenter defaultCenter]	postNotificationName: kNoteCreateNewChannel
-                                                                                     object: self];
-                             }];
-        }
-        else
-        {
-            //On iPhone we want a different navigation structure. Slide the view in.
-            SYNChannelDetailViewController *channelCreationVC =
-            
-            [[SYNChannelDetailViewController alloc] initWithChannel: appDelegate.videoQueue.currentlyCreatingChannel
-                                                          usingMode: kChannelDetailsModeCreate];
-            
-            CGRect newFrame = channelCreationVC.view.frame;
-            newFrame.size.height = self.view.frame.size.height;
-            channelCreationVC.view.frame = newFrame;
-            CATransition *animation = [CATransition animation];
-            
-            [animation setType: kCATransitionMoveIn];
-            [animation setSubtype: kCATransitionFromRight];
-            
-            [animation setDuration: 0.30];
-            [animation setTimingFunction: [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseInEaseOut]];
-            
-            [self.view.window.layer addAnimation: animation
-                                          forKey: nil];
-            
-            [self presentViewController: channelCreationVC
-                               animated: NO
-                             completion: ^{
-                                 [[NSNotificationCenter defaultCenter]	postNotificationName: kNoteCreateNewChannel
-                                                                                     object: self];
-                             }];
-        }
+        
+        
+        
+        [UIView animateWithDuration: 0.3
+                              delay: 0.0
+                            options: UIViewAnimationCurveLinear
+                         animations: ^{
+                             self.view.alpha = 0.0;
+                         }
+                         completion: ^(BOOL finished) {
+                             
+                             [self.view removeFromSuperview];
+                             [self removeFromParentViewController];
+                             
+                             
+                         }];
     }
-    else
-    {
-        AssertOrLog(@"Not expected to be called, handled in channelTapped above");
-    }
+    
+    
+    
 }
 
 
@@ -579,13 +561,14 @@
 
 - (void) runAppearAnimation
 {
-    UICollectionViewCell *cell = nil;
+    
     NSArray *sortDescriptors = @[[[NSSortDescriptor alloc] initWithKey: @"section"
                                                              ascending: YES], [[NSSortDescriptor alloc] initWithKey: @"row"
                                                                                                           ascending: YES]];
     NSArray *indexPaths = [[self.channelThumbnailCollectionView indexPathsForVisibleItems] sortedArrayUsingDescriptors: sortDescriptors];
     int count = 0;
     
+    UICollectionViewCell *cell;
     for (NSIndexPath *path in indexPaths)
     {
         cell = [self.channelThumbnailCollectionView cellForItemAtIndexPath: path];

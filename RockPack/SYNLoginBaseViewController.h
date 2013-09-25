@@ -11,7 +11,7 @@
 #import "SYNAppDelegate.h"
 #import "SYNImagePickerController.h"
 #import "SYNLoginOnBoardingController.h"
-#import "SYNNetworkErrorView.h"
+#import "SYNNetworkMessageView.h"
 #import "SYNNetworkOperationJsonObject.h"
 #import "SYNOAuth2Credential.h"
 #import "SYNTextFieldLoginiPhone.h"
@@ -42,7 +42,7 @@ typedef enum {
 @property (nonatomic, strong) Reachability *reachability;
 @property (nonatomic, strong) SYNImagePickerController* imagePicker;
 @property (nonatomic, strong) SYNLoginOnBoardingController* onBoardingController;
-@property (nonatomic, strong) SYNNetworkErrorView* networkErrorView;
+@property (nonatomic, strong) SYNNetworkMessageView* networkErrorView;
 @property (nonatomic,assign) SYNAppDelegate* appDelegate;
 @property (nonatomic, strong) UIImageView * backgroundImageView;
 @property (nonatomic, strong) UIImageView * upperParallaxImageView;

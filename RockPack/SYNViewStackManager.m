@@ -15,7 +15,8 @@
 #import "SYNSideNavigatorViewController.h"
 #import "SYNViewStackManager.h"
 #import "SYNSearchBoxViewController.h"
-#import "SYNNetworkErrorView.h"
+#import "SYNNetworkMessageView.h"
+#import "SYNExistingChannelsViewController.h"
 
 #define STACK_LIMIT 6
 #define BG_ALPHA_DEFAULT 0.7f
@@ -103,6 +104,10 @@
     controller.view.alpha = 0.0f;
     
     [self.masterController headerButtonIsActive:controller.needsHeaderButton];
+    
+    if (self.masterController.videoViewerViewController) // close the video viewer if in view
+        [self.masterController removeVideoOverlayController];
+    
     
     [UIView animateWithDuration: 0.5f
                           delay: 0.0f
@@ -562,7 +567,6 @@
                          }
                          completion:RemovePopoverComplete];
         
-        
     }
     
 }
@@ -630,9 +634,23 @@
                      }];
 }
 
+
+
+#pragma mark - Network Notification Messages (from the bottom)
+
+-(void)presentErrorNotificationWithMessage : (NSString*)message
+{
+    [self presentNotificationWithMessage:message withType:NotificationMessageTypeError];
+}
+
 - (void) presentSuccessNotificationWithMessage : (NSString*) message
 {
-    __block SYNNetworkErrorView* successNotification = [[SYNNetworkErrorView alloc] init];
+     [self presentNotificationWithMessage:message withType:NotificationMessageTypeSuccess];
+}
+
+-(void)presentNotificationWithMessage:(NSString*)message withType:(NotificationMessageType)type
+{
+    __block SYNNetworkMessageView* successNotification = [[SYNNetworkMessageView alloc] init];
     successNotification.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"BarSucess"]];
     [successNotification setText: message];
     
@@ -662,6 +680,8 @@
                      }];
 }
 
+
+
 #pragma mark - Helper
 
 - (UIViewController *) topControllerMatchingTypeString: (NSString *) classString
@@ -688,6 +708,50 @@
         return YES;
     
     return NO;
+}
+
+
+#pragma mark - Existing Channels
+
+- (void) presentExistingChannelsController
+{
+    
+    SYNExistingChannelsViewController* existingController = [[SYNExistingChannelsViewController alloc] initWithViewId:kExistingChannelsViewId];
+    
+    [self.masterController addChildViewController:existingController];
+    
+    [self.masterController.view addSubview:existingController.view];
+    
+    // animate in //
+    
+    existingController.view.alpha = 1.0f;
+    
+    CGRect newFrame = existingController.view.frame;
+    newFrame.origin.y = newFrame.size.height;
+    existingController.view.frame = newFrame;
+    
+    [existingController prepareForAppearAnimation]; // this should fade the cells out in preparation for the animation
+    
+    [UIView animateWithDuration: kAddToChannelAnimationDuration
+                          delay: 0.0f
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations: ^{
+                         
+                         CGRect newFrame = existingController.view.frame;
+                         newFrame.origin.y = 0.0f;
+                         existingController.view.frame = newFrame;
+                         
+                     }
+                     completion: ^(BOOL finished) {
+                         
+                         [existingController runAppearAnimation]; // this should animate the cells in, one by one
+                         
+                         
+                         if (self.masterController.videoViewerViewController)
+                         {
+                             [self.masterController.videoViewerViewController pauseIfVideoActive];
+                         }
+                     }];
 }
 
 @end

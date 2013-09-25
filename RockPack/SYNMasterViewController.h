@@ -11,9 +11,16 @@
 #import "SYNAccountSettingsPopoverBackgroundView.h"
 #import "SYNAppDelegate.h"
 #import "SYNContainerViewController.h"
+
+#import "SYNVideoViewerViewController.h"
 #import <UIKit/UIKit.h>
 
 typedef void (^VideoOverlayDismissBlock)(void);
+
+typedef enum NotificationMessageType {
+    NotificationMessageTypeError = 0,
+    NotificationMessageTypeSuccess = 1
+} NotificationMessageType;
 
 @interface SYNMasterViewController : UIViewController <UIPopoverControllerDelegate,
                                                        UIGestureRecognizerDelegate,
@@ -31,6 +38,7 @@ typedef void (^VideoOverlayDismissBlock)(void);
 @property (strong, nonatomic) Reachability *reachability;
 @property (nonatomic, readonly) BOOL hasSearchBarOn;
 @property (nonatomic, readonly) BOOL isInSearchMode;
+@property (nonatomic, readonly) SYNVideoViewerViewController *videoViewerViewController;
 
 @property (nonatomic, strong) IBOutlet UIView* errorContainerView;
 

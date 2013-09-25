@@ -61,6 +61,12 @@
                                                  selector: @selector(channelDeleteRequest:)
                                                      name: kChannelDeleteRequest
                                                    object: nil];
+        
+        
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(addedToChannelRequest:)
+                                                     name: kNoteVideoAddedToExistingChannel
+                                                   object: nil];
     }
     
     return self;
@@ -109,6 +115,24 @@
     }
     
     [self updateChannelsForChannelOwner: channelOwner];
+}
+
+- (void) addedToChannelRequest: (NSNotification*) notification
+{
+    Channel* selectedChannel = (Channel*)[notification userInfo][kChannel];
+    if (!selectedChannel)
+    {
+        //Channel select was cancelled.
+        [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
+                                                            object: nil];
+        //[self resumeVideoIfShowing];
+        
+        
+        
+        return;
+    }
+    
+    [self addVideoToChannel:selectedChannel];
 }
 
 
@@ -462,5 +486,56 @@
     }
 }
 
+- (void) addVideoToChannel:(Channel*)channel
+{
+    
+    
+    
+    NSString* messageS = IS_IPHONE ? NSLocalizedString(@"VIDEO ADDED",nil) : NSLocalizedString(@"YOUR VIDEOS HAVE BEEN ADDED INTO YOUR CHANNEL",nil);
+    NSString* messageE = IS_IPHONE ? NSLocalizedString(@"VIDEO NOT ADDED",nil) : NSLocalizedString(@"YOUR VIDEOS COULD NOT BE ADDED INTO YOUR CHANNEL",nil);
+    
+    Channel* currentlyCreating = appDelegate.videoQueue.currentlyCreatingChannel;
+    
+    NSMutableOrderedSet* setOfVideosToPost = [NSMutableOrderedSet orderedSetWithOrderedSet:channel.videoInstancesSet];
+    for (VideoInstance* newVideoInstance in currentlyCreating.videoInstances)
+    {
+        [setOfVideosToPost addObject:newVideoInstance];
+    }
+    
+    
+    
+    
+    [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentUser.uniqueId
+                                                          channelId: channel.uniqueId
+                                                   videoInstanceSet: setOfVideosToPost
+                                                      clearPrevious: NO
+                                                  completionHandler: ^(NSDictionary* result) {
+                                                      
+                                                      id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
+                                                      
+                                                      [tracker sendEventWithCategory: @"goal"
+                                                                          withAction: @"channelUpdated"
+                                                                           withLabel: nil
+                                                                           withValue: nil];
+                                                      
+                                                      
+                                                      [appDelegate.viewStackManager presentSuccessNotificationWithMessage:messageS];
+                                                      
+                                                      [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
+                                                                                                          object: self];
+                                                      // TODO : implement
+                                                      //[self resumeVideoIfShowing];
+                                                      
+                                                  } errorHandler:^(NSDictionary* errorDictionary) {
+                                                      
+                                                      [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
+                                                                                                          object: self];
+                                                      
+                                                      [appDelegate.viewStackManager presentSuccessNotificationWithMessage:messageE];
+                                                      
+                                                      // TODO : implement
+                                                      //[self resumeVideoIfShowing];
+                                                  }];
+}
 
 @end

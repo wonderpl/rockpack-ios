@@ -47,10 +47,13 @@ typedef void(^ViewStackReturnBlock)(void);
 - (void) removePopoverView;
 
 - (void) presentSuccessNotificationWithMessage : (NSString*) message;
+- (void) presentErrorNotificationWithMessage : (NSString*) message;
 
 - (void) viewProfileDetails: (ChannelOwner *) channelOwner;
 - (void) viewChannelDetails: (Channel *) channel withAutoplayId: (NSString *) autoplayId;
 - (void) viewChannelDetails: (Channel *) channel;
+
+- (void) presentExistingChannelsController;
 
 - (void) dismissSearchBar;
 - (void) presentSearchBar;
