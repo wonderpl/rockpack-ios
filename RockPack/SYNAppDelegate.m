@@ -32,6 +32,7 @@
 #import "ExternalAccount.h"
 #import "UIImageView+MKNetworkKitAdditions.h"
 #import "UncaughtExceptionHandler.h"
+#import <sqlite3.h>
 #import <AVFoundation/AVFoundation.h>
 #import <FacebookSDK/FacebookSDK.h>
 
@@ -633,10 +634,20 @@
     
     self.channelsManagedObjectContext.persistentStoreCoordinator = channelsPersistentStoreCoordinator;
     
+    
+    // same as: "file://" + "((NSArray*)NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES))[0]";
     NSURL *storeURL = [[[NSFileManager defaultManager] URLsForDirectory: NSDocumentDirectory
                                                               inDomains: NSUserDomainMask] lastObject];
     
     storeURL = [storeURL URLByAppendingPathComponent: @"Rockpack.sqlite"];
+    
+    // check for integrity
+    if([self isDatabaseCorruptedAtFilePath:storeURL.path])
+    {
+        // if corrupt delete the file
+        NSError* error;
+        [[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:&error];
+    }
     
     //Try to migrate
     NSPersistentStore *store = [persistentStoreCoordinator addPersistentStoreWithType: NSSQLiteStoreType
@@ -706,6 +717,68 @@
     {
         AssertOrLog(@"*** Could not delete persistent store, %@", error);
     }
+}
+
+- (BOOL) isDatabaseCorruptedAtFilePath:(NSString*)filePath {
+    
+    
+    BOOL bResult;
+    
+    sqlite3 *database;
+    if (sqlite3_open([filePath UTF8String], &database) == SQLITE_OK) {
+        @try {
+            NSString *sqlRaw = @"PRAGMA integrity_check;";
+            
+            const char *sql = [sqlRaw cStringUsingEncoding:NSUTF8StringEncoding];
+            
+            sqlite3_stmt *check_statement;
+            
+            if (sqlite3_prepare_v2(database, sql, -1, &check_statement, NULL) == SQLITE_OK) {
+                
+                int success = sqlite3_step(check_statement);
+                
+                NSLog(@"SQL integrity_check result is %d", success);
+                NSString *response = nil;
+                switch (success) {
+                    case SQLITE_ERROR:
+                        bResult = YES;
+                        break;
+                    case SQLITE_DONE:
+                        NSLog(@"Result is simple DONE of the sqllite3 on isDatabaseCorrupted");
+                        break;
+                    case SQLITE_BUSY:
+                        NSLog(@"Result is simple BUSY of the sqllite3 on isDatabaseCorrupted");
+                        break;
+                    case SQLITE_MISUSE:
+                        NSLog(@"Bad utilization of the sqllite3 on isDatabaseCorrupted");
+                        break;
+                    case SQLITE_ROW:
+                        response = [NSString stringWithUTF8String:(char *)sqlite3_column_text(check_statement, 0)];
+                        if ([[[response lowercaseString] stringByTrimmingCharactersInSet:[NSCharacterSet
+                                                                                          whitespaceAndNewlineCharacterSet]] isEqualToString:@"ok"]){
+                            bResult = NO;
+                        } else {
+                            NSLog(@"ATTENTION: integrity_check response %@", response);
+                            bResult = NO;
+                        }
+                        break;
+                        
+                    default:
+                        break;
+                }
+                
+                sqlite3_finalize(check_statement);
+            }
+            
+        }
+        @catch (NSException *exception) {
+            DebugLog(@"Exception %@", [exception description]);
+            return YES;
+        }
+    }
+    
+    sqlite3_close(database);
+    return bResult;
 }
 
 

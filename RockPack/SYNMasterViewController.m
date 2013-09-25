@@ -739,13 +739,18 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
 
 - (void) hideNetworkErrorView
 {
+    
     [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationCurveEaseInOut animations:^{
+        
         CGRect erroViewFrame = self.networkErrorView.frame;
         erroViewFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeight];
         self.networkErrorView.frame = erroViewFrame;
+        
     } completion:^(BOOL finished) {
+        
         [self.networkErrorView removeFromSuperview];
         self.networkErrorView = nil;
+        
     }];
 }
 
@@ -779,7 +784,6 @@ typedef void(^AnimationCompletionBlock)(BOOL finished);
             self.sideNavigationButton.hidden = YES;
         }
         
-//        self.searchButton.hidden = NO;
         
         self.pageTitleLabel.hidden = NO;
         

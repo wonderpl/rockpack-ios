@@ -2199,6 +2199,7 @@
                                                      cover: cover
                                                   isPublic: YES
                                          completionHandler: ^(NSDictionary *resourceCreated) {
+                                             
                                              // shows the message label from the MasterViewController
                                              id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
                                              
@@ -2215,8 +2216,9 @@
                                              
                                              [self setVideosForChannelById: channelId
                                                                  isUpdated: NO];
-                                         }
-                                              errorHandler: ^(id error) {
+                                             
+                                         } errorHandler: ^(id error) {
+                                             
                                                   self.isLocked = NO;
                                                   
                                                   DebugLog(@"Error @ createChannelPressed:");
