@@ -62,6 +62,26 @@
     self.channelCollectionViewController.view.frame = correntFrame;
 }
 
+
+// Override implementation in super
+- (void) setupGestureRecognizerCallbackBlocks
+{
+    // Add the recogniser blocks for this collection view
+    __weak typeof(self) weakself = self;
+    
+    TapRecognizedBlock tapRecognizedBlock = ^(UICollectionViewCell *cell) {
+        [weakself channelTapped: cell];
+    };
+    
+    self.channelCollectionViewController.tapRecognizedBlock = tapRecognizedBlock;
+    
+    LongPressRecognizedBlock longPressRecognizedBlock = ^(UIGestureRecognizer *recognizer) {
+        [weakself arcMenuUpdateState: recognizer];
+    };
+    
+    self.channelCollectionViewController.longPressRecognizedBlock = longPressRecognizedBlock;
+}
+
 #pragma mark - Add UIView if there are no channels
 
 - (void) isCurrentUserProfile
@@ -222,6 +242,21 @@
     
     [appDelegate.viewStackManager viewChannelDetails: channel];
 }
+
+//- (void) channelTapped: (UICollectionViewCell *) cell
+//{
+//    SYNChannelThumbnailCell *selectedCell = (SYNChannelThumbnailCell *) cell;
+//    NSIndexPath *indexPath = [self.channelCollectionViewController.collectionView indexPathForItemAtPoint: selectedCell.center];
+//    
+//    if (self.isAnimating) // prevent double clicking
+//    {
+//        return;
+//    }
+//    
+//    Channel *channel = (Channel *) self.channels[indexPath.row];
+//    
+//    [appDelegate.viewStackManager viewChannelDetails: channel];
+//}
 
 
 - (NSIndexPath *) indexPathForChannelCell: (UICollectionViewCell *) cell

@@ -181,7 +181,20 @@
     [self.channelCollectionViewController.collectionView registerNib: footerViewNib
                                           forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
                                                  withReuseIdentifier: @"SYNChannelFooterMoreView"];
+
+    [self setupGestureRecognizerCallbackBlocks];
     
+    self.currentGenre = nil;
+    
+    [self displayChannelsForGenre: self.currentGenre];
+    
+    [self loadChannelsForGenre: self.currentGenre];
+}
+
+
+// This may be overridden in derived classes
+- (void) setupGestureRecognizerCallbackBlocks
+{
     // Add the recogniser blocks for this collection view
     __weak typeof(self) weakself = self;
     
@@ -196,12 +209,6 @@
     };
     
     self.channelCollectionViewController.longPressRecognizedBlock = longPressRecognizedBlock;
-
-    self.currentGenre = nil;
-    
-    [self displayChannelsForGenre: self.currentGenre];
-    
-    [self loadChannelsForGenre: self.currentGenre];
 }
 
 
