@@ -73,7 +73,6 @@
     [Appirater setAppId: @"660697542"];
     [Appirater setDaysUntilPrompt: 1];
     [Appirater setUsesUntilPrompt: 2];
-    [Appirater setSignificantEventsUntilPrompt: 1];
     [Appirater setTimeBeforeReminding: 10];
 //    [Appirater setDebug: YES];
 #endif
