@@ -10,14 +10,12 @@
 #import "SYNChannelThumbnailCell.h"
 #import "SYNTouchGestureRecognizer.h"
 #import "UIFont+SYNFont.h"
-#import "UIImage+Tint.h"
 #import "UIImageView+WebCache.h"
-#import <QuartzCore/QuartzCore.h>
+
 
 
 @interface SYNChannelThumbnailCell () <UIGestureRecognizerDelegate>
 
-@property (nonatomic, strong) IBOutlet UIImageView *lowlightImageView;
 @property (nonatomic, strong) IBOutlet UILabel *byLabel;
 
 @end
@@ -30,14 +28,11 @@
     [super awakeFromNib];
     
     self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
-    
-    self.titleLabel.font = [UIFont boldRockpackFontOfSize: self.titleLabel.font.pointSize];
     self.displayNameLabel.font = [UIFont rockpackFontOfSize: self.displayNameLabel.font.pointSize];
     self.byLabel.font = [UIFont rockpackFontOfSize: self.byLabel.font.pointSize];
     
-    self.deleteButton.hidden = YES;
-    
-    if (IS_IOS_7_OR_GREATER) {
+    if (IS_IOS_7_OR_GREATER)
+    {
         self.displayNameLabel.frame = CGRectMake(self.displayNameLabel.frame.origin.x, self.displayNameLabel.frame.origin.y - 1.0f, self.displayNameLabel.frame.size.width, self.displayNameLabel.frame.size.height);
     }
 }
@@ -45,17 +40,16 @@
 
 - (void) prepareForReuse
 {
+    [super prepareForReuse];
+    
     [self.imageView.layer removeAllAnimations];
     [self.layer removeAllAnimations];
     
     [self.imageView setImageWithURL: nil];
-    
-    self.deleteButton.hidden = TRUE;
-    self.lowlightImageView.image = [self lowlightImage: FALSE];
 }
 
 
-- (void) setViewControllerDelegate: (id<SYNChannelThumbnailCellDelegate>) viewControllerDelegate
+- (void) setViewControllerDelegate: (id) viewControllerDelegate
 {
     _viewControllerDelegate = viewControllerDelegate;
     
@@ -78,23 +72,11 @@
     
     self.titleLabel.frame = titleFrame;
     
-    
     self.titleLabel.text = titleString;
 }
 
-
-// If this cell is going to be re-used, then clear the image and cancel any outstanding operations
-
-- (void) setLowlight: (BOOL) lowlight
-            forPoint: (CGPoint) pointInCell
+- (NSString *) glossImageName
 {
-    self.lowlightImageView.image = [self lowlightImage: lowlight];
-}
-
-
-- (UIImage *) lowlightImage: (BOOL) lowlight
-{
-    // Default iPad gloss image
     NSString *imageName = @"GlossChannelThumbnail";
     
     // Use different image for iPhone
@@ -103,18 +85,7 @@
         imageName = @"GlossChannelProfile";
     }
     
-    UIImage *glossImage = [UIImage imageNamed: imageName];
-    
-    if (lowlight)
-    {
-        UIImage *lowlightImage = [glossImage tintedImageUsingColor: [UIColor colorWithWhite: 0.0
-                                                                                      alpha: 0.3]];
-        return lowlightImage;
-    }
-    else
-    {
-        return glossImage;
-    }
+    return imageName;
 }
 
 @end

@@ -701,18 +701,7 @@
                                        placeholderImage: [UIImage imageNamed: @"PlaceholderChannelMid.png"]
                                                 options: SDWebImageRetryFailed];
         
-        // Make sure we can't delete the favourites channel
-        if (channel.favouritesValue)
-        {
-            channelThumbnailCell.deleteButton.enabled = NO;
-        }
-        else
-        {
-            channelThumbnailCell.deleteButton.enabled = YES;
-        }
-        
         [channelThumbnailCell setChannelTitle: channel.title];
-        [channelThumbnailCell setViewControllerDelegate: (id<SYNChannelMidCellDelegate>) self];
         
         cell = channelThumbnailCell;
     }

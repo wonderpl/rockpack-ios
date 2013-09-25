@@ -39,15 +39,13 @@
 
 
 @interface SYNChannelsRootViewController () <UIScrollViewDelegate,
-                                             SYNChannelCategoryTableViewDelegate,
-                                             SYNChannelThumbnailCellDelegate> {
-    NSString* StartingCategoryText;
-}
+                                             SYNChannelCategoryTableViewDelegate>
 
 @property (nonatomic, assign) BOOL ignoreRefresh;
 @property (nonatomic, strong) Genre *allGenre;
 @property (nonatomic, strong) Genre *currentGenre;
 @property (nonatomic, strong) NSMutableArray *channels;
+@property (nonatomic, strong) NSString *startingCategoryText;
 @property (nonatomic, strong) NSString *currentCategoryId;
 @property (nonatomic, strong) SYNChannelCategoryTableViewController *categoryTableViewController;
 @property (nonatomic, strong) SYNFeedMessagesView *emptyGenreMessageView;
@@ -59,6 +57,7 @@
 @property (nonatomic, weak) SYNMainRegistry *mainRegistry;
 
 @end
+
 
 @implementation SYNChannelsRootViewController
 
@@ -73,8 +72,7 @@
 {
     
     
-    StartingCategoryText  = NSLocalizedString(@"ALL PACKS", nil);
-    
+    self.startingCategoryText  = NSLocalizedString(@"ALL PACKS", nil);
     
     SYNIntegralCollectionViewFlowLayout *flowLayout;
     
@@ -835,7 +833,7 @@ referenceSizeForFooterInSection: (NSInteger) section
 
     
     newLabel.shadowOffset = CGSizeMake(0.0f, 2.0f);
-    newLabel.text = StartingCategoryText;
+    newLabel.text = self.startingCategoryText;
 
     newLabel.backgroundColor = [UIColor clearColor];
     CGPoint center = newLabel.center;
@@ -942,7 +940,7 @@ referenceSizeForFooterInSection: (NSInteger) section
     }
     else
     {
-        self.categoryNameLabel.text = StartingCategoryText;
+        self.categoryNameLabel.text = self.startingCategoryText;
         [self.categoryNameLabel sizeToFit];
         self.subCategoryNameLabel.hidden = YES;
         self.arrowImage.hidden = YES;
@@ -996,7 +994,7 @@ referenceSizeForFooterInSection: (NSInteger) section
 
 - (void) categoryTableControllerDeselectedAll: (SYNChannelCategoryTableViewController *) tableController
 {
-    self.categoryNameLabel.text = StartingCategoryText;
+    self.categoryNameLabel.text = self.startingCategoryText;
     [self.categoryNameLabel sizeToFit];
     self.subCategoryNameLabel.hidden = YES;
     self.arrowImage.hidden = YES;

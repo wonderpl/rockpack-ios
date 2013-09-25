@@ -154,9 +154,7 @@
     {
         [channelThumbnailCell setChannelTitle: channel.title];
     }
-    
-    [channelThumbnailCell setViewControllerDelegate: (id<SYNChannelMidCellDelegate>) self];
-    
+
     return channelThumbnailCell;
 }
 

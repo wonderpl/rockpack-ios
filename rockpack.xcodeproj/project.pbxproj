@@ -367,6 +367,7 @@
 		01D0998717439A3A00351C82 /* CategorySlideSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D0998317439A3700351C82 /* CategorySlideSelected.png */; };
 		01D0998817439A3A00351C82 /* CategorySlideSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01D0998417439A3900351C82 /* CategorySlideSelected@2x.png */; };
 		01D0998B17452A4000351C82 /* BBCyclingLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 01D0998A17452A4000351C82 /* BBCyclingLabel.m */; };
+		01E3344217F30DF90047F8D1 /* SYNHighlightableCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E3344117F30DF90047F8D1 /* SYNHighlightableCollectionViewCell.m */; };
 		01E427BC1664C5F1009B941F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01E427BB1664C5F1009B941F /* CoreData.framework */; };
 		01E427D31664C726009B941F /* Rockpack.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 01E427D11664C726009B941F /* Rockpack.xcdatamodeld */; };
 		01E427D91664CDA5009B941F /* SYNAbstractViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01E427D81664CDA5009B941F /* SYNAbstractViewController.m */; };
@@ -1898,6 +1899,8 @@
 		01D0998417439A3900351C82 /* CategorySlideSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CategorySlideSelected@2x.png"; sourceTree = "<group>"; };
 		01D0998917452A4000351C82 /* BBCyclingLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBCyclingLabel.h; sourceTree = "<group>"; };
 		01D0998A17452A4000351C82 /* BBCyclingLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBCyclingLabel.m; sourceTree = "<group>"; };
+		01E3344017F30DF90047F8D1 /* SYNHighlightableCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNHighlightableCollectionViewCell.h; sourceTree = "<group>"; };
+		01E3344117F30DF90047F8D1 /* SYNHighlightableCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SYNHighlightableCollectionViewCell.m; sourceTree = "<group>"; };
 		01E427BB1664C5F1009B941F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		01E427D21664C726009B941F /* Rockpack.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Rockpack.xcdatamodel; sourceTree = "<group>"; };
 		01E427D71664CDA5009B941F /* SYNAbstractViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SYNAbstractViewController.h; sourceTree = "<group>"; };
@@ -3394,6 +3397,7 @@
 		012632CC162DF7B30009FF9C /* Collection Assets */ = {
 			isa = PBXGroup;
 			children = (
+				01E3343F17F30DD30047F8D1 /* Abstract */,
 				017B2BDC17F1D89F009F8882 /* Protocols */,
 				BE7D036A17A69A99008053DC /* Aggregate Cells */,
 				01B7CD9E166E163D001F4AF0 /* Channel cells */,
@@ -4401,6 +4405,15 @@
 				BEBD09781743A1700092F527 /* CoverArt Chooser View */,
 			);
 			name = "Cover Art";
+			sourceTree = "<group>";
+		};
+		01E3343F17F30DD30047F8D1 /* Abstract */ = {
+			isa = PBXGroup;
+			children = (
+				01E3344017F30DF90047F8D1 /* SYNHighlightableCollectionViewCell.h */,
+				01E3344117F30DF90047F8D1 /* SYNHighlightableCollectionViewCell.m */,
+			);
+			name = Abstract;
 			sourceTree = "<group>";
 		};
 		01E427D01664C701009B941F /* Data Model */ = {
@@ -7372,6 +7385,7 @@
 				010DEFE51629BDC40080F26B /* SYNAppDelegate.m in Sources */,
 				019824E81629CB4300216900 /* SYNDebug.m in Sources */,
 				019824EC1629CBDF00216900 /* UncaughtExceptionHandler.m in Sources */,
+				01E3344217F30DF90047F8D1 /* SYNHighlightableCollectionViewCell.m in Sources */,
 				1FCB6A6217E89C37009B6D29 /* SYNNoChannelsMessageView.m in Sources */,
 				0198250D1629DCF100216900 /* SYNContainerViewController.m in Sources */,
 				01982589162B605A00216900 /* SYNTabImageView.m in Sources */,

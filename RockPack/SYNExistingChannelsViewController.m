@@ -322,10 +322,7 @@
                                                 options: SDWebImageRetryFailed];
         
         [channelThumbnailCell setChannelTitle: channel.title];
-        
         channelThumbnailCell.specialSelected = (channel == self.selectedChannel);
-        
-        channelThumbnailCell.viewControllerDelegate = (id<SYNChannelMidCellDelegate>) self;
         
         cell = channelThumbnailCell;
     }
