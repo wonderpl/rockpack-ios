@@ -350,12 +350,7 @@
         [self.view removeFromSuperview];
         [self removeFromParentViewController];
         
-        // TODO : Implement below
-        
-//        if (self.videoViewerViewController)
-//        {
-//            [self.videoViewerViewController playIfVideoActive];
-//        }
+        [appDelegate.viewStackManager resumeVideoIfShowing];
     }];
 }
 

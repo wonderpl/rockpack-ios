@@ -757,7 +757,11 @@
 
 -(void)resumeVideoIfShowing
 {
-    //[self.masterController.videoViewerViewController resu]
+    
+    if(self.masterController.videoViewerViewController)
+    {
+        [self.masterController.videoViewerViewController playIfVideoActive];
+    }
 }
 
 @end
