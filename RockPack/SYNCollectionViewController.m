@@ -74,11 +74,13 @@
     self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget: self
                                                                         action: @selector(tapRecognized:)];
     self.tapGestureRecognizer.delegate = self;
+    self.tapGestureRecognizer.numberOfTouchesRequired = 1;
     [self.view addGestureRecognizer: self.tapGestureRecognizer];
 
     self.longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget: self
                                                                                     action: @selector(longPressRecognized:)];
     self.longPressGestureRecognizer.delegate = self;
+    self.longPressGestureRecognizer.numberOfTouchesRequired = 1;
     [self.view addGestureRecognizer: self.longPressGestureRecognizer];
 }
 
@@ -102,24 +104,24 @@
 
 #pragma mark - Gesture targets
 
-- (void) touchRecognized: (SYNTouchGestureRecognizer *) recognizer
+- (void) touchRecognized: (SYNTouchGestureRecognizer *) gestureRecognizer
 {
     DebugLog(@"Touch recognised");
-    NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint: [recognizer locationOfTouch: 0
+    NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint: [gestureRecognizer locationOfTouch: 0
                                                                                                 inView: self.collectionView]];
     
     UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath: indexPath];
     
     if ([cell respondsToSelector: @selector(lowlight:)])
     {
-        CGPoint pointInCell = [recognizer locationOfTouch: 0 inView: cell];
+        CGPoint pointInCell = [gestureRecognizer locationOfTouch: 0 inView: cell];
         
-        switch (recognizer.state)
+        switch (gestureRecognizer.state)
         {
             case UIGestureRecognizerStateBegan:
             {
                 [(SYNAbstractViewController *)self.collectionView.delegate arcMenuSelectedCell: cell
-                                               andComponentIndex: kArcMenuInvalidComponentIndex];
+                                                                             andComponentIndex: kArcMenuInvalidComponentIndex];
                 
                 [(id <SYNCellHighlightProtocol>)cell setLowlight: TRUE
                                                         forPoint: pointInCell];
@@ -130,7 +132,7 @@
             case UIGestureRecognizerStateCancelled:
             case UIGestureRecognizerStateFailed:
             {
-                [(id <SYNCellHighlightProtocol>)cell setLowlight: TRUE
+                [(id <SYNCellHighlightProtocol>)cell setLowlight: FALSE
                                                         forPoint: pointInCell];
                 break;
             }
@@ -138,8 +140,6 @@
             default:
                 break;
         }
-
-
     }
 }
 
