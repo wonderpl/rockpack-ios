@@ -704,7 +704,7 @@
     
     __weak VideoInstance *videoInstance = [self videoInstanceForIndexPath: indexPath];
     
-    // TODO: I've seen elsewhere in the code that the favourites have been bodged, so check to see if the following line is valid
+    
     NSString *starAction = videoInstance.starredByUserValue ? @"unstar" : @"star" ;
     
     //    int starredIndex = self.currentSelectedIndex;

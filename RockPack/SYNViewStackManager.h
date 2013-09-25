@@ -70,6 +70,8 @@ typedef void(^ViewStackReturnBlock)(void);
 
 - (void) displaySideNavigatorFromPushNotification;
 
+-(void)resumeVideoIfShowing;
+
 -(BOOL) controllerViewIsVisible:(SYNAbstractViewController*)controllerToTest;
 
 @end

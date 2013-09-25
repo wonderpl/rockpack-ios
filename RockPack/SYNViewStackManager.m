@@ -754,4 +754,10 @@
                      }];
 }
 
+
+-(void)resumeVideoIfShowing
+{
+    //[self.masterController.videoViewerViewController resu]
+}
+
 @end
