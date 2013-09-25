@@ -1123,26 +1123,23 @@
                                                
                                                friend.lastShareDate = [NSDate date]; // update the date
                                                
-                                               BOOL foundFriend = FALSE;
+                                               BOOL foundFriend = NO;
                                                for (Friend* loadedFriend in self.friends)
                                                {
                                                    if([loadedFriend.email isEqualToString: friend.email])
                                                    {
-                                                       foundFriend = TRUE;
+                                                       foundFriend = YES;
+                                                       loadedFriend.lastShareDate = friend.lastShareDate;
                                                    }
                                                }
                                                    
-                                               NSError* error;
                                                
-                                               if (!foundFriend)
-                                               {
-                                                   [friend.managedObjectContext save:&error];
-                                               }
-                                               else
-                                               {
-                                                   // Roll-back the context (i.e. remove the friend just added)
-                                                   [friend.managedObjectContext reset];
-                                               }
+                                               
+                                               if (foundFriend)
+                                                   [friend.managedObjectContext deleteObject:friend];
+                                               
+                                               NSError* error;
+                                               [friend.managedObjectContext save:&error];
                                                
                                                wself.friendToAddEmail = nil;
                                                
