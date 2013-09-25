@@ -28,14 +28,7 @@
     [super touchesBegan: touches
               withEvent: event];
     
-    if (self.numberOfTouches > 1)
-    {
-        self.state = UIGestureRecognizerStateFailed;
-    }
-    else
-    {
-        self.state = UIGestureRecognizerStateBegan;
-    }
+    self.state = UIGestureRecognizerStateBegan;
 }
 
 
@@ -45,17 +38,17 @@
     [super touchesEnded: touches
               withEvent: event];
     
-    self.state = UIGestureRecognizerStateRecognized;
+    self.state = UIGestureRecognizerStateEnded;
 }
 
 
-//- (void) touchesCancelled: (NSSet *) touches
-//                withEvent: (UIEvent *) event
-//{
-//    [super touchesCancelled: touches
-//                  withEvent: event];
-//    
-//    self.state = UIGestureRecognizerStateCancelled;
-//}
+- (void) touchesCancelled: (NSSet *) touches
+                withEvent: (UIEvent *) event
+{
+    [super touchesCancelled: touches
+                  withEvent: event];
+    
+    self.state = UIGestureRecognizerStateCancelled;
+}
 
 @end

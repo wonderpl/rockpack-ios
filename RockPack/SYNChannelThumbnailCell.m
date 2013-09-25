@@ -43,6 +43,18 @@
 }
 
 
+- (void) prepareForReuse
+{
+    [self.imageView.layer removeAllAnimations];
+    [self.layer removeAllAnimations];
+    
+    [self.imageView setImageWithURL: nil];
+    
+    self.deleteButton.hidden = TRUE;
+    self.lowlightImageView.image = [self lowlightImage: FALSE];
+}
+
+
 - (void) setViewControllerDelegate: (id<SYNChannelThumbnailCellDelegate>) viewControllerDelegate
 {
     _viewControllerDelegate = viewControllerDelegate;
@@ -72,59 +84,15 @@
 
 
 // If this cell is going to be re-used, then clear the image and cancel any outstanding operations
-- (void) prepareForReuse
-{
-    [self.imageView.layer removeAllAnimations];
-    [self.layer removeAllAnimations];
-    
-    [self.imageView setImageWithURL: nil];
-    
-    self.deleteButton.hidden = TRUE;
-}
-
-#pragma mark - Gesture regognizer support
-
-
-// This is used to lowlight the gloss image on touch
-- (void) lowlight: (SYNTouchGestureRecognizer *) recognizer
-{
-    // Default iPad gloss image
-    NSString *imageName = @"GlossChannelThumbnail";
-    
-    // Use different image for iPhone
-    if (IS_IPHONE)
-    {
-       imageName = @"GlossChannelProfile";
-    }
-
-    switch (recognizer.state)
-    {
-        case UIGestureRecognizerStateBegan:
-        {
-            [self.viewControllerDelegate arcMenuSelectedCell: self
-                                           andComponentIndex: kArcMenuInvalidComponentIndex];
-            
-            // Set lowlight tint
-            UIImage *glossImage = [UIImage imageNamed: imageName];
-            UIImage *lowlightImage = [glossImage tintedImageUsingColor: [UIColor colorWithWhite: 0.0
-                                                                                          alpha: 0.3]];
-            self.lowlightImageView.image = lowlightImage;
-            break;
-        }
-            
-        case UIGestureRecognizerStateEnded:
-        case UIGestureRecognizerStateCancelled:
-        {
-            self.lowlightImageView.image = [UIImage imageNamed: imageName];
-        }
-        default:
-            break;
-    }
-}
-
 
 - (void) setLowlight: (BOOL) lowlight
             forPoint: (CGPoint) pointInCell
+{
+    self.lowlightImageView.image = [self lowlightImage: lowlight];
+}
+
+
+- (UIImage *) lowlightImage: (BOOL) lowlight
 {
     // Default iPad gloss image
     NSString *imageName = @"GlossChannelThumbnail";
@@ -135,17 +103,17 @@
         imageName = @"GlossChannelProfile";
     }
     
+    UIImage *glossImage = [UIImage imageNamed: imageName];
+    
     if (lowlight)
     {
-        // Set lowlight tint
-        UIImage *glossImage = [UIImage imageNamed: imageName];
         UIImage *lowlightImage = [glossImage tintedImageUsingColor: [UIColor colorWithWhite: 0.0
                                                                                       alpha: 0.3]];
-        self.lowlightImageView.image = lowlightImage;
+        return lowlightImage;
     }
     else
     {
-        self.lowlightImageView.image = [UIImage imageNamed: imageName];
+        return glossImage;
     }
 }
 

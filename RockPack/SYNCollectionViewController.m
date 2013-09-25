@@ -112,7 +112,7 @@
     
     UICollectionViewCell *cell = [self.collectionView cellForItemAtIndexPath: indexPath];
     
-    if ([cell respondsToSelector: @selector(lowlight:)])
+    if ([cell respondsToSelector: @selector(setLowlight:forPoint:)])
     {
         CGPoint pointInCell = [gestureRecognizer locationOfTouch: 0 inView: cell];
         
