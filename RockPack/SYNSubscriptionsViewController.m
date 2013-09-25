@@ -46,16 +46,16 @@
     UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
                                           bundle: nil];
     
-    [self.channelCollectionViewController.collectionView registerNib: footerViewNib
-                                          forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
-                                                 withReuseIdentifier: @"SYNChannelFooterMoreView"];
+    [self.channelCollectionView registerNib: footerViewNib
+                 forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
+                        withReuseIdentifier: @"SYNChannelFooterMoreView"];
     
     // Register Cells
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelMidCell"
                                              bundle: nil];
     
-    [self.channelCollectionViewController.collectionView registerNib: thumbnailCellNib
-                                          forCellWithReuseIdentifier: @"SYNChannelMidCell"];
+    [self.channelCollectionView registerNib: thumbnailCellNib
+                 forCellWithReuseIdentifier: @"SYNChannelMidCell"];
 
     CGRect correntFrame = self.channelCollectionViewController.view.frame;
     correntFrame.size.width = 20.0;
@@ -104,7 +104,7 @@
     self.noChannelsMessage.autoresizingMask =
     UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
 
-    [self.collectionView addSubview: self.noChannelsMessage];
+    [self.channelCollectionView addSubview: self.noChannelsMessage];
 }
 
 - (void) hideNoSubscriptionsMessage
@@ -178,7 +178,7 @@
     }
     
     [self isCurrentUserProfile];
-    [self.channelCollectionViewController.collectionView reloadData];
+    [self.channelCollectionView reloadData];
 }
 
 
@@ -191,7 +191,7 @@
 
 #pragma mark - Accessors
 
-- (UICollectionView *) collectionView
+- (UICollectionView *) channelCollectionView
 {
     return self.channelCollectionViewController.collectionView;
 }
@@ -199,7 +199,7 @@
 
 - (void) headerTapped
 {
-    [self.channelCollectionViewController.collectionView setContentOffset: CGPointZero
+    [self.channelCollectionView setContentOffset: CGPointZero
                                                                  animated: YES];
 }
 
@@ -209,14 +209,14 @@
     // no additional checks because it is done above
     _user = user;
     
-    [self.channelCollectionViewController.collectionView reloadData];
+    [self.channelCollectionView reloadData];
 }
 
 
 - (void) channelTapped: (UICollectionViewCell *) cell
 {
     SYNChannelMidCell *selectedCell = (SYNChannelMidCell *) cell;
-    NSIndexPath *indexPath = [self.channelCollectionViewController.collectionView indexPathForItemAtPoint: selectedCell.center];
+    NSIndexPath *indexPath = [self.channelCollectionView indexPathForItemAtPoint: selectedCell.center];
     
     Channel *channel = self.user.subscriptions[indexPath.item];
     
@@ -226,7 +226,7 @@
 
 - (NSIndexPath *) indexPathForChannelCell: (UICollectionViewCell *) cell
 {
-    NSIndexPath *indexPath = [self.channelCollectionViewController.collectionView indexPathForCell: cell];
+    NSIndexPath *indexPath = [self.channelCollectionView indexPathForCell: cell];
     return  indexPath;
 }
 

@@ -13,7 +13,7 @@
 #import "SYNChannelDetailViewController.h"
 #import "SYNChannelMidCell.h"
 #import "SYNChannelThumbnailCell.h"
-#import "SYNDeletionWobbleLayout.h"
+#import "SYNCollectionViewController.h"
 #import "SYNDeviceManager.h"
 #import "SYNImagePickerController.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
@@ -30,8 +30,7 @@
 
 #define kInterRowMargin 8.0f
 
-@interface SYNProfileRootViewController () <SYNDeletionWobbleLayoutDelegate,
-                                            UIGestureRecognizerDelegate,
+@interface SYNProfileRootViewController () <UIGestureRecognizerDelegate,
                                             SYNImagePickerControllerDelegate>
 
 @property (nonatomic) BOOL deleteCellModeOn;
@@ -39,20 +38,20 @@
 @property (nonatomic) BOOL isUserProfile;
 @property (nonatomic) BOOL trackView;
 @property (nonatomic, assign) BOOL subscriptionsTabActive;
-@property (nonatomic, assign, getter = isDeletionModeActive) BOOL deletionModeActive;
-@property (nonatomic, strong) IBOutlet UICollectionView *channelThumbnailCollectionView;
 @property (nonatomic, strong) NSArray *sortDescriptors;
 @property (nonatomic, strong) NSIndexPath *channelsIndexPath;
 @property (nonatomic, strong) NSIndexPath *indexPathToDelete;
 @property (nonatomic, strong) NSIndexPath *subscriptionsIndexPath;
-@property (nonatomic, strong) SYNDeletionWobbleLayout *channelsLandscapeLayout;
-@property (nonatomic, strong) SYNDeletionWobbleLayout *channelsPortraitLayout;
-@property (nonatomic, strong) SYNDeletionWobbleLayout *subscriptionsLandscapeLayout;
-@property (nonatomic, strong) SYNDeletionWobbleLayout *subscriptionsPortraitLayout;
+@property (nonatomic, strong) SYNCollectionViewController *channelCollectionViewController;
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout *channelsLandscapeLayout;
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout *channelsPortraitLayout;
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout *subscriptionsLandscapeLayout;
+@property (nonatomic, strong) SYNIntegralCollectionViewFlowLayout *subscriptionsPortraitLayout;
 @property (nonatomic, strong) SYNSubscriptionsViewController *subscriptionsViewController;
 @property (nonatomic, strong) SYNUserProfileViewController *userProfileController;
 @property (nonatomic, strong) SYNYouHeaderView *headerChannelsView;
 @property (nonatomic, strong) SYNYouHeaderView *headerSubscriptionsView;
+@property (nonatomic, strong) UICollectionView *channleCollectionView;
 @property (nonatomic, strong) id orientationDesicionmaker;
 @property (nonatomic, weak) UIButton *channelsTabButton;
 @property (nonatomic, weak) UIButton *subscriptionsTabButton;
@@ -67,12 +66,6 @@
 - (void) dealloc
 {
     self.user = nil;
-    
-    // Defensive programming
-    self.channelThumbnailCollectionView.delegate = nil;
-    self.channelThumbnailCollectionView.dataSource = nil;
-    self.subscriptionsViewController.collectionView.delegate = nil;
-    self.subscriptionsViewController.collectionView.dataSource = nil;
 }
 
 
@@ -90,14 +83,14 @@
     }
     
     // Main Collection View
-    self.channelsLandscapeLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(192.0f, 192.0f)
+    self.channelsLandscapeLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(192.0f, 192.0f)
                                                        minimumInterItemSpacing: 0.0
                                                             minimumLineSpacing: 5.0
                                                                scrollDirection: UICollectionViewScrollDirectionVertical
                                                                   sectionInset: UIEdgeInsetsMake(kInterRowMargin - 8.0, 8.0, kInterRowMargin, 18.0)];
     
     
-    self.subscriptionsLandscapeLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(192.0, 192.0f)
+    self.subscriptionsLandscapeLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(192.0, 192.0f)
                                                             minimumInterItemSpacing: 0.0
                                                                  minimumLineSpacing: 5.0
                                                                     scrollDirection: UICollectionViewScrollDirectionVertical
@@ -105,13 +98,13 @@
     
     if (self.isIPhone)
     {
-        self.channelsPortraitLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(158.0f, 158.0f)
+        self.channelsPortraitLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(158.0f, 158.0f)
                                                           minimumInterItemSpacing: 0.0f
                                                                minimumLineSpacing: 0.0f
                                                                   scrollDirection: UICollectionViewScrollDirectionVertical
                                                                      sectionInset: UIEdgeInsetsMake(3.0, 2.0, 0.0, 2.0)];
         
-        self.subscriptionsPortraitLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(158.0f, 158.0f)
+        self.subscriptionsPortraitLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(158.0f, 158.0f)
                                                                minimumInterItemSpacing: 0.0f
                                                                     minimumLineSpacing: 0.0f
                                                                        scrollDirection: UICollectionViewScrollDirectionVertical
@@ -119,17 +112,18 @@
     }
     else
     {
-        self.channelsPortraitLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(192.0, 192.0)
+        self.channelsPortraitLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(192.0, 192.0)
                                                           minimumInterItemSpacing: 0.0f
                                                                minimumLineSpacing: 0.0f
                                                                   scrollDirection: UICollectionViewScrollDirectionVertical
                                                                      sectionInset: UIEdgeInsetsMake(kInterRowMargin, 0.0, kInterRowMargin, 0.0)];
         
-        self.subscriptionsPortraitLayout = [SYNDeletionWobbleLayout layoutWithItemSize: CGSizeMake(192.0, 192.0)
+        self.subscriptionsPortraitLayout = [SYNIntegralCollectionViewFlowLayout layoutWithItemSize: CGSizeMake(192.0, 192.0)
                                                                minimumInterItemSpacing: 0.0f
                                                                     minimumLineSpacing: 0.0f
                                                                        scrollDirection: UICollectionViewScrollDirectionVertical
                                                                           sectionInset: UIEdgeInsetsMake(kInterRowMargin, 0.0, kInterRowMargin, 0.0)];
+        
         self.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey: @"section"
                                                                ascending: YES], [NSSortDescriptor sortDescriptorWithKey: @"row"
                                                                                                               ascending: YES]];
@@ -166,15 +160,13 @@
     collectionViewFrame.size.width = correctWidth;
     collectionViewFrame.size.height = [SYNDeviceManager.sharedInstance currentScreenHeightWithStatusBar] - collectionViewFrame.origin.y;
     
-    self.channelThumbnailCollectionView = [[UICollectionView alloc] initWithFrame: collectionViewFrame
-                                                             collectionViewLayout: self.channelsLandscapeLayout];
-    
-    
-    self.channelThumbnailCollectionView.dataSource = self;
-    self.channelThumbnailCollectionView.delegate = self;
-    self.channelThumbnailCollectionView.backgroundColor = [UIColor clearColor];
-    self.channelThumbnailCollectionView.showsVerticalScrollIndicator = NO;
-    self.channelThumbnailCollectionView.alwaysBounceVertical = YES;
+    self.channelCollectionViewController = [[SYNCollectionViewController alloc] initWithCollectionViewLayout: self.channelsLandscapeLayout];
+    self.channelCollectionViewController.view.frame = collectionViewFrame;
+    self.channelCollectionView.dataSource = self;
+    self.channelCollectionView.delegate = self;
+    self.channelCollectionView.backgroundColor = [UIColor clearColor];
+    self.channelCollectionView.showsVerticalScrollIndicator = NO;
+    self.channelCollectionView.alwaysBounceVertical = YES;
     
     // Subscriptions Collection View
     self.subscriptionsViewController = [[SYNSubscriptionsViewController alloc] initWithViewId: kProfileViewId];
@@ -236,8 +228,8 @@
         self.userProfileController.view.frame = userProfileFrame;
     }
     
-    [self.view addSubview: self.channelThumbnailCollectionView];
-    [self.view  addSubview: self.subscriptionsViewController.view];
+    [self.view addSubview: self.channelCollectionView];
+    [self.view addSubview: self.subscriptionsViewController.view];
     
     if (self.isIPhone)
     {
@@ -293,8 +285,8 @@
         [self updateTabStates];
     }
     
-    self.subscriptionsViewController.channelCollectionViewController.collectionView.scrollsToTop = NO;
-    self.channelThumbnailCollectionView.scrollsToTop = NO;
+    self.subscriptionsViewController.channelCollectionView.scrollsToTop = NO;
+    self.channelCollectionView.scrollsToTop = NO;
     
     
 }
@@ -309,15 +301,31 @@
     UINib *createCellNib = [UINib nibWithNibName: @"SYNChannelCreateNewCell"
                                           bundle: nil];
     
-    [self.channelThumbnailCollectionView registerNib: createCellNib
-                          forCellWithReuseIdentifier: @"SYNChannelCreateNewCell"];
+    [self.channelCollectionView registerNib: createCellNib
+                 forCellWithReuseIdentifier: @"SYNChannelCreateNewCell"];
     
     // Init collection view
     UINib *thumbnailCellNib = [UINib nibWithNibName: @"SYNChannelMidCell"
                                              bundle: nil];
     
-    [self.channelThumbnailCollectionView registerNib: thumbnailCellNib
-                          forCellWithReuseIdentifier: @"SYNChannelMidCell"];
+    [self.channelCollectionView registerNib: thumbnailCellNib
+                 forCellWithReuseIdentifier: @"SYNChannelMidCell"];
+    
+    // Add the recogniser blocks for this collection view
+    __weak typeof(self) weakself = self;
+    
+    TapRecognizedBlock tapRecognizedBlock = ^(UICollectionViewCell *cell) {
+        [weakself channelTapped: cell];
+    };
+    
+    self.channelCollectionViewController.tapRecognizedBlock = tapRecognizedBlock;
+    
+    LongPressRecognizedBlock longPressRecognizedBlock = ^(UIGestureRecognizer *recognizer) {
+        [weakself arcMenuUpdateState: recognizer];
+    };
+    
+    self.channelCollectionViewController.longPressRecognizedBlock = longPressRecognizedBlock;
+
 }
 
 
@@ -342,43 +350,47 @@
     {
         if (self.isIPhone)
         {
-            self.channelThumbnailCollectionView.scrollsToTop = !self.subscriptionsTabActive;
+            self.channelCollectionView.scrollsToTop = !self.subscriptionsTabActive;
             
-            self.subscriptionsViewController.channelCollectionViewController.collectionView.scrollsToTop = self.subscriptionsTabActive;
+            self.subscriptionsViewController.channelCollectionView.scrollsToTop = self.subscriptionsTabActive;
         }
         else
         {
-            self.channelThumbnailCollectionView.scrollsToTop = YES;
+            self.channelCollectionView.scrollsToTop = YES;
             
-            self.subscriptionsViewController.channelCollectionViewController.collectionView.scrollsToTop = NO;
+            self.subscriptionsViewController.channelCollectionView.scrollsToTop = NO;
         }
         
         [GAI.sharedInstance.defaultTracker
          sendView: @"User Profile"];
     }
     
-    self.channelThumbnailCollectionView.delegate = self;
-    
-    self.deletionModeActive = NO;
-    
-    self.subscriptionsViewController.collectionView.delegate = self;
+    self.channelCollectionView.delegate = self;
+
+    self.subscriptionsViewController.channelCollectionView.delegate = self;
     
     
     self.subscriptionsViewController.user = self.user;
     
     [self updateLayoutForOrientation: [SYNDeviceManager.sharedInstance orientation]];
     
-    [self.channelThumbnailCollectionView reloadData];
+    [self.channelCollectionView reloadData];
 }
 
 
 - (void) viewWillDisappear: (BOOL) animated
 {
-    self.channelThumbnailCollectionView.delegate = nil;
-    
-    self.deletionModeActive = NO;
+    self.channelCollectionView.delegate = nil;
     
     [super viewWillDisappear: animated];
+}
+
+
+#pragma mark - Convenience accessor
+
+- (UICollectionView *) channelCollectionView
+{
+    return self.channelCollectionViewController.collectionView;
 }
 
 
@@ -390,15 +402,15 @@
     
     if (self.isIPhone)
     {
-        self.channelThumbnailCollectionView.scrollsToTop = !self.subscriptionsTabActive;
+        self.channelCollectionView.scrollsToTop = !self.subscriptionsTabActive;
         
-        self.subscriptionsViewController.channelCollectionViewController.collectionView.scrollsToTop = self.subscriptionsTabActive;
+        self.subscriptionsViewController.channelCollectionView.scrollsToTop = self.subscriptionsTabActive;
     }
     else
     {
-        self.channelThumbnailCollectionView.scrollsToTop = YES;
+        self.channelCollectionView.scrollsToTop = YES;
         
-        self.subscriptionsViewController.channelCollectionViewController.collectionView.scrollsToTop = YES;
+        self.subscriptionsViewController.channelCollectionView.scrollsToTop = YES;
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kChannelOwnerUpdateRequest
@@ -409,9 +421,9 @@
 
 - (void) viewDidScrollToBack
 {
-    self.channelThumbnailCollectionView.scrollsToTop = NO;
+    self.channelCollectionView.scrollsToTop = NO;
     
-    self.subscriptionsViewController.channelCollectionViewController.collectionView.scrollsToTop = NO;
+    self.subscriptionsViewController.channelCollectionView.scrollsToTop = NO;
 }
 
 
@@ -453,29 +465,20 @@
 }
 
 
-#pragma mark - Deletion wobble layout delegate
-
-- (BOOL) isDeletionModeActiveForCollectionView: (UICollectionView *) collectionView
-                                        layout: (UICollectionViewLayout *) collectionViewLayout
-{
-    return NO;
-}
-
-
 #pragma mark - Orientation
 
 - (void) willRotateToInterfaceOrientation: (UIInterfaceOrientation) toInterfaceOrientation duration: (NSTimeInterval) duration
 {
     //Decide which collection view should be in control of the scroll offset on orientaiton change. The tallest one wins...
-    if (self.channelThumbnailCollectionView.collectionViewLayout.collectionViewContentSize.height > self.subscriptionsViewController.channelCollectionViewController.collectionView.collectionViewLayout.collectionViewContentSize.height)
+    if (self.channelCollectionView.collectionViewLayout.collectionViewContentSize.height > self.subscriptionsViewController.channelCollectionView.collectionViewLayout.collectionViewContentSize.height)
     {
-        self.channelsIndexPath = [self topIndexPathForCollectionView: self.channelThumbnailCollectionView];
-        self.orientationDesicionmaker = self.channelThumbnailCollectionView;
+        self.channelsIndexPath = [self topIndexPathForCollectionView: self.channelCollectionView];
+        self.orientationDesicionmaker = self.channelCollectionView;
     }
     else
     {
-        self.subscriptionsIndexPath = [self topIndexPathForCollectionView: self.subscriptionsViewController.channelCollectionViewController.collectionView];
-        self.orientationDesicionmaker = self.subscriptionsViewController.channelCollectionViewController.collectionView;
+        self.subscriptionsIndexPath = [self topIndexPathForCollectionView: self.subscriptionsViewController.channelCollectionView];
+        self.orientationDesicionmaker = self.subscriptionsViewController.channelCollectionView;
     }
 }
 
@@ -485,16 +488,16 @@
     //Ensure the collection views are scrolled so the topmost cell in the tallest viewcontroller is again at the top.
     if (self.channelsIndexPath)
     {
-        [self.channelThumbnailCollectionView scrollToItemAtIndexPath: self.channelsIndexPath
+        [self.channelCollectionView scrollToItemAtIndexPath: self.channelsIndexPath
                                                     atScrollPosition: UICollectionViewScrollPositionTop
                                                             animated: NO];
     }
     
     if (self.subscriptionsIndexPath)
     {
-        [self.subscriptionsViewController.channelCollectionViewController.collectionView scrollToItemAtIndexPath: self.subscriptionsIndexPath
-                                                                                                atScrollPosition: UICollectionViewScrollPositionTop
-                                                                                                        animated: NO];
+        [self.subscriptionsViewController.channelCollectionView scrollToItemAtIndexPath: self.subscriptionsIndexPath
+                                                                       atScrollPosition: UICollectionViewScrollPositionTop
+                                                                               animated: NO];
     }
     
     self.orientationDesicionmaker = nil;
@@ -507,7 +510,7 @@
                           delay: 0.0f
                         options: UIViewAnimationCurveEaseInOut
                      animations: ^{
-                         self.channelThumbnailCollectionView.alpha = 1.0f;
+                         self.channelCollectionView.alpha = 1.0f;
                          self.subscriptionsViewController.view.alpha = 1.0f;
                      }
      
@@ -520,7 +523,7 @@
                                           duration: (NSTimeInterval) duration
 {
     //Fade out collections as they don't animate well together.
-    self.channelThumbnailCollectionView.alpha = 0.0f;
+    self.channelCollectionView.alpha = 0.0f;
     self.subscriptionsViewController.view.alpha = 0.0f;
     [self updateLayoutForOrientation: toInterfaceOrientation];
 }
@@ -530,8 +533,8 @@
 {
     CGRect newFrame;
     CGFloat viewHeight;
-    SYNDeletionWobbleLayout *channelsLayout;
-    SYNDeletionWobbleLayout *subscriptionsLayout;
+    SYNIntegralCollectionViewFlowLayout *channelsLayout;
+    SYNIntegralCollectionViewFlowLayout *subscriptionsLayout;
     
     //Setup the headers
     
@@ -596,12 +599,12 @@
     viewHeight = [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar];
     
     // Setup Channel feed collection view
-    newFrame = self.channelThumbnailCollectionView.frame;
+    newFrame = self.channelCollectionView.frame;
     newFrame.size.width = self.isIPhone ? 320.0f : self.headerChannelsView.frame.size.width;
     
     newFrame.size.height = viewHeight - newFrame.origin.y;
-    self.channelThumbnailCollectionView.collectionViewLayout = channelsLayout;
-    self.channelThumbnailCollectionView.frame = newFrame;
+    self.channelCollectionView.collectionViewLayout = channelsLayout;
+    self.channelCollectionView.frame = newFrame;
     
     
     //Setup subscription feed collection view
@@ -609,7 +612,7 @@
     newFrame.size.width = self.isIPhone ? 320.0f : self.headerSubscriptionsView.frame.size.width;
     newFrame.size.height = viewHeight - newFrame.origin.y;
     newFrame.origin.x = self.isIPhone ? 0.0f : self.headerSubscriptionsView.frame.origin.x;
-    self.subscriptionsViewController.channelCollectionViewController.collectionView.collectionViewLayout = subscriptionsLayout;
+    self.subscriptionsViewController.channelCollectionView.collectionViewLayout = subscriptionsLayout;
     self.subscriptionsViewController.view.frame = newFrame;
     
     
@@ -629,7 +632,7 @@
                             andNumber: totalChannels];
     
     [self.subscriptionsViewController reloadCollectionViews];
-    [self.channelThumbnailCollectionView reloadData];
+    [self.channelCollectionView reloadData];
     
     [self resizeScrollViews];
 }
@@ -715,7 +718,7 @@
 {
     Channel *channel;
     
-    if (collectionView == self.channelThumbnailCollectionView)
+    if (collectionView == self.channelCollectionView)
     {
         if (self.isUserProfile && indexPath.row == 0)
         {
@@ -785,17 +788,17 @@
         
         CGPoint offset;
         
-        if ([scrollView isEqual: self.channelThumbnailCollectionView])
+        if ([scrollView isEqual: self.channelCollectionView])
         {
-            offset = self.channelThumbnailCollectionView.contentOffset;
-            offset.y = self.channelThumbnailCollectionView.contentOffset.y;
-            [self.subscriptionsViewController.collectionView setContentOffset: offset];
+            offset = self.channelCollectionView.contentOffset;
+            offset.y = self.channelCollectionView.contentOffset.y;
+            [self.subscriptionsViewController.channelCollectionView setContentOffset: offset];
         }
-        else if ([scrollView isEqual: self.subscriptionsViewController.collectionView])
+        else if ([scrollView isEqual: self.subscriptionsViewController.channelCollectionView])
         {
-            offset = self.subscriptionsViewController.collectionView.contentOffset;
-            offset.y = self.subscriptionsViewController.collectionView.contentOffset.y;
-            [self.channelThumbnailCollectionView setContentOffset: offset];
+            offset = self.subscriptionsViewController.channelCollectionView.contentOffset;
+            offset.y = self.subscriptionsViewController.channelCollectionView.contentOffset.y;
+            [self.channelCollectionView setContentOffset: offset];
         }
     }
 }
@@ -808,18 +811,18 @@
         return;
     }
     
-    self.channelThumbnailCollectionView.contentInset = UIEdgeInsetsZero;
-    self.subscriptionsViewController.collectionView.contentInset = UIEdgeInsetsZero;
-    CGSize channelViewSize = self.channelThumbnailCollectionView.collectionViewLayout.collectionViewContentSize;
-    CGSize subscriptionsViewSize = self.subscriptionsViewController.collectionView.collectionViewLayout.collectionViewContentSize;
+    self.channelCollectionView.contentInset = UIEdgeInsetsZero;
+    self.subscriptionsViewController.channelCollectionView.contentInset = UIEdgeInsetsZero;
+    CGSize channelViewSize = self.channelCollectionView.collectionViewLayout.collectionViewContentSize;
+    CGSize subscriptionsViewSize = self.subscriptionsViewController.channelCollectionView.collectionViewLayout.collectionViewContentSize;
     
     if (channelViewSize.height < subscriptionsViewSize.height)
     {
-        self.channelThumbnailCollectionView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, subscriptionsViewSize.height - channelViewSize.height, 0.0f);
+        self.channelCollectionView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, subscriptionsViewSize.height - channelViewSize.height, 0.0f);
     }
     else if (channelViewSize.height > subscriptionsViewSize.height)
     {
-        self.subscriptionsViewController.collectionView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, channelViewSize.height - subscriptionsViewSize.height, 0.0f);
+        self.subscriptionsViewController.channelCollectionView.contentInset = UIEdgeInsetsMake(0.0f, 0.0f, channelViewSize.height - subscriptionsViewSize.height, 0.0f);
     }
 }
 
@@ -842,13 +845,13 @@
 
 - (void) updateTabStates
 {
-    self.channelThumbnailCollectionView.scrollsToTop = !self.subscriptionsTabActive;
+    self.channelCollectionView.scrollsToTop = !self.subscriptionsTabActive;
     
-    self.subscriptionsViewController.channelCollectionViewController.collectionView.scrollsToTop = self.subscriptionsTabActive;
+    self.subscriptionsViewController.channelCollectionView.scrollsToTop = self.subscriptionsTabActive;
     
     self.channelsTabButton.selected = !self.subscriptionsTabActive;
     self.subscriptionsTabButton.selected = self.subscriptionsTabActive;
-    self.channelThumbnailCollectionView.hidden = self.subscriptionsTabActive;
+    self.channelCollectionView.hidden = self.subscriptionsTabActive;
     self.subscriptionsViewController.view.hidden = !self.subscriptionsTabActive;
     
     if (self.subscriptionsTabActive)
@@ -920,7 +923,7 @@
     }
     
     UIView *v = sender.superview.superview;
-    self.indexPathToDelete = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
+    self.indexPathToDelete = [self.channelCollectionView indexPathForItemAtPoint: v.center];
     
     Channel *channelToDelete = (Channel *) self.user.channels[self.indexPathToDelete.row - (self.isUserProfile ? 1 : 0)];
     
@@ -967,7 +970,7 @@
      deleteChannelForUserId: appDelegate.currentUser.uniqueId
      channelId: channelToDelete.uniqueId
      completionHandler: ^(id response) {
-         UICollectionViewCell *cell = [self.channelThumbnailCollectionView cellForItemAtIndexPath: self.indexPathToDelete];
+         UICollectionViewCell *cell = [self.channelCollectionView cellForItemAtIndexPath: self.indexPathToDelete];
          
          [UIView	 animateWithDuration: 0.2
                            animations: ^{
@@ -980,7 +983,7 @@
                                [channelToDelete.managedObjectContext
                                 deleteObject: channelToDelete];
                                
-                               [self.channelThumbnailCollectionView deleteItemsAtIndexPaths: @[self.indexPathToDelete]];
+                               [self.channelCollectionView deleteItemsAtIndexPaths: @[self.indexPathToDelete]];
                                
                                [appDelegate saveContext: YES];
                                
@@ -998,7 +1001,7 @@
 - (void) headerTapped
 {
     // no need to animate the subscriptions part since it observes the channels thumbnails scroll view
-    [self.channelThumbnailCollectionView setContentOffset: CGPointZero
+    [self.channelCollectionView setContentOffset: CGPointZero
                                                  animated: YES];
 }
 
@@ -1189,7 +1192,7 @@
 
 - (NSIndexPath *) indexPathForChannelCell: (UICollectionViewCell *) cell
 {
-    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForCell: cell];
+    NSIndexPath *indexPath = [self.channelCollectionView indexPathForCell: cell];
     return  indexPath;
 }
 
@@ -1198,7 +1201,7 @@
 {
     SYNChannelThumbnailCell *parent = (SYNChannelThumbnailCell *) [[button superview] superview];
     
-    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForCell: parent];
+    NSIndexPath *indexPath = [self.channelCollectionView indexPathForCell: parent];
     
     Channel *channel = (Channel *) self.user.channels[indexPath.row - (self.isUserProfile ? 1 : 0)];
     
@@ -1209,13 +1212,7 @@
 - (void) channelTapped: (UICollectionViewCell *) cell
 {
     SYNChannelThumbnailCell *selectedCell = (SYNChannelThumbnailCell *) cell;
-    NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForItemAtPoint: selectedCell.center];
-    
-    if (self.isDeletionModeActive)
-    {
-        self.deletionModeActive = NO;
-        return;
-    }
+    NSIndexPath *indexPath = [self.channelCollectionView indexPathForItemAtPoint: selectedCell.center];
     
     Channel *channel;
     
