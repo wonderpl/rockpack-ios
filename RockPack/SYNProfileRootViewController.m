@@ -228,7 +228,7 @@
         self.userProfileController.view.frame = userProfileFrame;
     }
     
-    [self.view addSubview: self.channelCollectionView];
+    [self.view addSubview: self.self.channelCollectionViewController.view];
     [self.view addSubview: self.subscriptionsViewController.view];
     
     if (self.isIPhone)
