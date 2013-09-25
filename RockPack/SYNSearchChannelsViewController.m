@@ -86,8 +86,8 @@
     CGRect collectionFrame = self.channelThumbnailCollectionView.frame;
     if (IS_IPHONE)
     {
-        collectionFrame.origin.y += 10.0;
-        collectionFrame.size.height -= 10.0;
+        collectionFrame.origin.y += IS_IOS_7_OR_GREATER ? 70.0f : 60.0f;
+        collectionFrame.size.height -= IS_IOS_7_OR_GREATER ? 10.0 : 0.0f;
     }
     else
     {
