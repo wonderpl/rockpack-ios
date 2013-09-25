@@ -754,4 +754,14 @@
                      }];
 }
 
+
+-(void)resumeVideoIfShowing
+{
+    
+    if(self.masterController.videoViewerViewController)
+    {
+        [self.masterController.videoViewerViewController playIfVideoActive];
+    }
+}
+
 @end

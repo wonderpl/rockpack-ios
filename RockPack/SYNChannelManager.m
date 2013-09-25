@@ -523,8 +523,7 @@
                                                       
                                                       [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
                                                                                                           object: self];
-                                                      // TODO : implement
-                                                      //[self resumeVideoIfShowing];
+                                                      [appDelegate.viewStackManager resumeVideoIfShowing];
                                                       
                                                   } errorHandler:^(NSDictionary* errorDictionary) {
                                                       
@@ -533,8 +532,7 @@
                                                       
                                                       [appDelegate.viewStackManager presentSuccessNotificationWithMessage:messageE];
                                                       
-                                                      // TODO : implement
-                                                      //[self resumeVideoIfShowing];
+                                                      [appDelegate.viewStackManager resumeVideoIfShowing];
                                                   }];
 }
 
