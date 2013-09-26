@@ -89,11 +89,15 @@ typedef enum _FeedItemResourceType {
 // == Main WS API == //
 
 // Search according to term, currently a wrapper around YouTube
-#define kAPISearchVideos            @"/ws/search/videos/"
+
+#define kAPICompleteAll             @"/ws/complete/videos/"
 #define kAPICompleteVideos          @"/ws/complete/videos/"
+#define kAPICompleteChannels        @"/ws/complete/channels/"
+#define kAPICompleteUsers           @"/ws/complete/channels/"
+
+#define kAPISearchVideos            @"/ws/search/videos/"
 #define kAPISearchChannels          @"/ws/search/channels/"
 #define kAPISearchUsers             @"/ws/search/users/"
-#define kAPICompleteChannels        @"/ws/complete/channels/"
 
 // User details
 #define kAPIGetUserDetails          @"/ws/USERID/"                              /* GET */
@@ -416,9 +420,11 @@ typedef enum {
 #define kLoginCompleted @"kLoginCompleted"
 
 typedef enum {
-    EntityTypeChannel = 0,
+    EntityTypeAny = 0,
+    EntityTypeChannel,
     EntityTypeVideo,
     EntityTypeVideoInstance,
+    EntityTypeUser,
     EntityTypeCategory
     
 } EntityType;
@@ -436,6 +442,9 @@ typedef enum {
     PointingDirectionLeft,
     PointingDirectionRight
 } PointingDirection;
+
+
+
 
 // Height of the bottom tab bar in pixels
 #define kBottomTabBarHeight 62

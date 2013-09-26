@@ -15,6 +15,7 @@
 #import "SYNVideoQueue.h"
 #import "SYNViewStackManager.h"
 #import "User.h"
+#import "AppConstants.h"
 #import <CoreData/CoreData.h>
 #import <UIKit/UIKit.h>
 
@@ -50,6 +51,8 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, readonly) SYNMasterViewController *masterViewController;
 @property (strong, nonatomic) NSString* ipBasedLocation;
+
+@property (nonatomic) EntityType searchEntity;
 
 - (void) deleteDataObject: (NSManagedObject*) managedObject;
 - (void) saveContext: (BOOL) wait;

@@ -631,5 +631,11 @@
 }
 
 
+-(EntityType)associatedEntity
+{
+    return EntityTypeVideoInstance;
+}
+
+
 
 @end

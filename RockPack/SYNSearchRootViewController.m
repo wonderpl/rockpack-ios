@@ -249,15 +249,18 @@
         return;
     }
     
+    // already selected
+    
     if (control.selected)
     {
         return;
     }
     
     [self.controllers enumerateObjectsUsingBlock: ^(SYNAbstractViewController *controller, NSUInteger idx, BOOL *stop) {
+        
         SYNSearchTabView *tabView = (SYNSearchTabView *) [controller valueForKey: @"itemToUpdate"];
          
-         if ([tabView isClicked: control])
+         if ([tabView isClicked: control]) // return tabView.overButton == control
          {
              tabView.selected = YES;
              self.currentController = controller;
@@ -265,7 +268,7 @@
          }
          else
          {
-             tabView.selected = NO;
+             tabView.selected = NO; // turn off the rest
              controller.view.hidden = YES;
          }
      }];
@@ -358,6 +361,10 @@
     }];
     
     _currentController.view.hidden = NO;
+    
+    // set the value for the entity to search
+    
+    appDelegate.searchEntity = _currentController.associatedEntity;
 }
 
 

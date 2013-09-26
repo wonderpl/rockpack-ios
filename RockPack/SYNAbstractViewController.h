@@ -139,5 +139,7 @@ typedef void (^SYNShareCompletionBlock)(void);
 
 - (void) createAndDisplayNewChannel;
 
+-(EntityType)associatedEntity;
+
 -(void)checkForOnBoarding ;
 @end

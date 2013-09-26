@@ -10,7 +10,6 @@
 #import <SparkInspector/SparkInspector.h>
 #endif
 
-#import "AppConstants.h"
 #import "Appirater.h"
 #import "ChannelOwner.h"
 #import "Channel.h"

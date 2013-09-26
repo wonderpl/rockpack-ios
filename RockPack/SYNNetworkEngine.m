@@ -467,13 +467,21 @@
     
     NSString *apiForEntity;
     
-    if (entityType == EntityTypeChannel)
+    if(entityType == EntityTypeAny)
+    {
+        apiForEntity = kAPICompleteAll;
+    }
+    else if (entityType == EntityTypeVideoInstance || entityType == EntityTypeVideo) // we never really search for videos
+    {
+        apiForEntity = kAPICompleteVideos;
+    }
+    else if (entityType == EntityTypeChannel)
     {
         apiForEntity = kAPICompleteChannels;
     }
-    else if (entityType == EntityTypeVideo)
+    else if(entityType == EntityTypeUser)
     {
-        apiForEntity = kAPICompleteVideos;
+        apiForEntity = kAPICompleteUsers;
     }
     else
     {

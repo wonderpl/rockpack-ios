@@ -255,8 +255,10 @@
     
     self.autocompleteTimer = nil;
     
+    
     self.autocompleteNetworkOperation = [appDelegate.networkEngine getAutocompleteForHint: self.searchTextField.text
-                                                                              forResource: EntityTypeVideo withComplete: ^(NSArray* array) {
+                                                                              forResource: appDelegate.searchEntity
+                                                                             withComplete: ^(NSArray* array) {
                                                                                  
                                             NSArray* suggestionsReturned = array[1];
                                              

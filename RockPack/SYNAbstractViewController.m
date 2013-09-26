@@ -1108,4 +1108,9 @@
     
 }
 
+-(EntityType)associatedEntity
+{
+    return EntityTypeAny;
+}
+
 @end

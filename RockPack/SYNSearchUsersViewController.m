@@ -225,4 +225,9 @@
     }
 }
 
+-(EntityType)associatedEntity
+{
+    return EntityTypeUser;
+}
+
 @end

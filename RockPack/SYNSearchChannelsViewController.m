@@ -275,4 +275,9 @@
     return IS_IPHONE ? CGSizeMake(152.0f, 152.0f) : CGSizeMake(251.0, 274.0);
 }
 
+-(EntityType)associatedEntity
+{
+    return EntityTypeChannel;
+}
+
 @end
