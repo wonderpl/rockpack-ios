@@ -70,8 +70,6 @@
 
 - (void) loadView
 {
-    
-    
     self.startingCategoryText  = NSLocalizedString(@"ALL PACKS", nil);
     
     SYNIntegralCollectionViewFlowLayout *flowLayout;
@@ -160,8 +158,15 @@
 {
     [super viewDidLoad];
     
-    self.mainRegistry = appDelegate.mainRegistry;
+    [self customInit];
     
+    [self setupGestureRecognizerCallbackBlocks];
+}
+
+// Required due to class nesting
+- (void) customInit
+{
+    self.mainRegistry = appDelegate.mainRegistry;
     
     self.view.multipleTouchEnabled = NO;
     
@@ -182,8 +187,6 @@
                                           forSupplementaryViewOfKind: UICollectionElementKindSectionFooter
                                                  withReuseIdentifier: @"SYNChannelFooterMoreView"];
 
-    [self setupGestureRecognizerCallbackBlocks];
-    
     self.currentGenre = nil;
     
     [self displayChannelsForGenre: self.currentGenre];
@@ -590,19 +593,6 @@ referenceSizeForFooterInSection: (NSInteger) section
     return footerSize;
 }
 
-
-//- (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
-//{
-//    if (self.isAnimating) // prevent double clicking
-//    {
-//        return;
-//    }
-//    
-//    Channel *channel = (Channel *) self.channels[indexPath.row];
-//    
-//    [appDelegate.viewStackManager
-//     viewChannelDetails: channel];
-//}
 
 - (void) channelTapped: (UICollectionViewCell *) cell
 {

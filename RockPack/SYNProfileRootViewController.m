@@ -228,7 +228,7 @@
         self.userProfileController.view.frame = userProfileFrame;
     }
     
-    [self.view addSubview: self.self.channelCollectionViewController.view];
+    [self.view addSubview: self.channelCollectionViewController.view];
     [self.view addSubview: self.subscriptionsViewController.view];
     
     if (self.isIPhone)
@@ -367,7 +367,8 @@
     
     self.channelCollectionView.delegate = self;
 
-    self.subscriptionsViewController.channelCollectionView.delegate = self;
+        // TODO: Work out if this is actually right
+    self.subscriptionsViewController.channelCollectionView.delegate = self.subscriptionsViewController;
     
     
     self.subscriptionsViewController.user = self.user;
@@ -392,6 +393,7 @@
 {
     return self.channelCollectionViewController.collectionView;
 }
+
 
 
 #pragma mark - Container Scroll Delegates

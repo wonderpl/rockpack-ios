@@ -37,11 +37,15 @@
 
 - (void) viewDidLoad
 {
-    // FIXME: Why no call to super, is this a mistake?
-    //[super viewDidLoad];
-    
-    appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    [super viewDidLoad];
+}
 
+
+// Called by  [super viewDidLoad];
+- (void) customInit
+{
+    appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
     // Register Footer
     UINib *footerViewNib = [UINib nibWithNibName: @"SYNChannelFooterMoreView"
                                           bundle: nil];
@@ -56,7 +60,7 @@
     
     [self.channelCollectionView registerNib: thumbnailCellNib
                  forCellWithReuseIdentifier: @"SYNChannelMidCell"];
-
+    
     CGRect correntFrame = self.channelCollectionViewController.view.frame;
     correntFrame.size.width = 20.0;
     self.channelCollectionViewController.view.frame = correntFrame;
