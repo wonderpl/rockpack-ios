@@ -541,37 +541,25 @@
     }
 
 
-    
-    
     // Loop through the fresh data from the server
-    
-//    DebugLog(@"Logging %i items", itemArray.count);
     
     NSInteger items = 0;
     
     for (NSDictionary *itemDictionary in itemArray)
     {
         items++;
-        NSString *uniqueId = itemDictionary[@"id"];
-        if(!uniqueId)
-            continue;
+        
         
         Channel* channel;
         
-        channel = existingChannelsByIndex[uniqueId];
+        if(!(channel = existingChannelsByIndex[itemDictionary[@"id"] ? itemDictionary[@"id"] : @""]))
+            if (!(channel = [Channel instanceFromDictionary: itemDictionary
+                                  usingManagedObjectContext: importManagedObjectContext
+                                        ignoringObjectTypes: kIgnoreVideoInstanceObjects]))
+        {
+            continue;
+        }
         
-        if (!channel)
-        {
-            channel = [Channel instanceFromDictionary: itemDictionary
-                            usingManagedObjectContext: importManagedObjectContext
-                                  ignoringObjectTypes: kIgnoreVideoInstanceObjects];
-            
-           
-        }
-        else
-        {
-            [existingChannelsByIndex removeObjectForKey: uniqueId];
-        }
 
         channel.markedForDeletionValue = NO;
         

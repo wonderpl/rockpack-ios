@@ -337,6 +337,7 @@ typedef void(^FeedDataErrorBlock)(void);
     [self.refreshButton startRefreshCycle];
     
     __weak SYNFeedRootViewController* wself = self;
+    
     FeedDataErrorBlock errorBlock = ^{
         
         [wself handleRefreshComplete];
@@ -414,7 +415,6 @@ typedef void(^FeedDataErrorBlock)(void);
                                                    
                                                    [wself displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
                                                    
-                                                   
                                                }
                                            }];
                                            
@@ -422,9 +422,7 @@ typedef void(^FeedDataErrorBlock)(void);
                                            
                                        } errorHandler: ^(NSDictionary* errorDictionary) {
                                            
-                                           
                                            errorBlock();
-                                                    
                                            
                                        }];
 }

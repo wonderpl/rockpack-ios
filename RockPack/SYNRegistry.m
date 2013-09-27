@@ -119,18 +119,14 @@
 {
     [importManagedObjectContext performBlock:^{
         BOOL result = actionBlock(importManagedObjectContext);
-        [self completeTransaction:result completionBlock:completionBlock];
+        if(completionBlock) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(result);
+            });
+        }
     }];
 }
 
--(void)completeTransaction:(BOOL)success completionBlock:(SYNRegistryCompletionBlock)block
-{
-    if(block)
-    {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            block(success);
-        });
-    }
-}
+
 
 @end
