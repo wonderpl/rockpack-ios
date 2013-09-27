@@ -11,10 +11,7 @@
 
 @implementation SYNRegistry
 
-+ (id) registry
-{
-    return [[self alloc] init];
-}
+#pragma mark - Initializers
 
 
 - (id) init
@@ -22,26 +19,34 @@
     if (self = [super init])
     {
         appDelegate = UIApplication.sharedApplication.delegate;
-        importManagedObjectContext = appDelegate.mainManagedObjectContext;
-
     }
     
     return self;
 }
 
++ (id) registryWithParentContext:(NSManagedObjectContext*)moc
+{
+    return [[self alloc] initWithParentManagedObjectContext:moc];
+}
 
-- (id) initWithManagedObjectContext: (NSManagedObjectContext*) moc
+- (id) initWithParentManagedObjectContext: (NSManagedObjectContext*) moc
 {
     if (self = [self init])
     {
+        importManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSPrivateQueueConcurrencyType];
+        
         if (moc)
-        {
             importManagedObjectContext.parentContext = moc;
-        }
+        else
+            DebugLog(@"Warning: Initializing Registry without a parent context");
+        
     }
     
     return self;
 }
+
+
+
 
 
 #pragma mark - Import Context Management
@@ -51,6 +56,7 @@
     NSError* error;
     if ([importManagedObjectContext save: &error])
     {
+        DebugLog(@"saving MOC from registry: %@", [[self class] description]);
         return YES;
     }
     else
@@ -105,6 +111,26 @@
     }
     
     return YES;  
+}
+
+#pragma mark - Backgrounding
+
+-(void)performInBackground:(SYNRegistryActionBlock)actionBlock completionBlock:(SYNRegistryCompletionBlock)completionBlock
+{
+    [importManagedObjectContext performBlock:^{
+        BOOL result = actionBlock(importManagedObjectContext);
+        [self completeTransaction:result completionBlock:completionBlock];
+    }];
+}
+
+-(void)completeTransaction:(BOOL)success completionBlock:(SYNRegistryCompletionBlock)block
+{
+    if(block)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            block(success);
+        });
+    }
 }
 
 @end

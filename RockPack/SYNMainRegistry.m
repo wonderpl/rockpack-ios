@@ -104,7 +104,7 @@
     if(!externalAccount)
     {
         if(!(externalAccount = [ExternalAccount instanceFromDictionary:dictionary
-                                        usingManagedObjectContext:appDelegate.currentUser.managedObjectContext]))
+                                             usingManagedObjectContext:appDelegate.currentUser.managedObjectContext]))
         {
             return NO;
         }
@@ -200,8 +200,11 @@
     
    
     
-    [self removeUnusedManagedObjects: existingCategories
-              inManagedObjectContext: appDelegate.mainManagedObjectContext];
+    for (Genre* category in existingCategories)
+    {
+        if(category.markedForDeletionValue)
+            [category.managedObjectContext delete:category];
+    }
     
     
     
@@ -348,7 +351,8 @@
         {
             
             if(!(object = videoInstancesByUniqueId[itemDictionary[@"id"]]))
-                if(!(object = [VideoInstance instanceFromDictionary:itemDictionary usingManagedObjectContext:importManagedObjectContext]))
+                if(!(object = [VideoInstance instanceFromDictionary:itemDictionary
+                                          usingManagedObjectContext:importManagedObjectContext]))
                        continue;
                    
             co = ((VideoInstance*)object).channel.channelOwner;
@@ -359,7 +363,8 @@
         {
             
             if(!(object = channelInstacesByUniqueId[itemDictionary[@"id"]]))
-                if(!(object = [Channel instanceFromDictionary:itemDictionary usingManagedObjectContext:importManagedObjectContext]))
+                if(!(object = [Channel instanceFromDictionary:itemDictionary
+                                    usingManagedObjectContext:importManagedObjectContext]))
                     continue;
             
             
@@ -456,9 +461,6 @@
 
 
 #pragma mark - Channels
-
-
-
 
 // Called by Main Channel page
 
@@ -650,22 +652,5 @@
     return matchingCategoryInstanceEntries;
 }
 
-
-// Iterate through all previously existing NSManaged objects that corresponded to a viewId and delete them if necessary
-- (void) removeUnusedManagedObjects: (NSArray *) managedObjects
-             inManagedObjectContext: (NSManagedObjectContext *) managedObjectContext
-{
-    if(!managedObjects)
-        return;
-    
-    [managedObjects enumerateObjectsUsingBlock: ^(AbstractCommon* managedObject, NSUInteger idx, BOOL *stop)
-    {
-         if (managedObject.markedForDeletionValue)
-         {
-             [managedObjectContext deleteObject:managedObject];
-             
-         }
-     }];
-}
 
 @end
