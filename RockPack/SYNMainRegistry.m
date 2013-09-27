@@ -603,9 +603,9 @@
 
     
     
-//    BOOL saveResult = [self saveImportContext];
-//    if(!saveResult)
-//        return NO;
+    BOOL saveResult = [self saveImportContext];
+    if(!saveResult)
+        return NO;
     
     [appDelegate saveContext:NO];
     
