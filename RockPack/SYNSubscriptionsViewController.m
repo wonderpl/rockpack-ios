@@ -247,21 +247,6 @@
     [appDelegate.viewStackManager viewChannelDetails: channel];
 }
 
-//- (void) channelTapped: (UICollectionViewCell *) cell
-//{
-//    SYNChannelThumbnailCell *selectedCell = (SYNChannelThumbnailCell *) cell;
-//    NSIndexPath *indexPath = [self.channelCollectionViewController.collectionView indexPathForItemAtPoint: selectedCell.center];
-//    
-//    if (self.isAnimating) // prevent double clicking
-//    {
-//        return;
-//    }
-//    
-//    Channel *channel = (Channel *) self.channels[indexPath.row];
-//    
-//    [appDelegate.viewStackManager viewChannelDetails: channel];
-//}
-
 
 - (NSIndexPath *) indexPathForChannelCell: (UICollectionViewCell *) cell
 {

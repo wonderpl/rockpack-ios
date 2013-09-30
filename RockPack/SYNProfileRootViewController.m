@@ -1142,6 +1142,11 @@
 
 #pragma mark - Arc menu support
 
+
+
+
+
+
 - (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
 {
     [super arcMenuUpdateState: recognizer];
@@ -1162,6 +1167,11 @@
          forCellAtIndex: (NSIndexPath *) cellIndexPath
          andComponentIndex: (NSInteger) componentIndex
 {
+    if (self.isUserProfile && cellIndexPath.row == 0)
+    {
+        return;
+    }
+    
     if ([menuName isEqualToString: kActionShareVideo])
     {
         [self shareVideoAtIndexPath: cellIndexPath];
