@@ -804,7 +804,7 @@ referenceSizeForFooterInSection: (NSInteger) section
     
     self.categoryTableViewController = [[SYNChannelCategoryTableViewController alloc] init];
     CGRect newFrame = self.channelThumbnailCollectionView.frame;
-    newFrame.size.height += IS_IOS_7_OR_GREATER ? 20.0f : 0.0f;
+//    newFrame.size.height += IS_IOS_7_OR_GREATER ? 20.0f : 0.0f;
     newFrame.size.width = self.categoryTableViewController.view.frame.size.width;
     self.categoryTableViewController.view.frame = newFrame;
     [self.view addSubview: self.categoryTableViewController.view];
