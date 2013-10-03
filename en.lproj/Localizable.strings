@@ -44,7 +44,7 @@
 // Pre Sign-Up Onboarding
 //iPhone - has line breaks
 "startscreen_onboard_1_title_iphone" = " ";
-"startscreen_onboard_1_iphone" = "\nLove video again.";
+"startscreen_onboard_1_iphone" = "\nLove video again";
 
 "startscreen_onboard_2_title_iphone" = "INDULGE";
 "startscreen_onboard_2_iphone" = "\nFeast on playlists full of\nhandpicked video goodness.\n(We call them ‘packs’).";
@@ -60,7 +60,7 @@
 
 //iPad
 "startscreen_onboard_1_title_ipad" = " ";
-"startscreen_onboard_1_ipad" = "\nLove video again.";
+"startscreen_onboard_1_ipad" = "\nLove video again";
 
 "startscreen_onboard_2_title_ipad" = "INDULGE";
 "startscreen_onboard_2_ipad" = "\nFeast on playlists full of handpicked video goodness.\n(We call them ‘packs’).";
