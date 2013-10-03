@@ -61,6 +61,13 @@
 
 - (void) loadView
 {
+    
+    if (IS_IOS_7_OR_GREATER)
+    {
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
+    
+    
     CGRect frame = CGRectMake(0.0, 0.0, [SYNDeviceManager.sharedInstance currentScreenWidth],
                               [SYNDeviceManager.sharedInstance currentScreenHeight]);
     

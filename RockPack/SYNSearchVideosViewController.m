@@ -74,10 +74,15 @@
                                          [[SYNDeviceManager sharedInstance] currentScreenWidth],
                                          [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar]);
         
+        CGFloat adjustmentY = 0;
+        
+        if (IS_IOS_7_OR_GREATER)
+            adjustmentY = 15.0f;
+        
         videoCollectionViewFrame = CGRectMake(0.0,
-                                              kStandardCollectionViewOffsetY + 40.0f,
+                                              kStandardCollectionViewOffsetY + 40.0f + adjustmentY,
                                               [[SYNDeviceManager sharedInstance] currentScreenWidth],
-                                              [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - kStandardCollectionViewOffsetY - 36.0f);
+                                              [[SYNDeviceManager sharedInstance] currentScreenHeightWithStatusBar] - kStandardCollectionViewOffsetY - 36.0f - adjustmentY);
         
         
         sectionInset = UIEdgeInsetsMake(0.0f, 10.0f, 15.0f, 10.0f);
