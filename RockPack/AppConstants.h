@@ -149,7 +149,7 @@ typedef enum _FeedItemResourceType {
 // Something
 #define kAPIPopularVideos           @"ws/videos/"
 #define kAPIPopularChannels         @"ws/channels/"
-#define kAPIRecommendedChannels     @"/ws/USERID/channel_recommendations"
+#define kAPIRecommendedChannels     @"/ws/USERID/channel_recommendations/"
 #define kAPICategories              @"ws/categories/"
 
 #define kLocationService            @"/ws/location/"                            /* GET */

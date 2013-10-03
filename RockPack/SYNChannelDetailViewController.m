@@ -389,7 +389,7 @@
             
             CGRect vFrame;
             for (UIView* viewToMove in @[self.saveChannelButton, self.createChannelButton,
-                                         self.cancelEditButton, self.deleteChannelButton, self.cancelTextInputButton]) {
+                                         self.cancelEditButton, self.deleteChannelButton, self.cancelTextInputButton, self.activityIndicator]) {
                 vFrame = viewToMove.frame;
                 vFrame.origin.y += 6.0f;
                 viewToMove.frame = vFrame;
