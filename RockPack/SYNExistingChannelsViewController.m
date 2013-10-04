@@ -7,7 +7,6 @@
 //
 
 #import "AppConstants.h"
-#import "AppConstants.h"
 #import "ChannelCover.h"
 #import "ExternalAccount.h"
 #import "GAI.h"
@@ -19,6 +18,7 @@
 #import "SYNExistingChannelsViewController.h"
 #import "SYNFacebookManager.h"
 #import "SYNIntegralCollectionViewFlowLayout.h"
+#import "SYNMasterViewController.h"
 #import "SYNOAuthNetworkEngine.h"
 #import "UIColor+SYNColor.h"
 #import "UIFont+SYNFont.h"
@@ -350,12 +350,13 @@
         [self.view removeFromSuperview];
         [self removeFromParentViewController];
         
+        SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
         // TODO : Implement below
         
-//        if (self.videoViewerViewController)
-//        {
-//            [self.videoViewerViewController playIfVideoActive];
-//        }
+        if (masterViewController.videoViewerViewController)
+        {
+            [masterViewController.videoViewerViewController playIfVideoActive];
+        }
     }];
 }
 
