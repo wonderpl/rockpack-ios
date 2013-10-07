@@ -365,11 +365,12 @@
     }
     else
     {
-        self.runningNetworkOperation = [appDelegate.oAuthNetworkEngine updateRecommendedChannelsScreenForUserId: appDelegate.currentOAuth2Credentials.userId
-                                                                                                       rorRange: self.dataRequestRange
-                                                                                                  ignoringCache: NO
-                                                                                                   onCompletion: completeBlock
-                                                                                                        onError: errorBlock];
+        self.runningNetworkOperation = [appDelegate.oAuthNetworkEngine
+                                        updateRecommendedChannelsScreenForUserId: appDelegate.currentOAuth2Credentials.userId
+                                        forRange: self.dataRequestRange
+                                        ignoringCache: NO
+                                        onCompletion: completeBlock
+                                        onError: errorBlock];
     }
 }
 

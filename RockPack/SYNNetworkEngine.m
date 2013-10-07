@@ -309,6 +309,7 @@
         }
         
         completeBlock(itemsCount);
+        
     } errorHandler: ^(NSError *error) {
         DebugLog(@"Update Videos Screens Request Failed");
         

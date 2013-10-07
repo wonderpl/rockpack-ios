@@ -384,7 +384,6 @@ typedef void(^FeedDataErrorBlock)(void);
                                                
                                            }
                                            
-                                           
                                            [appDelegate.mainRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
                                                
                                                BOOL result = [appDelegate.mainRegistry registerDataForSocialFeedFromItemsDictionary: contentItems
@@ -413,7 +412,8 @@ typedef void(^FeedDataErrorBlock)(void);
                                                
                                                if(wself.dataItemsAvailable == 0) {
                                                    
-                                                   [wself displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
+                                                   [wself displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil)
+                                                                         andLoader:NO];
                                                    
                                                }
                                            }];
