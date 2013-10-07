@@ -21,13 +21,9 @@
 
 @interface SYNOAuthNetworkEngine ()
 
-// OAuth2 and refresh tokens
-@property (nonatomic, strong) SYNOAuth2Credential *oAuth2Credential;
-
-// Used for authentication callbacks
 @property (nonatomic, copy) SYNOAuth2CompletionBlock oAuthCompletionBlock;
 @property (nonatomic, copy) SYNOAuth2RefreshCompletionBlock oAuthRefreshCompletionBlock;
-
+@property (nonatomic, strong) SYNOAuth2Credential *oAuth2Credential;
 @property (nonatomic, weak) SYNAppDelegate* appDelegate;
 
 @end
@@ -41,8 +37,7 @@
     
     hostName = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"SecureAPIHostName"];
 
-    self = [super initWithDefaultSettings];
-    if(self)
+    if ((self = [super initWithDefaultSettings]))
     {
         self.appDelegate = (SYNAppDelegate*)[[UIApplication sharedApplication] delegate];
     }
