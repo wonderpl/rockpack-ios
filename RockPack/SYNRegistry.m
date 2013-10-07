@@ -120,7 +120,8 @@
 
 #pragma mark - Backgrounding
 
-- (void) performInBackground: (SYNRegistryActionBlock) actionBlock completionBlock: (SYNRegistryCompletionBlock) completionBlock
+- (void) performInBackground: (SYNRegistryActionBlock) actionBlock
+             completionBlock: (SYNRegistryCompletionBlock) completionBlock
 {
     [importManagedObjectContext performBlock: ^{
         BOOL result = actionBlock(importManagedObjectContext);

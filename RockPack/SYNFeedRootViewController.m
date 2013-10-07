@@ -332,33 +332,34 @@ typedef void(^FeedDataErrorBlock)(void);
     self.loadingMoreContent = YES;
     
     if (!appDelegate.currentOAuth2Credentials.userId)
+    {
         return;
-
+    }
+    
     [self.refreshButton startRefreshCycle];
     
-    __weak SYNFeedRootViewController* wself = self;
+    __weak SYNFeedRootViewController *wself = self;
     
     FeedDataErrorBlock errorBlock = ^{
-        
         [wself handleRefreshComplete];
         
         [wself removeEmptyGenreMessage];
         
-        if(wself.feedItemsData.count == 0)
+        if (wself.feedItemsData.count == 0)
         {
-            [wself displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_loading_error", nil) andLoader:NO]; 
+            [wself displayEmptyGenreMessage: NSLocalizedString(@"feed_screen_loading_error", nil)
+                                  andLoader: NO];
         }
-            
         else
         {
-            [wself displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_updating_error", nil) andLoader:NO];
-            [NSTimer scheduledTimerWithTimeInterval:3.0f
-                                             target:self
-                                           selector:@selector(removeEmptyGenreMessage)
-                                           userInfo:nil
-                                            repeats:NO];
+            [wself displayEmptyGenreMessage: NSLocalizedString(@"feed_screen_updating_error", nil)
+                                  andLoader: NO];
+            [NSTimer scheduledTimerWithTimeInterval: 3.0f
+                                             target: self
+                                           selector: @selector(removeEmptyGenreMessage)
+                                           userInfo: nil
+                                            repeats: NO];
         }
-            
         
         self.loadingMoreContent = NO;
         
@@ -369,31 +370,27 @@ typedef void(^FeedDataErrorBlock)(void);
                                                    start: self.dataRequestRange.location
                                                     size: self.dataRequestRange.length
                                        completionHandler: ^(NSDictionary *responseDictionary) {
-                                                    
-                                           
                                            BOOL toAppend = (self.dataRequestRange.location > 0);
-                                                    
+                                           
                                            
                                            NSDictionary *contentItems = responseDictionary[@"content"];
                                            
-                                           if (!contentItems || ![contentItems isKindOfClass: [NSDictionary class]]) {
-                                               
+                                           if (!contentItems || ![contentItems isKindOfClass: [NSDictionary class]])
+                                           {
                                                errorBlock();
                                                
                                                return;
-                                               
                                            }
                                            
-                                           [appDelegate.mainRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
-                                               
-                                               BOOL result = [appDelegate.mainRegistry registerDataForSocialFeedFromItemsDictionary: contentItems
-                                                                                                                        byAppending: toAppend];
+                                           [appDelegate.mainRegistry performInBackground: ^BOOL (NSManagedObjectContext *backgroundContext) {
+                                               BOOL result = [appDelegate.mainRegistry
+                                                              registerDataForSocialFeedFromItemsDictionary: contentItems
+                                                              byAppending: toAppend];
                                                
                                                return result;
-                                               
-                                           } completionBlock:^(BOOL registryResultOk) {
-                                               
-                                               NSNumber* totalNumber = [contentItems[@"total"] isKindOfClass:[NSNumber class]] ? contentItems[@"total"] : @0 ;
+                                           } completionBlock: ^(BOOL registryResultOk) {
+                                               NSNumber *totalNumber = [contentItems[@"total"]
+                                                                        isKindOfClass: [NSNumber class]] ? contentItems[@"total"] : @0;
                                                wself.dataItemsAvailable = [totalNumber integerValue];
                                                
                                                if (!registryResultOk)
@@ -410,20 +407,14 @@ typedef void(^FeedDataErrorBlock)(void);
                                                
                                                [wself handleRefreshComplete];
                                                
-                                               if(wself.dataItemsAvailable == 0) {
-                                                   
-                                                   [wself displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil)
-                                                                         andLoader:NO];
-                                                   
+                                               if (wself.dataItemsAvailable == 0)
+                                               {
+                                                   [wself								   displayEmptyGenreMessage: NSLocalizedString(@"feed_screen_empty_message", nil)
+                                                                                   andLoader: NO];
                                                }
                                            }];
-                                           
-                                           
-                                           
-                                       } errorHandler: ^(NSDictionary* errorDictionary) {
-                                           
+                                       } errorHandler: ^(NSDictionary *errorDictionary) {
                                            errorBlock();
-                                           
                                        }];
 }
 
