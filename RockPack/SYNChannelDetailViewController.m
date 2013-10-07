@@ -294,7 +294,6 @@
         [GAI.sharedInstance.defaultTracker
          sendView: @"Channel details"];
         
-        self.addButton.hidden = NO;
         self.createChannelButton.hidden = YES;
     }
     else if(self.mode)
@@ -303,7 +302,6 @@
         [GAI.sharedInstance.defaultTracker
          sendView: @"Add to channel"];
         
-        self.addButton.hidden = YES;
         self.createChannelButton.hidden = NO;
         self.backButton.hidden = YES;
         self.cancelEditButton.hidden = NO;
@@ -1575,7 +1573,6 @@
     self.cancelEditButton.hidden = NO;
     self.deleteChannelButton.hidden = NO;
     self.backButton.hidden = YES;
-    self.addButton.hidden = YES;
     
     if (self.channel.categoryId)
     {
@@ -1689,7 +1686,6 @@
         self.saveChannelButton.hidden = YES;
         self.cancelEditButton.hidden = YES;
         self.deleteChannelButton.hidden = YES;
-        self.addButton.hidden = NO;
         self.backButton.hidden = NO;
         
         self.channel = self.originalChannel;
@@ -1751,7 +1747,6 @@
                                              self.saveChannelButton.hidden = YES;
                                              self.deleteChannelButton.hidden = YES;
                                              self.cancelEditButton.hidden = YES;
-                                             self.addButton.hidden = NO;
                                              
                                              
                                              
@@ -2036,11 +2031,6 @@
 }
 
 
-- (void) addItToChannelPresssed: (id) sender
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName: kNoteAddToChannelRequest
-                                                        object: self];
-}
 
 
 #pragma mark - iPad Category Tab Delegate
@@ -2259,7 +2249,6 @@
                                                   
                                                   self.createChannelButton.enabled = YES;
                                                   self.cancelEditButton.hidden = NO;
-                                                  self.addButton.hidden = YES;
                                                   
                                                   [self	 showError: errorMessage
                                                     showErrorTitle: errorTitle];
@@ -2301,7 +2290,6 @@
                                                           }
                                                       }
                                                       
-                                                      self.addButton.hidden = YES;
                                                       
                                                       [[NSNotificationCenter defaultCenter]  postNotificationName: kVideoQueueClear
                                                                                                            object: self];
@@ -2455,6 +2443,8 @@
     // == Decide on the success message type shown == //
     NSNotification *successNotification = [NSNotification notificationWithName: kNoteChannelSaved
                                                                         object: self];
+    
+    
     SYNCaution *caution;
     CautionCallbackBlock actionBlock;
     NSMutableArray *conditionsArray = [NSMutableArray arrayWithCapacity: 3];
@@ -2558,7 +2548,6 @@
 {
     if (isIPad)
     {
-        self.addButton.hidden = NO;
         self.createChannelButton.hidden = YES;
     }
     else

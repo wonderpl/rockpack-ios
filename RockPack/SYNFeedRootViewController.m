@@ -383,7 +383,6 @@ typedef void(^FeedDataErrorBlock)(void);
                                                
                                            }
                                                         
-                                           
                                            NSNumber* totalNumber = [contentItem[@"total"] isKindOfClass:[NSNumber class]] ? contentItem[@"total"] : @0 ;
                                            wself.dataItemsAvailable = [totalNumber integerValue];
                                            
@@ -419,7 +418,7 @@ typedef void(^FeedDataErrorBlock)(void);
                                                
                                                
                                            }
-                                                    
+                                               
                                            
                                        } errorHandler: ^(NSDictionary* errorDictionary) {
                                                     

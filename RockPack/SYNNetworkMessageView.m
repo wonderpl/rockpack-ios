@@ -6,13 +6,13 @@
 //  Copyright (c) Rockpack Ltd. All rights reserved.
 //
 
-#import "SYNNetworkErrorView.h"
+#import "SYNNetworkMessageView.h"
 #import "SYNDeviceManager.h"
 #import "UIFont+SYNFont.h"
 #import "SYNDeviceManager.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface SYNNetworkErrorView ()
+@interface SYNNetworkMessageView ()
 {
     CGFloat labelYOffset;
 }
@@ -23,7 +23,7 @@
 
 @end
 
-@implementation SYNNetworkErrorView
+@implementation SYNNetworkMessageView
 
 - (id)init
 {
@@ -75,7 +75,7 @@
 
 +(id)errorView
 {
-    SYNNetworkErrorView* errorView =[[self alloc] init];
+    SYNNetworkMessageView* errorView =[[self alloc] init];
     [errorView setIconImage:[UIImage imageNamed:@"IconNetwork"]];
     [errorView setText:NSLocalizedString(@"Network Error",nil)];
     return errorView;

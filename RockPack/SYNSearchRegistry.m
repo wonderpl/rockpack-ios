@@ -75,12 +75,14 @@
     
     
     
-    NSMutableDictionary* existingFriendsByUID = [NSMutableDictionary dictionaryWithCapacity:existingFriendsArray.count];
+    NSMutableDictionary* existingFriendsByEmail = [NSMutableDictionary dictionaryWithCapacity:existingFriendsArray.count];
     
     for (Friend* existingFriend in existingFriendsArray)
     {
+        if(!existingFriend.email)
+            continue;
         
-        existingFriendsByUID[existingFriend.email] = existingFriend;
+        existingFriendsByEmail[existingFriend.email] = existingFriend;
         
         existingFriend.markedForDeletionValue = YES;
         
@@ -106,7 +108,7 @@
         
         email = (NSString*)emailAddresses[0];
         
-        if(!(contactAsFriend = existingFriendsByUID[email]))
+        if(!(contactAsFriend = existingFriendsByEmail[email])) // will have email due to previous condition
             if(!(contactAsFriend = [Friend insertInManagedObjectContext: appDelegate.searchManagedObjectContext]))
                 continue; // if cache AND instatiation fails, bail
         
@@ -139,9 +141,9 @@
     
     // delete old friends cached
     Friend* deleteCandidate;
-    for (id key in existingFriendsByUID)
+    for (id key in existingFriendsByEmail)
     {
-        deleteCandidate = (Friend*)existingFriendsByUID[key];
+        deleteCandidate = (Friend*)existingFriendsByEmail[key];
         
         if(deleteCandidate && deleteCandidate.markedForDeletionValue)
             [deleteCandidate.managedObjectContext deleteObject:deleteCandidate];
@@ -221,10 +223,7 @@
                                usingManagedObjectContext: appDelegate.searchManagedObjectContext]))
                 continue;
         
-//        if(friend.email && existingFriendsByEmail[friend.email]) // the friend returned also exists on address book
-//        {
-//            ((Friend*)existingFriendsByEmail[friend.email]).markedForDeletionValue = YES;
-//        }
+
         
         
         // if an address book friend has been transfered to
