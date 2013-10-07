@@ -94,6 +94,9 @@
 "login_screen_form_field_password_error_empty" = "Please enter your password";
 "login_screen_saving_error" = "Oops! Please try again.";
 
+
+
+
 //Errors - Registration
 "register_screen_form_field_email_error_empty" = "Please enter a valid email address";
 "register_screen_form_field_username_error_empty" = "Please choose a username";
@@ -134,6 +137,7 @@
 
 "friends_follow" = "Follow your friends on Rockpack";
 "friends_invite" = "Invite your friends to Rockpack";
+"friends_name_not_found" = "This person is not a\nfacebook friend";
 
 // == One to One Sharing == //
 

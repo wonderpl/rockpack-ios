@@ -397,6 +397,8 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
         [self.currentSearchTerm deleteCharactersInRange:NSMakeRange(self.currentSearchTerm.length - 1, 1)];
     
     
+    
+    // this will ask .displayFriends which will filter the friends array accroding to the search term
     [self.friendsCollectionView reloadData];
     
     return YES;
@@ -405,6 +407,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
 -(NSArray*)displayFriends
 {
     
+    // first decide which tab we are on ...
     if(self.onRockpackButton.selected)
     {
         _displayFriends = [self rockpackFriends];
@@ -417,6 +420,7 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
         
     }
     
+    // ... then filter search according to term if present
     if(self.currentSearchTerm.length > 0)
     {
         NSPredicate* searchPredicate = [NSPredicate predicateWithBlock:^BOOL(Friend* friend, NSDictionary *bindings) {
@@ -430,15 +434,24 @@ static char* friend_association_key = "SYNFriendThumbnailCell to Friend";
                 result = result & friend.isOnRockpack;
             }
             
-            
             return result;
         }];
         
         _displayFriends = [_displayFriends filteredArrayUsingPredicate:searchPredicate];
     }
     
-    return _displayFriends;
+    if(_displayFriends.count == 0)
+    {
+        // show message
+        self.preLoginLabel.hidden = NO;
+        self.preLoginLabel.text = NSLocalizedString(@"friends_name_not_found", nil);;
+    }
+    else
+    {
+        self.preLoginLabel.hidden = YES;
+    }
     
+    return _displayFriends;
     
 }
 
