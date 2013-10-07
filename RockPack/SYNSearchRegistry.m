@@ -223,10 +223,7 @@
                                usingManagedObjectContext: appDelegate.searchManagedObjectContext]))
                 continue;
         
-//        if(friend.email && existingFriendsByEmail[friend.email]) // the friend returned also exists on address book
-//        {
-//            ((Friend*)existingFriendsByEmail[friend.email]).markedForDeletionValue = YES;
-//        }
+
         
         
         // if an address book friend has been transfered to

@@ -408,6 +408,7 @@
     NSManagedObjectContext *channelOwnerObjectMOC = channelOwner.managedObjectContext;
     
     MKNKUserErrorBlock errorBlock = ^(id error) {
+        
     };
     
     if ([channelOwner isMemberOfClass: [User class]]) // the user uses the oAuthEngine to avoid caching
@@ -429,8 +430,8 @@
              }
              
              [appDelegate.oAuthNetworkEngine userSubscriptionsForUser: ((User *) channelOwner)
-                                                         onCompletion: ^(id dictionary)
-              {
+                                                         onCompletion: ^(id dictionary) {
+                                                             
                   // Transform the object ID into the object again, as it it likely to have disappeared again
                   NSError *error2 = nil;
                   ChannelOwner * channelOwnerFromId2 = (ChannelOwner *)[channelOwnerObjectMOC existingObjectWithID: channelOwnerObjectId
