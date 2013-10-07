@@ -44,10 +44,6 @@
 }
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> cbb72ae... Refactored for readability
 #pragma mark - Import Context Management
 
 - (BOOL) saveImportContext
