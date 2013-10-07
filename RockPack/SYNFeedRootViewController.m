@@ -337,6 +337,7 @@ typedef void(^FeedDataErrorBlock)(void);
     [self.refreshButton startRefreshCycle];
     
     __weak SYNFeedRootViewController* wself = self;
+    
     FeedDataErrorBlock errorBlock = ^{
         
         [wself handleRefreshComplete];
@@ -373,30 +374,9 @@ typedef void(^FeedDataErrorBlock)(void);
                                            BOOL toAppend = (self.dataRequestRange.location > 0);
                                                     
                                            
-                                           NSDictionary *contentItem = responseDictionary[@"content"];
+                                           NSDictionary *contentItems = responseDictionary[@"content"];
                                            
-                                           if (!contentItem || ![contentItem isKindOfClass: [NSDictionary class]]) {
-                                               
-                                               errorBlock();
-                                               
-                                               return;
-                                               
-                                           }
-                                                        
-                                           
-                                           NSNumber* totalNumber = [contentItem[@"total"] isKindOfClass:[NSNumber class]] ? contentItem[@"total"] : @0 ;
-                                           wself.dataItemsAvailable = [totalNumber integerValue];
-                                           
-                                           // NSLog(@"%i from %i", ((NSArray*)contentItem[@"items"]).count, wself.dataItemsAvailable);
-                                           
-                                           
-                                           [wself removeEmptyGenreMessage];
-                                               
-                                           
-                                           if(![appDelegate.mainRegistry registerDataForSocialFeedFromItemsDictionary:contentItem
-                                                                                                          byAppending:toAppend])
-                                               
-                                           {
+                                           if (!contentItems || ![contentItems isKindOfClass: [NSDictionary class]]) {
                                                
                                                errorBlock();
                                                
@@ -404,28 +384,45 @@ typedef void(^FeedDataErrorBlock)(void);
                                                
                                            }
                                            
-                                           
-                                           [wself fetchAndDisplayFeedItems];
-                                           
-                                           
-                                           wself.loadingMoreContent = NO;
-                                                    
-                                           
-                                           [wself handleRefreshComplete];
-                                           
-                                           if(wself.dataItemsAvailable == 0) {
+                                           [appDelegate.mainRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
                                                
-                                               [wself displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil) andLoader:NO];
+                                               BOOL result = [appDelegate.mainRegistry registerDataForSocialFeedFromItemsDictionary: contentItems
+                                                                                                                        byAppending: toAppend];
                                                
+                                               return result;
                                                
-                                           }
-                                                    
+                                           } completionBlock:^(BOOL registryResultOk) {
+                                               
+                                               NSNumber* totalNumber = [contentItems[@"total"] isKindOfClass:[NSNumber class]] ? contentItems[@"total"] : @0 ;
+                                               wself.dataItemsAvailable = [totalNumber integerValue];
+                                               
+                                               if (!registryResultOk)
+                                               {
+                                                   DebugLog(@"Refresh subscription updates failed");
+                                                   errorBlock();
+                                               }
+                                               
+                                               [wself removeEmptyGenreMessage];
+                                               
+                                               [wself fetchAndDisplayFeedItems];
+                                               
+                                               wself.loadingMoreContent = NO;
+                                               
+                                               [wself handleRefreshComplete];
+                                               
+                                               if(wself.dataItemsAvailable == 0) {
+                                                   
+                                                   [wself displayEmptyGenreMessage:NSLocalizedString(@"feed_screen_empty_message", nil)
+                                                                         andLoader:NO];
+                                                   
+                                               }
+                                           }];
+                                           
+                                           
                                            
                                        } errorHandler: ^(NSDictionary* errorDictionary) {
-                                                    
                                            
                                            errorBlock();
-                                                    
                                            
                                        }];
 }

@@ -593,14 +593,19 @@
         AssertOrLog(@"Failed to initialize persistent store coordinator");
     }
     
-    // == Main Context
+    
+    // == 3 Contexts == //
+    
+    
+    // == Private Context == //
     self.privateManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSPrivateQueueConcurrencyType];
     self.privateManagedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator;
     
+    // == Main Context == //
     self.mainManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
     self.mainManagedObjectContext.parentContext = self.privateManagedObjectContext;
     
-    // == Search Context
+    // == Search Context == //
     self.searchManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
     NSPersistentStoreCoordinator *searchPersistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: managedObjectModel];
     NSPersistentStore *searchStore = [searchPersistentStoreCoordinator addPersistentStoreWithType: NSInMemoryStoreType
@@ -616,7 +621,7 @@
     
     self.searchManagedObjectContext.persistentStoreCoordinator = searchPersistentStoreCoordinator;
 
-    // == Channel Context
+    // == Channel Context == //
     self.channelsManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType: NSMainQueueConcurrencyType];
     NSPersistentStoreCoordinator *channelsPersistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: managedObjectModel];
     NSPersistentStore *channelsStore = [channelsPersistentStoreCoordinator addPersistentStoreWithType: NSInMemoryStoreType
@@ -678,8 +683,8 @@
         DebugLog(@"Error adding persistent store to coordinator %@\n%@", [error localizedDescription], [error userInfo]);
     }
     
-    _mainRegistry = [SYNMainRegistry registry];
-    _searchRegistry = [SYNSearchRegistry registry];
+    _mainRegistry = [SYNMainRegistry registryWithParentContext:self.mainManagedObjectContext];
+    _searchRegistry = [SYNSearchRegistry registryWithParentContext:self.searchManagedObjectContext];
 }
 
 

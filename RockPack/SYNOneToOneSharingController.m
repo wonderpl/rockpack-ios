@@ -220,6 +220,10 @@
         CGRect cbFrame = self.closeButton.frame;
         cbFrame.origin.x = 278.0f;
         self.closeButton.frame = cbFrame;
+        
+        UIEdgeInsets ei = self.searchResultsTableView.contentInset;
+        ei.bottom = 58.0f;
+        self.searchResultsTableView.contentInset = ei;
     }
     
     self.originalFrame = CGRectZero;

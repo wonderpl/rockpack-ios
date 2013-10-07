@@ -1052,7 +1052,7 @@
 
 
 - (MKNetworkOperation *) updateRecommendedChannelsScreenForUserId: (NSString *) userId
-                                                          rorRange: (NSRange) range
+                                                          forRange: (NSRange) range
                                                     ignoringCache: (BOOL) ignore
                                                      onCompletion: (MKNKJSONCompleteBlock) completeBlock
                                                           onError: (MKNKJSONErrorBlock) errorBlock

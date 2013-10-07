@@ -278,6 +278,7 @@
                   byAppending: (BOOL) append
 {
     void (^completeBlock) (NSDictionary *) = ^(NSDictionary *response) {
+        
         NSDictionary *channelsDictionary = response[@"channels"];
         
         if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
@@ -305,39 +306,48 @@
         
         self.dataItemsAvailable = [totalNumber integerValue];
         
+        [self.mainRegistry performInBackground:^BOOL(NSManagedObjectContext *backgroundContext) {
+            
+            BOOL registryResultOk = [appDelegate.mainRegistry registerChannelsFromDictionary: response
+                                                                                    forGenre: genre
+                                                                                 byAppending: append];
+            
+            return registryResultOk;
+            
+        } completionBlock:^(BOOL registryResultOk) {
+            
+            self.loadingMoreContent = NO;
+            
+            if (!registryResultOk)
+            {
+                DebugLog(@"Registration of Channel Failed for: %@", self.currentCategoryId);
+                return;
+            }
+            
+            [self displayChannelsForGenre: genre];
+            
+            if (self.emptyGenreMessageView)
+            {
+                [self.emptyGenreMessageView removeFromSuperview];
+                self.emptyGenreMessageView = nil;
+            }
+            
+            if (self.channels.count == 0)
+            {
+                [self displayEmptyGenreMessage: @"No Channels Found"];
+            }
+            else
+            {
+                // show on boarding when we have channels after a delay to allow them to display
+                [self performSelector: @selector(checkForOnBoarding)
+                           withObject: nil
+                           afterDelay: 0.5f];
+            }
+            
+        }]; // end of background registry operation
         
-        BOOL registryResultOk = [appDelegate.mainRegistry
-                                 registerChannelsFromDictionary: response
-                                 forGenre: genre
-                                 byAppending: append];
-        self.loadingMoreContent = NO;
         
-        if (!registryResultOk)
-        {
-            DebugLog(@"Registration of Channel Failed for: %@", self.currentCategoryId);
-            return;
-        }
-        
-        [self displayChannelsForGenre: genre];
-        
-        if (self.emptyGenreMessageView)
-        {
-            [self.emptyGenreMessageView removeFromSuperview];
-            self.emptyGenreMessageView = nil;
-        }
-        
-        if (self.channels.count == 0)
-        {
-            [self displayEmptyGenreMessage: @"No Channels Found"];
-        }
-        else
-        {
-            // show on boarding when we have channels after a delay to allow them to display
-            [self performSelector: @selector(checkForOnBoarding)
-                       withObject: nil
-                       afterDelay: 0.5f];
-        }
-    };
+    }; // end of completion block
 
     void (^errorBlock) (NSDictionary *) = ^(NSDictionary *errorInfo) {
         DebugLog(@"Could not load channels: %@", errorInfo);
@@ -346,20 +356,21 @@
     
     if (genre)
     {
-    self.runningNetworkOperation = [appDelegate.networkEngine
-                                    updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
-                                    forRange: self.dataRequestRange
-                                    ignoringCache: NO
-                                    onCompletion: completeBlock
-                                    onError: errorBlock];
+        self.runningNetworkOperation = [appDelegate.networkEngine
+                                        updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
+                                        forRange: self.dataRequestRange
+                                        ignoringCache: NO
+                                        onCompletion: completeBlock
+                                        onError: errorBlock];
     }
     else
     {
-        self.runningNetworkOperation = [appDelegate.oAuthNetworkEngine updateRecommendedChannelsScreenForUserId: appDelegate.currentOAuth2Credentials.userId
-                                                                                                       rorRange: self.dataRequestRange
-                                                                                                  ignoringCache: NO
-                                                                                                   onCompletion: completeBlock
-                                                                                                        onError: errorBlock];
+        self.runningNetworkOperation = [appDelegate.oAuthNetworkEngine
+                                        updateRecommendedChannelsScreenForUserId: appDelegate.currentOAuth2Credentials.userId
+                                        forRange: self.dataRequestRange
+                                        ignoringCache: NO
+                                        onCompletion: completeBlock
+                                        onError: errorBlock];
     }
 }
 
@@ -599,18 +610,6 @@ referenceSizeForFooterInSection: (NSInteger) section
 }
 
 
-//- (void) collectionView: (UICollectionView *) collectionView didSelectItemAtIndexPath: (NSIndexPath *) indexPath
-//{
-//    if (self.isAnimating) // prevent double clicking
-//    {
-//        return;
-//    }
-//    
-//    Channel *channel = (Channel *) self.channels[indexPath.row];
-//    
-//    [appDelegate.viewStackManager
-//     viewChannelDetails: channel];
-//}
 
 - (void) channelTapped: (UICollectionViewCell *) cell
 {
