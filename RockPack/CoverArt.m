@@ -35,6 +35,7 @@ static NSEntityDescription *coverArtEntity = nil;
     // Now we need to see if this object already exists, and if so return it and if not create it
     NSFetchRequest *coverArtFetchRequest = [[NSFetchRequest alloc] init];
     coverArtFetchRequest.entity = coverArtEntity;
+    coverArtFetchRequest.fetchBatchSize = 20;
     
     // Search on the unique Id
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];

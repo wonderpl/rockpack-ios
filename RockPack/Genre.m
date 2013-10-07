@@ -32,6 +32,7 @@ static NSEntityDescription *categoryEntity = nil;
     // Now we need to see if this object already exists, and if so return it and if not create it
     NSFetchRequest *categoryFetchRequest = [[NSFetchRequest alloc] init];
     [categoryFetchRequest setEntity: categoryEntity];
+    categoryFetchRequest.fetchBatchSize = 20;
     
     // Search on the unique Id
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueId == %@", uniqueId];
