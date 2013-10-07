@@ -70,10 +70,10 @@
 {
 #ifdef ENABLE_USER_RATINGS
     [Appirater setAppId: @"660697542"];
-    [Appirater setDaysUntilPrompt: 3];
-    [Appirater setUsesUntilPrompt: 3];
+    [Appirater setDaysUntilPrompt: 1];
+    [Appirater setUsesUntilPrompt: 2];
     [Appirater setSignificantEventsUntilPrompt: 1];
-    [Appirater setTimeBeforeReminding: 20];
+    [Appirater setTimeBeforeReminding: 10];
 //    [Appirater setDebug: YES];
 #endif
     

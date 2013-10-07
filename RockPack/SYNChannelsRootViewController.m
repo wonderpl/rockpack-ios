@@ -23,6 +23,7 @@
 #import "SYNIntegralCollectionViewFlowLayout.h"
 #import "SYNMainRegistry.h"
 #import "SYNNetworkEngine.h"
+#import "SYNOAuthNetworkEngine.h"
 #import "SubGenre.h"
 #import "UIFont+SYNFont.h"
 #import "SYNTrackableFrameView.h"
@@ -276,80 +277,90 @@
 - (void) loadChannelsForGenre: (Genre *) genre
                   byAppending: (BOOL) append
 {
+    void (^completeBlock) (NSDictionary *) = ^(NSDictionary *response) {
+        NSDictionary *channelsDictionary = response[@"channels"];
+        
+        if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
+        {
+            return;
+        }
+        
+        NSArray *itemArray = channelsDictionary[@"items"];
+        
+        if (![itemArray isKindOfClass: [NSArray class]])
+        {
+            return;
+        }
+        
+        dataRequestRange.length = itemArray.count;
+        
+        
+        
+        NSNumber *totalNumber = channelsDictionary[@"total"];
+        
+        if (![totalNumber isKindOfClass: [NSNumber class]])
+        {
+            return;
+        }
+        
+        self.dataItemsAvailable = [totalNumber integerValue];
+        
+        
+        BOOL registryResultOk = [appDelegate.mainRegistry
+                                 registerChannelsFromDictionary: response
+                                 forGenre: genre
+                                 byAppending: append];
+        self.loadingMoreContent = NO;
+        
+        if (!registryResultOk)
+        {
+            DebugLog(@"Registration of Channel Failed for: %@", self.currentCategoryId);
+            return;
+        }
+        
+        [self displayChannelsForGenre: genre];
+        
+        if (self.emptyGenreMessageView)
+        {
+            [self.emptyGenreMessageView removeFromSuperview];
+            self.emptyGenreMessageView = nil;
+        }
+        
+        if (self.channels.count == 0)
+        {
+            [self displayEmptyGenreMessage: @"No Channels Found"];
+        }
+        else
+        {
+            // show on boarding when we have channels after a delay to allow them to display
+            [self performSelector: @selector(checkForOnBoarding)
+                       withObject: nil
+                       afterDelay: 0.5f];
+        }
+    };
+
+    void (^errorBlock) (NSDictionary *) = ^(NSDictionary *errorInfo) {
+        DebugLog(@"Could not load channels: %@", errorInfo);
+        self.loadingMoreContent = NO;
+    };
     
-    // DebugLog(@"Next request: %i - %i", self.dataRequestRange.location, self.dataRequestRange.length + self.dataRequestRange.location - 1);
-    
+    if (genre)
+    {
     self.runningNetworkOperation = [appDelegate.networkEngine
                                     updateChannelsScreenForCategory: (genre ? genre.uniqueId : @"all")
                                     forRange: self.dataRequestRange
                                     ignoringCache: NO
-                                    onCompletion: ^(NSDictionary *response) {
-                                        NSDictionary *channelsDictionary = response[@"channels"];
-                                        
-                                        if (!channelsDictionary || ![channelsDictionary isKindOfClass: [NSDictionary class]])
-                                        {
-                                            return;
-                                        }
-                                        
-                                        NSArray *itemArray = channelsDictionary[@"items"];
-                                        
-                                        if (![itemArray isKindOfClass: [NSArray class]])
-                                        {
-                                            return;
-                                        }
-                                        
-                                        dataRequestRange.length = itemArray.count;
-                                        
-                                        
-                                        
-                                        NSNumber *totalNumber = channelsDictionary[@"total"];
-                                        
-                                        if (![totalNumber isKindOfClass: [NSNumber class]])
-                                        {
-                                            return;
-                                        }
-                                        
-                                        self.dataItemsAvailable = [totalNumber integerValue];
-                                        
-                                        
-                                        BOOL registryResultOk = [appDelegate.mainRegistry
-                                                                 registerChannelsFromDictionary: response
-                                                                 forGenre: genre
-                                                                 byAppending: append];
-                                        self.loadingMoreContent = NO;
-                                        
-                                        if (!registryResultOk)
-                                        {
-                                            DebugLog(@"Registration of Channel Failed for: %@", self.currentCategoryId);
-                                            return;
-                                        }
-                                        
-                                        [self displayChannelsForGenre: genre];
-                                        
-                                        if (self.emptyGenreMessageView)
-                                        {
-                                            [self.emptyGenreMessageView removeFromSuperview];
-                                            self.emptyGenreMessageView = nil;
-                                        }
-                                        
-                                        if (self.channels.count == 0)
-                                        {
-                                            [self displayEmptyGenreMessage: @"No Channels Found"];
-                                        }
-                                        else
-                                        {
-                                            // show on boarding when we have channels after a delay to allow them to display
-                                            [self performSelector: @selector(checkForOnBoarding)
-                                                       withObject: nil
-                                                       afterDelay: 0.5f];
-                                        }
-                                    }
-                                    
-                                    
-                                    onError: ^(NSDictionary *errorInfo) {
-                                        DebugLog(@"Could not load channels: %@", errorInfo);
-                                        self.loadingMoreContent = NO;
-                                    }];
+                                    onCompletion: completeBlock
+                                    onError: errorBlock];
+    }
+    else
+    {
+        self.runningNetworkOperation = [appDelegate.oAuthNetworkEngine updateRecommendedChannelsScreenForUserId: appDelegate.currentOAuth2Credentials.userId
+                                                                                                       rorRange: self.dataRequestRange
+                                                                                                  ignoringCache: NO
+                                                                                                   onCompletion: completeBlock
+                                                                                                        onError: errorBlock];
+    }
 }
 
 
@@ -793,7 +804,7 @@ referenceSizeForFooterInSection: (NSInteger) section
     
     self.categoryTableViewController = [[SYNChannelCategoryTableViewController alloc] init];
     CGRect newFrame = self.channelThumbnailCollectionView.frame;
-    newFrame.size.height += IS_IOS_7_OR_GREATER ? 20.0f : 0.0f;
+//    newFrame.size.height += IS_IOS_7_OR_GREATER ? 20.0f : 0.0f;
     newFrame.size.width = self.categoryTableViewController.view.frame.size.width;
     self.categoryTableViewController.view.frame = newFrame;
     [self.view addSubview: self.categoryTableViewController.view];
