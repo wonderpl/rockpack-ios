@@ -354,7 +354,7 @@
     
     NSFetchRequest *videoFetchRequest = [[NSFetchRequest alloc] init];
     
-    [videoFetchRequest setEntity: [NSEntityDescription entityForName: @"Video"
+    [videoFetchRequest setEntity: [NSEntityDescription entityForName: kVideo
                                               inManagedObjectContext: self.managedObjectContext]];
     
     NSArray *existingVideos = nil;

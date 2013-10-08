@@ -204,6 +204,7 @@
             return;
     }
     
+    
     // Is the Facebook session already open ?
     if ([FBSession.activeSession isOpen])
     {
@@ -214,6 +215,7 @@
             [FBSession.activeSession requestNewPublishPermissions: @[permissionString]
                                                   defaultAudience: FBSessionDefaultAudienceEveryone
                                                 completionHandler: ^(FBSession *session, NSError *error) {
+                                                    
                                                     // Permissission denied
                                                     if (error)
                                                     {
@@ -233,7 +235,6 @@
                                                         dispatch_async(dispatch_get_main_queue(), ^{
                                                             successBlock();
                                                         });
-                                                        
                                                         
                                                     }
                                                 }];

@@ -447,6 +447,7 @@
 
 - (void) tappedHeader: (UIButton *) header
 {
+    
     [CATransaction begin];
     
     BOOL needToOpen = !self.lastSelectedIndexpath || self.lastSelectedIndexpath.section != header.tag;
@@ -462,6 +463,7 @@
         else
         {            
             [CATransaction setCompletionBlock: ^{
+                
                 NSIndexPath *topElement = [NSIndexPath indexPathForRow: 0
                                                              inSection: header.tag];
                 

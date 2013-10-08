@@ -547,8 +547,8 @@
 {
     // Get share link
     
-    self.mutableShareDictionary = @{@"type" : objectType,
-                                    @"object_id" : objectId,
+    self.mutableShareDictionary = @{@"type" : objectType ? objectType : [NSNull null],
+                                    @"object_id" : objectId ? objectId : [NSNull null],
                                     @"text" : @"",
                                     @"text_email" : @"",
                                     @"text_twitter" : @"",

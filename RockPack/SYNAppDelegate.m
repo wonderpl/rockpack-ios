@@ -509,9 +509,12 @@
     
     [self checkForUpdatedPlayerCode];
     
+    
+    [[FBSession activeSession] handleDidBecomeActive];
+    
+    
+    
     // send tracking code
-    
-    
     
     NSString* message;
     

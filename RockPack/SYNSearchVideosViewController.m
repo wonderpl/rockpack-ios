@@ -482,7 +482,7 @@
 {
     [super didRotateFromInterfaceOrientation: fromInterfaceOrientation];
     
-    [self.videoThumbnailCollectionView performBatchUpdates:nil completion:nil];
+    
     [self reloadCollectionViews];
 }
 
@@ -493,6 +493,7 @@
     [super willRotateToInterfaceOrientation: toInterfaceOrientation
                                    duration: duration];
     
+    [self.videoThumbnailCollectionView performBatchUpdates:nil completion:nil];
 }
 
 

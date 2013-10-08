@@ -52,6 +52,9 @@
 {
     [super viewDidLoad];
     
+    self.autopostYesButton.enabled = YES;
+    self.autopostNoButton.enabled = YES;
+    
     self.autopostTitleLabel.font = [UIFont rockpackFontOfSize: self.autopostTitleLabel.font.pointSize];
     
     self.autopostNoButton.titleLabel.font = [UIFont boldRockpackFontOfSize: self.autopostNoButton.titleLabel.font.pointSize];
@@ -133,6 +136,10 @@
 
 - (void) switchAutopostViewToYes: (BOOL) value
 {
+    
+    self.autopostYesButton.enabled = YES;
+    self.autopostNoButton.enabled = YES;
+    
     self.autopostYesButton.selected = value;
     self.autopostNoButton.selected = !value;
 }
@@ -143,17 +150,21 @@
     if (sender.selected) // button is pressed twice
         return;
     
+    // dissable both for security
+    self.autopostYesButton.enabled = NO;
+    self.autopostNoButton.enabled = NO;
+    
     ExternalAccount *facebookAccount = appDelegate.currentUser.facebookAccount;
     __weak SYNExistingChannelsViewController *wself = self;
     __weak SYNAppDelegate *wAppDelegate = appDelegate;
     BOOL isYesButton = (sender == self.autopostYesButton);
     
     // steps
-    void (^ ErrorBlock)(id) = ^(id error) {
+    void (^ErrorBlock)(id) = ^(id error) {
         [wself switchAutopostViewToYes: !isYesButton];
     };
     
-    void (^ CompletionBlock)(id) = ^(id no_responce) {
+    void (^CompletionBlock)(id) = ^(id no_responce) {
         if (isYesButton)
         {
             [wAppDelegate.currentUser
