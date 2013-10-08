@@ -76,11 +76,6 @@
 //    [Appirater setDebug: YES];
 #endif
     
-    // Enable the Spark Inspector
-#if DEBUG
-    [SparkInspector enableObservation];
-#endif
-    
 #if USEUDID
     //    [TestFlight setDeviceIdentifier: [[UIDevice currentDevice] uniqueIdentifier]];
 #endif
@@ -790,31 +785,36 @@
 {
     if ([self.mainManagedObjectContext hasChanges])
     {
-        [self.mainManagedObjectContext performBlockAndWait: ^{
+        [self.mainManagedObjectContext performBlock: ^{
+            NSError *error = nil;
             
-             NSError *error = nil;
-             
-             if (![self.mainManagedObjectContext save: &error])
+            if (![self.mainManagedObjectContext save: &error])
+            {
                 AssertOrLog(@"Error saving Main moc: %@\n%@", [error localizedDescription], [error userInfo]);
-              
-         }];
-    }
-    
-    void (^ savePrivate) (void) = ^
-    {
-        NSError *error = nil;
-        
-        if (![self.privateManagedObjectContext save: &error])
-            AssertOrLog(@"Error saving Private moc: %@\n%@", [error localizedDescription], [error userInfo]);
-         
-    };
-    
-    if ([self.privateManagedObjectContext hasChanges])
-    {
-        if (wait)
-            [self.privateManagedObjectContext performBlockAndWait: savePrivate];
-        else
-            [self.privateManagedObjectContext performBlock: savePrivate];
+            }
+            
+            void (^ savePrivate) (void) = ^
+            {
+                NSError *error = nil;
+                
+                if (![self.privateManagedObjectContext save: &error])
+                {
+                    AssertOrLog(@"Error saving Private moc: %@\n%@", [error localizedDescription], [error userInfo]);
+                }
+            };
+            
+            if ([self.privateManagedObjectContext hasChanges])
+            {
+                if (wait)
+                {
+                    [self.privateManagedObjectContext performBlockAndWait: savePrivate];
+                }
+                else
+                {
+                    [self.privateManagedObjectContext performBlock: savePrivate];
+                }
+            }
+        }];
     }
 }
 
