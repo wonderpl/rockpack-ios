@@ -405,7 +405,7 @@
     NSArray *itemsToDelete;
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-
+    
     [fetchRequest setEntity: [NSEntityDescription entityForName: @"ChannelOwner"
                                          inManagedObjectContext: appDelegate.searchManagedObjectContext]];
     

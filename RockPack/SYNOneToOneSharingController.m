@@ -1136,6 +1136,7 @@
                                                        loadedFriend.lastShareDate = friend.lastShareDate;
                                                    }
                                                }
+
                                                    
                                                
                                                
@@ -1145,6 +1146,7 @@
                                                NSError* error;
                                                [friend.managedObjectContext save:&error];
                                                
+
                                                
                                                wself.friendToAddEmail = nil;
                                                
