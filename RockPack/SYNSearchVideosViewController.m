@@ -42,6 +42,14 @@
 // FIXME: NOT QUITE SURE WHY THESE ARE REQUIRED
 @synthesize dataRequestRange;
 
+
+- (void) dealloc
+{
+    self.videoThumbnailCollectionView.delegate = self;
+    self.videoThumbnailCollectionView.dataSource = self;
+}
+
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];
@@ -112,8 +120,7 @@
     self.videoThumbnailCollectionView.contentInset = UIEdgeInsetsZero;
     self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
-    [self.view
-     addSubview: self.videoThumbnailCollectionView];
+    [self.view addSubview: self.videoThumbnailCollectionView];
     
     
     self.videoThumbnailCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
