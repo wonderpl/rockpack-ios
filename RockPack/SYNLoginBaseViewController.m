@@ -457,10 +457,18 @@
         
         [self doFacebookLoginAnimation];
         
-        // after the log-in with FB through its SDK, log in with the server hitting "/ws/login/external/"
         
+        // We need to check if the expiration date is valid (if the user is using the native iOS Facebook settings, it will be invalid ([NSDate distantFuture])
+        NSDate *expDate = nil;
+        
+        if ([accessTokenData.expirationDate compare: [NSDate distantFuture]] != NSOrderedSame)
+        {
+            expDate = accessTokenData.expirationDate;
+        }
+        
+        // after the log-in with FB through its SDK, log in with the server hitting "/ws/login/external/"
         [_appDelegate.oAuthNetworkEngine doFacebookLoginWithAccessToken: accessTokenData.accessToken
-                                                                expires: accessTokenData.expirationDate
+                                                                expires: expDate
                                                             permissions: accessTokenData.permissions // @"read" at this time
                                                       completionHandler: ^(SYNOAuth2Credential* credential) {
                                                           
