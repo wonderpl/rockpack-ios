@@ -1697,15 +1697,15 @@ static UIWebView* vimeoideoWebViewInstance;
     {
         id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
         
-        [tracker sendEventWithCategory: @"goal"
-                            withAction: @"videoViewed"
-                             withLabel: self.previousSourceId
-                             withValue: @((int) (self.percentageViewed  * 100.0f))];
+        [tracker send: [[GAIDictionaryBuilder createEventWithCategory: @"goal"
+                                                               action: @"videoViewed"
+                                                                label: self.previousSourceId
+                                                                value: @((int) (self.percentageViewed  * 100.0f))] build]];
         
-        [tracker sendEventWithCategory: @"goal"
-                            withAction: @"videoViewedDuration"
-                             withLabel: self.previousSourceId
-                             withValue: @((int) (self.timeViewed))];
+        [tracker send: [[GAIDictionaryBuilder createEventWithCategory: @"goal"
+                                                               action: @"videoViewedDuration"
+                                                                label: self.previousSourceId
+                                                                value: @((int) (self.timeViewed))] build]];
     }
 }
 

@@ -549,10 +549,6 @@
     // Automatically send uncaught exceptions to Google Analytics.
     [GAI sharedInstance].trackUncaughtExceptions = YES;
     [GAI sharedInstance].dispatchInterval = 30;
-    [GAI sharedInstance].defaultTracker.sessionTimeout = 300; // was 30
-    
-    // Set debug to YES to enable  extra debugging information.
-    [GAI sharedInstance].debug = NO;
     
     // Create tracker instance.
     [[GAI sharedInstance] trackerWithTrackingId: kGoogleAnalyticsId];
@@ -1490,11 +1486,10 @@
         
         id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
         
-        [tracker sendEventWithCategory: @"goal"
-                            withAction: @"openDeepLink"
-                             withLabel: url.absoluteString
-                             withValue: nil];
-        
+        [tracker send: [[GAIDictionaryBuilder createEventWithCategory: @"goal"
+                                                               action: @"openDeepLink"
+                                                                label: url.absoluteString
+                                                                value: nil] build]];
         
         enteredAppThroughNotification = YES;
     }
@@ -1552,10 +1547,10 @@
         
         id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
         
-        [tracker sendEventWithCategory: @"goal"
-                            withAction: @"openDeepLink"
-                             withLabel: targetURLString
-                             withValue: nil];
+        [tracker send: [[GAIDictionaryBuilder createEventWithCategory: @"goal"
+                                                               action: @"openDeepLink"
+                                                                label: targetURLString
+                                                                value: nil] build]];
         
         return [FBSession.activeSession
                 handleOpenURL: url];

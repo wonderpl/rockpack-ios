@@ -451,8 +451,8 @@
             // Now set the age
             id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
             
-            [tracker setCustom: kGADimensionAge
-                     dimension: ageString];
+            [tracker set: [GAIFields customDimensionForIndex: kGADimensionAge]
+                   value: ageString];
         }
         
         [self doFacebookLoginAnimation];
@@ -955,11 +955,11 @@
     self.currentOnBoardingPage = (NSInteger)floorf(contentOffsetX / self.onBoardingController.scrollView.frame.size.width);
     
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-    
-    [tracker sendEventWithCategory: @"uiAction"
-                        withAction: @"cardSlide"
-                         withLabel: [NSString stringWithFormat:@"%i", (_currentOnBoardingPage + 1)]
-                         withValue: nil];
+
+    [tracker send: [[GAIDictionaryBuilder createEventWithCategory: @"uiAction"
+                                                           action: @"cardSlide"
+                                                            label: [NSString stringWithFormat:@"%i", (_currentOnBoardingPage + 1)]
+                                                            value: nil] build]];
 }
 
 

@@ -305,7 +305,12 @@ typedef void(^FeedDataErrorBlock)(void);
 - (void) updateAnalytics
 {
     // Google analytics support
-    [GAI.sharedInstance.defaultTracker sendView: @"Feed"];
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    
+    [tracker set: kGAIScreenName
+           value: @"Feed"];
+    
+    [tracker send: [[GAIDictionaryBuilder createAppView] build]];
 }
 
 
@@ -1222,10 +1227,10 @@ typedef void(^FeedDataErrorBlock)(void);
         
         id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
         
-        [tracker sendEventWithCategory: @"uiAction"
-                            withAction: @"videoPlusButtonClick"
-                             withLabel: nil
-                             withValue: nil];
+        [tracker send: [[GAIDictionaryBuilder createEventWithCategory: @"uiAction"
+                                                               action: @"videoPlusButtonClick"
+                                                                label: nil
+                                                                value: nil] build]];
         
         [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
                                                          action: @"select"
@@ -1288,10 +1293,10 @@ typedef void(^FeedDataErrorBlock)(void);
     
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
-    [tracker sendEventWithCategory: @"uiAction"
-                        withAction: @"videoStarButtonClick"
-                         withLabel: @"feed"
-                         withValue: nil];
+    [tracker send: [[GAIDictionaryBuilder createEventWithCategory: @"uiAction"
+                                                           action: @"videoStarButtonClick"
+                                                            label: @"feed"
+                                                            value: nil] build]];
     
     BOOL didStar = (button.selected == NO);
     

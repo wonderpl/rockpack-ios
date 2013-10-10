@@ -118,10 +118,10 @@
              {
                  id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
                  
-                 [tracker sendEventWithCategory: @"goal"
-                                     withAction: @"userRegistration"
-                                      withLabel: origin
-                                      withValue: nil];
+                 [tracker send: [[GAIDictionaryBuilder createEventWithCategory: @"goal"
+                                                                        action: @"userRegistration"
+                                                                         label: origin
+                                                                         value: nil] build]];
              }
              
              SYNOAuth2Credential* newOAuth2Credentials = [SYNOAuth2Credential credentialWithAccessToken: responseDictionary[@"access_token"]
