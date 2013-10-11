@@ -70,11 +70,10 @@
 	}
 	else
     {   
-        [request setUsername: kOAuth2ClientId
-                    password: kOAuth2ClientSecret];
-        
         [request setAuthorizationHeaderValue: self.oAuth2Credential.accessToken
                                  forAuthType: @"Bearer"];
+        
+        request.shouldCacheResponseEvenIfProtocolIsHTTPS = TRUE;
         
 		[self enqueueOperation: request];
 	}
@@ -554,22 +553,16 @@
             errorBlock(@{@"saving_error" : @"Main Registry Could Not Save the User"});
             return;
         }
-        
-        
+
         // Get subscriptions
         
         NSString* userId = responseDictionary[@"id"];
-        
-        
-        
-        
+
         [self channelSubscriptionsForUserId:userId
                                  credential:credentials
                                       start:0
                                        size:50
                           completionHandler:^(id subscriptionsDictionary) {
-                              
-                              
                               NSString* possibleError = subscriptionsDictionary[@"error"];
                               
                               if (possibleError)
@@ -621,9 +614,6 @@
          NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code] , @"nserror" : error };
          errorBlock(customErrorDictionary);
      }];
-    
-    [networkOperation setUsername: kOAuth2ClientId
-                         password: kOAuth2ClientSecret];
     
     [networkOperation setAuthorizationHeaderValue: credentials.accessToken
                                       forAuthType: @"Bearer"];
@@ -1065,7 +1055,7 @@
                                                                                                      httpMethod: @"GET"
                                                                                                             ssl: TRUE];
     
-    networkOperation.ignoreCachedResponse = ignore;
+//    networkOperation.ignoreCachedResponse = ignore;
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
         completeBlock(dictionary);
@@ -1325,9 +1315,6 @@
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
                                 errorHandler: errorBlock];
-    
-    [networkOperation setUsername: kOAuth2ClientId
-                         password: kOAuth2ClientSecret];
     
     [networkOperation setAuthorizationHeaderValue: credential.accessToken
                                       forAuthType: @"Bearer"];
