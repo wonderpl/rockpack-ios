@@ -324,11 +324,10 @@ typedef void(^FeedDataErrorBlock)(void);
 }
 
 
--(void) loadAndUpdateOriginalFeedData
+- (void) loadAndUpdateOriginalFeedData
 {
     [self resetDataRequestRange];
     [self loadAndUpdateFeedData];
-    
 }
 
 
