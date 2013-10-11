@@ -517,10 +517,10 @@
 }
 
 
-- (CGSize) footerSize
-{
-    return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
-}
+//- (CGSize) footerSize
+//{
+//    return [SYNDeviceManager.sharedInstance isIPhone] ? CGSizeMake(320.0f, 64.0f) : CGSizeMake(1024.0, 64.0);
+//}
 
 
 - (SYNAppDelegate *) appDelegate
@@ -646,6 +646,32 @@
 -(EntityType)associatedEntity
 {
     return EntityTypeVideoInstance;
+}
+
+- (UICollectionReusableView *) collectionView: (UICollectionView *) collectionView
+            viewForSupplementaryElementOfKind: (NSString *) kind
+                                  atIndexPath: (NSIndexPath *) indexPath
+{
+    UICollectionReusableView *supplementaryView;
+    
+    if (collectionView == self.videoThumbnailCollectionView)
+    {
+        if (kind == UICollectionElementKindSectionFooter)
+        {
+            self.footerView = [self.videoThumbnailCollectionView dequeueReusableSupplementaryViewOfKind: kind
+                                                                                      withReuseIdentifier: @"SYNChannelFooterMoreView"
+                                                                                             forIndexPath: indexPath];
+            
+            supplementaryView = self.footerView;
+            
+            if (self.fetchedResultsController.fetchedObjects.count > 0)
+            {
+                self.footerView.showsLoading = self.isLoadingMoreContent;
+            }
+        }
+    }
+    
+    return supplementaryView;
 }
 
 
