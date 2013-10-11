@@ -517,7 +517,6 @@ typedef void(^FeedDataErrorBlock)(void);
         return;
     }
     
-    
     NSMutableDictionary* buckets = [NSMutableDictionary dictionary];
     NSDate* dateNoTime;
     
