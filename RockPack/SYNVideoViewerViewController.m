@@ -328,9 +328,9 @@
                                     selectedIndex: self.currentSelectedIndex
                                          autoPlay: TRUE];
     
-    // Get share link pre-emptively
-    [self requestShareLinkWithObjectType: @"video_instance"
-                                objectId: [(VideoInstance *)self.videoInstanceArray[self.currentSelectedIndex] uniqueId]];
+//    // Get share link pre-emptively
+//    [self requestShareLinkWithObjectType: @"video_instance"
+//                                objectId: [(VideoInstance *)self.videoInstanceArray[self.currentSelectedIndex] uniqueId]];
     
     
     // likes count
@@ -1140,9 +1140,11 @@
 
 - (IBAction) userTouchedVideoShareButton: (UIButton *) videoShareButton
 {
-    VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
+    // Get share link pre-emptively
+    [self requestShareLinkWithObjectType: @"video_instance"
+                                objectId: [(VideoInstance *)self.videoInstanceArray[self.currentSelectedIndex] uniqueId]];
     
-    //videoShareButton.enabled = NO;
+    VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
     [self shareVideoInstance: videoInstance];
 }
