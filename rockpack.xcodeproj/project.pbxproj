@@ -456,8 +456,6 @@
 		01F94F2B1761EE56006C024D /* ButtonCreateDisabled@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F94F251761EE56006C024D /* ButtonCreateDisabled@2x~iphone.png */; };
 		01F94F2C1761EE56006C024D /* ButtonCreateDisabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F94F261761EE56006C024D /* ButtonCreateDisabled@2x.png */; };
 		01F94F2D1761EE56006C024D /* ButtonCreateDisabled~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F94F271761EE56006C024D /* ButtonCreateDisabled~iphone.png */; };
-		01F94F2E1761EE56006C024D /* ButtonYouTubeDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F94F281761EE56006C024D /* ButtonYouTubeDefault.png */; };
-		01F94F2F1761EE56006C024D /* ButtonYouTubeDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01F94F291761EE56006C024D /* ButtonYouTubeDefault@2x.png */; };
 		1F003B42174A782100BBAE2F /* ButtonSettingsSave@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F003B3E174A782100BBAE2F /* ButtonSettingsSave@2x~iphone.png */; };
 		1F003B43174A782100BBAE2F /* ButtonSettingsSave~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F003B3F174A782100BBAE2F /* ButtonSettingsSave~iphone.png */; };
 		1F003B44174A782100BBAE2F /* ButtonSettingsSaveHighlighted@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F003B40174A782100BBAE2F /* ButtonSettingsSaveHighlighted@2x~iphone.png */; };
@@ -1999,8 +1997,6 @@
 		01F94F251761EE56006C024D /* ButtonCreateDisabled@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCreateDisabled@2x~iphone.png"; path = "Assets/Images/ButtonCreateDisabled@2x~iphone.png"; sourceTree = "<group>"; };
 		01F94F261761EE56006C024D /* ButtonCreateDisabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCreateDisabled@2x.png"; path = "Assets/Images/ButtonCreateDisabled@2x.png"; sourceTree = "<group>"; };
 		01F94F271761EE56006C024D /* ButtonCreateDisabled~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonCreateDisabled~iphone.png"; path = "Assets/Images/ButtonCreateDisabled~iphone.png"; sourceTree = "<group>"; };
-		01F94F281761EE56006C024D /* ButtonYouTubeDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ButtonYouTubeDefault.png; path = Assets/Images/ButtonYouTubeDefault.png; sourceTree = "<group>"; };
-		01F94F291761EE56006C024D /* ButtonYouTubeDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ButtonYouTubeDefault@2x.png"; path = "Assets/Images/ButtonYouTubeDefault@2x.png"; sourceTree = "<group>"; };
 		1F003B3E174A782100BBAE2F /* ButtonSettingsSave@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonSettingsSave@2x~iphone.png"; sourceTree = "<group>"; };
 		1F003B3F174A782100BBAE2F /* ButtonSettingsSave~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonSettingsSave~iphone.png"; sourceTree = "<group>"; };
 		1F003B40174A782100BBAE2F /* ButtonSettingsSaveHighlighted@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonSettingsSaveHighlighted@2x~iphone.png"; sourceTree = "<group>"; };
@@ -4293,8 +4289,6 @@
 				01F94F251761EE56006C024D /* ButtonCreateDisabled@2x~iphone.png */,
 				01F94F261761EE56006C024D /* ButtonCreateDisabled@2x.png */,
 				01F94F271761EE56006C024D /* ButtonCreateDisabled~iphone.png */,
-				01F94F281761EE56006C024D /* ButtonYouTubeDefault.png */,
-				01F94F291761EE56006C024D /* ButtonYouTubeDefault@2x.png */,
 				1F22C1861744ED0F0065D4BF /* ButtonSave.png */,
 				1F22C1871744ED0F0065D4BF /* ButtonSave@2x.png */,
 				1F22C1881744ED0F0065D4BF /* ButtonSaveHighlighted.png */,
@@ -7003,8 +6997,6 @@
 				01F94F2B1761EE56006C024D /* ButtonCreateDisabled@2x~iphone.png in Resources */,
 				01F94F2C1761EE56006C024D /* ButtonCreateDisabled@2x.png in Resources */,
 				01F94F2D1761EE56006C024D /* ButtonCreateDisabled~iphone.png in Resources */,
-				01F94F2E1761EE56006C024D /* ButtonYouTubeDefault.png in Resources */,
-				01F94F2F1761EE56006C024D /* ButtonYouTubeDefault@2x.png in Resources */,
 				1FE1C6601761FFFF00EDFC0E /* IconRockpackAbout.png in Resources */,
 				1FE1C6611761FFFF00EDFC0E /* IconRockpackAbout@2x.png in Resources */,
 				1FE1C66617621F7400EDFC0E /* ButtonPrivacy.png in Resources */,
