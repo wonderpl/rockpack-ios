@@ -194,6 +194,7 @@
     else
     {
         displayEmailCell = YES;
+        
         if(!canReadAddressBook)
         {
             self.searchTextField.placeholder = @"Type an email address";
@@ -206,6 +207,20 @@
     
     // always present the buttons at the bottom
     [self presentActivities];
+    
+    // If we don't have the share link yet, disable the share activity buttons until we receive a share link obtained notification
+    if (self.mutableShareDictionary[@"url"] == [NSNull null])
+    {
+        // Disable the buttons if there is no share link
+        [self controlsVisibleInView: self.activitiesContainerView
+                            visible: FALSE];
+        
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(reEnableShareButtons)
+                                                     name: kShareLinkForObjectObtained
+                                                   object: nil];
+        return;
+    }
 
     // Google analytics support
     id tracker = [[GAI sharedInstance] defaultTracker];
@@ -222,6 +237,35 @@
     [super viewWillDisappear: animated];
     
     self.originalFrame = self.view.frame;
+}
+
+
+// Recursively, enable or disable controls contained in a view
+- (void) controlsVisibleInView: (UIView *) view
+                       visible: (BOOL) visible
+{
+    // I this is a control, then consider this a leaf
+    if ([view isKindOfClass: [UIControl class]])
+    {
+        ((UIControl *) view).enabled = visible;
+    }
+    else
+    {
+        // Otherwise, iterate its subviews (if any)
+        for (UIView *subView in view.subviews)
+        {
+            [self controlsVisibleInView: subView
+                                visible: visible];
+        }
+    }
+}
+
+
+- (void) reEnableShareButtons
+{
+    // Enable the buttons as we have now found a share link
+    [self controlsVisibleInView: self.activitiesContainerView
+                        visible: TRUE];
 }
 
 

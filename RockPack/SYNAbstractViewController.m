@@ -866,14 +866,7 @@
         analyticsLabel = @"video";
 
         VideoInstance *videoInstance = [self videoInstanceForIndexPath: self.arcMenuIndexPath];
-        
-        // Get resource URL in parallel
-        if (recognizer.state == UIGestureRecognizerStateBegan)
-        {
-            [self requestShareLinkWithObjectType: @"video_instance"
-                                        objectId: videoInstance.uniqueId];
-        }
-        
+
         // A bit of a hack, but we need to work out whether the user has starred this videoInstance (we can't completely trust starredByUserValue)
         BOOL starredByUser = videoInstance.starredByUserValue;
         
@@ -1032,6 +1025,11 @@
     }
     else if ([menuName isEqualToString: kActionShareVideo])
     {
+        VideoInstance *videoInstance = [self videoInstanceForIndexPath: self.arcMenuIndexPath];
+        
+        [self requestShareLinkWithObjectType: @"video_instance"
+                                    objectId: videoInstance.uniqueId];
+        
         [self shareVideoAtIndexPath: cellIndexPath];
     }
     else if ([menuName isEqualToString: kActionShareChannel])

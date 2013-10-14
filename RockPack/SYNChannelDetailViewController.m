@@ -137,11 +137,6 @@
         // mode must be set first because setChannel relies on it...
         self.mode = mode;
         self.channel = channel;
-        
-        
-        // Get share link pre-emptively
-        [self requestShareLinkWithObjectType: @"channel"
-                                    objectId: channel.uniqueId];
     }
     
     return self;
@@ -1395,6 +1390,9 @@
 
 - (IBAction) shareChannelButtonTapped: (UIButton *) shareButton
 {
+    // Get share link pre-emptively
+    [self requestShareLinkWithObjectType: @"channel"
+                                objectId: self.channel.uniqueId];
     
     [self shareChannel: self.channel
                isOwner: ([self.channel.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId]) ? @(TRUE): @(FALSE)
