@@ -79,9 +79,9 @@
             backgroundPanel = [[UIView alloc] initWithFrame: CGRectMake(0, -10, 320, 75)];
             backgroundPanel.backgroundColor = [UIColor colorWithRed:(248.0/255.0) green:(248.0/255.0) blue:(248.0/255.0) alpha:(1.0)];
             
-            self.backgroundSearchPanel = [[UIImageView alloc] initWithFrame: CGRectMake(0, 10, 320, 65)];
-            self.backgroundSearchPanel.image = [UIImage imageNamed: @"PanelSearch"];
-            [backgroundPanel addSubview: self.backgroundSearchPanel];
+//            self.backgroundSearchPanel = [[UIImageView alloc] initWithFrame: CGRectMake(0, 10, 320, 65)];
+//            self.backgroundSearchPanel.image = [UIImage imageNamed: @"PanelSearch"];
+//            [backgroundPanel addSubview: self.backgroundSearchPanel];
             
             self.searchFieldFrameImageView = [[UIImageView alloc] initWithFrame: CGRectMake(10, 20, 300, 45)];
             
