@@ -56,14 +56,14 @@
 
 // Feed
 
-typedef enum _FeedItemType {
+typedef enum : NSInteger {
     
     FeedItemTypeLeaf = 0,
     FeedItemTypeAggregate = 1
     
 } FeedItemType;
 
-typedef enum _FeedItemResourceType {
+typedef enum : NSInteger {
     
     FeedItemResourceTypeVideo = 0,
     FeedItemResourceTypeChannel = 1
@@ -252,7 +252,7 @@ typedef enum _FeedItemResourceType {
 #define FULL_SCREEN_THUMBNAILS__
 
 
-typedef enum _Gender {
+typedef enum : NSInteger {
     
     GenderMale = 0,
     GenderFemale = 1,
@@ -260,7 +260,7 @@ typedef enum _Gender {
     
 } Gender;
 
-typedef enum _NavigationButtonsAppearance {
+typedef enum : NSInteger {
     
     NavigationButtonsAppearanceBlack = 0,
     NavigationButtonsAppearanceWhite = 1,
@@ -410,7 +410,7 @@ typedef enum : NSInteger {
 #define kAPNS   @"apns"
 #define kAddressBook @"AddressBook"
 
-typedef enum {
+typedef enum : NSInteger {
     LoginOriginRockpack = 0,
     LoginOriginFacebook = 1
     
@@ -418,7 +418,7 @@ typedef enum {
 
 #define kLoginCompleted @"kLoginCompleted"
 
-typedef enum {
+typedef enum : NSInteger {
     EntityTypeAny = 0,
     EntityTypeChannel,
     EntityTypeVideo,
@@ -428,13 +428,13 @@ typedef enum {
     
 } EntityType;
 
-typedef enum {
+typedef enum : NSInteger {
     ScrollingDirectionNone = 0,
     ScrollingDirectionLeft,
     ScrollingDirectionRight,
 } ScrollingDirection;
 
-typedef enum {
+typedef enum : NSInteger {
     PointingDirectionNone = 0,
     PointingDirectionUp,
     PointingDirectionDown,
