@@ -329,6 +329,19 @@
 
 #pragma mark - Adding Video Instances
 
+- (void) addVideoInstanceFromDictionary: (NSDictionary *) videosInstanceDictionary
+{
+    // Wrap the dictionary to resemble the full dictionary
+    
+    NSArray *videoArray = @[videosInstanceDictionary];
+    
+    NSDictionary *items = @{@"items" : videoArray};
+    
+    NSDictionary *videosInstancesDictionary = @{@"videos" : items};
+                            
+    [self addVideoInstancesFromDictionary: videosInstancesDictionary];
+}
+
 - (void) addVideoInstancesFromDictionary: (NSDictionary *) videosInstancesDictionary
 {
     BOOL hasVideoInstances = YES;
@@ -394,8 +407,7 @@
         
         videoInstance.viewId = self.viewId;
         
-        [self.videoInstancesSet
-         addObject: videoInstance];
+        [self.videoInstancesSet addObject: videoInstance];
     }
 }
 
