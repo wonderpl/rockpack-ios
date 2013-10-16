@@ -333,7 +333,11 @@
 {
     // Wrap the dictionary to resemble the full dictionary
     
-    NSArray *videoArray = @[videosInstanceDictionary];
+    NSMutableDictionary *d = videosInstanceDictionary.mutableCopy;
+    
+    d[@"position"] = @99999;
+    
+    NSArray *videoArray = @[d.copy];
     
     NSDictionary *items = @{@"items" : videoArray};
     

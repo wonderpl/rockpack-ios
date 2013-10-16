@@ -418,10 +418,10 @@
                           action: @selector(userTouchedCameraButton:)
                 forControlEvents: UIControlEventTouchUpInside];
     
-    if (self.autoplayVideoId)
-    {
-        [self autoplayVideoIfAvailable];
-    }
+//    if (self.autoplayVideoId)
+//    {
+//        [self autoplayVideoIfAvailable];
+//    }
     
     self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
     
@@ -1243,8 +1243,11 @@
 {
     __block NSArray *videoSubset = [[self.channel.videoInstances array] filteredArrayUsingPredicate: [NSPredicate predicateWithFormat: @"uniqueId == %@", self.autoplayVideoId]];
     
+    DebugLog(@"___autoplayVideoIfAvailable - Start");
+    
     if ([videoSubset count] == 1)
     {
+        DebugLog(@"___autoplayVideoIfAvailable - Found video, showing viewer");
         [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
                                       andSelectedIndex: [self.channel.videoInstances indexOfObject: videoSubset[0]]
                                                 center: self.view.center];
@@ -1253,31 +1256,40 @@
     else
     {
         __weak typeof(self) weakSelf = self;
-        
+
         MKNKUserSuccessBlock successBlock = ^(NSDictionary *dictionary) {
+            DebugLog(@"___autoplayVideoIfAvailable - Network request completed, adding video to channel");
             [weakSelf.channel addVideoInstanceFromDictionary: dictionary];
             
             NSError *error;
             [weakSelf.channel.managedObjectContext save: &error];
-//            
-//            videoSubset = [[self.channel.videoInstances array] filteredArrayUsingPredicate: [NSPredicate predicateWithFormat: @"uniqueId == %@", self.autoplayVideoId]];
-//            
-//            if ([videoSubset count] >= 1)
-//            {
-//                [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
-//                                              andSelectedIndex: [self.channel.videoInstances indexOfObject: videoSubset[0]]
-//                                                        center: self.view.center];
-//                self.autoplayVideoId = nil;
-//            }
+            
+            videoSubset = [[self.channel.videoInstances array] filteredArrayUsingPredicate: [NSPredicate predicateWithFormat: @"uniqueId == %@", self.autoplayVideoId]];
+            
+            if ([videoSubset count] >= 1)
+            {
+                DebugLog(@"___autoplayVideoIfAvailable - Network request completed, showing viewer");
+                [self displayVideoViewerWithVideoInstanceArray: self.channel.videoInstances.array
+                                              andSelectedIndex: [self.channel.videoInstances indexOfObject: videoSubset[0]]
+                                                        center: self.view.center];
+                self.autoplayVideoId = nil;
+            }
+            else
+            {
+                DebugLog(@"___autoplayVideoIfAvailable - Network request failed");
+            }
         };
         
         // define success block //
         MKNKUserErrorBlock errorBlock = ^(NSDictionary *errorDictionary) {
-            DebugLog(@"VideoInstance update failed");
+            DebugLog(@"___VideoInstance update failed");
         };
+        
+        DebugLog(@"___autoplayVideoIfAvailable - Didn't find video, firing off network request");
         
         if ([self.channel.resourceURL hasPrefix: @"https"])                          // https does not cache so it is fresh
         {
+            DebugLog(@"___autoplayVideoIfAvailable - Network request (OAuth)");
             [appDelegate.oAuthNetworkEngine videoForChannelForUserId: appDelegate.currentUser.uniqueId
                                                            channelId: self.channel.uniqueId
                                                           instanceId: self.autoplayVideoId
@@ -1286,6 +1298,7 @@
         }
         else
         {
+            DebugLog(@"___autoplayVideoIfAvailable - Network request (Standard)");
             [appDelegate.networkEngine videoForChannelForUserId: appDelegate.currentUser.uniqueId
                                                       channelId: self.channel.uniqueId
                                                      instanceId: self.autoplayVideoId
