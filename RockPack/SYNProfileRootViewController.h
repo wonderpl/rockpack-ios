@@ -13,6 +13,11 @@
 
 @property (nonatomic, strong) ChannelOwner* user;
 @property (nonatomic, assign) BOOL hideUserProfile;
+
+
+//New properties for user profile
+@property (nonatomic, weak) ChannelOwner* channelOwner;
+
 - (void) deleteChannel;
 
 @end
