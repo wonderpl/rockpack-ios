@@ -111,7 +111,7 @@ SYNImagePickerControllerDelegate>
 
 - (void) dealloc
 {
-    self.user = nil;
+    self.channelOwner = nil;
     
     // Defensive programming
     self.channelThumbnailCollectionView.delegate = nil;
@@ -135,8 +135,8 @@ SYNImagePickerControllerDelegate>
                                                  name: kUserDataChanged
                                                object: nil];
     
-    self.userNameLabel.text = self.user.username;
-    self.fullNameLabel.text = self.user.displayName;
+    self.userNameLabel.text = self.channelOwner.username;
+    self.fullNameLabel.text = self.channelOwner.displayName;
     
     UIImage* placeholderImage = [UIImage imageNamed: @"PlaceholderAvatarProfile"];
     
@@ -272,12 +272,12 @@ SYNImagePickerControllerDelegate>
     SYNYouHeaderView *tmpHeaderSubscriptionsView = [SYNYouHeaderView headerViewForWidth: 384];
     
     self.headerChannelsView = tmpHeaderChannelsView;
-    [self.headerChannelsView setTitle: [self getHeaderTitleForChannels] andNumber: self.user.channels.count];
+    [self.headerChannelsView setTitle: [self getHeaderTitleForChannels] andNumber: self.channelOwner.channels.count];
     
     [self.view addSubview:tmpHeaderChannelsView];
     
     self.headerSubscriptionsView = tmpHeaderSubscriptionsView;
-    [self.headerSubscriptionsView setTitle: [self getHeaderTitleForChannels] andNumber: self.user.subscriptions.count];
+    [self.headerSubscriptionsView setTitle: [self getHeaderTitleForChannels] andNumber: self.channelOwner.subscriptions.count];
     
     [self.view addSubview:tmpHeaderSubscriptionsView];
     
@@ -316,7 +316,7 @@ SYNImagePickerControllerDelegate>
     [super viewWillAppear: animated];
     
     
-    if (self.user == appDelegate.currentUser)
+    if (self.channelOwner == appDelegate.currentUser)
     {
         // Don't track the very first user view
         if (self.trackView == false)
@@ -363,7 +363,7 @@ SYNImagePickerControllerDelegate>
     self.deletionModeActive = NO;
     
     self.subscriptionsViewController.collectionView.delegate = self;
-    self.subscriptionsViewController.user = self.user;
+    self.subscriptionsViewController.user = self.channelOwner;
     
     [self updateLayoutForOrientation: [SYNDeviceManager.sharedInstance orientation]];
     
@@ -445,7 +445,7 @@ SYNImagePickerControllerDelegate>
     
     [[NSNotificationCenter defaultCenter] postNotificationName: kChannelOwnerUpdateRequest
                                                         object: self
-                                                      userInfo: @{kChannelOwner: self.user}];
+                                                      userInfo: @{kChannelOwner: self.channelOwner}];
 }
 
 
@@ -463,7 +463,7 @@ SYNImagePickerControllerDelegate>
     id tracker = [[GAI sharedInstance] defaultTracker];
     
     // Google analytics support
-    if (self.user == appDelegate.currentUser)
+    if (self.channelOwner == appDelegate.currentUser)
     {
         [tracker set: kGAIScreenName
                value: @"Own Profile"];
@@ -487,7 +487,7 @@ SYNImagePickerControllerDelegate>
     
     [updatedObjects enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop)
      {
-         if (obj == self.user)
+         if (obj == self.channelOwner)
          {
              [self.userProfileController setChannelOwner: (ChannelOwner *) obj];
              
@@ -673,8 +673,8 @@ SYNImagePickerControllerDelegate>
 
 - (void) reloadCollectionViews
 {
-    [self.headerChannelsView setTitle: [self getHeaderTitleForChannels] andNumber: self.user.channels.count];
-    [self.headerSubscriptionsView setTitle: [self getHeaderTitleForChannels] andNumber: self.user.subscriptions.count];
+    [self.headerChannelsView setTitle: [self getHeaderTitleForChannels] andNumber: self.channelOwner.channels.count];
+    [self.headerSubscriptionsView setTitle: [self getHeaderTitleForChannels] andNumber: self.channelOwner.subscriptions.count];
     
     [self.subscriptionThumbnailCollectionView reloadData];
     [self.channelThumbnailCollectionView reloadData];
@@ -690,7 +690,7 @@ SYNImagePickerControllerDelegate>
 {
     if (self.isIPhone)
     {
-        if (self.user == appDelegate.currentUser)
+        if (self.channelOwner == appDelegate.currentUser)
         {
             return NSLocalizedString(@"profile_screen_section_owner_created_title", nil);
         }
@@ -701,7 +701,7 @@ SYNImagePickerControllerDelegate>
     }
     else
     {
-        if (self.user == appDelegate.currentUser)
+        if (self.channelOwner == appDelegate.currentUser)
         {
             return NSLocalizedString(@"profile_screen_section_owner_created_title", nil);
         }
@@ -719,10 +719,10 @@ SYNImagePickerControllerDelegate>
 {
     if ([view isEqual:self.subscriptionThumbnailCollectionView]) {
         
-        return self.user.subscriptions.count;
+        return self.channelOwner.subscriptions.count;
     }
     
-    return self.user.channels.count + (self.isUserProfile ? 1 : 0); // to account for the extra 'creation' cell at the start of the collection view
+    return self.channelOwner.channels.count + (self.isUserProfile ? 1 : 0); // to account for the extra 'creation' cell at the start of the collection view
 }
 
 
@@ -753,7 +753,7 @@ SYNImagePickerControllerDelegate>
     }
     else if([collectionView isEqual:self.channelThumbnailCollectionView])
     {
-        Channel *channel = (Channel *) self.user.channels[indexPath.row - (self.isUserProfile ? 1 : 0)];
+        Channel *channel = (Channel *) self.channelOwner.channels[indexPath.row - (self.isUserProfile ? 1 : 0)];
         
         
         [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.channelCover.imageLargeUrl]
@@ -776,7 +776,7 @@ SYNImagePickerControllerDelegate>
     }else if ([collectionView isEqual:self.subscriptionThumbnailCollectionView]){
         
         
-        Channel *channel = self.user.subscriptions[indexPath.item];
+        Channel *channel = self.channelOwner.subscriptions[indexPath.item];
         
         [channelThumbnailCell.imageView setImageWithURL: [NSURL URLWithString: channel.channelCover.imageLargeUrl]
                                        placeholderImage: [UIImage imageNamed: @"PlaceholderChannelMid.png"]
@@ -856,12 +856,12 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
         }
         else
         {
-            channel = self.user.channels[indexPath.row - (self.isUserProfile ? 1 : 0)];
+            channel = self.channelOwner.channels[indexPath.row - (self.isUserProfile ? 1 : 0)];
         }
     }
     else
     {
-        channel = self.user.subscriptions[indexPath.row];
+        channel = self.channelOwner.subscriptions[indexPath.row];
     }
     
     [appDelegate.viewStackManager viewChannelDetails: channel];
@@ -1022,7 +1022,7 @@ didSelectItemAtIndexPath: (NSIndexPath *) indexPath
     UIView *v = sender.superview.superview;
     self.indexPathToDelete = [self.channelThumbnailCollectionView indexPathForItemAtPoint: v.center];
     
-    Channel *channelToDelete = (Channel *) self.user.channels[self.indexPathToDelete.row - (self.isUserProfile ? 1 : 0)];
+    Channel *channelToDelete = (Channel *) self.channelOwner.channels[self.indexPathToDelete.row - (self.isUserProfile ? 1 : 0)];
     
     if (!channelToDelete)
     {
@@ -1056,7 +1056,7 @@ willDismissWithButtonIndex: (NSInteger) buttonIndex
 
 - (void) deleteChannel
 {
-    Channel *channelToDelete = (Channel *) self.user.channels[self.indexPathToDelete.row - (self.isUserProfile ? 1 : 0)];
+    Channel *channelToDelete = (Channel *) self.channelOwner.channels[self.indexPathToDelete.row - (self.isUserProfile ? 1 : 0)];
     
     if (!channelToDelete)
     {
@@ -1105,15 +1105,15 @@ willDismissWithButtonIndex: (NSInteger) buttonIndex
 
 #pragma mark - Accessors
 
-- (void) setUser: (ChannelOwner *) user
+- (void) setChannelOwner: (ChannelOwner *) user
 {
-    if (self.user) // if we have an existing user
+    if (self.channelOwner) // if we have an existing user
     {
         // remove the listener, even if nil is passed
         
         [[NSNotificationCenter defaultCenter] removeObserver: self
                                                         name: NSManagedObjectContextDidSaveNotification
-                                                      object: self.user];
+                                                      object: self.channelOwner];
     }
     
     if (!appDelegate)
@@ -1144,8 +1144,8 @@ willDismissWithButtonIndex: (NSInteger) buttonIndex
         
         if (matchingChannelOwnerEntries.count > 0)
         {
-            _user = (ChannelOwner *) matchingChannelOwnerEntries[0];
-            _user.markedForDeletionValue = NO;
+            _channelOwner = (ChannelOwner *) matchingChannelOwnerEntries[0];
+            _channelOwner.markedForDeletionValue = NO;
             
             if (matchingChannelOwnerEntries.count > 1) // housekeeping, there can be only one!
             {
@@ -1160,30 +1160,30 @@ willDismissWithButtonIndex: (NSInteger) buttonIndex
         {
             IgnoringObjects flags = kIgnoreChannelOwnerObject | kIgnoreVideoInstanceObjects; // these flags are passed to the Channels
             
-            _user = [ChannelOwner instanceFromChannelOwner: user
+            _channelOwner = [ChannelOwner instanceFromChannelOwner: user
                                                  andViewId: self.viewId
                                  usingManagedObjectContext: user.managedObjectContext
                                        ignoringObjectTypes: flags];
             
-            if (self.user)
+            if (self.channelOwner)
             {
-                [self.user.managedObjectContext save: &error];
+                [self.channelOwner.managedObjectContext save: &error];
                 
                 if (error)
                 {
-                    _user = nil; // further error code
+                    _channelOwner = nil; // further error code
                 }
             }
         }
     }
     else
     {
-        _user = user; // if User isKindOfClass [User class]
+        _channelOwner = user; // if User isKindOfClass [User class]
     }
     
-    if (self.user) // if a user has been passed or found, monitor
+    if (self.channelOwner) // if a user has been passed or found, monitor
     {
-        if ([self.user.uniqueId isEqualToString: appDelegate.currentUser.uniqueId])
+        if ([self.channelOwner.uniqueId isEqualToString: appDelegate.currentUser.uniqueId])
         {
             self.isUserProfile = YES;
         }
@@ -1192,23 +1192,24 @@ willDismissWithButtonIndex: (NSInteger) buttonIndex
             self.isUserProfile = NO;
         }
         
-        self.subscriptionsViewController.user = self.user;
+        self.subscriptionsViewController.user = self.channelOwner;
         
         
-        self.userProfileController.channelOwner = self.user;
+        self.userProfileController.channelOwner = self.channelOwner;
         
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(handleDataModelChange:)
                                                      name: NSManagedObjectContextDidSaveNotification
-                                                   object: self.user.managedObjectContext];
+                                                   object: self.channelOwner.managedObjectContext];
         
         [[NSNotificationCenter defaultCenter] postNotificationName: kChannelOwnerUpdateRequest
                                                             object: self
-                                                          userInfo: @{kChannelOwner : self.user}];
+                                                          userInfo: @{kChannelOwner : self.channelOwner}];
     }
     
     [self.subscriptionThumbnailCollectionView reloadData];
-    
+    [self.channelThumbnailCollectionView reloadData];
+
 }
 
 
@@ -1275,7 +1276,7 @@ andComponentIndex: (NSInteger) componentIndex
         AssertOrLog(@"Unexpectedly valid componentIndex");
     }
     
-    Channel *channel = (Channel *) self.user.channels[indexPath.row - (self.isUserProfile ? 1 : 0)];
+    Channel *channel = (Channel *) self.channelOwner.channels[indexPath.row - (self.isUserProfile ? 1 : 0)];
     
     return channel;
 }
@@ -1294,7 +1295,7 @@ andComponentIndex: (NSInteger) componentIndex
     
     NSIndexPath *indexPath = [self.channelThumbnailCollectionView indexPathForCell: parent];
     
-    Channel *channel = (Channel *) self.user.channels[indexPath.row - (self.isUserProfile ? 1 : 0)];
+    Channel *channel = (Channel *) self.channelOwner.channels[indexPath.row - (self.isUserProfile ? 1 : 0)];
     
     [appDelegate.viewStackManager viewProfileDetails: channel.channelOwner];
 }
@@ -1326,7 +1327,7 @@ andComponentIndex: (NSInteger) componentIndex
         else
         {
             self.indexPathToDelete = indexPath;
-            channel = self.user.channels[indexPath.row - (self.isUserProfile ? 1 : 0)];
+            channel = self.channelOwner.channels[indexPath.row - (self.isUserProfile ? 1 : 0)];
         }
         
         
@@ -1341,7 +1342,7 @@ andComponentIndex: (NSInteger) componentIndex
         SYNChannelMidCell *selectedCell = (SYNChannelMidCell *) cell;
         NSIndexPath *indexPath = [self.subscriptionThumbnailCollectionView indexPathForItemAtPoint: selectedCell.center];
         
-        Channel *channel = self.user.subscriptions[indexPath.item];
+        Channel *channel = self.channelOwner.subscriptions[indexPath.item];
         
         [appDelegate.viewStackManager viewChannelDetails: channel];
         
