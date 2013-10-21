@@ -289,7 +289,8 @@
         
     [masterViewController addVideoOverlayToViewController: self
                                    withVideoInstanceArray: videoInstanceArray
-                                         andSelectedIndex: selectedIndex fromCenter:center];
+                                         andSelectedIndex: selectedIndex
+                                               fromCenter: center];
 }
 
 
