@@ -317,16 +317,16 @@
     }
     
     // Google analytics support
-    [GAI.sharedInstance.defaultTracker sendView:  @"Video Viewer"];
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    
+    [tracker set: kGAIScreenName
+           value: @"Video Viewer"];
+    
+    [tracker send: [[GAIDictionaryBuilder createAppView] build]];
     
     [self.videoPlaybackViewController setPlaylist: self.videoInstanceArray
                                     selectedIndex: self.currentSelectedIndex
                                          autoPlay: TRUE];
-    
-    // Get share link pre-emptively
-    [self requestShareLinkWithObjectType: @"video_instance"
-                                objectId: [(VideoInstance *)self.videoInstanceArray[self.currentSelectedIndex] uniqueId]];
-    
     
     // likes count
     self.likesCountLabel.font = [UIFont rockpackFontOfSize:self.likesCountLabel.font.pointSize];
@@ -669,11 +669,11 @@
         return;
     }
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-    
-    [tracker sendEventWithCategory: @"uiAction"
-                        withAction: @"videoBarClick"
-                         withLabel: nil
-                         withValue: nil];
+
+    [tracker send: [[GAIDictionaryBuilder createEventWithCategory: @"uiAction"
+                                                           action: @"videoBarClick"
+                                                            label: nil
+                                                            value: nil] build]];
     
     // We should start playing the selected vide and scroll the thumbnnail so that it appears under the arrow
     [self playVideoAtIndex: indexPath.item];
@@ -704,10 +704,10 @@
     }
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
-    [tracker sendEventWithCategory: @"uiAction"
-                        withAction: @"videoNextClick"
-                         withLabel: @"next"
-                         withValue: nil];
+    [tracker send: [[GAIDictionaryBuilder createEventWithCategory: @"uiAction"
+                                                           action: @"videoNextClick"
+                                                            label: @"next"
+                                                            value: nil] build]];
     
     int index = (self.currentSelectedIndex + 1) % self.videoInstanceArray.count;
 
@@ -723,11 +723,11 @@
         return;
     }
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-    
-    [tracker sendEventWithCategory: @"uiAction"
-                        withAction: @"videoNextClick"
-                         withLabel: @"prev"
-                         withValue: nil];
+
+    [tracker send: [[GAIDictionaryBuilder createEventWithCategory: @"uiAction"
+                                                           action: @"videoNextClick"
+                                                            label: @"prev"
+                                                            value: nil] build]];
     
     int index = self.currentSelectedIndex -  1;
     
@@ -748,11 +748,11 @@
         return;
     }
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-    
-    [tracker sendEventWithCategory: @"uiAction"
-                        withAction: @"videoPlusButtonClick"
-                         withLabel: nil
-                         withValue: nil];
+
+    [tracker send: [[GAIDictionaryBuilder createEventWithCategory: @"uiAction"
+                                                           action: @"videoPlusButtonClick"
+                                                            label: nil
+                                                            value: nil] build]];
     
     VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
@@ -817,10 +817,10 @@
                 
                 id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
                 
-                [tracker sendEventWithCategory: @"goal"
-                                    withAction: @"videoShared"
-                                     withLabel: @"fbi"
-                                     withValue: nil];
+                [tracker send: [[GAIDictionaryBuilder createEventWithCategory: @"goal"
+                                                                       action: @"videoShared"
+                                                                        label: @"fbi"
+                                                                        value: nil] build]];
             }
             
         }];
@@ -845,11 +845,11 @@
     
     
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-    
-    [tracker sendEventWithCategory: @"uiAction"
-                        withAction: @"videoStarButtonClick"
-                         withLabel: @"Viewer"
-                         withValue: nil];
+
+    [tracker send: [[GAIDictionaryBuilder createEventWithCategory: @"uiAction"
+                                                           action: @"videoStarButtonClick"
+                                                            label: @"Viewer"
+                                                            value: nil] build]];
     
     button.selected = !button.selected;
     
@@ -1125,19 +1125,21 @@
         // Update google analytics
         id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
         
-        [tracker sendEventWithCategory: @"uiAction"
-                            withAction: @"videoMaximizeClick"
-                             withLabel: nil
-                             withValue: nil];
+        [tracker send: [[GAIDictionaryBuilder createEventWithCategory: @"uiAction"
+                                                               action: @"videoMaximizeClick"
+                                                                label: nil
+                                                                value: nil] build]];
     }
 }
 
 
 - (IBAction) userTouchedVideoShareButton: (UIButton *) videoShareButton
 {
-    VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
+    // Get share link pre-emptively
+    [self requestShareLinkWithObjectType: @"video_instance"
+                                objectId: [(VideoInstance *)self.videoInstanceArray[self.currentSelectedIndex] uniqueId]];
     
-    //videoShareButton.enabled = NO;
+    VideoInstance *videoInstance = self.videoInstanceArray [self.currentSelectedIndex];
     
     [self shareVideoInstance: videoInstance];
 }

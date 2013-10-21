@@ -215,11 +215,10 @@
                                                 
                                                 if (channelFromId)
                                                 {
-                                                    // FIXME: Not sure why we need both of these
-                                                    [tracker sendEventWithCategory: @"goal"
-                                                                        withAction: @"userSubscription"
-                                                                         withLabel: nil
-                                                                         withValue: nil];
+                                                    [tracker send: [[GAIDictionaryBuilder createEventWithCategory: @"goal"
+                                                                                                           action: @"userSubscription"
+                                                                                                            label: nil
+                                                                                                            value: nil] build]];
                                                     
                                                     // This notifies the ChannelDetails through KVO
                                                     channelFromId.hasChangedSubscribeValue = YES;
@@ -502,10 +501,7 @@
     {
         [setOfVideosToPost addObject:newVideoInstance];
     }
-    
-    
-    
-    
+
     [appDelegate.oAuthNetworkEngine updateVideosForChannelForUserId: appDelegate.currentUser.uniqueId
                                                           channelId: channel.uniqueId
                                                    videoInstanceSet: setOfVideosToPost
@@ -513,13 +509,12 @@
                                                   completionHandler: ^(NSDictionary* result) {
                                                       
                                                       id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-                                                      
-                                                      [tracker sendEventWithCategory: @"goal"
-                                                                          withAction: @"channelUpdated"
-                                                                           withLabel: nil
-                                                                           withValue: nil];
-                                                      
-                                                      
+
+                                                      [tracker send: [[GAIDictionaryBuilder createEventWithCategory: @"goal"
+                                                                                                             action: @"channelUpdated"
+                                                                                                              label: nil
+                                                                                                              value: nil] build]];
+
                                                       [appDelegate.viewStackManager presentSuccessNotificationWithMessage:messageS];
                                                       
                                                       [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear

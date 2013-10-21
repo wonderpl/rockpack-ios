@@ -305,7 +305,12 @@ typedef void(^FeedDataErrorBlock)(void);
 - (void) updateAnalytics
 {
     // Google analytics support
-    [GAI.sharedInstance.defaultTracker sendView: @"Feed"];
+    id tracker = [[GAI sharedInstance] defaultTracker];
+    
+    [tracker set: kGAIScreenName
+           value: @"Feed"];
+    
+    [tracker send: [[GAIDictionaryBuilder createAppView] build]];
 }
 
 
@@ -319,11 +324,10 @@ typedef void(^FeedDataErrorBlock)(void);
 }
 
 
--(void) loadAndUpdateOriginalFeedData
+- (void) loadAndUpdateOriginalFeedData
 {
     [self resetDataRequestRange];
     [self loadAndUpdateFeedData];
-    
 }
 
 
@@ -512,7 +516,6 @@ typedef void(^FeedDataErrorBlock)(void);
         [self.feedCollectionView reloadData];
         return;
     }
-    
     
     NSMutableDictionary* buckets = [NSMutableDictionary dictionary];
     NSDate* dateNoTime;
@@ -729,37 +732,6 @@ typedef void(^FeedDataErrorBlock)(void);
 }
 
 
-- (void) arcMenuUpdateState: (UIGestureRecognizer *) recognizer
-{
-    [super arcMenuUpdateState: recognizer];
-    
-    if (recognizer.state == UIGestureRecognizerStateBegan)
-    {
-        // Need to set the component index if aggregate celll
-        FeedItem *feedItem = [self feedItemAtIndexPath: self.arcMenuIndexPath];
-        
-        if (feedItem.resourceTypeValue == FeedItemResourceTypeChannel)
-        {
-            // Channel
-            Channel *channel = [self channelInstanceForIndexPath: self.arcMenuIndexPath
-                                               andComponentIndex: self.arcMenuComponentIndex];
-            
-            [self requestShareLinkWithObjectType: @"channel"
-                                        objectId: channel.uniqueId];
-        }
-        else
-        {
-            // Video
-            VideoInstance *videoInstance = [self videoInstanceForIndexPath: self.arcMenuIndexPath
-                                                         andComponentIndex: self.arcMenuComponentIndex];
-            
-            [self requestShareLinkWithObjectType: @"video_instance"
-                                        objectId: videoInstance.uniqueId];
-        }
-    }
-}
-
-
 - (void) arcMenu: (SYNArcMenuView *) menu
          didSelectMenuName: (NSString *) menuName
          forCellAtIndex: (NSIndexPath *) cellIndexPath
@@ -776,10 +748,22 @@ typedef void(^FeedDataErrorBlock)(void);
     }
     else if ([menuName isEqualToString: kActionShareVideo])
     {
+        VideoInstance *videoInstance = [self videoInstanceForIndexPath: self.arcMenuIndexPath
+                                                     andComponentIndex: self.arcMenuComponentIndex];
+        
+        [self requestShareLinkWithObjectType: @"video_instance"
+                                    objectId: videoInstance.uniqueId];
+        
         [self shareVideoAtIndexPath: cellIndexPath];
     }
     else if ([menuName isEqualToString: kActionShareChannel])
     {
+        Channel *channel = [self channelInstanceForIndexPath: self.arcMenuIndexPath
+                                           andComponentIndex: self.arcMenuComponentIndex];
+        
+        [self requestShareLinkWithObjectType: @"channel"
+                                    objectId: channel.uniqueId];
+        
         [self shareChannelAtIndexPath: cellIndexPath
                     andComponentIndex: componentIndex];
     }
@@ -1222,10 +1206,10 @@ typedef void(^FeedDataErrorBlock)(void);
         
         id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
         
-        [tracker sendEventWithCategory: @"uiAction"
-                            withAction: @"videoPlusButtonClick"
-                             withLabel: nil
-                             withValue: nil];
+        [tracker send: [[GAIDictionaryBuilder createEventWithCategory: @"uiAction"
+                                                               action: @"videoPlusButtonClick"
+                                                                label: nil
+                                                                value: nil] build]];
         
         [appDelegate.oAuthNetworkEngine recordActivityForUserId: appDelegate.currentUser.uniqueId
                                                          action: @"select"
@@ -1288,10 +1272,10 @@ typedef void(^FeedDataErrorBlock)(void);
     
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
-    [tracker sendEventWithCategory: @"uiAction"
-                        withAction: @"videoStarButtonClick"
-                         withLabel: @"feed"
-                         withValue: nil];
+    [tracker send: [[GAIDictionaryBuilder createEventWithCategory: @"uiAction"
+                                                           action: @"videoStarButtonClick"
+                                                            label: @"feed"
+                                                            value: nil] build]];
     
     BOOL didStar = (button.selected == NO);
     

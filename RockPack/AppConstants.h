@@ -56,14 +56,14 @@
 
 // Feed
 
-typedef enum _FeedItemType {
+typedef enum : NSInteger {
     
     FeedItemTypeLeaf = 0,
     FeedItemTypeAggregate = 1
     
 } FeedItemType;
 
-typedef enum _FeedItemResourceType {
+typedef enum : NSInteger {
     
     FeedItemResourceTypeVideo = 0,
     FeedItemResourceTypeChannel = 1
@@ -122,6 +122,7 @@ typedef enum _FeedItemResourceType {
 // Videos for channel
 #define kAPIGetVideosForChannel     @"/ws/USERID/channels/CHANNELID/videos/"    /* GET */
 #define kAPIUpdateVideosForChannel  @"/ws/USERID/channels/CHANNELID/videos/"    /* PUT */ /* POST */
+#define kAPIGetVideoDetails         @"/ws/USERID/channels/CHANNELID/videos/INSTANCEID/"  /* GET */
 
 #define kAPISubscribersForChannel   @"/ws/USERID/channels/CHANNELID/subscribers/" /* GET */
 
@@ -247,13 +248,12 @@ typedef enum _FeedItemResourceType {
 // OAuth Username and Password
 
 #define kOAuth2ClientId @"c8fe5f6rock873dpack19Q"
-#define kOAuth2ClientSecret @"7d6a1956c0207ed9d0bbc22ddf9d95"
 
 // Enable full screen thumbnail view 
 #define FULL_SCREEN_THUMBNAILS__
 
 
-typedef enum _Gender {
+typedef enum : NSInteger {
     
     GenderMale = 0,
     GenderFemale = 1,
@@ -261,7 +261,7 @@ typedef enum _Gender {
     
 } Gender;
 
-typedef enum _NavigationButtonsAppearance {
+typedef enum : NSInteger {
     
     NavigationButtonsAppearanceBlack = 0,
     NavigationButtonsAppearanceWhite = 1,
@@ -411,7 +411,7 @@ typedef enum : NSInteger {
 #define kAPNS   @"apns"
 #define kAddressBook @"AddressBook"
 
-typedef enum {
+typedef enum : NSInteger {
     LoginOriginRockpack = 0,
     LoginOriginFacebook = 1
     
@@ -419,7 +419,7 @@ typedef enum {
 
 #define kLoginCompleted @"kLoginCompleted"
 
-typedef enum {
+typedef enum : NSInteger {
     EntityTypeAny = 0,
     EntityTypeChannel,
     EntityTypeVideo,
@@ -429,13 +429,13 @@ typedef enum {
     
 } EntityType;
 
-typedef enum {
+typedef enum : NSInteger {
     ScrollingDirectionNone = 0,
     ScrollingDirectionLeft,
     ScrollingDirectionRight,
 } ScrollingDirection;
 
-typedef enum {
+typedef enum : NSInteger {
     PointingDirectionNone = 0,
     PointingDirectionUp,
     PointingDirectionDown,

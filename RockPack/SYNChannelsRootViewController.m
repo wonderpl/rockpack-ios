@@ -261,7 +261,12 @@
 - (void) updateAnalytics
 {
     // Google analytics support
-    [GAI.sharedInstance.defaultTracker sendView: @"Channels - Root"];
+    id tracker = [[GAI sharedInstance] defaultTracker];
+
+    [tracker set: kGAIScreenName
+           value: @"Channels - Root"    ];
+    
+    [tracker send: [[GAIDictionaryBuilder createAppView] build]];
 }
 
 
@@ -940,10 +945,10 @@ referenceSizeForFooterInSection: (NSInteger) section
 {
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
-    [tracker sendEventWithCategory: @"uiAction"
-                        withAction: @"categoryItemClick"
-                         withLabel: category.name
-                         withValue: nil];
+    [tracker send: [[GAIDictionaryBuilder createEventWithCategory: @"uiAction"
+                                                           action: @"categoryItemClick"
+                                                            label: category.name
+                                                            value: nil] build]];
     
     if (category)
     {
@@ -969,11 +974,11 @@ referenceSizeForFooterInSection: (NSInteger) section
             didSelectSubCategory: (SubGenre *) subCategory
 {
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
-    
-    [tracker sendEventWithCategory: @"uiAction"
-                        withAction: @"categoryItemClick"
-                         withLabel: subCategory.name
-                         withValue: nil];
+
+    [tracker send: [[GAIDictionaryBuilder createEventWithCategory: @"uiAction"
+                                                           action: @"categoryItemClick"
+                                                            label: subCategory.name
+                                                            value: nil] build]];
     
     self.categoryNameLabel.text = subCategory.genre.name;
     [self.categoryNameLabel sizeToFit];

@@ -70,11 +70,10 @@
 	}
 	else
     {   
-        [request setUsername: kOAuth2ClientId
-                    password: kOAuth2ClientSecret];
-        
         [request setAuthorizationHeaderValue: self.oAuth2Credential.accessToken
                                  forAuthType: @"Bearer"];
+        
+        request.shouldCacheResponseEvenIfProtocolIsHTTPS = TRUE;
         
 		[self enqueueOperation: request];
 	}
@@ -118,10 +117,10 @@
              {
                  id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
                  
-                 [tracker sendEventWithCategory: @"goal"
-                                     withAction: @"userRegistration"
-                                      withLabel: origin
-                                      withValue: nil];
+                 [tracker send: [[GAIDictionaryBuilder createEventWithCategory: @"goal"
+                                                                        action: @"userRegistration"
+                                                                         label: origin
+                                                                         value: nil] build]];
              }
              
              SYNOAuth2Credential* newOAuth2Credentials = [SYNOAuth2Credential credentialWithAccessToken: responseDictionary[@"access_token"]
@@ -554,22 +553,16 @@
             errorBlock(@{@"saving_error" : @"Main Registry Could Not Save the User"});
             return;
         }
-        
-        
+
         // Get subscriptions
         
         NSString* userId = responseDictionary[@"id"];
-        
-        
-        
-        
+
         [self channelSubscriptionsForUserId:userId
                                  credential:credentials
                                       start:0
                                        size:50
                           completionHandler:^(id subscriptionsDictionary) {
-                              
-                              
                               NSString* possibleError = subscriptionsDictionary[@"error"];
                               
                               if (possibleError)
@@ -621,9 +614,6 @@
          NSDictionary* customErrorDictionary = @{@"network_error" : [NSString stringWithFormat: @"%@, Server responded with %i", error.domain, error.code] , @"nserror" : error };
          errorBlock(customErrorDictionary);
      }];
-    
-    [networkOperation setUsername: kOAuth2ClientId
-                         password: kOAuth2ClientSecret];
     
     [networkOperation setAuthorizationHeaderValue: credentials.accessToken
                                       forAuthType: @"Bearer"];
@@ -967,27 +957,55 @@
 }
 
 
+// Multiple videos
 - (void) videosForChannelForUserId: (NSString *) userId
                          channelId: (NSString *) channelId
                            inRange: (NSRange) range
                  completionHandler: (MKNKUserSuccessBlock) completionBlock
                       errorHandler: (MKNKUserErrorBlock) errorBlock
 {
-    NSDictionary *apiSubstitutionDictionary = @{@"USERID" : userId,
-                                                @"CHANNELID" : channelId};
+    NSDictionary *apiSubstitutionDictionary = @{@"USERID": userId,
+                                                @"CHANNELID": channelId};
     
     NSString *apiString = [kAPIGetVideosForChannel stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
     
-    NSMutableDictionary* parameters = [NSMutableDictionary dictionary];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     
     parameters[@"start"] = @(range.location);
     parameters[@"size"] = @(range.length);
     
-    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject*)[self operationWithPath: apiString
-                                                                                                       params: [self getLocaleParamWithParams:parameters]
-                                                                                                   httpMethod: @"GET"
-                                                                                                          ssl: TRUE];
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject *) [self operationWithPath: apiString
+                                                                                                         params: [self getLocaleParamWithParams: parameters]
+                                                                                                     httpMethod: @"GET"
+                                                                                                            ssl: TRUE];
     
+    [self addCommonHandlerToNetworkOperation: networkOperation
+                           completionHandler: completionBlock
+                                errorHandler: errorBlock];
+    
+    [self enqueueSignedOperation: networkOperation];
+}
+
+
+// Single video
+- (void) videoForChannelForUserId: (NSString *) userId
+                        channelId: (NSString *) channelId
+                       instanceId: (NSString *) instanceId
+                completionHandler: (MKNKUserSuccessBlock) completionBlock
+                     errorHandler: (MKNKUserErrorBlock) errorBlock;
+{
+    NSDictionary *apiSubstitutionDictionary = @{ @"USERID": userId,
+                                                @"CHANNELID": channelId,
+                                                @"INSTANCEID": instanceId};
+    
+    NSString *apiString = [kAPIGetVideoDetails stringByReplacingOccurrencesOfStrings: apiSubstitutionDictionary];
+    
+    apiString = [NSString stringWithFormat: @"%@?locale=%@", apiString, self.localeString];
+    
+    SYNNetworkOperationJsonObject *networkOperation = (SYNNetworkOperationJsonObject *) [self operationWithPath: apiString
+                                                                                                         params: nil
+                                                                                                     httpMethod: @"GET"
+                                                                                                            ssl: TRUE];
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
                                 errorHandler: errorBlock];
@@ -1065,7 +1083,7 @@
                                                                                                      httpMethod: @"GET"
                                                                                                             ssl: TRUE];
     
-    networkOperation.ignoreCachedResponse = ignore;
+//    networkOperation.ignoreCachedResponse = ignore;
     
     [networkOperation addJSONCompletionHandler: ^(NSDictionary *dictionary) {
         completeBlock(dictionary);
@@ -1325,9 +1343,6 @@
     [self addCommonHandlerToNetworkOperation: networkOperation
                            completionHandler: completionBlock
                                 errorHandler: errorBlock];
-    
-    [networkOperation setUsername: kOAuth2ClientId
-                         password: kOAuth2ClientSecret];
     
     [networkOperation setAuthorizationHeaderValue: credential.accessToken
                                       forAuthType: @"Bearer"];
