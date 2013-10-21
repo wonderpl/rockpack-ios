@@ -523,12 +523,12 @@ SYNImagePickerControllerDelegate>
         if (UIDeviceOrientationIsPortrait(orientation))
         {
             newFrame = self.headerChannelsView.frame;
-            newFrame.size.width = 384.0f;
+            newFrame.size.width = 380.0f;
             self.headerChannelsView.frame = newFrame;
             
             newFrame = self.headerSubscriptionsView.frame;
             newFrame.origin.x = 384.0f;
-            newFrame.size.width = 385.0f;
+            newFrame.size.width = 380.0f;
             self.headerSubscriptionsView.frame = newFrame;
             
             self.channelLayoutIPad.minimumLineSpacing = 0.0f;
@@ -543,10 +543,12 @@ SYNImagePickerControllerDelegate>
         {
             newFrame = self.headerChannelsView.frame;
             newFrame.size.width = 612.0f;
+            newFrame.origin.y = 152.0f;
             self.headerChannelsView.frame = newFrame;
             
             newFrame = self.headerSubscriptionsView.frame;
             newFrame.origin.x = 612.0f;
+            newFrame.origin.y = 152.0f;
             newFrame.size.width = 412.0f;
             self.headerSubscriptionsView.frame = newFrame;
             
@@ -641,7 +643,7 @@ SYNImagePickerControllerDelegate>
 {
     
     [self.headerChannelsView setTitle: [self getHeaderTitleForChannels] andNumber: self.channelOwner.channels.count];
-    [self.headerSubscriptionsView setTitle: [self getHeaderTitleForChannels] andNumber: self.channelOwner.subscriptions.count];
+    [self.headerSubscriptionsView setTitle: NSLocalizedString(@"profile_screen_section_owner_subscription_title", nil) andNumber: self.channelOwner.subscriptions.count];
     
     [self.subscriptionThumbnailCollectionView reloadData];
     [self.channelThumbnailCollectionView reloadData];
