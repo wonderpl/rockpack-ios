@@ -75,19 +75,58 @@
 
 
 - (id) initWithViewId: (NSString*) vid
+
 {
-    if ((self = [super init]))
-    {
-        viewId = vid;
+    
+    // Check to see if there is a XIB file in the system and initialise accordingly
+    
+    
+    
+    NSString* classNameString = NSStringFromClass([self class]);
+    
+    
+    
+    if([[NSBundle mainBundle] pathForResource:classNameString ofType:@"nib"] != nil)
         
-        [[NSNotificationCenter defaultCenter] addObserver: self
-                                                 selector: @selector(applicationWillEnterForeground:)
-                                                     name: UIApplicationWillEnterForegroundNotification
-                                                   object: nil];
+    {
+        
+        self = [super initWithNibName:classNameString bundle:nil];
+        
     }
     
+    else
+        
+    {
+        
+        self = [super init];
+        
+    }
+    
+    if (self)
+        
+    {
+        
+        viewId = vid;
+        
+        
+        
+        [[NSNotificationCenter defaultCenter] addObserver: self
+         
+                                                 selector: @selector(applicationWillEnterForeground:)
+         
+                                                     name: UIApplicationWillEnterForegroundNotification
+         
+                                                   object: nil];
+        
+    }
+    
+    
+    
     return self;
+    
 }
+
+
 
 
 - (void) dealloc

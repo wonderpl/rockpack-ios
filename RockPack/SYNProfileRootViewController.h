@@ -11,12 +11,9 @@
 
 @interface SYNProfileRootViewController : SYNAbstractViewController
 
-@property (nonatomic, strong) ChannelOwner* user;
+@property (nonatomic, strong) ChannelOwner* channelOwner;
 @property (nonatomic, assign) BOOL hideUserProfile;
 
-
-//New properties for user profile
-@property (nonatomic, weak) ChannelOwner* channelOwner;
 
 - (void) deleteChannel;
 

@@ -93,7 +93,7 @@ UITextViewDelegate>
         profileViewController.hideUserProfile = YES;
     }
     
-    profileViewController.user = self.appDelegate.currentUser;
+    profileViewController.channelOwner = self.appDelegate.currentUser;
     
     self.shouldAnimateViewTransitions = YES;
     
