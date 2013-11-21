@@ -415,11 +415,6 @@
                           action: @selector(userTouchedCameraButton:)
                 forControlEvents: UIControlEventTouchUpInside];
     
-    if (self.autoplayVideoId)
-    {
-        [self autoplayVideoIfAvailable];
-    }
-    
     self.originalContentOffset = self.videoThumbnailCollectionView.contentOffset;
     
     // iOS 7 header shift
@@ -2704,6 +2699,11 @@ shouldChangeTextInRange: (NSRange) range
     if (self.mode == kChannelDetailsModeDisplay) // only load bg on display, creation will insert new bg
     {
         self.currentWebImageOperation = [self loadBackgroundImage];
+    }
+	
+    if (self.autoplayVideoId)
+    {
+        [self autoplayVideoIfAvailable];
     }
 }
 
