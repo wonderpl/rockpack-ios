@@ -105,29 +105,38 @@
     SYNNotificationsTableViewCell *notificationCell = [tableView dequeueReusableCellWithIdentifier: kNotificationsCellIdent
                                                                                       forIndexPath: indexPath];
     
-    SYNRockpackNotification *notification = (SYNRockpackNotification *) _notifications[indexPath.row];
+    SYNRockpackNotification *notification = (SYNRockpackNotification *)_notifications[indexPath.row];
     
     NSMutableString *constructedMessage = [[NSMutableString alloc] init];
     
-    [constructedMessage appendFormat: @"%@ ", [notification.channelOwner.displayName uppercaseString]];
     
     if ([notification.messageType isEqualToString: @"subscribed"])
     {
+        [constructedMessage appendFormat: @"%@ ", [notification.channelOwner.displayName uppercaseString]];
         [constructedMessage appendString: NSLocalizedString(@"notification_subscribed_action", nil)];
     }
     else if ([notification.messageType isEqualToString: @"starred"])
     {
+        [constructedMessage appendFormat: @"%@ ", [notification.channelOwner.displayName uppercaseString]];
         [constructedMessage appendString: NSLocalizedString(@"notification_liked_action", nil)];
     }
     else if ([notification.messageType isEqualToString: @"joined"])
     {
-        NSMutableString *message = [NSMutableString stringWithFormat: NSLocalizedString(@"notification_joined_action", @"Your Facebook friend (name) has joined Rockpack"), [notification.channelOwner.displayName uppercaseString]];
         
-        constructedMessage = message;
+        [constructedMessage appendFormat: NSLocalizedString(@"notification_joined_action", @"Your Facebook friend %@ has joined Rockpack"), [notification.channelOwner.displayName uppercaseString]];
+    }
+    else if ([notification.messageType isEqualToString: @"repack"])
+    {
+        [constructedMessage appendFormat: @"%@ ", [notification.channelOwner.displayName uppercaseString]];
+        [constructedMessage appendString: NSLocalizedString(@"notification_repack_action", nil)];
+    }
+    else if ([notification.messageType isEqualToString: @"unavailable"])
+    {
+        [constructedMessage appendString: NSLocalizedString(@"notification_unavailable_action", nil)];
     }
     else
     {
-        AssertOrLog(@"Notification type unexpected");
+        // nothing for the moment
     }
     
     notificationCell.messageTitle = [NSString stringWithString: constructedMessage];
@@ -138,6 +147,8 @@
                                placeholderImage: [UIImage imageNamed: @"PlaceholderNotificationAvatar.png"]
                                         options: SDWebImageRetryFailed];
     
+    
+    // display image on the right side of the cell...
     NSURL *thumbnaillUrl;
     UIImage *placeholder;
     
@@ -148,8 +159,7 @@
         case kNotificationObjectTypeUserLikedYourVideo:
             thumbnaillUrl = [NSURL URLWithString: notification.videoThumbnailUrl];
             placeholder = [UIImage imageNamed: @"PlaceholderNotificationVideo"];
-            notificationCell.playSymbolImageView.hidden = FALSE;
-
+            
             break;
             
         case kNotificationObjectTypeUserSubscibedToYourChannel:
@@ -158,10 +168,20 @@
             break;
             
         case kNotificationObjectTypeFacebookFriendJoined:
+            // TODO: Check if Implemented
+            break;
+            
+        case kNotificationObjectTypeUserAddedYourVideo:
+            thumbnaillUrl = [NSURL URLWithString: notification.videoThumbnailUrl];
+            placeholder = [UIImage imageNamed: @"PlaceholderNotificationVideo"];
+            break;
+            
+        case kNotificationObjectTypeYourVideoNotAvailable:
+            thumbnaillUrl = [NSURL URLWithString: notification.videoThumbnailUrl];
+            placeholder = [UIImage imageNamed: @"PlaceholderNotificationVideo"];
             break;
             
         default:
-            AssertOrLog(@"Unexpected notification type");
             break;
     }
     

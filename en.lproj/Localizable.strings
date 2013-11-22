@@ -149,6 +149,8 @@
 "notification_liked_action" = "liked your video";
 "notification_subscribed_action" = "is now following your pack";
 "notification_joined_action" = "Your Facebook friend %@ has joined Rockpack";
+"notification_unavailable_action" = "One of your videos is not available any more";
+"notification_repack_action" = "has repacked your video";
 "your_channel_object" = "your pack";
 "your_video_object" = "your video";
 "video_object"  = "video";

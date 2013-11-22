@@ -61,6 +61,16 @@
         {
             self.objectType = kNotificationObjectTypeFacebookFriendJoined;
         }
+        else if ([self.messageType isEqualToString: @"repack"])
+        {
+            
+            self.objectType = kNotificationObjectTypeUserAddedYourVideo;
+        }
+        
+        else if ([self.messageType isEqualToString: @"unavailable"])
+        {
+            self.objectType = kNotificationObjectTypeFacebookFriendJoined;
+        }
         else
         {
             // Unexpected object, this is used so that the message can be safely ignored by receipients
@@ -198,8 +208,9 @@
 {
     NSMutableString *descriptionToReturn = [[NSMutableString alloc] init];
     
-    [descriptionToReturn appendFormat: @"<SYNRockpackNotification: %p (%i", self, self.identifier];
-    [descriptionToReturn appendFormat: @" channelOwner: %@)", self.channelOwner.uniqueId];
+    [descriptionToReturn appendFormat: @"<SYNRockpackNotification: %p (identifier:'%i'", self, self.identifier];
+    [descriptionToReturn appendFormat: @" channelOwner:'%@')", self.channelOwner.displayName];
+    [descriptionToReturn appendFormat: @" videoThumbnailUrl:'%@')", self.videoThumbnailUrl];
     [descriptionToReturn appendString: @">"];
     return descriptionToReturn;
 }
