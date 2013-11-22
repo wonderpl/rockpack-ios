@@ -97,6 +97,30 @@
 {
     [super layoutSubviews];
     
+    if (self.read)
+    {
+        self.backgroundColor = [UIColor clearColor];
+        self.textLabel.layer.borderColor = [UIColor clearColor].CGColor;
+        self.textLabel.layer.borderWidth = 1.0f;
+        
+        self.detailTextLabel.layer.borderColor = [UIColor clearColor].CGColor;
+        self.detailTextLabel.layer.borderWidth = 1.0f;
+    }
+    else
+    {
+        self.backgroundColor = [UIColor colorWithRed: (226.0 / 255.0)
+                                               green: (231.0 / 255.0)
+                                                blue: (231.0 / 255.0)
+                                               alpha: (1.0)];
+        self.textLabel.layer.borderColor = self.backgroundColor.CGColor;
+        self.textLabel.layer.borderWidth = 1.0f;
+        
+        self.detailTextLabel.layer.borderColor = self.backgroundColor.CGColor;
+        self.detailTextLabel.layer.borderWidth = 1.0f;
+    }
+    
+    
+    
     // Image Vsiew //
     
     self.imageView.frame = self.mainImageButton.frame = self.imageViewRect;
@@ -106,6 +130,7 @@
                                       (self.mainTextSize.height > 40.0 ? 6.0 : 12.0),
                                       self.mainTextSize.width,
                                       self.mainTextSize.height);
+
     
     // Thumbnail - Place at the end
     CGRect thumbnailImageViewFrame = self.imageView.frame;
@@ -124,17 +149,7 @@
     
     self.dividerImageView.center = CGPointMake(self.center.x, self.frame.size.height);
     
-    if (self.read)
-    {
-        self.backgroundColor = [UIColor clearColor];
-    }
-    else
-    {
-        self.backgroundColor = [UIColor colorWithRed: (226.0 / 255.0)
-                                               green: (231.0 / 255.0)
-                                                blue: (231.0 / 255.0)
-                                               alpha: (1.0)];
-    }
+    
 }
 
 

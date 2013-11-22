@@ -69,7 +69,7 @@
         
         else if ([self.messageType isEqualToString: @"unavailable"])
         {
-            self.objectType = kNotificationObjectTypeFacebookFriendJoined;
+            self.objectType = kNotificationObjectTypeYourVideoNotAvailable;
         }
         else
         {

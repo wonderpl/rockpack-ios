@@ -177,8 +177,17 @@
             break;
             
         case kNotificationObjectTypeYourVideoNotAvailable:
-            thumbnaillUrl = [NSURL URLWithString: notification.videoThumbnailUrl];
-            placeholder = [UIImage imageNamed: @"PlaceholderNotificationVideo"];
+            if(notification.videoThumbnailUrl) // this should be the case for recent notifaction of this type
+            {
+                thumbnaillUrl = [NSURL URLWithString: notification.videoThumbnailUrl];
+                placeholder = [UIImage imageNamed: @"PlaceholderNotificationVideo"];
+            }
+            else
+            {
+                thumbnaillUrl = [NSURL URLWithString: notification.channelThumbnailUrl];
+                placeholder = [UIImage imageNamed: @"PlaceholderNotificationVideo"];
+            }
+            
             break;
             
         default:
@@ -338,6 +347,49 @@
             }
             
             [appDelegate.viewStackManager viewProfileDetails: channelOwner];
+            break;
+        }
+            
+        case kNotificationObjectTypeUserAddedYourVideo:
+        {
+            Channel *channel = [self channelFromChannelId: notification.channelId];
+            
+            if (!channel)
+            {
+                return;
+            }
+            if(notification.videoId)
+            {
+                [appDelegate.viewStackManager viewChannelDetails: channel
+                                                  withAutoplayId: notification.videoId];
+            }
+            else
+            {
+                [appDelegate.viewStackManager viewChannelDetails: channel
+                                                  withAutoplayId: nil];
+            }
+            break;
+        }
+            
+        case kNotificationObjectTypeYourVideoNotAvailable:
+        {
+            Channel *channel = [self channelFromChannelId: notification.channelId];
+            
+            if (!channel)
+            {
+                return;
+            }
+            if(notification.videoId)
+            {
+                [appDelegate.viewStackManager viewChannelDetails: channel
+                                                  withAutoplayId: notification.videoId];
+            }
+            else
+            {
+                [appDelegate.viewStackManager viewChannelDetails: channel
+                                                  withAutoplayId: nil];
+            }
+            
             break;
         }
             
