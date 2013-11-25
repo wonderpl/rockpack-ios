@@ -67,6 +67,8 @@ typedef enum {
 
 @property (weak, nonatomic) IBOutlet UIView *navigationContainerView;
 
+@property (nonatomic, strong) IBOutlet UIButton* notificationsReadAllButton;
+
 
 @end
 
@@ -394,6 +396,7 @@ typedef enum {
         }
         else
         {
+            // add the number of notifications
             if (indexPath.row == kNotificationsRowIndex)
             {
 
@@ -447,7 +450,7 @@ typedef enum {
         Class theClass = NSClassFromString(navigationAction);
         self.currentlyLoadedViewController = (UIViewController*)[[theClass alloc] init];
         
-        // == NOTIFICATIONS == //
+        // Notifications
         if (indexPath.row == kNotificationsRowIndex)
         {
             ((SYNNotificationsTableViewController*)self.currentlyLoadedViewController).notifications = self.notifications;
@@ -581,12 +584,8 @@ typedef enum {
         else {
             [cell setSelected:NO];
         }
-        
         row++;
-            
     }
-    
-    
 }
 
 

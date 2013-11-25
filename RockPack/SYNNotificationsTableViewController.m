@@ -36,10 +36,32 @@
 
 - (void) viewDidLoad
 {
+    
     [super viewDidLoad];
     
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 80.0f, self.view.frame.size.width, self.view.frame.size.height)
-                                                  style:UITableViewStylePlain];
+    CGRect tvFrame = CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height);
+    
+    if(IS_IPAD) // for iPad we make space for a button to be placed on top of the table view
+    {
+        tvFrame.origin.y += 80.0f;
+        
+        UIButton* markAllButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        markAllButton.frame = CGRectMake(10.0f, 10.0f, 200.0f, 50.0f);
+        markAllButton.backgroundColor = [UIColor greenColor];
+        
+        [self.view addSubview:markAllButton];
+        
+        [markAllButton addTarget:self
+                          action:@selector(markAllButtonPressed:)
+                forControlEvents:UIControlEventTouchUpInside];
+    }
+    else
+    {
+        
+    }
+    
+    self.tableView = [[UITableView alloc] initWithFrame: tvFrame
+                                                  style: UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
@@ -61,6 +83,11 @@
     
 }
 
+- (void) markAllButtonPressed: (UIButton*) button
+{
+    
+    
+}
 
 - (void) viewWillAppear: (BOOL) animated
 {
