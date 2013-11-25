@@ -95,6 +95,8 @@
 
 - (void) layoutSubviews
 {
+    
+    
     [super layoutSubviews];
     
     if (self.read)
@@ -112,6 +114,8 @@
                                                green: (231.0 / 255.0)
                                                 blue: (231.0 / 255.0)
                                                alpha: (1.0)];
+        
+        
         self.textLabel.layer.borderColor = self.backgroundColor.CGColor;
         self.textLabel.layer.borderWidth = 1.0f;
         

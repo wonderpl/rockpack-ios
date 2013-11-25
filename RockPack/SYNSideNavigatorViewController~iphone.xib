@@ -16,7 +16,6 @@
                 <outlet property="navigationContainerTitleLabel" destination="48" id="49"/>
                 <outlet property="navigationContainerView" destination="28" id="45"/>
                 <outlet property="nicknameLabel" destination="36" id="37"/>
-                <outlet property="notificationsReadAllButton" destination="dUk-oS-m65" id="NEz-vf-Qlo"/>
                 <outlet property="profilePictureImageView" destination="15" id="16"/>
                 <outlet property="settingsButton" destination="22" id="23"/>
                 <outlet property="tableView" destination="11" id="14"/>
@@ -137,14 +136,6 @@
                                     <color key="shadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <size key="shadowOffset" width="0.0" height="1"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="dUk-oS-m65">
-                                    <rect key="frame" x="254" y="17" width="46" height="30"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                    <state key="normal" title="All">
-                                        <color key="titleColor" red="0.55686277151107788" green="0.086274512112140656" blue="0.16078431904315948" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                </button>
                                 <view contentMode="scaleToFill" id="42">
                                     <rect key="frame" x="0.0" y="63" width="320" height="435"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

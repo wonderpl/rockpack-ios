@@ -14,6 +14,7 @@
 #import "SYNOAuthNetworkEngine.h"
 #import "SYNRockpackNotification.h"
 #import "UIImageView+WebCache.h"
+#import "UIFont+SYNFont.h"
 #import "Video.h"
 
 #define kNotificationsCellIdent @"kNotificationsCellIdent"
@@ -21,6 +22,7 @@
 @interface SYNNotificationsTableViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, weak) SYNAppDelegate *appDelegate;
+
 @property (nonatomic, strong) UIImageView *logoImageView;
 @property (nonatomic, strong) UITableView* tableView;
 
@@ -39,31 +41,15 @@
     
     [super viewDidLoad];
     
-    CGRect tvFrame = CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height);
+    CGFloat correctWidth = IS_IPAD ? 360.0f : 320.0f;
+    CGRect tvFrame = CGRectMake(0.0f, 0.0f, correctWidth, self.view.frame.size.height);
     
-    if(IS_IPAD) // for iPad we make space for a button to be placed on top of the table view
-    {
-        tvFrame.origin.y += 80.0f;
-        
-        UIButton* markAllButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        markAllButton.frame = CGRectMake(10.0f, 10.0f, 200.0f, 50.0f);
-        markAllButton.backgroundColor = [UIColor greenColor];
-        
-        [self.view addSubview:markAllButton];
-        
-        [markAllButton addTarget:self
-                          action:@selector(markAllButtonPressed:)
-                forControlEvents:UIControlEventTouchUpInside];
-    }
-    else
-    {
-        
-    }
     
     self.tableView = [[UITableView alloc] initWithFrame: tvFrame
                                                   style: UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.showsVerticalScrollIndicator = NO;
     
     [self.view addSubview:self.tableView];
     
@@ -83,11 +69,7 @@
     
 }
 
-- (void) markAllButtonPressed: (UIButton*) button
-{
-    
-    
-}
+
 
 - (void) viewWillAppear: (BOOL) animated
 {
@@ -99,8 +81,8 @@
                         context: nil];
     
     
+    
 }
-
 
 
 - (void) viewDidDisappear: (BOOL) animated
@@ -109,6 +91,8 @@
                         forKeyPath: @"contentSize"];
     
     [super viewDidDisappear: animated];
+    
+    
 }
 
 
@@ -123,17 +107,40 @@
 - (NSInteger)	tableView: (UITableView *) tableView
   numberOfRowsInSection: (NSInteger) section
 {
-    return _notifications ? _notifications.count : 0;
+    return _notifications ? _notifications.count + 1 : 0;
 }
 
 
 - (UITableViewCell *) tableView: (UITableView *) tableView
           cellForRowAtIndexPath: (NSIndexPath *) indexPath
 {
+    
+    
+    if(indexPath.row == 0)
+    {
+        UITableViewCell* cell = [[UITableViewCell alloc] init];
+        
+        cell.textLabel.text = @"MARK ALL AS READ";
+        cell.textLabel.font = [UIFont rockpackFontOfSize: 15.0f];
+        
+        cell.textLabel.textColor = [UIColor colorWithRed: (40.0f/255.0f)
+                                                   green: (45.0f/255.0f)
+                                                    blue: (51.0f/255.0f)
+                                                   alpha: 1.0f];
+        
+        UIView* dividerView = [[UIView alloc] initWithFrame: CGRectMake(0.0f, 74.0f, self.tableView.frame.size.width, 2.0f)];
+        dividerView.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed: @"NavDivider"]];
+        [cell addSubview:dividerView];
+        
+        cell.textLabel.textAlignment = NSTextAlignmentCenter;
+        
+        return cell;
+    }
+    
     SYNNotificationsTableViewCell *notificationCell = [tableView dequeueReusableCellWithIdentifier: kNotificationsCellIdent
                                                                                       forIndexPath: indexPath];
     
-    SYNRockpackNotification *notification = (SYNRockpackNotification *)_notifications[indexPath.row];
+    SYNRockpackNotification *notification = (SYNRockpackNotification *)_notifications[indexPath.row - 1];
     
     NSMutableString *constructedMessage = [[NSMutableString alloc] init];
     
@@ -250,7 +257,7 @@
 - (CGFloat) tableView: (UITableView *) tableView
             heightForRowAtIndexPath: (NSIndexPath *) indexPath;
 {
-    return 77.0;
+    return 77.0f;
 }
 
 
@@ -259,6 +266,35 @@
 - (void) tableView: (UITableView *) tableView
          didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 {
+    if(indexPath.row == 0)
+    {
+        [self.appDelegate.oAuthNetworkEngine markAsReadForNotificationIndexes: @[] // empty array suggests 'all' to the server
+                                                                   fromUserId: self.appDelegate.currentUser.uniqueId
+                                                            completionHandler: ^(id response) {
+                                                                
+                                                                for (SYNRockpackNotification* notification in self.notifications)
+                                                                {
+                                                                    notification.read = YES;
+                                                                    
+                                                                }
+                                                                
+                                                                UIApplication.sharedApplication.applicationIconBadgeNumber = 0;
+                                                                
+                                                                [self.tableView reloadData];
+                                                                
+                                                                [[NSNotificationCenter defaultCenter]  postNotificationName:kNotificationMarkedRead
+                                                                                                                     object:self
+                                                                                                                   userInfo:@{@"type":@"all"}];
+                                                            } errorHandler: ^(id error) {
+                                                                
+                                                                
+                                                            }];
+        
+        
+        
+        return;
+    }
+    
     [self markAsReadForNotification: _notifications[indexPath.row]];
     
     // Decrement the badge number (min zero)
@@ -447,7 +483,8 @@
                                                             [self.tableView reloadData];
                                                             
                                                             [[NSNotificationCenter defaultCenter]  postNotificationName: kNotificationMarkedRead
-                                                                                                                 object: self];
+                                                                                                                 object: self
+                                                                                                               userInfo:@{@"type":@"one"}];
                                                         } errorHandler: ^(id error) {
                                                             
                                                             

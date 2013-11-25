@@ -67,8 +67,6 @@ typedef enum {
 
 @property (weak, nonatomic) IBOutlet UIView *navigationContainerView;
 
-@property (nonatomic, strong) IBOutlet UIButton* notificationsReadAllButton;
-
 
 @end
 
@@ -327,7 +325,17 @@ typedef enum {
 
 - (void) notificationMarkedRead: (NSNotification*) notification
 {
-    self.unreadNotifications--;
+    NSString* markReadType = notification.userInfo[@"type"];
+    if([markReadType isEqualToString:@"all"])
+    {
+        self.unreadNotifications = 0;
+        
+    }
+    else
+    {
+        self.unreadNotifications--;
+    }
+    
     [self.tableView reloadData];
 }
 
@@ -646,7 +654,7 @@ typedef enum {
 
     
     [self.containerView addSubview: self.currentlyLoadedViewController.view];
-    [self addChildViewController:self.currentlyLoadedViewController];
+    [self addChildViewController: self.currentlyLoadedViewController];
 }
 
 
