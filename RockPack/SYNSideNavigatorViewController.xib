@@ -40,7 +40,7 @@
                     <rect key="frame" x="16" y="10" width="60" height="60"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <view contentMode="scaleToFill" id="19" userLabel="Container View">
+                <view clipsSubviews="YES" contentMode="scaleToFill" id="19" userLabel="Container View">
                     <rect key="frame" x="194" y="80" width="362" height="578"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" heightSizable="YES"/>
                     <color key="backgroundColor" red="0.50980395079999996" green="0.55294120309999995" blue="0.56862747670000002" alpha="0.0" colorSpace="calibratedRGB"/>

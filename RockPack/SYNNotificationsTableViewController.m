@@ -16,6 +16,7 @@
 #import "UIImageView+WebCache.h"
 #import "UIFont+SYNFont.h"
 #import "Video.h"
+#import "SYNDeviceManager.h"
 
 #define kNotificationsCellIdent @"kNotificationsCellIdent"
 
@@ -25,6 +26,8 @@
 
 @property (nonatomic, strong) UIImageView *logoImageView;
 @property (nonatomic, strong) UITableView* tableView;
+
+@property (nonatomic) BOOL hasUnreadNotifications;
 
 @end
 
@@ -41,14 +44,15 @@
     
     [super viewDidLoad];
     
-    CGFloat correctWidth = IS_IPAD ? 360.0f : 320.0f;
-    CGRect tvFrame = CGRectMake(0.0f, 0.0f, correctWidth, self.view.frame.size.height);
     
     
-    self.tableView = [[UITableView alloc] initWithFrame: tvFrame
+    
+    self.tableView = [[UITableView alloc] initWithFrame: CGRectZero
                                                   style: UITableViewStylePlain];
+    
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    
     self.tableView.showsVerticalScrollIndicator = NO;
     
     [self.view addSubview:self.tableView];
@@ -66,7 +70,9 @@
     [self.tableView registerClass: [SYNNotificationsTableViewCell class]
            forCellReuseIdentifier: kNotificationsCellIdent];
     
+    self.hasUnreadNotifications = NO;
     
+    self.view.autoresizesSubviews = YES;
 }
 
 
@@ -81,7 +87,23 @@
                         context: nil];
     
     
+    [self resizeTableViewForInterfaceOrientation:[[SYNDeviceManager sharedInstance] currentOrientation]];
     
+}
+
+-(void)resizeTableViewForInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    CGRect tvFrame = CGRectZero;
+    tvFrame.size = self.view.frame.size;
+    if(UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
+    {
+        tvFrame.size.height = 680.0f;
+    }
+    else
+    {
+        tvFrame.size.height = 928.0f;
+    }
+    self.tableView.frame = tvFrame;
 }
 
 
@@ -95,7 +117,13 @@
     
 }
 
-
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willAnimateRotationToInterfaceOrientation: toInterfaceOrientation
+                                            duration: duration];
+    
+    [self resizeTableViewForInterfaceOrientation:toInterfaceOrientation];
+}
 #pragma mark - Table view data source
 
 - (NSInteger) numberOfSectionsInTableView: (UITableView *) tableView
@@ -107,7 +135,24 @@
 - (NSInteger)	tableView: (UITableView *) tableView
   numberOfRowsInSection: (NSInteger) section
 {
-    return _notifications ? _notifications.count + 1 : 0;
+    
+    if(!_notifications)
+    {
+        return 0;
+    }
+    
+    // we should display the 'MARK AS READ' cell
+    for (SYNRockpackNotification* notification in _notifications)
+    {
+        if(!notification.read)
+        {
+            self.hasUnreadNotifications = YES;
+            break;
+        }
+        
+    }
+    
+    return self.hasUnreadNotifications ? _notifications.count + 1 : _notifications.count;
 }
 
 
@@ -115,12 +160,12 @@
           cellForRowAtIndexPath: (NSIndexPath *) indexPath
 {
     
-    
-    if(indexPath.row == 0)
+    if(indexPath.row == 0 && self.hasUnreadNotifications)
     {
         UITableViewCell* cell = [[UITableViewCell alloc] init];
         
         cell.textLabel.text = @"MARK ALL AS READ";
+        
         cell.textLabel.font = [UIFont rockpackFontOfSize: 15.0f];
         
         cell.textLabel.textColor = [UIColor colorWithRed: (40.0f/255.0f)
@@ -140,7 +185,7 @@
     SYNNotificationsTableViewCell *notificationCell = [tableView dequeueReusableCellWithIdentifier: kNotificationsCellIdent
                                                                                       forIndexPath: indexPath];
     
-    SYNRockpackNotification *notification = (SYNRockpackNotification *)_notifications[indexPath.row - 1];
+    SYNRockpackNotification *notification = (SYNRockpackNotification *)_notifications[indexPath.row - (self.hasUnreadNotifications ? 1 : 0)];
     
     NSMutableString *constructedMessage = [[NSMutableString alloc] init];
     
@@ -266,7 +311,7 @@
 - (void) tableView: (UITableView *) tableView
          didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 {
-    if(indexPath.row == 0)
+    if(indexPath.row == 0 && self.hasUnreadNotifications)
     {
         [self.appDelegate.oAuthNetworkEngine markAsReadForNotificationIndexes: @[] // empty array suggests 'all' to the server
                                                                    fromUserId: self.appDelegate.currentUser.uniqueId
@@ -295,7 +340,7 @@
         return;
     }
     
-    [self markAsReadForNotification: _notifications[indexPath.row]];
+    [self markAsReadForNotification: _notifications[indexPath.row  - (self.hasUnreadNotifications ? 1 : 0)]];
     
     // Decrement the badge number (min zero)
     UIApplication.sharedApplication.applicationIconBadgeNumber = MAX((UIApplication.sharedApplication.applicationIconBadgeNumber - 1) , 0);

@@ -697,17 +697,7 @@ typedef enum {
     settingsButtonFrame.origin.y = [SYNDeviceManager.sharedInstance currentScreenHeight] - 30.0 - settingsButtonFrame.size.height;
     self.settingsButton.frame = settingsButtonFrame;
     
-    // FIXME: ???
-    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
-    {
-        
-        
-    }
-    else
-    {
-        
-        
-    } 
+    
 }
 
 
