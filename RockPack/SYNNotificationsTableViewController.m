@@ -18,10 +18,11 @@
 
 #define kNotificationsCellIdent @"kNotificationsCellIdent"
 
-@interface SYNNotificationsTableViewController ()
+@interface SYNNotificationsTableViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, weak) SYNAppDelegate *appDelegate;
 @property (nonatomic, strong) UIImageView *logoImageView;
+@property (nonatomic, strong) UITableView* tableView;
 
 @end
 
@@ -30,24 +31,19 @@
 
 @synthesize notifications = _notifications;
 
-#pragma mark - Object lifecycle
-
-- (id) init
-{
-    if ((self = [super initWithStyle: UITableViewStylePlain]))
-    {
-        // TODO: Get notifications
-    }
-    
-    return self;
-}
-
 
 #pragma mark - View Life Cycle
 
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 80.0f, self.view.frame.size.width, self.view.frame.size.height)
+                                                  style:UITableViewStylePlain];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    
+    [self.view addSubview:self.tableView];
     
     [GAI.sharedInstance.defaultTracker sendView: @"Notifications"];
     
@@ -61,6 +57,8 @@
 
     [self.tableView registerClass: [SYNNotificationsTableViewCell class]
            forCellReuseIdentifier: kNotificationsCellIdent];
+    
+    
 }
 
 
@@ -72,7 +70,10 @@
                      forKeyPath: @"contentSize"
                         options: NSKeyValueObservingOptionNew
                         context: nil];
+    
+    
 }
+
 
 
 - (void) viewDidDisappear: (BOOL) animated
