@@ -133,7 +133,7 @@
 
 
 - (NSInteger)	tableView: (UITableView *) tableView
-  numberOfRowsInSection: (NSInteger) section
+    numberOfRowsInSection: (NSInteger) section
 {
     
     if(!_notifications)
