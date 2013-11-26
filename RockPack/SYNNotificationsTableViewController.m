@@ -45,8 +45,6 @@
     [super viewDidLoad];
     
     
-    
-    
     self.tableView = [[UITableView alloc] initWithFrame: CGRectZero
                                                   style: UITableViewStylePlain];
     
@@ -142,6 +140,7 @@
     }
     
     // we should display the 'MARK AS READ' cell
+    self.hasUnreadNotifications = NO;
     for (SYNRockpackNotification* notification in _notifications)
     {
         if(!notification.read)
@@ -313,6 +312,7 @@
 {
     if(indexPath.row == 0 && self.hasUnreadNotifications)
     {
+        // mark all
         [self.appDelegate.oAuthNetworkEngine markAsReadForNotificationIndexes: @[] // empty array suggests 'all' to the server
                                                                    fromUserId: self.appDelegate.currentUser.uniqueId
                                                             completionHandler: ^(id response) {
@@ -523,6 +523,7 @@
     [self.appDelegate.oAuthNetworkEngine markAsReadForNotificationIndexes: array
                                                                fromUserId: self.appDelegate.currentUser.uniqueId
                                                         completionHandler: ^(id response) {
+                                                            
                                                             notification.read = YES;
                                                             
                                                             [self.tableView reloadData];
