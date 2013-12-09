@@ -137,6 +137,10 @@
 
 - (void) awakeFromNib
 {
+    
+    if(IS_IOS_7_OR_GREATER)
+        self.tintColor = [UIColor blueColor];
+    
     self.searchFieldFrameImageView.image = [[UIImage imageNamed: @"FieldSearch"]
                                             resizableImageWithCapInsets: UIEdgeInsetsMake(0.0f,20.0f, 0.0f, 20.0f)];
     
