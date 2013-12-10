@@ -125,9 +125,7 @@
         //Channel select was cancelled.
         [[NSNotificationCenter defaultCenter] postNotificationName: kVideoQueueClear
                                                             object: nil];
-        //[self resumeVideoIfShowing];
-        
-        
+       
         
         return;
     }

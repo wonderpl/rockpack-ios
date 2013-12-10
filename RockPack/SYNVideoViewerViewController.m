@@ -384,13 +384,11 @@
             [self handleMinMax];
         }
     }
-    else
-    {
-        [[NSNotificationCenter defaultCenter] addObserver: self
-                                                 selector: @selector(refreshAddbuttonStatus:)
-                                                     name: kVideoQueueClear
-                                                   object: nil];
-    }
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(refreshAddbuttonStatus:)
+                                                 name: kVideoQueueClear
+                                               object: nil];
     
     
     // The min / max button is only active on the iPhone
@@ -744,9 +742,9 @@
 - (IBAction) userTouchedVideoAddItButton: (UIButton *) addItButton
 {
     if(self.isVideoExpanded)
-    {
         return;
-    }
+    
+    
     id<GAITracker> tracker = [GAI sharedInstance].defaultTracker;
     
     [tracker sendEventWithCategory: @"uiAction"
@@ -780,12 +778,10 @@
                                                    }]; 
     }
     
-    if (!IS_IPAD)
-    {
-        addItButton.selected = NO;
-    }
     
 }
+
+
 
 - (IBAction) toggleStarButton: (UIButton *) button
 {
@@ -1346,13 +1342,15 @@
 
 - (void) pauseIfVideoActive
 {
+   
+    
     [self.videoPlaybackViewController pauseIfVideoActive];
 }
 
 #pragma mark - refresh addbutton status
 -(void)refreshAddbuttonStatus:(NSNotification*)note
 {
-    //We should only track the status of the queue on iPad since iPhone only ever adds one object at a time
+    
     VideoInstance* videoInstance = self.videoInstanceArray[self.currentSelectedIndex];
     self.addVideoButton.selected = [appDelegate.videoQueue videoInstanceIsAddedToChannel:videoInstance];
 }

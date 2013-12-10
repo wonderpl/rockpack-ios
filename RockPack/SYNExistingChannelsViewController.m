@@ -361,8 +361,13 @@
         [self.view removeFromSuperview];
         [self removeFromParentViewController];
         
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kVideoQueueClear
+                                                            object:self];
+        
         SYNMasterViewController *masterViewController = (SYNMasterViewController*)appDelegate.masterViewController;
-        // TODO : Implement below
+        
+        
         
         if (masterViewController.videoViewerViewController)
         {
@@ -383,7 +388,10 @@
     self.closeButton.enabled = NO;
     
     [self closeAnimation: ^(BOOL finished) {
+        
         [self.view removeFromSuperview];
+        [self removeFromParentViewController];
+        
         [[NSNotificationCenter defaultCenter] postNotificationName: kNoteVideoAddedToExistingChannel
                                                             object: self
                                                           userInfo: @{kChannel: self.selectedChannel}];
